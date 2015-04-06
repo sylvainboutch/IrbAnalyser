@@ -19,11 +19,11 @@ using System.Xml.Serialization;
 [assembly: EdmSchemaAttribute()]
 #region EDM Relationship Metadata
 
-[assembly: EdmRelationshipAttribute("VelosModel", "FK_STDYAPNX_STUDY", "ER_STUDYVER", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(IrbAnalyser.ER_STUDYVER), "ER_STUDYAPNDX", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(IrbAnalyser.ER_STUDYAPNDX), true)]
+[assembly: EdmRelationshipAttribute("VelosModel", "FK_STDYAPNX_STUDY", "ER_STUDYVER", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(IrbAnalyser.Model.ER_STUDYVER), "ER_STUDYAPNDX", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(IrbAnalyser.Model.ER_STUDYAPNDX), true)]
 
 #endregion
 
-namespace IrbAnalyser
+namespace IrbAnalyser.Model
 {
     #region Contexts
     
