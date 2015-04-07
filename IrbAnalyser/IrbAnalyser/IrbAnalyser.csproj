@@ -56,6 +56,7 @@
     <Compile Include="CsvReader.cs" />
     <Compile Include="DbCompare.cs" />
     <Compile Include="ExcelUtility.cs" />
+    <Compile Include="FileParser.cs" />
     <Compile Include="IrbAnalyser.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -87,6 +88,8 @@
       <LastGenOutput>Model1.Designer.cs</LastGenOutput>
     </EntityDeploy>
     <None Include="App.Config" />
+    <None Include="FileFormat\Study.ini" />
+    <None Include="Properties\DataSources\IrbAnalyser.Model.VelosDb.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -96,6 +99,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="schema.ini" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

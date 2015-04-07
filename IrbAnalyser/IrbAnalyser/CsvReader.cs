@@ -29,7 +29,7 @@ namespace IrbAnalyser
                 string sql = @"SELECT * FROM [" + file + "]";
                 string pathOnly = Path.GetDirectoryName(filename);
                 string connectionstr = @"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + pathOnly +
-                          ";Extended Properties=\"Text;HDR=Yes\"";
+                          ";Extended Properties=\"Text;HDR=Yes;FMT=TabDelimited\"";
 
                 using (OleDbConnection conn = new OleDbConnection(connectionstr))
                 {
@@ -52,6 +52,10 @@ namespace IrbAnalyser
         public string printDT()
         {
             string ret = "";
+            foreach (DataColumn dc in data.Columns)
+            {
+                ret += dc.ColumnName + " ::: ";
+            }
             foreach (DataRow dataRow in data.Rows)
             {
                 ret += "\r\n";

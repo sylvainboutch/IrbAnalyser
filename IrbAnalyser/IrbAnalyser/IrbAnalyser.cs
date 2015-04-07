@@ -34,14 +34,17 @@ namespace IrbAnalyser
             {
                 DbCompare dbc = new DbCompare();
 
-                ofdCsv.Filter = "CSV Files|*.CSV;*.csv";
+                ofdCsv.Filter = "Csv Files (.csv)|*.csv|Text Files (.txt)|*.txt|All Files (*.*)|*.*";
                 DialogResult dr = ofdCsv.ShowDialog();
                 string filename = dr == DialogResult.OK ? ofdCsv.FileName : "";
                 btnOk.Enabled = false;
                 btnOk.Text = "ANALYSING !";
-                CsvReader csvReader = new CsvReader(filename);
-                csvReader.getDataTable();
-                dbc.isNewStudy(csvReader.data);
+                FileParser fileparser = new FileParser(filename);
+                fileparser.getDataTable();
+                dbc.isNewStudy(fileparser.data);
+                //CsvReader csvReader = new CsvReader(filename);
+                //csvReader.getDataTable();
+                //dbc.isNewStudy(csvReader.data);
 
                 ExcelUtility exc = new ExcelUtility();
                 sfdCsv.Filter = "Excel Files|*.xlsx";
