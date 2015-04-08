@@ -1,2 +1,3 @@
-StudyId	StudySiteId	IRBAgency	IRBNumber	SiteName	StudyTitle
-1234564	654654654	"BRANY"	123457	"Einstein Montefiore"	12345-BRANY_CALENDAR_Sylvain
+StudyId	StudySiteId	IRBAgency	IRBNumber	Sitename	Studytitle	Studysummary	IND	INDnumber	INDHolder	Category	Department	Division	Studyduration	Begindate	Studysamplesize	Multicenter	Phase	Primarysponsorname	Primarysponsorcontactfirstname	Primarysponsorcontactlastname	Primarysponsorcontactemail	PrimarysponsorstudyID	Documentlink	Initialapprovaldate	Mostrecentapprovaldate	Expirationdate
+654654	632132	BRANY	12345	Einstein	A study	A study about bla bla bla	FALSE			ABCD						TRUE		Bayer	Roger	Walter	ads@sad.dd	546654	www.google.com			
+654654	632132	BRANY	12345	Einstein	A study	A study about bla bla bla	FALSE			ABCD						TRUE		Bayer	Roger	Walter	ads@sad.dd	546654	www.google.com			

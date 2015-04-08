@@ -49,18 +49,18 @@ namespace IrbAnalyser
                 // loop through each row and add values to our sheet
                 int rowcount = 2;
 
+                //Add the column header
+                for (int i = 1; i <= dataTable.Columns.Count; i++)
+                {
+                    excelSheet.Cells[2, i] = dataTable.Columns[i - 1].ColumnName;
+                    excelSheet.Cells.Font.Color = System.Drawing.Color.Black;
+                }
+
                 foreach (DataRow datarow in dataTable.Rows)
                 {
                     rowcount += 1;
                     for (int i = 1; i <= dataTable.Columns.Count; i++)
                     {
-                        // on the first iteration we add the column headers
-                        if (rowcount == 3)
-                        {
-                            excelSheet.Cells[2, i] = dataTable.Columns[i - 1].ColumnName;
-                            excelSheet.Cells.Font.Color = System.Drawing.Color.Black;
-
-                        }
 
                         excelSheet.Cells[rowcount, i] = datarow[i - 1].ToString();
 
@@ -83,6 +83,7 @@ namespace IrbAnalyser
                 }
 
                 // now we resize the columns
+                //TODO Handle 0 column without error
                 excelCellrange = excelSheet.Range[excelSheet.Cells[1, 1], excelSheet.Cells[rowcount, dataTable.Columns.Count]];
                 excelCellrange.EntireColumn.AutoFit();
                 Microsoft.Office.Interop.Excel.Borders border = excelCellrange.Borders;

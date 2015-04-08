@@ -55,7 +55,7 @@ namespace IrbAnalyser
                     }
                     if (!isContained)
                     {
-                        OutputNewStudy.addRowStudy(row["IRBNumber"].ToString(), row["StudyTitle"].ToString());
+                        OutputNewStudy.addRowStudy(row);
                     }
                 }
             }
