@@ -50,8 +50,8 @@ namespace IrbAnalyser
                 sfdCsv.Filter = "Excel Files|*.xlsx";
                 sfdCsv.ShowDialog();
                 string savefilename = dr == DialogResult.OK ? sfdCsv.FileName : "";
-                OutputStudy.initiate();
-                exc.WriteDataTableToExcel(OutputStudy.study, "New studies", savefilename, "List of studies to create in Velos");
+                OutputNewStudy.initiate();
+                exc.WriteDataTableToExcel(OutputNewStudy.study, "New studies", savefilename, "List of studies to create in Velos");
                 txtOutput.Text = "Analysis complete.\r\nPlease open the excel file and create/modify studies in Velos accordingly.";
                 btnclicked = true;
                 btnOk.Text = "Close";

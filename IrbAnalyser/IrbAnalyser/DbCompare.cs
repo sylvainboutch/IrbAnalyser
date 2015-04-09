@@ -55,7 +55,7 @@ namespace IrbAnalyser
                     }
                     if (!isContained)
                     {
-                        OutputStudy.addRowStudy(row,"New study");
+                        OutputNewStudy.addRowStudy(row);
                     }
                 }
             }

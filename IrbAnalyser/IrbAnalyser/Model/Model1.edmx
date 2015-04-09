@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="VelosModel.Store" Alias="Self" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="11.2" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+      <Schema Namespace="VelosModel.Store" Alias="Self" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="11.2" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
         <EntityContainer Name="VelosModelStoreContainer">
           <EntitySet Name="ER_CODELST" EntityType="VelosModel.Store.ER_CODELST" store:Type="Tables" Schema="ERES" />
           <EntitySet Name="ER_STUDYAPNDX" EntityType="VelosModel.Store.ER_STUDYAPNDX" store:Type="Tables" Schema="ERES" />
@@ -633,7 +633,8 @@
         <Property Name="LAST_MODIFIED_BY" Type="number" />
         <Property Name="LAST_MODIFIED_DATE" Type="date" />
       </EntityType>-->
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="VelosModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
@@ -1339,19 +1340,19 @@
     </Options>
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
-      <Diagram Name="Model1" ZoomLevel="100">
-        <EntityTypeShape EntityType="VelosModel.ER_CODELST" Width="1.5" PointX="5.75" PointY="0.75" Height="0.4" IsExpanded="false" />
-        <EntityTypeShape EntityType="VelosModel.ER_STUDYAPNDX" Width="1.5" PointX="3" PointY="1" Height="0.4" IsExpanded="false" />
-        <EntityTypeShape EntityType="VelosModel.ER_STUDYVER" Width="1.5" PointX="0.75" PointY="1.125" Height="0.4" IsExpanded="false" />
-        <EntityTypeShape EntityType="VelosModel.LCL_V_STUDYSUMM_PLUSMORE" Width="1.5" PointX="0.75" PointY="6.75" Height="0.4" IsExpanded="false" />
-        <EntityTypeShape EntityType="VelosModel.VDA_V_ER_CODELST" Width="1.5" PointX="2.75" PointY="6.75" Height="0.4" IsExpanded="false" />
-        <EntityTypeShape EntityType="VelosModel.VDA_V_STUDY_SUMMARY" Width="1.5" PointX="4.75" PointY="6.75" Height="0.4" IsExpanded="false" />
-        <EntityTypeShape EntityType="VelosModel.VDA_V_STUDYSITES" Width="1.5" PointX="6.75" PointY="6.75" Height="0.4" IsExpanded="false" />
-        <EntityTypeShape EntityType="VelosModel.VDA_V_STUDYSTAT" Width="1.5" PointX="8.75" PointY="0.75" Height="0.4" IsExpanded="false" />
-        <EntityTypeShape EntityType="VelosModel.VDA_V_STUDYTEAM_MEMBERS" Width="1.5" PointX="8.75" PointY="7.75" Height="0.4" IsExpanded="false" />
+      <Diagram Name="Model1">
+        <EntityTypeShape EntityType="VelosModel.ER_CODELST" Width="1.5" PointX="5.75" PointY="0.75" Height="4.480205078125" IsExpanded="true" />
+        <EntityTypeShape EntityType="VelosModel.ER_STUDYAPNDX" Width="1.5" PointX="3" PointY="1" Height="4.2879036458333317" IsExpanded="true" />
+        <EntityTypeShape EntityType="VelosModel.ER_STUDYVER" Width="1.5" PointX="0.75" PointY="1.125" Height="4.0956022135416656" IsExpanded="true" />
+        <EntityTypeShape EntityType="VelosModel.LCL_V_STUDYSUMM_PLUSMORE" Width="1.5" PointX="0.75" PointY="6.75" Height="18.710511067708339" IsExpanded="true" />
+        <EntityTypeShape EntityType="VelosModel.VDA_V_ER_CODELST" Width="1.5" PointX="2.75" PointY="6.75" Height="2.7494921874999996" IsExpanded="true" />
+        <EntityTypeShape EntityType="VelosModel.VDA_V_STUDY_SUMMARY" Width="1.5" PointX="4.75" PointY="6.75" Height="12.556865234375003" IsExpanded="true" />
+        <EntityTypeShape EntityType="VelosModel.VDA_V_STUDYSITES" Width="1.5" PointX="6.75" PointY="6.75" Height="5.2494108072916674" IsExpanded="true" />
+        <EntityTypeShape EntityType="VelosModel.VDA_V_STUDYSTAT" Width="1.5" PointX="8.75" PointY="0.75" Height="5.4417122395833317" IsExpanded="true" />
+        <EntityTypeShape EntityType="VelosModel.VDA_V_STUDYTEAM_MEMBERS" Width="1.5" PointX="8.75" PointY="7.75" Height="4.6725065104166674" IsExpanded="true" />
         <AssociationConnector Association="VelosModel.FK_STDYAPNX_STUDY" ManuallyRouted="false">
-          <ConnectorPoint PointX="2.25" PointY="1.2625" />
-          <ConnectorPoint PointX="3" PointY="1.2625" />
+          <ConnectorPoint PointX="2.25" PointY="3.1728011067708328" />
+          <ConnectorPoint PointX="3" PointY="3.1728011067708328" />
         </AssociationConnector>
       </Diagram>
     </Diagrams>

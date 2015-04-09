@@ -9,7 +9,7 @@ namespace IrbAnalyser
     /// <summary>
     /// Contains the list of newly created study
     /// </summary>
-    public static class OutputStudy
+    public static class OutputNewStudy
     {
         //List of newly created study, with more study detail
         public static DataTable study = new DataTable();
@@ -21,7 +21,6 @@ namespace IrbAnalyser
         {
             if (study.Columns.Count == 0)
             {
-                study.Columns.Add("TYPE", typeof(string));
                 study.Columns.Add("IRB Agency name", typeof(string));
                 study.Columns.Add("IRB no", typeof(string));
                 study.Columns.Add("Regulatory coordinator", typeof(string));
@@ -70,11 +69,10 @@ namespace IrbAnalyser
         /// </summary>
         /// <param name="irbNumber"></param>
         /// <param name="studyNumber"></param>
-        public static void addRowStudy(DataRow row,string type)
+        public static void addRowStudy(DataRow row)
         {
             initiate();
             DataRow dr = study.NewRow();
-            dr["TYPE"] = type;
             dr["IRB Agency name"] = row["IRBAgency"].ToString();
             dr["IRB no"] = row["IRBNumber"].ToString();
             dr["Regulatory coordinator"] = "";
@@ -105,63 +103,6 @@ namespace IrbAnalyser
             dr["Short description"] = "";
 
             study.Rows.Add(dr);
-        }
-
-        /// <summary>
-        /// Verify if a study has changed and add the changes to the list
-        /// </summary>
-        /// <param name="row"></param>
-        public static void changedValue(DataRow row)
-        {
-            using (Model.VelosDb db = new Model.VelosDb())
-            {
-
-                var study = from st in db.LCL_V_STUDYSUMM_PLUSMORE
-                            where st.MORE_IRBNUM == row["IRBNumber"].ToString() && st.MORE_IRBAGENCY == row["IRBAgency"].ToString()
-                            select st;
-
-                bool hasChanged = false;
-
-                if (!Tools.compareStr(study.First().STUDY_TITLE, row["Studytitle"].ToString()))
-                {
-                    row["Studytitle"] = row["Studytitle"];
-                }
-                else
-                {
-                    hasChanged = true;
-                }
-
-                if (Tools.compareStr(study.First().STUDY_SUMMARY, row["Studysummary"].ToString()))
-                {
-                    row["Studysummary"] = "";
-                }
-                else
-                {
-                    hasChanged = true;
-                }
-
-                var study = from st in db.LCL_V_STUDYSUMM_PLUSMORE
-                            join sd in db.ER
-                            where st.MORE_IRBNUM == row["IRBNumber"].ToString() && st.MORE_IRBAGENCY == row["IRBAgency"].ToString()
-                            select st;
-
-                if (Tools.compareStr(study.First()., row["IND"].ToString()))
-                {
-                    row["IND"] = "";
-                }
-                else
-                {
-                    hasChanged = true;
-                }
-
-
-
-
-                if (hasChanged)
-                {
-                    OutputStudy.addRowStudy(row,"Modified study");
-                }
-            }        
         }
 
 
