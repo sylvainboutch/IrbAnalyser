@@ -32,34 +32,6 @@ namespace IrbAnalyser
             }
         }
 
-        /// <summary>
-        /// Compare the file with the database, populates the databable for newStudy
-        /// </summary>
-        /// <param name="data"></param>
-        public void isNewStudy(DataTable data)
-        {
-            using (Model.VelosDb db = new Model.VelosDb())
-            {
 
-                var study = from st in db.LCL_V_STUDYSUMM_PLUSMORE
-                            select st;
-
-                var dat = data.AsEnumerable();
-                
-                foreach (var row in dat)
-                {
-                    bool isContained = false;
-                    foreach (var stu in study)
-                    {
-                        isContained = stu.MORE_IRBNUM == row["IRBNumber"].ToString() ? true: isContained;
-                    }
-                    if (!isContained)
-                    {
-                        OutputStudy.addRowStudy(row,"New study");
-                    }
-                }
-            }
-
-        }
     }
 }

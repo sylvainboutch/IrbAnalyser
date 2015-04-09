@@ -214,6 +214,22 @@ namespace IrbAnalyser.Model
             }
         }
         private ObjectSet<VDA_V_STUDYTEAM_MEMBERS> _VDA_V_STUDYTEAM_MEMBERS;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<LCL_V_STUDY_INDIDE> LCL_V_STUDY_INDIDE
+        {
+            get
+            {
+                if ((_LCL_V_STUDY_INDIDE == null))
+                {
+                    _LCL_V_STUDY_INDIDE = base.CreateObjectSet<LCL_V_STUDY_INDIDE>("LCL_V_STUDY_INDIDE");
+                }
+                return _LCL_V_STUDY_INDIDE;
+            }
+        }
+        private ObjectSet<LCL_V_STUDY_INDIDE> _LCL_V_STUDY_INDIDE;
 
         #endregion
 
@@ -289,6 +305,14 @@ namespace IrbAnalyser.Model
         public void AddToVDA_V_STUDYTEAM_MEMBERS(VDA_V_STUDYTEAM_MEMBERS vDA_V_STUDYTEAM_MEMBERS)
         {
             base.AddObject("VDA_V_STUDYTEAM_MEMBERS", vDA_V_STUDYTEAM_MEMBERS);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the LCL_V_STUDY_INDIDE EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToLCL_V_STUDY_INDIDE(LCL_V_STUDY_INDIDE lCL_V_STUDY_INDIDE)
+        {
+            base.AddObject("LCL_V_STUDY_INDIDE", lCL_V_STUDY_INDIDE);
         }
 
         #endregion
@@ -1640,6 +1664,423 @@ namespace IrbAnalyser.Model
 
         #endregion
 
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="VelosModel", Name="LCL_V_STUDY_INDIDE")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class LCL_V_STUDY_INDIDE : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new LCL_V_STUDY_INDIDE object.
+        /// </summary>
+        /// <param name="pK_STUDY_INDIIDE">Initial value of the PK_STUDY_INDIIDE property.</param>
+        public static LCL_V_STUDY_INDIDE CreateLCL_V_STUDY_INDIDE(global::System.Decimal pK_STUDY_INDIIDE)
+        {
+            LCL_V_STUDY_INDIDE lCL_V_STUDY_INDIDE = new LCL_V_STUDY_INDIDE();
+            lCL_V_STUDY_INDIDE.PK_STUDY_INDIIDE = pK_STUDY_INDIIDE;
+            return lCL_V_STUDY_INDIDE;
+        }
+
+        #endregion
+
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Decimal PK_STUDY_INDIIDE
+        {
+            get
+            {
+                return _PK_STUDY_INDIIDE;
+            }
+            set
+            {
+                if (_PK_STUDY_INDIIDE != value)
+                {
+                    OnPK_STUDY_INDIIDEChanging(value);
+                    ReportPropertyChanging("PK_STUDY_INDIIDE");
+                    _PK_STUDY_INDIIDE = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("PK_STUDY_INDIIDE");
+                    OnPK_STUDY_INDIIDEChanged();
+                }
+            }
+        }
+        private global::System.Decimal _PK_STUDY_INDIIDE;
+        partial void OnPK_STUDY_INDIIDEChanging(global::System.Decimal value);
+        partial void OnPK_STUDY_INDIIDEChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Decimal> FK_STUDY
+        {
+            get
+            {
+                return _FK_STUDY;
+            }
+            set
+            {
+                OnFK_STUDYChanging(value);
+                ReportPropertyChanging("FK_STUDY");
+                _FK_STUDY = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("FK_STUDY");
+                OnFK_STUDYChanged();
+            }
+        }
+        private Nullable<global::System.Decimal> _FK_STUDY;
+        partial void OnFK_STUDYChanging(Nullable<global::System.Decimal> value);
+        partial void OnFK_STUDYChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Decimal> INDIDE_TYPE
+        {
+            get
+            {
+                return _INDIDE_TYPE;
+            }
+            set
+            {
+                OnINDIDE_TYPEChanging(value);
+                ReportPropertyChanging("INDIDE_TYPE");
+                _INDIDE_TYPE = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("INDIDE_TYPE");
+                OnINDIDE_TYPEChanged();
+            }
+        }
+        private Nullable<global::System.Decimal> _INDIDE_TYPE;
+        partial void OnINDIDE_TYPEChanging(Nullable<global::System.Decimal> value);
+        partial void OnINDIDE_TYPEChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String INDIDE_NUMBER
+        {
+            get
+            {
+                return _INDIDE_NUMBER;
+            }
+            set
+            {
+                OnINDIDE_NUMBERChanging(value);
+                ReportPropertyChanging("INDIDE_NUMBER");
+                _INDIDE_NUMBER = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("INDIDE_NUMBER");
+                OnINDIDE_NUMBERChanged();
+            }
+        }
+        private global::System.String _INDIDE_NUMBER;
+        partial void OnINDIDE_NUMBERChanging(global::System.String value);
+        partial void OnINDIDE_NUMBERChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Decimal> FK_CODELST_INDIDE_GRANTOR
+        {
+            get
+            {
+                return _FK_CODELST_INDIDE_GRANTOR;
+            }
+            set
+            {
+                OnFK_CODELST_INDIDE_GRANTORChanging(value);
+                ReportPropertyChanging("FK_CODELST_INDIDE_GRANTOR");
+                _FK_CODELST_INDIDE_GRANTOR = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("FK_CODELST_INDIDE_GRANTOR");
+                OnFK_CODELST_INDIDE_GRANTORChanged();
+            }
+        }
+        private Nullable<global::System.Decimal> _FK_CODELST_INDIDE_GRANTOR;
+        partial void OnFK_CODELST_INDIDE_GRANTORChanging(Nullable<global::System.Decimal> value);
+        partial void OnFK_CODELST_INDIDE_GRANTORChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Decimal> FK_CODELST_INDIDE_HOLDER
+        {
+            get
+            {
+                return _FK_CODELST_INDIDE_HOLDER;
+            }
+            set
+            {
+                OnFK_CODELST_INDIDE_HOLDERChanging(value);
+                ReportPropertyChanging("FK_CODELST_INDIDE_HOLDER");
+                _FK_CODELST_INDIDE_HOLDER = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("FK_CODELST_INDIDE_HOLDER");
+                OnFK_CODELST_INDIDE_HOLDERChanged();
+            }
+        }
+        private Nullable<global::System.Decimal> _FK_CODELST_INDIDE_HOLDER;
+        partial void OnFK_CODELST_INDIDE_HOLDERChanging(Nullable<global::System.Decimal> value);
+        partial void OnFK_CODELST_INDIDE_HOLDERChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Decimal> FK_CODELST_PROGRAM_CODE
+        {
+            get
+            {
+                return _FK_CODELST_PROGRAM_CODE;
+            }
+            set
+            {
+                OnFK_CODELST_PROGRAM_CODEChanging(value);
+                ReportPropertyChanging("FK_CODELST_PROGRAM_CODE");
+                _FK_CODELST_PROGRAM_CODE = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("FK_CODELST_PROGRAM_CODE");
+                OnFK_CODELST_PROGRAM_CODEChanged();
+            }
+        }
+        private Nullable<global::System.Decimal> _FK_CODELST_PROGRAM_CODE;
+        partial void OnFK_CODELST_PROGRAM_CODEChanging(Nullable<global::System.Decimal> value);
+        partial void OnFK_CODELST_PROGRAM_CODEChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Decimal> INDIDE_EXPAND_ACCESS
+        {
+            get
+            {
+                return _INDIDE_EXPAND_ACCESS;
+            }
+            set
+            {
+                OnINDIDE_EXPAND_ACCESSChanging(value);
+                ReportPropertyChanging("INDIDE_EXPAND_ACCESS");
+                _INDIDE_EXPAND_ACCESS = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("INDIDE_EXPAND_ACCESS");
+                OnINDIDE_EXPAND_ACCESSChanged();
+            }
+        }
+        private Nullable<global::System.Decimal> _INDIDE_EXPAND_ACCESS;
+        partial void OnINDIDE_EXPAND_ACCESSChanging(Nullable<global::System.Decimal> value);
+        partial void OnINDIDE_EXPAND_ACCESSChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Decimal> FK_CODELST_ACCESS_TYPE
+        {
+            get
+            {
+                return _FK_CODELST_ACCESS_TYPE;
+            }
+            set
+            {
+                OnFK_CODELST_ACCESS_TYPEChanging(value);
+                ReportPropertyChanging("FK_CODELST_ACCESS_TYPE");
+                _FK_CODELST_ACCESS_TYPE = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("FK_CODELST_ACCESS_TYPE");
+                OnFK_CODELST_ACCESS_TYPEChanged();
+            }
+        }
+        private Nullable<global::System.Decimal> _FK_CODELST_ACCESS_TYPE;
+        partial void OnFK_CODELST_ACCESS_TYPEChanging(Nullable<global::System.Decimal> value);
+        partial void OnFK_CODELST_ACCESS_TYPEChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Decimal> INDIDE_EXEMPT
+        {
+            get
+            {
+                return _INDIDE_EXEMPT;
+            }
+            set
+            {
+                OnINDIDE_EXEMPTChanging(value);
+                ReportPropertyChanging("INDIDE_EXEMPT");
+                _INDIDE_EXEMPT = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("INDIDE_EXEMPT");
+                OnINDIDE_EXEMPTChanged();
+            }
+        }
+        private Nullable<global::System.Decimal> _INDIDE_EXEMPT;
+        partial void OnINDIDE_EXEMPTChanging(Nullable<global::System.Decimal> value);
+        partial void OnINDIDE_EXEMPTChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Decimal> RID
+        {
+            get
+            {
+                return _RID;
+            }
+            set
+            {
+                OnRIDChanging(value);
+                ReportPropertyChanging("RID");
+                _RID = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("RID");
+                OnRIDChanged();
+            }
+        }
+        private Nullable<global::System.Decimal> _RID;
+        partial void OnRIDChanging(Nullable<global::System.Decimal> value);
+        partial void OnRIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String IP_ADD
+        {
+            get
+            {
+                return _IP_ADD;
+            }
+            set
+            {
+                OnIP_ADDChanging(value);
+                ReportPropertyChanging("IP_ADD");
+                _IP_ADD = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("IP_ADD");
+                OnIP_ADDChanged();
+            }
+        }
+        private global::System.String _IP_ADD;
+        partial void OnIP_ADDChanging(global::System.String value);
+        partial void OnIP_ADDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Decimal> CREATOR
+        {
+            get
+            {
+                return _CREATOR;
+            }
+            set
+            {
+                OnCREATORChanging(value);
+                ReportPropertyChanging("CREATOR");
+                _CREATOR = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("CREATOR");
+                OnCREATORChanged();
+            }
+        }
+        private Nullable<global::System.Decimal> _CREATOR;
+        partial void OnCREATORChanging(Nullable<global::System.Decimal> value);
+        partial void OnCREATORChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> CREATED_ON
+        {
+            get
+            {
+                return _CREATED_ON;
+            }
+            set
+            {
+                OnCREATED_ONChanging(value);
+                ReportPropertyChanging("CREATED_ON");
+                _CREATED_ON = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("CREATED_ON");
+                OnCREATED_ONChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _CREATED_ON;
+        partial void OnCREATED_ONChanging(Nullable<global::System.DateTime> value);
+        partial void OnCREATED_ONChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Decimal> LAST_MODIFIED_BY
+        {
+            get
+            {
+                return _LAST_MODIFIED_BY;
+            }
+            set
+            {
+                OnLAST_MODIFIED_BYChanging(value);
+                ReportPropertyChanging("LAST_MODIFIED_BY");
+                _LAST_MODIFIED_BY = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("LAST_MODIFIED_BY");
+                OnLAST_MODIFIED_BYChanged();
+            }
+        }
+        private Nullable<global::System.Decimal> _LAST_MODIFIED_BY;
+        partial void OnLAST_MODIFIED_BYChanging(Nullable<global::System.Decimal> value);
+        partial void OnLAST_MODIFIED_BYChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> LAST_MODIFIED_DATE
+        {
+            get
+            {
+                return _LAST_MODIFIED_DATE;
+            }
+            set
+            {
+                OnLAST_MODIFIED_DATEChanging(value);
+                ReportPropertyChanging("LAST_MODIFIED_DATE");
+                _LAST_MODIFIED_DATE = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("LAST_MODIFIED_DATE");
+                OnLAST_MODIFIED_DATEChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _LAST_MODIFIED_DATE;
+        partial void OnLAST_MODIFIED_DATEChanging(Nullable<global::System.DateTime> value);
+        partial void OnLAST_MODIFIED_DATEChanged();
+
+        #endregion
+
+    
     }
     
     /// <summary>

@@ -115,47 +115,124 @@ namespace IrbAnalyser
         {
             using (Model.VelosDb db = new Model.VelosDb())
             {
+                string irbnum = row["IRBNumber"].ToString();
+                string irbagency = row["IRBAgency"].ToString().ToLower();
 
                 var study = from st in db.LCL_V_STUDYSUMM_PLUSMORE
-                            where st.MORE_IRBNUM == row["IRBNumber"].ToString() && st.MORE_IRBAGENCY == row["IRBAgency"].ToString()
+                            where st.MORE_IRBNUM == irbnum
+                            && st.MORE_IRBAGENCY.ToLower() == irbagency
                             select st;
 
                 bool hasChanged = false;
 
-                if (!Tools.compareStr(study.First().STUDY_TITLE, row["Studytitle"].ToString()))
+                foreach (var stu in study)
                 {
-                    row["Studytitle"] = row["Studytitle"];
-                }
-                else
-                {
-                    hasChanged = true;
-                }
+                    if (!Tools.compareStr(stu.STUDY_TITLE.ToString(), row["Studytitle"].ToString()))
+                    {
+                        row["Studytitle"] = row["Studytitle"];
+                    }
+                    else
+                    {
+                        hasChanged = true;
+                    }
 
-                if (Tools.compareStr(study.First().STUDY_SUMMARY, row["Studysummary"].ToString()))
-                {
-                    row["Studysummary"] = "";
+                    if (Tools.compareStr(stu.STUDY_SUMMARY, row["Studysummary"].ToString()))
+                    {
+                        row["Studysummary"] = "";
+                    }
+                    else
+                    {
+                        hasChanged = true;
+                    }
+
+                    var indide = from sd in db.LCL_V_STUDY_INDIDE
+                                 where stu.PK_STUDY == sd.FK_STUDY
+                                 select sd;
+
+                    if (indide.Count() == 0 && row["IND"].ToString().ToUpper() == "TRUE")
+                    {
+                        hasChanged = true;
+                    }
+
+                    foreach (var ind in indide)
+                    {
+                        if (Tools.compareStr(indide.First().INDIDE_NUMBER, row["INDnumber"].ToString()))
+                        {
+                            row["INDnumber"] = "";
+                        }
+                        else
+                        {
+                            hasChanged = true;
+                        }                                   
+                    }
+
+
+
+
+                    //TODO What to do with IND Holder
+
+                    if (Tools.compareStr(stu.STUDY_DIVISION, row["Department"].ToString()))
+                    {
+                        row["Department"] = "";
+                    }
+                    else
+                    {
+                        hasChanged = true;
+                    }
+
+                    if (Tools.compareStr(stu.STUDY_TAREA, row["Division"].ToString()))
+                    {
+                        row["Division"] = "";
+                    }
+                    else
+                    {
+                        hasChanged = true;
+                    }
+
+                    //TODO  Factor in the unit (week, days)
+                    if (Tools.compareStr(stu.STUDY_DURATION.ToString(), row["Studyduration"].ToString()))
+                    {
+                        row["Division"] = "";
+                    }
+                    else
+                    {
+                        hasChanged = true;
+                    }
+
+
+                    if (Tools.compareStr(stu.STUDY_EST_BEGIN_DATE.ToString(), row["Begindate"].ToString()))
+                    {
+                        row["Begindate"] = "";
+                    }
+                    else
+                    {
+                        hasChanged = true;
+                    }
+
+                    if (Tools.compareStr(stu.STUDY_NATSAMPSIZE.ToString(), row["Studysamplesize"].ToString()))
+                    {
+                        row["Studysamplesize"] = "";
+                    }
+                    else
+                    {
+                        hasChanged = true;
+                    }
+
+                    bool cmp = (stu.STUDY_SCOPE == "Multi Center Study" && row["Multicenter"].ToString().ToLower() == "true") ||
+                        (stu.STUDY_SCOPE == "Single Center Study" && row["Multicenter"].ToString().ToLower() == "false") ||
+                        //TODO  check null
+                        (stu.STUDY_SCOPE == null && row["Multicenter"].ToString().ToLower() == "");
+
+                    if (cmp)
+                    {
+                        row["Multicenter"] = "";
+                    }
+                    else
+                    {
+                        hasChanged = true;
+                    }
+
                 }
-                else
-                {
-                    hasChanged = true;
-                }
-
-                var study = from st in db.LCL_V_STUDYSUMM_PLUSMORE
-                            join sd in db.ER
-                            where st.MORE_IRBNUM == row["IRBNumber"].ToString() && st.MORE_IRBAGENCY == row["IRBAgency"].ToString()
-                            select st;
-
-                if (Tools.compareStr(study.First()., row["IND"].ToString()))
-                {
-                    row["IND"] = "";
-                }
-                else
-                {
-                    hasChanged = true;
-                }
-
-
-
 
                 if (hasChanged)
                 {
