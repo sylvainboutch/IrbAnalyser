@@ -1,0 +1,20 @@
+StudyId	StudySiteId	IRBAgency	IRBNumber	Sitename	SiteSampleSize	Status	ValidOn	ValidUntill
+654654	632132	BRANY	12345	Einstein	10	Approved	4/10/2015	
+654654	632132	BRANY	12345	Einstein	10	Closed	4/10/2015	
+4564654	64654	BRANY	123465498	Einstein	20	Approved	4/10/2015	5/10/2015
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								

@@ -9,6 +9,7 @@
           <EntitySet Name="ER_CODELST" EntityType="VelosModel.Store.ER_CODELST" store:Type="Tables" Schema="ERES" />
           <EntitySet Name="ER_STUDYAPNDX" EntityType="VelosModel.Store.ER_STUDYAPNDX" store:Type="Tables" Schema="ERES" />
           <EntitySet Name="ER_STUDYVER" EntityType="VelosModel.Store.ER_STUDYVER" store:Type="Tables" Schema="ERES" />
+          <EntitySet Name="LCL_V_STUDY_INDIDE" EntityType="VelosModel.Store.LCL_V_STUDY_INDIDE" store:Type="Views" Schema="VDA" />
           <EntitySet Name="LCL_V_STUDYSUMM_PLUSMORE" EntityType="VelosModel.Store.LCL_V_STUDYSUMM_PLUSMORE" store:Type="Views" store:Schema="VDA" store:Name="LCL_V_STUDYSUMM_PLUSMORE">
             <DefiningQuery>SELECT 
       "LCL_V_STUDYSUMM_PLUSMORE"."PK_STUDY" AS "PK_STUDY", 
@@ -327,6 +328,27 @@
           <Property Name="STUDYVER_CATEGORY" Type="number" />
           <Property Name="STUDYVER_TYPE" Type="number" />
         </EntityType>
+        <EntityType Name="LCL_V_STUDY_INDIDE">
+          <Key>
+            <PropertyRef Name="PK_STUDY_INDIIDE" />
+          </Key>
+          <Property Name="PK_STUDY_INDIIDE" Type="number" Nullable="false" />
+          <Property Name="FK_STUDY" Type="number" />
+          <Property Name="INDIDE_TYPE" Type="number" />
+          <Property Name="INDIDE_NUMBER" Type="varchar2" MaxLength="25" />
+          <Property Name="FK_CODELST_INDIDE_GRANTOR" Type="number" />
+          <Property Name="FK_CODELST_INDIDE_HOLDER" Type="number" />
+          <Property Name="FK_CODELST_PROGRAM_CODE" Type="number" />
+          <Property Name="INDIDE_EXPAND_ACCESS" Type="number" />
+          <Property Name="FK_CODELST_ACCESS_TYPE" Type="number" />
+          <Property Name="INDIDE_EXEMPT" Type="number" />
+          <Property Name="RID" Type="number" />
+          <Property Name="IP_ADD" Type="varchar2" MaxLength="15" />
+          <Property Name="CREATOR" Type="number" />
+          <Property Name="CREATED_ON" Type="date" />
+          <Property Name="LAST_MODIFIED_BY" Type="number" />
+          <Property Name="LAST_MODIFIED_DATE" Type="date" />
+        </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'VDA.LCL_V_STUDYSUMM_PLUSMORE' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
@@ -612,27 +634,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <!--Errors Found During Generation:
-      warning 6013: The table/view 'ERES.ER_STUDY_INDIDE' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-      
-      <EntityType Name="ER_STUDY_INDIDE">
-        <Property Name="PK_STUDY_INDIIDE" Type="number" />
-        <Property Name="FK_STUDY" Type="number" />
-        <Property Name="INDIDE_TYPE" Type="number" />
-        <Property Name="INDIDE_NUMBER" Type="varchar2" MaxLength="25" />
-        <Property Name="FK_CODELST_INDIDE_GRANTOR" Type="number" />
-        <Property Name="FK_CODELST_INDIDE_HOLDER" Type="number" />
-        <Property Name="FK_CODELST_PROGRAM_CODE" Type="number" />
-        <Property Name="INDIDE_EXPAND_ACCESS" Type="number" />
-        <Property Name="FK_CODELST_ACCESS_TYPE" Type="number" />
-        <Property Name="INDIDE_EXEMPT" Type="number" />
-        <Property Name="RID" Type="number" />
-        <Property Name="IP_ADD" Type="varchar2" MaxLength="15" />
-        <Property Name="CREATOR" Type="number" />
-        <Property Name="CREATED_ON" Type="date" />
-        <Property Name="LAST_MODIFIED_BY" Type="number" />
-        <Property Name="LAST_MODIFIED_DATE" Type="date" />
-      </EntityType>-->
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -651,6 +652,7 @@
             <End Role="ER_STUDYVER" EntitySet="ER_STUDYVER" />
             <End Role="ER_STUDYAPNDX" EntitySet="ER_STUDYAPNDX" />
           </AssociationSet>
+          <EntitySet Name="LCL_V_STUDY_INDIDE" EntityType="VelosModel.LCL_V_STUDY_INDIDE" />
         </EntityContainer>
         <EntityType Name="ER_CODELST">
           <Key>
@@ -985,6 +987,27 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="LCL_V_STUDY_INDIDE">
+          <Key>
+            <PropertyRef Name="PK_STUDY_INDIIDE" />
+          </Key>
+          <Property Type="Decimal" Name="PK_STUDY_INDIIDE" Precision="38" Scale="0" Nullable="false" />
+          <Property Type="Decimal" Name="FK_STUDY" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="INDIDE_TYPE" Precision="38" Scale="0" />
+          <Property Type="String" Name="INDIDE_NUMBER" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="FK_CODELST_INDIDE_GRANTOR" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="FK_CODELST_INDIDE_HOLDER" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="FK_CODELST_PROGRAM_CODE" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="INDIDE_EXPAND_ACCESS" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="FK_CODELST_ACCESS_TYPE" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="INDIDE_EXEMPT" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="RID" Precision="38" Scale="0" />
+          <Property Type="String" Name="IP_ADD" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="CREATOR" Precision="38" Scale="0" />
+          <Property Type="DateTime" Name="CREATED_ON" />
+          <Property Type="Decimal" Name="LAST_MODIFIED_BY" Precision="38" Scale="0" />
+          <Property Type="DateTime" Name="LAST_MODIFIED_DATE" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1319,6 +1342,28 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="LCL_V_STUDY_INDIDE">
+            <EntityTypeMapping TypeName="VelosModel.LCL_V_STUDY_INDIDE">
+              <MappingFragment StoreEntitySet="LCL_V_STUDY_INDIDE">
+                <ScalarProperty Name="LAST_MODIFIED_DATE" ColumnName="LAST_MODIFIED_DATE" />
+                <ScalarProperty Name="LAST_MODIFIED_BY" ColumnName="LAST_MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_ON" ColumnName="CREATED_ON" />
+                <ScalarProperty Name="CREATOR" ColumnName="CREATOR" />
+                <ScalarProperty Name="IP_ADD" ColumnName="IP_ADD" />
+                <ScalarProperty Name="RID" ColumnName="RID" />
+                <ScalarProperty Name="INDIDE_EXEMPT" ColumnName="INDIDE_EXEMPT" />
+                <ScalarProperty Name="FK_CODELST_ACCESS_TYPE" ColumnName="FK_CODELST_ACCESS_TYPE" />
+                <ScalarProperty Name="INDIDE_EXPAND_ACCESS" ColumnName="INDIDE_EXPAND_ACCESS" />
+                <ScalarProperty Name="FK_CODELST_PROGRAM_CODE" ColumnName="FK_CODELST_PROGRAM_CODE" />
+                <ScalarProperty Name="FK_CODELST_INDIDE_HOLDER" ColumnName="FK_CODELST_INDIDE_HOLDER" />
+                <ScalarProperty Name="FK_CODELST_INDIDE_GRANTOR" ColumnName="FK_CODELST_INDIDE_GRANTOR" />
+                <ScalarProperty Name="INDIDE_NUMBER" ColumnName="INDIDE_NUMBER" />
+                <ScalarProperty Name="INDIDE_TYPE" ColumnName="INDIDE_TYPE" />
+                <ScalarProperty Name="FK_STUDY" ColumnName="FK_STUDY" />
+                <ScalarProperty Name="PK_STUDY_INDIIDE" ColumnName="PK_STUDY_INDIIDE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -1353,6 +1398,7 @@
           <ConnectorPoint PointX="2.25" PointY="1.2625" />
           <ConnectorPoint PointX="3" PointY="1.2625" />
         </AssociationConnector>
+        <EntityTypeShape EntityType="VelosModel.LCL_V_STUDY_INDIDE" Width="1.5" PointX="0.75" PointY="8.75" Height="0.4" IsExpanded="false" />
       </Diagram>
     </Diagrams>
   </Designer>

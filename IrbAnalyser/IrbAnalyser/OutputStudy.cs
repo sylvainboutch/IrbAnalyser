@@ -107,6 +107,9 @@ namespace IrbAnalyser
             study.Rows.Add(dr);
         }
 
+
+
+
         /// <summary>
         /// Verify if a study has changed and add the changes to the list
         /// </summary>
@@ -127,7 +130,7 @@ namespace IrbAnalyser
 
                 foreach (var stu in study)
                 {
-                    if (!Tools.compareStr(stu.STUDY_TITLE.ToString(), row["Studytitle"].ToString()))
+                    if (!Tools.compareStr(stu.STUDY_TITLE, row["Studytitle"]))
                     {
                         row["Studytitle"] = row["Studytitle"];
                     }
@@ -136,7 +139,7 @@ namespace IrbAnalyser
                         hasChanged = true;
                     }
 
-                    if (Tools.compareStr(stu.STUDY_SUMMARY, row["Studysummary"].ToString()))
+                    if (Tools.compareStr(stu.STUDY_SUMMARY, row["Studysummary"]))
                     {
                         row["Studysummary"] = "";
                     }
@@ -153,25 +156,28 @@ namespace IrbAnalyser
                     {
                         hasChanged = true;
                     }
-
-                    foreach (var ind in indide)
+                    if (indide.Count() == 0 && row["IND"].ToString().ToUpper() == "FALSE")
                     {
-                        if (Tools.compareStr(indide.First().INDIDE_NUMBER, row["INDnumber"].ToString()))
-                        {
-                            row["INDnumber"] = "";
-                        }
-                        else
-                        {
-                            hasChanged = true;
-                        }                                   
+                        row["IND"] = "";
                     }
 
 
+                    bool hasntchanged =  false;
+                    
+                    foreach (var ind in indide)
+                    {
+                        if (Tools.compareStr(ind.INDIDE_NUMBER, row["INDnumber"]))
+                        {
+                            row["INDnumber"] = "";
+                            hasntchanged = true;
+                        }                               
+                    }
 
+                    hasChanged = hasntchanged ? hasChanged : true;
 
                     //TODO What to do with IND Holder
 
-                    if (Tools.compareStr(stu.STUDY_DIVISION, row["Department"].ToString()))
+                    if (Tools.compareStr(stu.STUDY_DIVISION, row["Department"]))
                     {
                         row["Department"] = "";
                     }
@@ -180,7 +186,7 @@ namespace IrbAnalyser
                         hasChanged = true;
                     }
 
-                    if (Tools.compareStr(stu.STUDY_TAREA, row["Division"].ToString()))
+                    if (Tools.compareStr(stu.STUDY_TAREA, row["Division"]))
                     {
                         row["Division"] = "";
                     }
@@ -190,7 +196,7 @@ namespace IrbAnalyser
                     }
 
                     //TODO  Factor in the unit (week, days)
-                    if (Tools.compareStr(stu.STUDY_DURATION.ToString(), row["Studyduration"].ToString()))
+                    if (Tools.compareStr(stu.STUDY_DURATION, row["Studyduration"]))
                     {
                         row["Division"] = "";
                     }
@@ -200,7 +206,7 @@ namespace IrbAnalyser
                     }
 
 
-                    if (Tools.compareStr(stu.STUDY_EST_BEGIN_DATE.ToString(), row["Begindate"].ToString()))
+                    if (Tools.compareStr(stu.STUDY_EST_BEGIN_DATE, row["Begindate"]))
                     {
                         row["Begindate"] = "";
                     }
@@ -209,7 +215,7 @@ namespace IrbAnalyser
                         hasChanged = true;
                     }
 
-                    if (Tools.compareStr(stu.STUDY_NATSAMPSIZE.ToString(), row["Studysamplesize"].ToString()))
+                    if (Tools.compareStr(stu.STUDY_NATSAMPSIZE, row["Studysamplesize"]))
                     {
                         row["Studysamplesize"] = "";
                     }
@@ -232,6 +238,61 @@ namespace IrbAnalyser
                         hasChanged = true;
                     }
 
+                    //TODO Phase need mapping from IRIS, BRANY doesnt have
+                    //TODO This should also use a map
+                    if (Tools.compareStr(stu.STUDY_SPONSOR, row["Primarysponsorname"]))
+                    {
+                        row["Primarysponsorname"] = "";
+                    }
+                    else
+                    {
+                        hasChanged = true;
+                    }
+
+                    string[] strs = {row["Primarysponsorcontactfirstname"].ToString(),
+                    row["Primarysponsorcontactfirstname"].ToString(),
+                    row["Primarysponsorcontactfirstname"].ToString()};
+
+                    if (Tools.containStr(stu.STUDY_SPONSOR, strs))
+                    {
+                        row["Primarysponsorname"] = "";
+                    }
+                    else
+                    {
+                        hasChanged = true;
+                    }
+
+                    if (Tools.compareStr(stu.STUDY_SPONSORID, row["PrimarysponsorstudyID"]))
+                    {
+                        row["PrimarysponsorstudyID"] = "";
+                    }
+                    else
+                    {
+                        hasChanged = true;
+                    }
+
+                    var documents = from sd in db.ER_STUDYAPNDX
+                                 where stu.PK_STUDY == sd.FK_STUDY
+                                 select sd;
+
+
+                    if (documents.Count() == 0 && !String.IsNullOrEmpty(row["Documentlink"].ToString()))
+                    {
+                        hasChanged = true;
+                    }
+
+                    hasntchanged =  false;
+                    
+                    foreach (var doc in documents)
+                    {
+                        if (Tools.compareStr(doc.STUDYAPNDX_URI, row["Documentlink"]))
+                        {
+                            row["Documentlink"] = "";
+                            hasntchanged = true;
+                        }                               
+                    }
+
+                    hasChanged = hasntchanged ? hasChanged : true;
                 }
 
                 if (hasChanged)
