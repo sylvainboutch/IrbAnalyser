@@ -14,6 +14,7 @@ namespace IrbAnalyser
         //List of newly created study, with more study detail
         public static DataTable study = new DataTable();
 
+        public static DataTable site = new DataTable();
         /// <summary>
         /// Add the columns to the datatable
         /// </summary>
@@ -24,6 +25,7 @@ namespace IrbAnalyser
                 study.Columns.Add("TYPE", typeof(string));
                 study.Columns.Add("IRB Agency name", typeof(string));
                 study.Columns.Add("IRB no", typeof(string));
+                study.Columns.Add("IRB Study ID", typeof(string));
                 study.Columns.Add("Regulatory coordinator", typeof(string));
                 study.Columns.Add("Principal Investigator", typeof(string));
                 study.Columns.Add("Study number", typeof(string));
@@ -31,14 +33,12 @@ namespace IrbAnalyser
                 study.Columns.Add("Study summary", typeof(string));
                 study.Columns.Add("IND/IDE Information available", typeof(string));
                 study.Columns.Add("IND/IDE Number", typeof(string));
-                study.Columns.Add("NA", typeof(string));
+                study.Columns.Add("IND holder", typeof(string));
                 study.Columns.Add("IND/IDE Grantor*", typeof(string));
                 study.Columns.Add("IND/IDE Holder Type*", typeof(string));
                 study.Columns.Add("Department", typeof(string));
                 study.Columns.Add("Division/Therapeutic area", typeof(string));
                 study.Columns.Add("Entire study sample size", typeof(string));
-                study.Columns.Add("Study duration", typeof(string));
-                study.Columns.Add("Estimated Begin date", typeof(string));
                 study.Columns.Add("Phase", typeof(string));
                 study.Columns.Add("Research scope", typeof(string));
                 study.Columns.Add("Primary funding sponsor, if other :", typeof(string));
@@ -51,6 +51,16 @@ namespace IrbAnalyser
                 study.Columns.Add("URL", typeof(string));
                 study.Columns.Add("Version status, Work in progress, approved, archived", typeof(string));
                 study.Columns.Add("Short description", typeof(string));
+            }
+
+            if (site.Columns.Count == 0)
+            {
+                site.Columns.Add("TYPE", typeof(string));
+                site.Columns.Add("IRB Agency name", typeof(string));
+                site.Columns.Add("IRB no", typeof(string));
+                site.Columns.Add("IRB Study ID", typeof(string));
+                //Need mapping for the site
+                site.Columns.Add("Sitename",typeof(string));
             }
         }
 
@@ -77,6 +87,7 @@ namespace IrbAnalyser
             dr["TYPE"] = type;
             dr["IRB Agency name"] = row["IRBAgency"].ToString();
             dr["IRB no"] = row["IRBNumber"].ToString();
+            dr["IRB Study ID"] = row["StudyId"].ToString();
             dr["Regulatory coordinator"] = "";
             dr["Principal Investigator"] = "";
             dr["Study number"] = "";
@@ -89,8 +100,6 @@ namespace IrbAnalyser
             dr["Department"] = row["Department"].ToString();
             dr["Division/Therapeutic area"] = row["Division"].ToString();
             dr["Entire study sample size"] = row["Studysamplesize"].ToString();
-            dr["Study duration"] = row["Studyduration"].ToString();
-            dr["Estimated Begin date"] = row["Begindate"].ToString();
             dr["Phase"] = row["Phase"].ToString() == "" ? "NA" : row["Phase"].ToString() ;
             dr["Research scope"] = row["Multicenter"].ToString() == "TRUE" ? "Multicenter":"Single center";
             dr["Primary funding sponsor, if other :"] = row["Primarysponsorname"].ToString();
@@ -118,11 +127,11 @@ namespace IrbAnalyser
         {
             using (Model.VelosDb db = new Model.VelosDb())
             {
-                string irbnum = row["IRBNumber"].ToString();
+                string irbstudyId = row["StudyId"].ToString();
                 string irbagency = row["IRBAgency"].ToString().ToLower();
 
                 var study = from st in db.LCL_V_STUDYSUMM_PLUSMORE
-                            where st.MORE_IRBNUM == irbnum
+                            where st.MORE_IRBSTUDYID == irbstudyId
                             && st.MORE_IRBAGENCY.ToLower() == irbagency
                             select st;
 

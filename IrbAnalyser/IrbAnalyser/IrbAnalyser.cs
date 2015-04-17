@@ -84,7 +84,9 @@ namespace IrbAnalyser
                     bool isContained = false;
                     foreach (var stu in study)
                     {
-                        isContained = stu.MORE_IRBNUM == row["IRBNumber"].ToString() ? true : isContained;
+                        isContained = stu.MORE_IRBSTUDYID == row["StudyId"].ToString()
+                            && stu.MORE_IRBAGENCY == row["IRBAgency"].ToString() 
+                            ? true : isContained;
                     }
                     if (!isContained)
                     {

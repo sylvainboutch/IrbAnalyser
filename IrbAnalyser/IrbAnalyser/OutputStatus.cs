@@ -49,7 +49,7 @@ namespace IrbAnalyser
 
             foreach (DataRow statusRow in statusTable.Rows)
             {
-                if ((string)statusRow["IRBNumber"] == (string)studyRow["IRBNumber"] && (string)statusRow["IRBAgency"] == (string)studyRow["IRBAgency"])
+                if ((string)statusRow["StudyId"] == (string)studyRow["StudyId"] && (string)statusRow["IRBAgency"] == (string)studyRow["IRBAgency"])
                 {
                     DataRow dr = status.NewRow();
                     dr["TYPE"] = "New study";
@@ -94,7 +94,7 @@ namespace IrbAnalyser
 
             foreach (DataRow eventRow in eventTable.Rows)
             {
-                if (eventRow["IRBNumber"] == studyRow["IRBNumber"] && eventRow["IRBAgency"] == studyRow["IRBAgency"])
+                if (eventRow["StudyId"] == studyRow["StudyId"] && eventRow["IRBAgency"] == studyRow["IRBAgency"])
                 {
                     DataRow dr = status.NewRow();
                     if (((string)eventRow["event"]).ToLower().Contains("amendment"))
@@ -124,7 +124,53 @@ namespace IrbAnalyser
 
         public static void analyseStatus(DataTable studyTable, DataTable statusTable, DataTable eventTable)
         {
+            var studiesDT = studyTable.AsEnumerable();
+            var statusesDT = statusTable.AsEnumerable();
+            var eventsDT = eventTable.AsEnumerable();
 
+            BranyStatusMap bsm = new BranyStatusMap();
+
+            foreach (DataRow drStudy in studyTable.Rows)
+            {
+
+                using (Model.VelosDb db = new Model.VelosDb())
+                {
+                    string irbstudyId = drStudy["StudyId"].ToString();
+                    string irbagency = drStudy["IRBAgency"].ToString().ToLower();
+
+                    var statusesDB = from stat in db.VDA_V_STUDYSTAT
+                                     join stud in db.LCL_V_STUDYSUMM_PLUSMORE on stat.FK_STUDY equals stud.PK_STUDY
+                                     where stud.MORE_IRBSTUDYID == irbstudyId
+                                  && stud.MORE_IRBAGENCY.ToLower() == irbagency
+                                     select stat;
+
+                    var sitesDB = from stat in db.VDA_V_STUDYSITES
+                                     join stud in db.LCL_V_STUDYSUMM_PLUSMORE on stat.FK_STUDY equals stud.PK_STUDY
+                                     where stud.MORE_IRBSTUDYID == irbstudyId
+                                  && stud.MORE_IRBAGENCY.ToLower() == irbagency
+                                     select stat;
+
+                    //For each different status in the files
+                    foreach (DataRow drStatus in statusesDT.Where(x => x["StudyId"] == irbstudyId && x["IRBAgency"] == irbagency))
+                    {
+                        //New site
+                        //TODO need mapping for sites
+                        /*if (!sitesDB.Any(x => x.SITE_NAME ))
+                        { 
+                            st
+                        }*/
+
+                        //New status
+
+                        //New status from event
+
+                        //New status from Study (IRB approved)
+
+
+                        //updated status
+                    }
+                }
+            }
         }
     }
 

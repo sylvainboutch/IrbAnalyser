@@ -163,14 +163,7 @@ namespace IrbAnalyser
                 // Workk sheet
                 foreach (var worksheet in worksheets)
                 {
-                    /*excelworkBook.Sheets.Add(new Microsoft.Office.Interop.Excel.Worksheet());
-                    Microsoft.Office.Interop.Excel.Worksheet excelSheet = (Microsoft.Office.Interop.Excel.Worksheet)excelworkBook.ActiveSheet;
-                    Microsoft.Office.Interop.Excel.Range excelCellrange;
-                    excelSheet.Name = worksheet.worksheetName;*/
-
-                    //excelworkBook.Sheets.Add(new Microsoft.Office.Interop.Excel.Worksheet());
                     Microsoft.Office.Interop.Excel.Worksheet excelSheet = excelworkBook.Sheets.Add(Type.Missing, Type.Missing, 1, Type.Missing);
-                    //Microsoft.Office.Interop.Excel.Worksheet excelSheet = new Microsoft.Office.Interop.Excel.Worksheet();//(Microsoft.Office.Interop.Excel.Worksheet)excelworkBook.ActiveSheet;
                     Microsoft.Office.Interop.Excel.Range excelCellrange;
                     excelSheet.Name = worksheet.worksheetName;
 

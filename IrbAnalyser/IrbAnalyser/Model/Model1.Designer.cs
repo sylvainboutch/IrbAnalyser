@@ -122,22 +122,6 @@ namespace IrbAnalyser.Model
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<LCL_V_STUDYSUMM_PLUSMORE> LCL_V_STUDYSUMM_PLUSMORE
-        {
-            get
-            {
-                if ((_LCL_V_STUDYSUMM_PLUSMORE == null))
-                {
-                    _LCL_V_STUDYSUMM_PLUSMORE = base.CreateObjectSet<LCL_V_STUDYSUMM_PLUSMORE>("LCL_V_STUDYSUMM_PLUSMORE");
-                }
-                return _LCL_V_STUDYSUMM_PLUSMORE;
-            }
-        }
-        private ObjectSet<LCL_V_STUDYSUMM_PLUSMORE> _LCL_V_STUDYSUMM_PLUSMORE;
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
         public ObjectSet<VDA_V_ER_CODELST> VDA_V_ER_CODELST
         {
             get
@@ -230,6 +214,22 @@ namespace IrbAnalyser.Model
             }
         }
         private ObjectSet<LCL_V_STUDY_INDIDE> _LCL_V_STUDY_INDIDE;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<LCL_V_STUDYSUMM_PLUSMORE> LCL_V_STUDYSUMM_PLUSMORE
+        {
+            get
+            {
+                if ((_LCL_V_STUDYSUMM_PLUSMORE == null))
+                {
+                    _LCL_V_STUDYSUMM_PLUSMORE = base.CreateObjectSet<LCL_V_STUDYSUMM_PLUSMORE>("LCL_V_STUDYSUMM_PLUSMORE");
+                }
+                return _LCL_V_STUDYSUMM_PLUSMORE;
+            }
+        }
+        private ObjectSet<LCL_V_STUDYSUMM_PLUSMORE> _LCL_V_STUDYSUMM_PLUSMORE;
 
         #endregion
 
@@ -257,14 +257,6 @@ namespace IrbAnalyser.Model
         public void AddToER_STUDYVER(ER_STUDYVER eR_STUDYVER)
         {
             base.AddObject("ER_STUDYVER", eR_STUDYVER);
-        }
-    
-        /// <summary>
-        /// Deprecated Method for adding a new object to the LCL_V_STUDYSUMM_PLUSMORE EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddToLCL_V_STUDYSUMM_PLUSMORE(LCL_V_STUDYSUMM_PLUSMORE lCL_V_STUDYSUMM_PLUSMORE)
-        {
-            base.AddObject("LCL_V_STUDYSUMM_PLUSMORE", lCL_V_STUDYSUMM_PLUSMORE);
         }
     
         /// <summary>
@@ -313,6 +305,14 @@ namespace IrbAnalyser.Model
         public void AddToLCL_V_STUDY_INDIDE(LCL_V_STUDY_INDIDE lCL_V_STUDY_INDIDE)
         {
             base.AddObject("LCL_V_STUDY_INDIDE", lCL_V_STUDY_INDIDE);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the LCL_V_STUDYSUMM_PLUSMORE EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToLCL_V_STUDYSUMM_PLUSMORE(LCL_V_STUDYSUMM_PLUSMORE lCL_V_STUDYSUMM_PLUSMORE)
+        {
+            base.AddObject("LCL_V_STUDYSUMM_PLUSMORE", lCL_V_STUDYSUMM_PLUSMORE);
         }
 
         #endregion
@@ -3838,6 +3838,30 @@ namespace IrbAnalyser.Model
         private global::System.String _MORE_IRBNUM;
         partial void OnMORE_IRBNUMChanging(global::System.String value);
         partial void OnMORE_IRBNUMChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String MORE_IRBSTUDYID
+        {
+            get
+            {
+                return _MORE_IRBSTUDYID;
+            }
+            set
+            {
+                OnMORE_IRBSTUDYIDChanging(value);
+                ReportPropertyChanging("MORE_IRBSTUDYID");
+                _MORE_IRBSTUDYID = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_IRBSTUDYID");
+                OnMORE_IRBSTUDYIDChanged();
+            }
+        }
+        private global::System.String _MORE_IRBSTUDYID;
+        partial void OnMORE_IRBSTUDYIDChanging(global::System.String value);
+        partial void OnMORE_IRBSTUDYIDChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
