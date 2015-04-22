@@ -74,22 +74,6 @@ namespace IrbAnalyser.Model
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<ER_CODELST> ER_CODELST
-        {
-            get
-            {
-                if ((_ER_CODELST == null))
-                {
-                    _ER_CODELST = base.CreateObjectSet<ER_CODELST>("ER_CODELST");
-                }
-                return _ER_CODELST;
-            }
-        }
-        private ObjectSet<ER_CODELST> _ER_CODELST;
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
         public ObjectSet<ER_STUDYAPNDX> ER_STUDYAPNDX
         {
             get
@@ -118,6 +102,38 @@ namespace IrbAnalyser.Model
             }
         }
         private ObjectSet<ER_STUDYVER> _ER_STUDYVER;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<LCL_V_STUDY_INDIDE> LCL_V_STUDY_INDIDE
+        {
+            get
+            {
+                if ((_LCL_V_STUDY_INDIDE == null))
+                {
+                    _LCL_V_STUDY_INDIDE = base.CreateObjectSet<LCL_V_STUDY_INDIDE>("LCL_V_STUDY_INDIDE");
+                }
+                return _LCL_V_STUDY_INDIDE;
+            }
+        }
+        private ObjectSet<LCL_V_STUDY_INDIDE> _LCL_V_STUDY_INDIDE;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<LCL_V_STUDYSUMM_PLUSMORE> LCL_V_STUDYSUMM_PLUSMORE
+        {
+            get
+            {
+                if ((_LCL_V_STUDYSUMM_PLUSMORE == null))
+                {
+                    _LCL_V_STUDYSUMM_PLUSMORE = base.CreateObjectSet<LCL_V_STUDYSUMM_PLUSMORE>("LCL_V_STUDYSUMM_PLUSMORE");
+                }
+                return _LCL_V_STUDYSUMM_PLUSMORE;
+            }
+        }
+        private ObjectSet<LCL_V_STUDYSUMM_PLUSMORE> _LCL_V_STUDYSUMM_PLUSMORE;
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -198,50 +214,10 @@ namespace IrbAnalyser.Model
             }
         }
         private ObjectSet<VDA_V_STUDYTEAM_MEMBERS> _VDA_V_STUDYTEAM_MEMBERS;
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        public ObjectSet<LCL_V_STUDY_INDIDE> LCL_V_STUDY_INDIDE
-        {
-            get
-            {
-                if ((_LCL_V_STUDY_INDIDE == null))
-                {
-                    _LCL_V_STUDY_INDIDE = base.CreateObjectSet<LCL_V_STUDY_INDIDE>("LCL_V_STUDY_INDIDE");
-                }
-                return _LCL_V_STUDY_INDIDE;
-            }
-        }
-        private ObjectSet<LCL_V_STUDY_INDIDE> _LCL_V_STUDY_INDIDE;
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        public ObjectSet<LCL_V_STUDYSUMM_PLUSMORE> LCL_V_STUDYSUMM_PLUSMORE
-        {
-            get
-            {
-                if ((_LCL_V_STUDYSUMM_PLUSMORE == null))
-                {
-                    _LCL_V_STUDYSUMM_PLUSMORE = base.CreateObjectSet<LCL_V_STUDYSUMM_PLUSMORE>("LCL_V_STUDYSUMM_PLUSMORE");
-                }
-                return _LCL_V_STUDYSUMM_PLUSMORE;
-            }
-        }
-        private ObjectSet<LCL_V_STUDYSUMM_PLUSMORE> _LCL_V_STUDYSUMM_PLUSMORE;
 
         #endregion
 
         #region AddTo Methods
-    
-        /// <summary>
-        /// Deprecated Method for adding a new object to the ER_CODELST EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddToER_CODELST(ER_CODELST eR_CODELST)
-        {
-            base.AddObject("ER_CODELST", eR_CODELST);
-        }
     
         /// <summary>
         /// Deprecated Method for adding a new object to the ER_STUDYAPNDX EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
@@ -257,6 +233,22 @@ namespace IrbAnalyser.Model
         public void AddToER_STUDYVER(ER_STUDYVER eR_STUDYVER)
         {
             base.AddObject("ER_STUDYVER", eR_STUDYVER);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the LCL_V_STUDY_INDIDE EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToLCL_V_STUDY_INDIDE(LCL_V_STUDY_INDIDE lCL_V_STUDY_INDIDE)
+        {
+            base.AddObject("LCL_V_STUDY_INDIDE", lCL_V_STUDY_INDIDE);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the LCL_V_STUDYSUMM_PLUSMORE EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToLCL_V_STUDYSUMM_PLUSMORE(LCL_V_STUDYSUMM_PLUSMORE lCL_V_STUDYSUMM_PLUSMORE)
+        {
+            base.AddObject("LCL_V_STUDYSUMM_PLUSMORE", lCL_V_STUDYSUMM_PLUSMORE);
         }
     
         /// <summary>
@@ -298,22 +290,6 @@ namespace IrbAnalyser.Model
         {
             base.AddObject("VDA_V_STUDYTEAM_MEMBERS", vDA_V_STUDYTEAM_MEMBERS);
         }
-    
-        /// <summary>
-        /// Deprecated Method for adding a new object to the LCL_V_STUDY_INDIDE EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddToLCL_V_STUDY_INDIDE(LCL_V_STUDY_INDIDE lCL_V_STUDY_INDIDE)
-        {
-            base.AddObject("LCL_V_STUDY_INDIDE", lCL_V_STUDY_INDIDE);
-        }
-    
-        /// <summary>
-        /// Deprecated Method for adding a new object to the LCL_V_STUDYSUMM_PLUSMORE EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddToLCL_V_STUDYSUMM_PLUSMORE(LCL_V_STUDYSUMM_PLUSMORE lCL_V_STUDYSUMM_PLUSMORE)
-        {
-            base.AddObject("LCL_V_STUDYSUMM_PLUSMORE", lCL_V_STUDYSUMM_PLUSMORE);
-        }
 
         #endregion
 
@@ -322,471 +298,6 @@ namespace IrbAnalyser.Model
     #endregion
 
     #region Entities
-    
-    /// <summary>
-    /// No Metadata Documentation available.
-    /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="VelosModel", Name="ER_CODELST")]
-    [Serializable()]
-    [DataContractAttribute(IsReference=true)]
-    public partial class ER_CODELST : EntityObject
-    {
-        #region Factory Method
-    
-        /// <summary>
-        /// Create a new ER_CODELST object.
-        /// </summary>
-        /// <param name="pK_CODELST">Initial value of the PK_CODELST property.</param>
-        public static ER_CODELST CreateER_CODELST(global::System.Decimal pK_CODELST)
-        {
-            ER_CODELST eR_CODELST = new ER_CODELST();
-            eR_CODELST.PK_CODELST = pK_CODELST;
-            return eR_CODELST;
-        }
-
-        #endregion
-
-        #region Primitive Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Decimal PK_CODELST
-        {
-            get
-            {
-                return _PK_CODELST;
-            }
-            set
-            {
-                if (_PK_CODELST != value)
-                {
-                    OnPK_CODELSTChanging(value);
-                    ReportPropertyChanging("PK_CODELST");
-                    _PK_CODELST = StructuralObject.SetValidValue(value);
-                    ReportPropertyChanged("PK_CODELST");
-                    OnPK_CODELSTChanged();
-                }
-            }
-        }
-        private global::System.Decimal _PK_CODELST;
-        partial void OnPK_CODELSTChanging(global::System.Decimal value);
-        partial void OnPK_CODELSTChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public Nullable<global::System.Decimal> FK_ACCOUNT
-        {
-            get
-            {
-                return _FK_ACCOUNT;
-            }
-            set
-            {
-                OnFK_ACCOUNTChanging(value);
-                ReportPropertyChanging("FK_ACCOUNT");
-                _FK_ACCOUNT = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("FK_ACCOUNT");
-                OnFK_ACCOUNTChanged();
-            }
-        }
-        private Nullable<global::System.Decimal> _FK_ACCOUNT;
-        partial void OnFK_ACCOUNTChanging(Nullable<global::System.Decimal> value);
-        partial void OnFK_ACCOUNTChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String CODELST_TYPE
-        {
-            get
-            {
-                return _CODELST_TYPE;
-            }
-            set
-            {
-                OnCODELST_TYPEChanging(value);
-                ReportPropertyChanging("CODELST_TYPE");
-                _CODELST_TYPE = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("CODELST_TYPE");
-                OnCODELST_TYPEChanged();
-            }
-        }
-        private global::System.String _CODELST_TYPE;
-        partial void OnCODELST_TYPEChanging(global::System.String value);
-        partial void OnCODELST_TYPEChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String CODELST_SUBTYP
-        {
-            get
-            {
-                return _CODELST_SUBTYP;
-            }
-            set
-            {
-                OnCODELST_SUBTYPChanging(value);
-                ReportPropertyChanging("CODELST_SUBTYP");
-                _CODELST_SUBTYP = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("CODELST_SUBTYP");
-                OnCODELST_SUBTYPChanged();
-            }
-        }
-        private global::System.String _CODELST_SUBTYP;
-        partial void OnCODELST_SUBTYPChanging(global::System.String value);
-        partial void OnCODELST_SUBTYPChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String CODELST_DESC
-        {
-            get
-            {
-                return _CODELST_DESC;
-            }
-            set
-            {
-                OnCODELST_DESCChanging(value);
-                ReportPropertyChanging("CODELST_DESC");
-                _CODELST_DESC = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("CODELST_DESC");
-                OnCODELST_DESCChanged();
-            }
-        }
-        private global::System.String _CODELST_DESC;
-        partial void OnCODELST_DESCChanging(global::System.String value);
-        partial void OnCODELST_DESCChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String CODELST_HIDE
-        {
-            get
-            {
-                return _CODELST_HIDE;
-            }
-            set
-            {
-                OnCODELST_HIDEChanging(value);
-                ReportPropertyChanging("CODELST_HIDE");
-                _CODELST_HIDE = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("CODELST_HIDE");
-                OnCODELST_HIDEChanged();
-            }
-        }
-        private global::System.String _CODELST_HIDE;
-        partial void OnCODELST_HIDEChanging(global::System.String value);
-        partial void OnCODELST_HIDEChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public Nullable<global::System.Decimal> CODELST_SEQ
-        {
-            get
-            {
-                return _CODELST_SEQ;
-            }
-            set
-            {
-                OnCODELST_SEQChanging(value);
-                ReportPropertyChanging("CODELST_SEQ");
-                _CODELST_SEQ = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("CODELST_SEQ");
-                OnCODELST_SEQChanged();
-            }
-        }
-        private Nullable<global::System.Decimal> _CODELST_SEQ;
-        partial void OnCODELST_SEQChanging(Nullable<global::System.Decimal> value);
-        partial void OnCODELST_SEQChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String CODELST_MAINT
-        {
-            get
-            {
-                return _CODELST_MAINT;
-            }
-            set
-            {
-                OnCODELST_MAINTChanging(value);
-                ReportPropertyChanging("CODELST_MAINT");
-                _CODELST_MAINT = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("CODELST_MAINT");
-                OnCODELST_MAINTChanged();
-            }
-        }
-        private global::System.String _CODELST_MAINT;
-        partial void OnCODELST_MAINTChanging(global::System.String value);
-        partial void OnCODELST_MAINTChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public Nullable<global::System.Decimal> RID
-        {
-            get
-            {
-                return _RID;
-            }
-            set
-            {
-                OnRIDChanging(value);
-                ReportPropertyChanging("RID");
-                _RID = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("RID");
-                OnRIDChanged();
-            }
-        }
-        private Nullable<global::System.Decimal> _RID;
-        partial void OnRIDChanging(Nullable<global::System.Decimal> value);
-        partial void OnRIDChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public Nullable<global::System.Decimal> CREATOR
-        {
-            get
-            {
-                return _CREATOR;
-            }
-            set
-            {
-                OnCREATORChanging(value);
-                ReportPropertyChanging("CREATOR");
-                _CREATOR = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("CREATOR");
-                OnCREATORChanged();
-            }
-        }
-        private Nullable<global::System.Decimal> _CREATOR;
-        partial void OnCREATORChanging(Nullable<global::System.Decimal> value);
-        partial void OnCREATORChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public Nullable<global::System.Decimal> LAST_MODIFIED_BY
-        {
-            get
-            {
-                return _LAST_MODIFIED_BY;
-            }
-            set
-            {
-                OnLAST_MODIFIED_BYChanging(value);
-                ReportPropertyChanging("LAST_MODIFIED_BY");
-                _LAST_MODIFIED_BY = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("LAST_MODIFIED_BY");
-                OnLAST_MODIFIED_BYChanged();
-            }
-        }
-        private Nullable<global::System.Decimal> _LAST_MODIFIED_BY;
-        partial void OnLAST_MODIFIED_BYChanging(Nullable<global::System.Decimal> value);
-        partial void OnLAST_MODIFIED_BYChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public Nullable<global::System.DateTime> LAST_MODIFIED_DATE
-        {
-            get
-            {
-                return _LAST_MODIFIED_DATE;
-            }
-            set
-            {
-                OnLAST_MODIFIED_DATEChanging(value);
-                ReportPropertyChanging("LAST_MODIFIED_DATE");
-                _LAST_MODIFIED_DATE = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("LAST_MODIFIED_DATE");
-                OnLAST_MODIFIED_DATEChanged();
-            }
-        }
-        private Nullable<global::System.DateTime> _LAST_MODIFIED_DATE;
-        partial void OnLAST_MODIFIED_DATEChanging(Nullable<global::System.DateTime> value);
-        partial void OnLAST_MODIFIED_DATEChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public Nullable<global::System.DateTime> CREATED_ON
-        {
-            get
-            {
-                return _CREATED_ON;
-            }
-            set
-            {
-                OnCREATED_ONChanging(value);
-                ReportPropertyChanging("CREATED_ON");
-                _CREATED_ON = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("CREATED_ON");
-                OnCREATED_ONChanged();
-            }
-        }
-        private Nullable<global::System.DateTime> _CREATED_ON;
-        partial void OnCREATED_ONChanging(Nullable<global::System.DateTime> value);
-        partial void OnCREATED_ONChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String IP_ADD
-        {
-            get
-            {
-                return _IP_ADD;
-            }
-            set
-            {
-                OnIP_ADDChanging(value);
-                ReportPropertyChanging("IP_ADD");
-                _IP_ADD = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("IP_ADD");
-                OnIP_ADDChanged();
-            }
-        }
-        private global::System.String _IP_ADD;
-        partial void OnIP_ADDChanging(global::System.String value);
-        partial void OnIP_ADDChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String CODELST_CUSTOM_COL
-        {
-            get
-            {
-                return _CODELST_CUSTOM_COL;
-            }
-            set
-            {
-                OnCODELST_CUSTOM_COLChanging(value);
-                ReportPropertyChanging("CODELST_CUSTOM_COL");
-                _CODELST_CUSTOM_COL = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("CODELST_CUSTOM_COL");
-                OnCODELST_CUSTOM_COLChanged();
-            }
-        }
-        private global::System.String _CODELST_CUSTOM_COL;
-        partial void OnCODELST_CUSTOM_COLChanging(global::System.String value);
-        partial void OnCODELST_CUSTOM_COLChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String CODELST_CUSTOM_COL1
-        {
-            get
-            {
-                return _CODELST_CUSTOM_COL1;
-            }
-            set
-            {
-                OnCODELST_CUSTOM_COL1Changing(value);
-                ReportPropertyChanging("CODELST_CUSTOM_COL1");
-                _CODELST_CUSTOM_COL1 = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("CODELST_CUSTOM_COL1");
-                OnCODELST_CUSTOM_COL1Changed();
-            }
-        }
-        private global::System.String _CODELST_CUSTOM_COL1;
-        partial void OnCODELST_CUSTOM_COL1Changing(global::System.String value);
-        partial void OnCODELST_CUSTOM_COL1Changed();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String CODELST_STUDY_ROLE
-        {
-            get
-            {
-                return _CODELST_STUDY_ROLE;
-            }
-            set
-            {
-                OnCODELST_STUDY_ROLEChanging(value);
-                ReportPropertyChanging("CODELST_STUDY_ROLE");
-                _CODELST_STUDY_ROLE = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("CODELST_STUDY_ROLE");
-                OnCODELST_STUDY_ROLEChanged();
-            }
-        }
-        private global::System.String _CODELST_STUDY_ROLE;
-        partial void OnCODELST_STUDY_ROLEChanging(global::System.String value);
-        partial void OnCODELST_STUDY_ROLEChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String CODELST_KIND
-        {
-            get
-            {
-                return _CODELST_KIND;
-            }
-            set
-            {
-                OnCODELST_KINDChanging(value);
-                ReportPropertyChanging("CODELST_KIND");
-                _CODELST_KIND = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("CODELST_KIND");
-                OnCODELST_KINDChanged();
-            }
-        }
-        private global::System.String _CODELST_KIND;
-        partial void OnCODELST_KINDChanging(global::System.String value);
-        partial void OnCODELST_KINDChanged();
-
-        #endregion
-
-    
-    }
     
     /// <summary>
     /// No Metadata Documentation available.

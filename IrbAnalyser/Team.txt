@@ -1,0 +1,3 @@
+StudyId	StudySiteID	IRBAgency	IRBNumber	TeamMemberID	PrimaryEmailAdress	OtherEmailAdresses	FirstName	LastName	Role	Site
+"654654"	"632132"	BRANY	"12345"	"adasd"	"ad"	"alsd@asd.cc"	"asd"	"eqw"		EISNTEIN
+"4564654"	"64654"	BRANY	"123465498"	"asdad"	"asd"	"sadalsd@asd.cc"	"adsa"	"qwe"		EINSTEIN

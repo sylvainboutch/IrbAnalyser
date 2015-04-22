@@ -18,9 +18,6 @@ namespace IrbAnalyser
 {
     public partial class IrbAnalyser : Form
     {
-        //"Csv Files (.csv)|*.csv|Text Files (.txt)|*.txt|All Files (*.*)|*.*";
-        private string fileformat = "Text Files (.txt)|*.txt|All Files (*.*)|*.*";
-
         public IrbAnalyser()
         {
             InitializeComponent();
@@ -50,6 +47,10 @@ namespace IrbAnalyser
                 List<ExcelWorksheet> lstxls = new List<ExcelWorksheet>();
                 lstxls.Add(new ExcelWorksheet("Studies", "List of studies to create or modify in Velos",OutputStudy.study));
                 lstxls.Add(new ExcelWorksheet("Status", "List of status to add or modify in Velos",OutputStatus.status));
+                lstxls.Add(new ExcelWorksheet("Attachments", "List of version (attachment) to add or modify in Velos", OutputDocs.docs));
+                lstxls.Add(new ExcelWorksheet("Site", "List of organization to add or modify in Velos", OutputSite.sites));
+                lstxls.Add(new ExcelWorksheet("Team", "List of team members to add or modify in Velos", OutputTeam.team));
+
 
                 //exc.WriteDataTableToExcel(OutputStudy.study, "New studies", savefilename, "List of studies to create in Velos");
                 exc.WriteDataTableToExcel(savefilename,lstxls);
@@ -66,95 +67,27 @@ namespace IrbAnalyser
         }
 
         /// <summary>
-        /// Compare the file with the database, populates the databable for newStudy
-        /// </summary>
-        /// <param name="data"></param>
-        public static void IsNewStudy(DataTable studyDt, DataTable statusDt, DataTable memberDt, DataTable eventDt)
-        {
-            using (Model.VelosDb db = new Model.VelosDb())
-            {
-
-                var study = from st in db.LCL_V_STUDYSUMM_PLUSMORE
-                            select st;
-
-                var dat = studyDt.AsEnumerable();
-
-                foreach (var row in dat)
-                {
-                    bool isContained = false;
-                    foreach (var stu in study)
-                    {
-                        isContained = stu.MORE_IRBSTUDYID == row["StudyId"].ToString()
-                            && stu.MORE_IRBAGENCY == row["IRBAgency"].ToString() 
-                            ? true : isContained;
-                    }
-                    if (!isContained)
-                    {
-                        OutputStudy.addRowStudy(row, "New study");
-                        OutputStatus.addStatus(row, statusDt, eventDt);
-                    }
-                }
-            }
-        }
-
-        /// <summary>
         /// Analyse the file
         /// </summary>
         private void Analyse()
         {
+            string dir = Tools.UnZip(ofdStudy.FileName);
 
-            FileParser fpStudy = new FileParser(ofdStudy.FileName);
-            fpStudy.getDataTable();
+            OutputTeam.analyse(dir + "Team.txt");
+            OutputStatus.analyse(dir);
+            OutputStudy.analyse(dir + "studysite.txt");
 
-            FileParser fpStatus = new FileParser(ofdStatus.FileName);
-            fpStatus.getDataTable();
-            /*
-            FileParser fpEvent = new FileParser(ofdEvent.FileName);
-            fpEvent.getDataTable();
-
-            FileParser fpMember = new FileParser(ofdMember.FileName);
-            fpMember.getDataTable();
-            */
-            IsNewStudy(fpStudy.data, fpStatus.data, new DataTable(), new DataTable());
-            foreach (DataRow row in fpStudy.data.Rows)
-            {
-                OutputStudy.changedValue(row);
-            }
+            Tools.CleanUpFile(dir);
 
         }
 
         private void btnStudy_Click(object sender, EventArgs e)
         {
-            ofdStudy.Filter = "Text Files (.txt)|*.txt|All Files (*.*)|*.*";
+            ofdStudy.Filter = "Zip Files (.zip)|*.zip|All Files (*.*)|*.*";
             DialogResult dr = ofdStudy.ShowDialog();
             string filename = dr == DialogResult.OK ? ofdStudy.FileName : "";
             txtStudy.Text = Path.GetFileName(filename);
         }
-
-        private void btnStatus_Click(object sender, EventArgs e)
-        {
-            ofdStatus.Filter = "Text Files (.txt)|*.txt|All Files (*.*)|*.*";
-            DialogResult dr = ofdStatus.ShowDialog();
-            string filename = dr == DialogResult.OK ? ofdStatus.FileName : "";
-            txtStatus.Text = Path.GetFileName(filename);
-        }
-
-        private void btnEvent_Click(object sender, EventArgs e)
-        {
-            ofdEvent.Filter = "Text Files (.txt)|*.txt|All Files (*.*)|*.*";
-            DialogResult dr = ofdEvent.ShowDialog();
-            string filename = dr == DialogResult.OK ? ofdEvent.FileName : "";
-            txtEvent.Text = Path.GetFileName(filename);
-        }
-
-        private void btnMember_Click(object sender, EventArgs e)
-        {
-            ofdMember.Filter = "Text Files (.txt)|*.txt|All Files (*.*)|*.*";
-            DialogResult dr = ofdMember.ShowDialog();
-            string filename = dr == DialogResult.OK ? ofdMember.FileName : "";
-            txtMember.Text = Path.GetFileName(filename);
-        }
-
 
     }
 }

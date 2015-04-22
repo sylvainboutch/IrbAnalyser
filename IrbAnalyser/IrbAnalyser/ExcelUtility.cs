@@ -160,7 +160,7 @@ namespace IrbAnalyser
                 // Creation a new Workbook
                 excelworkBook = excel.Workbooks.Add(Type.Missing);
 
-                // Workk sheet
+                 // Workk sheet
                 foreach (var worksheet in worksheets)
                 {
                     Microsoft.Office.Interop.Excel.Worksheet excelSheet = excelworkBook.Sheets.Add(Type.Missing, Type.Missing, 1, Type.Missing);
@@ -224,7 +224,10 @@ namespace IrbAnalyser
                 }
 
 
-
+                foreach (Microsoft.Office.Interop.Excel.Worksheet ws in excelworkBook.Worksheets)
+                {
+                    if (ws.Name.ToLower().Contains("sheet")) ws.Delete();
+                }
                 //now save the workbook and exit Excel
 
                 excelworkBook.SaveAs(saveAsLocation); ;

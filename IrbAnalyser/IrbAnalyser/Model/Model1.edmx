@@ -6,6 +6,9 @@
     <edmx:StorageModels>
     <Schema Namespace="VelosModel.Store" Alias="Self" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="11.2" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
         <EntityContainer Name="VelosModelStoreContainer">
+          <EntitySet Name="ER_STUDYAPNDX" EntityType="VelosModel.Store.ER_STUDYAPNDX" store:Type="Tables" Schema="ERES" />
+          <EntitySet Name="ER_STUDYVER" EntityType="VelosModel.Store.ER_STUDYVER" store:Type="Tables" Schema="ERES" />
+          <EntitySet Name="LCL_V_STUDY_INDIDE" EntityType="VelosModel.Store.LCL_V_STUDY_INDIDE" store:Type="Views" Schema="VDA" />
           <EntitySet Name="LCL_V_STUDYSUMM_PLUSMORE" EntityType="VelosModel.Store.LCL_V_STUDYSUMM_PLUSMORE" store:Type="Views" store:Schema="VDA" store:Name="LCL_V_STUDYSUMM_PLUSMORE">
             <DefiningQuery>SELECT 
       "LCL_V_STUDYSUMM_PLUSMORE"."PK_STUDY" AS "PK_STUDY", 
@@ -103,7 +106,226 @@
       "LCL_V_STUDYSUMM_PLUSMORE"."MORE_MANAGEDBY" AS "MORE_MANAGEDBY"
       FROM "VDA"."LCL_V_STUDYSUMM_PLUSMORE" "LCL_V_STUDYSUMM_PLUSMORE"</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="VDA_V_ER_CODELST" EntityType="VelosModel.Store.VDA_V_ER_CODELST" store:Type="Views" store:Schema="VDA" store:Name="VDA_V_ER_CODELST">
+            <DefiningQuery>SELECT 
+      "VDA_V_ER_CODELST"."PK_CODELST" AS "PK_CODELST", 
+      "VDA_V_ER_CODELST"."CODELST_TYPE" AS "CODELST_TYPE", 
+      "VDA_V_ER_CODELST"."CODELST_SUBTYP" AS "CODELST_SUBTYP", 
+      "VDA_V_ER_CODELST"."CODELST_DESC" AS "CODELST_DESC", 
+      "VDA_V_ER_CODELST"."CODELST_HIDE" AS "CODELST_HIDE", 
+      "VDA_V_ER_CODELST"."CODELST_SEQ" AS "CODELST_SEQ", 
+      "VDA_V_ER_CODELST"."CODELST_CUSTOM_COL" AS "CODELST_CUSTOM_COL", 
+      "VDA_V_ER_CODELST"."CODELST_CUSTOM_COL1" AS "CODELST_CUSTOM_COL1", 
+      "VDA_V_ER_CODELST"."CODELST_STUDY_ROLE" AS "CODELST_STUDY_ROLE"
+      FROM "VDA"."VDA_V_ER_CODELST" "VDA_V_ER_CODELST"</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="VDA_V_STUDY_SUMMARY" EntityType="VelosModel.Store.VDA_V_STUDY_SUMMARY" store:Type="Views" store:Schema="VDA" store:Name="VDA_V_STUDY_SUMMARY">
+            <DefiningQuery>SELECT 
+      "VDA_V_STUDY_SUMMARY"."PK_STUDY" AS "PK_STUDY", 
+      "VDA_V_STUDY_SUMMARY"."STUDY_NUMBER" AS "STUDY_NUMBER", 
+      "VDA_V_STUDY_SUMMARY"."STUDY_ENTERED_BY" AS "STUDY_ENTERED_BY", 
+      "VDA_V_STUDY_SUMMARY"."STUDY_PI" AS "STUDY_PI", 
+      "VDA_V_STUDY_SUMMARY"."STUDY_COORDINATOR" AS "STUDY_COORDINATOR", 
+      "VDA_V_STUDY_SUMMARY"."STUDY_MAJ_AUTH" AS "STUDY_MAJ_AUTH", 
+      "VDA_V_STUDY_SUMMARY"."STUDY_TITLE" AS "STUDY_TITLE", 
+      "VDA_V_STUDY_SUMMARY"."STUDY_OBJECTIVE" AS "STUDY_OBJECTIVE", 
+      "VDA_V_STUDY_SUMMARY"."STUDY_SUMMARY" AS "STUDY_SUMMARY", 
+      "VDA_V_STUDY_SUMMARY"."STUDY_AGENT_DEVICE" AS "STUDY_AGENT_DEVICE", 
+      "VDA_V_STUDY_SUMMARY"."STUDY_DIVISION" AS "STUDY_DIVISION", 
+      "VDA_V_STUDY_SUMMARY"."STUDY_TAREA" AS "STUDY_TAREA", 
+      "VDA_V_STUDY_SUMMARY"."STUDY_DISEASE_SITE" AS "STUDY_DISEASE_SITE", 
+      "VDA_V_STUDY_SUMMARY"."STUDY_ICDCODE1" AS "STUDY_ICDCODE1", 
+      "VDA_V_STUDY_SUMMARY"."STUDY_ICDCODE2" AS "STUDY_ICDCODE2", 
+      "VDA_V_STUDY_SUMMARY"."STUDY_NATSAMPSIZE" AS "STUDY_NATSAMPSIZE", 
+      "VDA_V_STUDY_SUMMARY"."STUDY_DURATION" AS "STUDY_DURATION", 
+      "VDA_V_STUDY_SUMMARY"."STUDY_DURATN_UNIT" AS "STUDY_DURATN_UNIT", 
+      "VDA_V_STUDY_SUMMARY"."STUDY_EST_BEGIN_DATE" AS "STUDY_EST_BEGIN_DATE", 
+      "VDA_V_STUDY_SUMMARY"."STUDY_PHASE" AS "STUDY_PHASE", 
+      "VDA_V_STUDY_SUMMARY"."STUDY_RESEARCH_TYPE" AS "STUDY_RESEARCH_TYPE", 
+      "VDA_V_STUDY_SUMMARY"."STUDY_TYPE" AS "STUDY_TYPE", 
+      "VDA_V_STUDY_SUMMARY"."STUDY_LINKED_TO" AS "STUDY_LINKED_TO", 
+      "VDA_V_STUDY_SUMMARY"."STUDY_BLINDING" AS "STUDY_BLINDING", 
+      "VDA_V_STUDY_SUMMARY"."STUDY_RANDOM" AS "STUDY_RANDOM", 
+      "VDA_V_STUDY_SUMMARY"."STUDY_SPONSOR" AS "STUDY_SPONSOR", 
+      "VDA_V_STUDY_SUMMARY"."SPONSOR_CONTACT" AS "SPONSOR_CONTACT", 
+      "VDA_V_STUDY_SUMMARY"."STUDY_INFO" AS "STUDY_INFO", 
+      "VDA_V_STUDY_SUMMARY"."STUDY_KEYWRDS" AS "STUDY_KEYWRDS", 
+      "VDA_V_STUDY_SUMMARY"."FK_ACCOUNT" AS "FK_ACCOUNT", 
+      "VDA_V_STUDY_SUMMARY"."CREATED_ON" AS "CREATED_ON", 
+      "VDA_V_STUDY_SUMMARY"."LAST_MODIFIED_BY" AS "LAST_MODIFIED_BY", 
+      "VDA_V_STUDY_SUMMARY"."LAST_MODIFIED_DATE" AS "LAST_MODIFIED_DATE", 
+      "VDA_V_STUDY_SUMMARY"."CREATOR" AS "CREATOR", 
+      "VDA_V_STUDY_SUMMARY"."SPONSOR_DD" AS "SPONSOR_DD", 
+      "VDA_V_STUDY_SUMMARY"."STUDY_SPONSORID" AS "STUDY_SPONSORID", 
+      "VDA_V_STUDY_SUMMARY"."STUDY_ACTUALDT" AS "STUDY_ACTUALDT", 
+      "VDA_V_STUDY_SUMMARY"."STUDY_INVIND_FLAG" AS "STUDY_INVIND_FLAG", 
+      "VDA_V_STUDY_SUMMARY"."CTRP_ACCRREP_LASTRUN_DATE" AS "CTRP_ACCRREP_LASTRUN_DATE", 
+      "VDA_V_STUDY_SUMMARY"."CTRP_ACCRUAL_GEN_DATE" AS "CTRP_ACCRUAL_GEN_DATE", 
+      "VDA_V_STUDY_SUMMARY"."CTRP_CUTOFF_DATE" AS "CTRP_CUTOFF_DATE", 
+      "VDA_V_STUDY_SUMMARY"."CTRP_LAST_DOWNLOAD_BY" AS "CTRP_LAST_DOWNLOAD_BY", 
+      "VDA_V_STUDY_SUMMARY"."NCI_TRIAL_IDENTIFIER" AS "NCI_TRIAL_IDENTIFIER", 
+      "VDA_V_STUDY_SUMMARY"."NCT_NUMBER" AS "NCT_NUMBER", 
+      "VDA_V_STUDY_SUMMARY"."STUDY_ENTERED_BY_FK" AS "STUDY_ENTERED_BY_FK", 
+      "VDA_V_STUDY_SUMMARY"."STUDY_PI_FK" AS "STUDY_PI_FK", 
+      "VDA_V_STUDY_SUMMARY"."STUDY_COORDINATOR_FK" AS "STUDY_COORDINATOR_FK", 
+      "VDA_V_STUDY_SUMMARY"."STUDY_DIVISION_FK" AS "STUDY_DIVISION_FK", 
+      "VDA_V_STUDY_SUMMARY"."STUDY_TAREA_FK" AS "STUDY_TAREA_FK", 
+      "VDA_V_STUDY_SUMMARY"."STUDY_DISEASE_SITE_FK" AS "STUDY_DISEASE_SITE_FK", 
+      "VDA_V_STUDY_SUMMARY"."STUDY_PHASE_FK" AS "STUDY_PHASE_FK", 
+      "VDA_V_STUDY_SUMMARY"."STUDY_RESEARCH_TYPE_FK" AS "STUDY_RESEARCH_TYPE_FK", 
+      "VDA_V_STUDY_SUMMARY"."STUDY_TYPE_FK" AS "STUDY_TYPE_FK", 
+      "VDA_V_STUDY_SUMMARY"."STUDY_BLINDING_FK" AS "STUDY_BLINDING_FK", 
+      "VDA_V_STUDY_SUMMARY"."STUDY_RANDOM_FK" AS "STUDY_RANDOM_FK", 
+      "VDA_V_STUDY_SUMMARY"."CREATOR_FK" AS "CREATOR_FK", 
+      "VDA_V_STUDY_SUMMARY"."LAST_MODIFIED_BY_FK" AS "LAST_MODIFIED_BY_FK", 
+      "VDA_V_STUDY_SUMMARY"."SPONSOR_DD_FK" AS "SPONSOR_DD_FK", 
+      "VDA_V_STUDY_SUMMARY"."CTRP_LAST_DOWNLOAD_BY_FK" AS "CTRP_LAST_DOWNLOAD_BY_FK", 
+      "VDA_V_STUDY_SUMMARY"."STUDY_SCOPE" AS "STUDY_SCOPE"
+      FROM "VDA"."VDA_V_STUDY_SUMMARY" "VDA_V_STUDY_SUMMARY"</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="VDA_V_STUDYSITES" EntityType="VelosModel.Store.VDA_V_STUDYSITES" store:Type="Views" store:Schema="VDA" store:Name="VDA_V_STUDYSITES">
+            <DefiningQuery>SELECT 
+      "VDA_V_STUDYSITES"."PK_STUDYSITES" AS "PK_STUDYSITES", 
+      "VDA_V_STUDYSITES"."FK_STUDY" AS "FK_STUDY", 
+      "VDA_V_STUDYSITES"."FK_SITE" AS "FK_SITE", 
+      "VDA_V_STUDYSITES"."STUDYSITE_TYPE" AS "STUDYSITE_TYPE", 
+      "VDA_V_STUDYSITES"."STUDYSITE_LSAMPLESIZE" AS "STUDYSITE_LSAMPLESIZE", 
+      "VDA_V_STUDYSITES"."IS_STUDYSITE_PUBLIC" AS "IS_STUDYSITE_PUBLIC", 
+      "VDA_V_STUDYSITES"."INCLUDE_IN_REPORTS" AS "INCLUDE_IN_REPORTS", 
+      "VDA_V_STUDYSITES"."RID" AS "RID", 
+      "VDA_V_STUDYSITES"."CREATOR" AS "CREATOR", 
+      "VDA_V_STUDYSITES"."LAST_MODIFIED_BY" AS "LAST_MODIFIED_BY", 
+      "VDA_V_STUDYSITES"."CREATED_ON" AS "CREATED_ON", 
+      "VDA_V_STUDYSITES"."LAST_MODIFIED_ON" AS "LAST_MODIFIED_ON", 
+      "VDA_V_STUDYSITES"."IP_ADD" AS "IP_ADD", 
+      "VDA_V_STUDYSITES"."STUDYSITE_ENRCOUNT" AS "STUDYSITE_ENRCOUNT", 
+      "VDA_V_STUDYSITES"."IS_REVIEWBASED_ENR" AS "IS_REVIEWBASED_ENR", 
+      "VDA_V_STUDYSITES"."SEND_ENROLLMENT_NOTIFICATION" AS "SEND_ENROLLMENT_NOTIFICATION", 
+      "VDA_V_STUDYSITES"."SEND_ENROLLMENT_APPROVAL" AS "SEND_ENROLLMENT_APPROVAL", 
+      "VDA_V_STUDYSITES"."STUDY_NUMBER" AS "STUDY_NUMBER", 
+      "VDA_V_STUDYSITES"."SITE_NAME" AS "SITE_NAME", 
+      "VDA_V_STUDYSITES"."FK_ACCOUNT" AS "FK_ACCOUNT", 
+      "VDA_V_STUDYSITES"."LAST_MODIFIED_BY_FK" AS "LAST_MODIFIED_BY_FK", 
+      "VDA_V_STUDYSITES"."CREATOR_FK" AS "CREATOR_FK"
+      FROM "VDA"."VDA_V_STUDYSITES" "VDA_V_STUDYSITES"</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="VDA_V_STUDYSTAT" EntityType="VelosModel.Store.VDA_V_STUDYSTAT" store:Type="Views" store:Schema="VDA" store:Name="VDA_V_STUDYSTAT">
+            <DefiningQuery>SELECT 
+      "VDA_V_STUDYSTAT"."STUDY_NUMBER" AS "STUDY_NUMBER", 
+      "VDA_V_STUDYSTAT"."STUDY_START_DATE" AS "STUDY_START_DATE", 
+      "VDA_V_STUDYSTAT"."STUDY_END_DATE" AS "STUDY_END_DATE", 
+      "VDA_V_STUDYSTAT"."SSTAT_SITE_NAME" AS "SSTAT_SITE_NAME", 
+      "VDA_V_STUDYSTAT"."SSTAT_STUDY_STATUS" AS "SSTAT_STUDY_STATUS", 
+      "VDA_V_STUDYSTAT"."SSTAT_VALID_FROM" AS "SSTAT_VALID_FROM", 
+      "VDA_V_STUDYSTAT"."SSTAT_VALID_UNTIL" AS "SSTAT_VALID_UNTIL", 
+      "VDA_V_STUDYSTAT"."SSTAT_NOTES" AS "SSTAT_NOTES", 
+      "VDA_V_STUDYSTAT"."SSTAT_DOCUMNTD_BY" AS "SSTAT_DOCUMNTD_BY", 
+      "VDA_V_STUDYSTAT"."SSTAT_END_DATE_SYSTEM" AS "SSTAT_END_DATE_SYSTEM", 
+      "VDA_V_STUDYSTAT"."CREATOR" AS "CREATOR", 
+      "VDA_V_STUDYSTAT"."CREATED_ON" AS "CREATED_ON", 
+      "VDA_V_STUDYSTAT"."LAST_MODIFIED_BY" AS "LAST_MODIFIED_BY", 
+      "VDA_V_STUDYSTAT"."LAST_MODIFIED_DATE" AS "LAST_MODIFIED_DATE", 
+      "VDA_V_STUDYSTAT"."PK_STUDYSTAT" AS "PK_STUDYSTAT", 
+      "VDA_V_STUDYSTAT"."FK_STUDY" AS "FK_STUDY", 
+      "VDA_V_STUDYSTAT"."SSTAT_FK_SITE" AS "SSTAT_FK_SITE", 
+      "VDA_V_STUDYSTAT"."FK_ACCOUNT" AS "FK_ACCOUNT", 
+      "VDA_V_STUDYSTAT"."SSTAT_CURRENT_STAT" AS "SSTAT_CURRENT_STAT", 
+      "VDA_V_STUDYSTAT"."SSTAT_STATUS_TYPE_FK" AS "SSTAT_STATUS_TYPE_FK", 
+      "VDA_V_STUDYSTAT"."SSTAT_STATUS_TYPE" AS "SSTAT_STATUS_TYPE", 
+      "VDA_V_STUDYSTAT"."LAST_MODIFIED_BY_FK" AS "LAST_MODIFIED_BY_FK", 
+      "VDA_V_STUDYSTAT"."CREATOR_FK" AS "CREATOR_FK"
+      FROM "VDA"."VDA_V_STUDYSTAT" "VDA_V_STUDYSTAT"</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="VDA_V_STUDYTEAM_MEMBERS" EntityType="VelosModel.Store.VDA_V_STUDYTEAM_MEMBERS" store:Type="Views" store:Schema="VDA" store:Name="VDA_V_STUDYTEAM_MEMBERS">
+            <DefiningQuery>SELECT 
+      "VDA_V_STUDYTEAM_MEMBERS"."STUDY_NUMBER" AS "STUDY_NUMBER", 
+      "VDA_V_STUDYTEAM_MEMBERS"."STUDY_TITLE" AS "STUDY_TITLE", 
+      "VDA_V_STUDYTEAM_MEMBERS"."USER_SITE_NAME" AS "USER_SITE_NAME", 
+      "VDA_V_STUDYTEAM_MEMBERS"."USER_NAME" AS "USER_NAME", 
+      "VDA_V_STUDYTEAM_MEMBERS"."USER_PHONE" AS "USER_PHONE", 
+      "VDA_V_STUDYTEAM_MEMBERS"."USER_EMAIL" AS "USER_EMAIL", 
+      "VDA_V_STUDYTEAM_MEMBERS"."USER_ADDRESS" AS "USER_ADDRESS", 
+      "VDA_V_STUDYTEAM_MEMBERS"."ROLE" AS "ROLE", 
+      "VDA_V_STUDYTEAM_MEMBERS"."FK_STUDY" AS "FK_STUDY", 
+      "VDA_V_STUDYTEAM_MEMBERS"."CREATED_ON" AS "CREATED_ON", 
+      "VDA_V_STUDYTEAM_MEMBERS"."FK_ACCOUNT" AS "FK_ACCOUNT", 
+      "VDA_V_STUDYTEAM_MEMBERS"."CREATOR" AS "CREATOR", 
+      "VDA_V_STUDYTEAM_MEMBERS"."LAST_MODIFIED_BY" AS "LAST_MODIFIED_BY", 
+      "VDA_V_STUDYTEAM_MEMBERS"."LAST_MODIFIED_DATE" AS "LAST_MODIFIED_DATE", 
+      "VDA_V_STUDYTEAM_MEMBERS"."RID" AS "RID", 
+      "VDA_V_STUDYTEAM_MEMBERS"."PK_STUDYTEAM" AS "PK_STUDYTEAM", 
+      "VDA_V_STUDYTEAM_MEMBERS"."STUDYTEAM_STATUS" AS "STUDYTEAM_STATUS", 
+      "VDA_V_STUDYTEAM_MEMBERS"."LAST_MODIFIED_BY_FK" AS "LAST_MODIFIED_BY_FK", 
+      "VDA_V_STUDYTEAM_MEMBERS"."CREATOR_FK" AS "CREATOR_FK"
+      FROM "VDA"."VDA_V_STUDYTEAM_MEMBERS" "VDA_V_STUDYTEAM_MEMBERS"</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_STDYAPNX_STUDY" Association="VelosModel.Store.FK_STDYAPNX_STUDY">
+            <End Role="ER_STUDYVER" EntitySet="ER_STUDYVER" />
+            <End Role="ER_STUDYAPNDX" EntitySet="ER_STUDYAPNDX" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="ER_STUDYAPNDX">
+          <Key>
+            <PropertyRef Name="PK_STUDYAPNDX" />
+          </Key>
+          <Property Name="PK_STUDYAPNDX" Type="number" Nullable="false" />
+          <Property Name="FK_STUDY" Type="number" />
+          <Property Name="STUDYAPNDX_TYPE" Type="varchar2" MaxLength="20" />
+          <Property Name="STUDYAPNDX_URI" Type="varchar2" MaxLength="300" />
+          <Property Name="STUDYAPNDX_DESC" Type="varchar2" MaxLength="500" />
+          <Property Name="STUDYAPNDX_PUBFLAG" Type="char" MaxLength="1" />
+          <Property Name="RID" Type="number" />
+          <Property Name="CREATOR" Type="number" />
+          <Property Name="LAST_MODIFIED_BY" Type="number" />
+          <Property Name="LAST_MODIFIED_DATE" Type="date" />
+          <Property Name="CREATED_ON" Type="date" />
+          <Property Name="STUDYAPNDX_FILE" Type="varchar2" MaxLength="500" />
+          <Property Name="STUDYAPNDX_FILEOBJ" Type="blob" />
+          <Property Name="IP_ADD" Type="varchar2" MaxLength="15" />
+          <Property Name="STUDYAPNDX_FILESIZE" Type="number" Precision="10" />
+          <Property Name="FK_STUDYVER" Type="number" />
+        </EntityType>
+        <EntityType Name="ER_STUDYVER">
+          <Key>
+            <PropertyRef Name="PK_STUDYVER" />
+          </Key>
+          <Property Name="PK_STUDYVER" Type="number" Nullable="false" />
+          <Property Name="FK_STUDY" Type="number" />
+          <Property Name="STUDYVER_NUMBER" Type="varchar2" MaxLength="100" />
+          <Property Name="STUDYVER_STATUS" Type="char" MaxLength="1" />
+          <Property Name="STUDYVER_NOTES" Type="varchar2" MaxLength="2000" />
+          <Property Name="ORIG_STUDY" Type="number" />
+          <Property Name="RID" Type="number" />
+          <Property Name="CREATOR" Type="number" />
+          <Property Name="LAST_MODIFIED_BY" Type="number" />
+          <Property Name="LAST_MODIFIED_DATE" Type="date" />
+          <Property Name="CREATED_ON" Type="date" />
+          <Property Name="IP_ADD" Type="varchar2" MaxLength="15" />
+          <Property Name="STUDYVER_DATE" Type="date" />
+          <Property Name="STUDYVER_CATEGORY" Type="number" />
+          <Property Name="STUDYVER_TYPE" Type="number" />
+        </EntityType>
+        <EntityType Name="LCL_V_STUDY_INDIDE">
+          <Key>
+            <PropertyRef Name="PK_STUDY_INDIIDE" />
+          </Key>
+          <Property Name="PK_STUDY_INDIIDE" Type="number" Nullable="false" />
+          <Property Name="FK_STUDY" Type="number" />
+          <Property Name="INDIDE_TYPE" Type="number" />
+          <Property Name="INDIDE_NUMBER" Type="varchar2" MaxLength="25" />
+          <Property Name="FK_CODELST_INDIDE_GRANTOR" Type="number" />
+          <Property Name="FK_CODELST_INDIDE_HOLDER" Type="number" />
+          <Property Name="FK_CODELST_PROGRAM_CODE" Type="number" />
+          <Property Name="INDIDE_EXPAND_ACCESS" Type="number" />
+          <Property Name="FK_CODELST_ACCESS_TYPE" Type="number" />
+          <Property Name="INDIDE_EXEMPT" Type="number" />
+          <Property Name="RID" Type="number" />
+          <Property Name="IP_ADD" Type="varchar2" MaxLength="15" />
+          <Property Name="CREATOR" Type="number" />
+          <Property Name="CREATED_ON" Type="date" />
+          <Property Name="LAST_MODIFIED_BY" Type="number" />
+          <Property Name="LAST_MODIFIED_DATE" Type="date" />
+        </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'VDA.LCL_V_STUDYSUMM_PLUSMORE' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
@@ -205,253 +427,182 @@
           <Property Name="MORE_SC_TRIALS" Type="varchar2" MaxLength="100" />
           <Property Name="MORE_MANAGEDBY" Type="varchar2" MaxLength="100" />
         </EntityType>
-      </Schema></edmx:StorageModels>
-    <!-- CSDL content -->
-    <edmx:ConceptualModels>
-      <Schema Namespace="VelosModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
-        <EntityContainer Name="VelosDb" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="ER_CODELST" EntityType="VelosModel.ER_CODELST" />
-          <EntitySet Name="ER_STUDYAPNDX" EntityType="VelosModel.ER_STUDYAPNDX" />
-          <EntitySet Name="ER_STUDYVER" EntityType="VelosModel.ER_STUDYVER" />
-          <EntitySet Name="VDA_V_ER_CODELST" EntityType="VelosModel.VDA_V_ER_CODELST" />
-          <EntitySet Name="VDA_V_STUDY_SUMMARY" EntityType="VelosModel.VDA_V_STUDY_SUMMARY" />
-          <EntitySet Name="VDA_V_STUDYSITES" EntityType="VelosModel.VDA_V_STUDYSITES" />
-          <EntitySet Name="VDA_V_STUDYSTAT" EntityType="VelosModel.VDA_V_STUDYSTAT" />
-          <EntitySet Name="VDA_V_STUDYTEAM_MEMBERS" EntityType="VelosModel.VDA_V_STUDYTEAM_MEMBERS" />
-          <AssociationSet Name="FK_STDYAPNX_STUDY" Association="VelosModel.FK_STDYAPNX_STUDY">
-            <End Role="ER_STUDYVER" EntitySet="ER_STUDYVER" />
-            <End Role="ER_STUDYAPNDX" EntitySet="ER_STUDYAPNDX" />
-          </AssociationSet>
-          <EntitySet Name="LCL_V_STUDY_INDIDE" EntityType="VelosModel.LCL_V_STUDY_INDIDE" />
-          <EntitySet Name="LCL_V_STUDYSUMM_PLUSMORE" EntityType="VelosModel.LCL_V_STUDYSUMM_PLUSMORE" />
-        </EntityContainer>
-        <EntityType Name="ER_CODELST">
-          <Key>
-            <PropertyRef Name="PK_CODELST" />
-          </Key>
-          <Property Name="PK_CODELST" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="FK_ACCOUNT" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="CODELST_TYPE" Type="String" MaxLength="15" Unicode="false" FixedLength="false" />
-          <Property Name="CODELST_SUBTYP" Type="String" MaxLength="15" Unicode="false" FixedLength="false" />
-          <Property Name="CODELST_DESC" Type="String" MaxLength="200" Unicode="false" FixedLength="false" />
-          <Property Name="CODELST_HIDE" Type="String" MaxLength="1" Unicode="false" FixedLength="true" />
-          <Property Name="CODELST_SEQ" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="CODELST_MAINT" Type="String" MaxLength="1" Unicode="false" FixedLength="true" />
-          <Property Name="RID" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="CREATOR" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="LAST_MODIFIED_BY" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="LAST_MODIFIED_DATE" Type="DateTime" />
-          <Property Name="CREATED_ON" Type="DateTime" />
-          <Property Name="IP_ADD" Type="String" MaxLength="15" Unicode="false" FixedLength="false" />
-          <Property Name="CODELST_CUSTOM_COL" Type="String" MaxLength="4000" Unicode="false" FixedLength="false" />
-          <Property Name="CODELST_CUSTOM_COL1" Type="String" MaxLength="4000" Unicode="false" FixedLength="false" />
-          <Property Name="CODELST_STUDY_ROLE" Type="String" MaxLength="4000" Unicode="false" FixedLength="false" />
-          <Property Name="CODELST_KIND" Type="String" MaxLength="4000" Unicode="false" FixedLength="false" />
-        </EntityType>
-        <EntityType Name="ER_STUDYAPNDX">
-          <Key>
-            <PropertyRef Name="PK_STUDYAPNDX" />
-          </Key>
-          <Property Name="PK_STUDYAPNDX" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="FK_STUDY" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="STUDYAPNDX_TYPE" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
-          <Property Name="STUDYAPNDX_URI" Type="String" MaxLength="300" Unicode="false" FixedLength="false" />
-          <Property Name="STUDYAPNDX_DESC" Type="String" MaxLength="500" Unicode="false" FixedLength="false" />
-          <Property Name="STUDYAPNDX_PUBFLAG" Type="String" MaxLength="1" Unicode="false" FixedLength="true" />
-          <Property Name="RID" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="CREATOR" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="LAST_MODIFIED_BY" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="LAST_MODIFIED_DATE" Type="DateTime" />
-          <Property Name="CREATED_ON" Type="DateTime" />
-          <Property Name="STUDYAPNDX_FILE" Type="String" MaxLength="500" Unicode="false" FixedLength="false" />
-          <Property Name="STUDYAPNDX_FILEOBJ" Type="Binary" MaxLength="Max" FixedLength="false" />
-          <Property Name="IP_ADD" Type="String" MaxLength="15" Unicode="false" FixedLength="false" />
-          <Property Name="STUDYAPNDX_FILESIZE" Type="Int32" />
-          <Property Name="FK_STUDYVER" Type="Decimal" Precision="38" Scale="0" />
-          <NavigationProperty Name="ER_STUDYVER" Relationship="VelosModel.FK_STDYAPNX_STUDY" FromRole="ER_STUDYAPNDX" ToRole="ER_STUDYVER" />
-        </EntityType>
-        <EntityType Name="ER_STUDYVER">
-          <Key>
-            <PropertyRef Name="PK_STUDYVER" />
-          </Key>
-          <Property Name="PK_STUDYVER" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="FK_STUDY" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="STUDYVER_NUMBER" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
-          <Property Name="STUDYVER_STATUS" Type="String" MaxLength="1" Unicode="false" FixedLength="true" />
-          <Property Name="STUDYVER_NOTES" Type="String" MaxLength="2000" Unicode="false" FixedLength="false" />
-          <Property Name="ORIG_STUDY" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="RID" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="CREATOR" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="LAST_MODIFIED_BY" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="LAST_MODIFIED_DATE" Type="DateTime" />
-          <Property Name="CREATED_ON" Type="DateTime" />
-          <Property Name="IP_ADD" Type="String" MaxLength="15" Unicode="false" FixedLength="false" />
-          <Property Name="STUDYVER_DATE" Type="DateTime" />
-          <Property Name="STUDYVER_CATEGORY" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="STUDYVER_TYPE" Type="Decimal" Precision="38" Scale="0" />
-          <NavigationProperty Name="ER_STUDYAPNDX" Relationship="VelosModel.FK_STDYAPNX_STUDY" FromRole="ER_STUDYVER" ToRole="ER_STUDYAPNDX" />
-        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'VDA.VDA_V_ER_CODELST' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
         <EntityType Name="VDA_V_ER_CODELST">
           <Key>
             <PropertyRef Name="PK_CODELST" />
           </Key>
-          <Property Name="PK_CODELST" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="CODELST_TYPE" Type="String" MaxLength="15" Unicode="false" FixedLength="false" />
-          <Property Name="CODELST_SUBTYP" Type="String" MaxLength="15" Unicode="false" FixedLength="false" />
-          <Property Name="CODELST_DESC" Type="String" MaxLength="200" Unicode="false" FixedLength="false" />
-          <Property Name="CODELST_HIDE" Type="String" MaxLength="1" Unicode="false" FixedLength="true" />
-          <Property Name="CODELST_SEQ" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="CODELST_CUSTOM_COL" Type="String" MaxLength="4000" Unicode="false" FixedLength="false" />
-          <Property Name="CODELST_CUSTOM_COL1" Type="String" MaxLength="4000" Unicode="false" FixedLength="false" />
-          <Property Name="CODELST_STUDY_ROLE" Type="String" MaxLength="4000" Unicode="false" FixedLength="false" />
+          <Property Name="PK_CODELST" Type="number" Nullable="false" />
+          <Property Name="CODELST_TYPE" Type="varchar2" MaxLength="15" />
+          <Property Name="CODELST_SUBTYP" Type="varchar2" MaxLength="15" />
+          <Property Name="CODELST_DESC" Type="varchar2" MaxLength="200" />
+          <Property Name="CODELST_HIDE" Type="char" MaxLength="1" />
+          <Property Name="CODELST_SEQ" Type="number" />
+          <Property Name="CODELST_CUSTOM_COL" Type="varchar2" />
+          <Property Name="CODELST_CUSTOM_COL1" Type="varchar2" />
+          <Property Name="CODELST_STUDY_ROLE" Type="varchar2" />
         </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'VDA.VDA_V_STUDY_SUMMARY' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
         <EntityType Name="VDA_V_STUDY_SUMMARY">
           <Key>
             <PropertyRef Name="PK_STUDY" />
           </Key>
-          <Property Name="PK_STUDY" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="STUDY_NUMBER" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
-          <Property Name="STUDY_ENTERED_BY" Type="String" MaxLength="61" Unicode="false" FixedLength="false" />
-          <Property Name="STUDY_PI" Type="String" MaxLength="61" Unicode="false" FixedLength="false" />
-          <Property Name="STUDY_COORDINATOR" Type="String" MaxLength="61" Unicode="false" FixedLength="false" />
-          <Property Name="STUDY_MAJ_AUTH" Type="String" MaxLength="4000" Unicode="false" FixedLength="false" />
-          <Property Name="STUDY_TITLE" Type="String" MaxLength="1000" Unicode="false" FixedLength="false" />
-          <Property Name="STUDY_OBJECTIVE" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
-          <Property Name="STUDY_SUMMARY" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
-          <Property Name="STUDY_AGENT_DEVICE" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
-          <Property Name="STUDY_DIVISION" Type="String" MaxLength="4000" Unicode="false" FixedLength="false" />
-          <Property Name="STUDY_TAREA" Type="String" MaxLength="4000" Unicode="false" FixedLength="false" />
-          <Property Name="STUDY_DISEASE_SITE" Type="String" MaxLength="4000" Unicode="false" FixedLength="false" />
-          <Property Name="STUDY_ICDCODE1" Type="String" MaxLength="2000" Unicode="false" FixedLength="false" />
-          <Property Name="STUDY_ICDCODE2" Type="String" MaxLength="2000" Unicode="false" FixedLength="false" />
-          <Property Name="STUDY_NATSAMPSIZE" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="STUDY_DURATION" Type="Int16" />
-          <Property Name="STUDY_DURATN_UNIT" Type="String" MaxLength="10" Unicode="false" FixedLength="false" />
-          <Property Name="STUDY_EST_BEGIN_DATE" Type="DateTime" />
-          <Property Name="STUDY_PHASE" Type="String" MaxLength="4000" Unicode="false" FixedLength="false" />
-          <Property Name="STUDY_RESEARCH_TYPE" Type="String" MaxLength="4000" Unicode="false" FixedLength="false" />
-          <Property Name="STUDY_TYPE" Type="String" MaxLength="4000" Unicode="false" FixedLength="false" />
-          <Property Name="STUDY_LINKED_TO" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
-          <Property Name="STUDY_BLINDING" Type="String" MaxLength="4000" Unicode="false" FixedLength="false" />
-          <Property Name="STUDY_RANDOM" Type="String" MaxLength="4000" Unicode="false" FixedLength="false" />
-          <Property Name="STUDY_SPONSOR" Type="String" MaxLength="200" Unicode="false" FixedLength="false" />
-          <Property Name="SPONSOR_CONTACT" Type="String" MaxLength="2000" Unicode="false" FixedLength="false" />
-          <Property Name="STUDY_INFO" Type="String" MaxLength="2000" Unicode="false" FixedLength="false" />
-          <Property Name="STUDY_KEYWRDS" Type="String" MaxLength="500" Unicode="false" FixedLength="false" />
-          <Property Name="FK_ACCOUNT" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="CREATED_ON" Type="DateTime" />
-          <Property Name="LAST_MODIFIED_BY" Type="String" MaxLength="61" Unicode="false" FixedLength="false" />
-          <Property Name="LAST_MODIFIED_DATE" Type="DateTime" />
-          <Property Name="CREATOR" Type="String" MaxLength="61" Unicode="false" FixedLength="false" />
-          <Property Name="SPONSOR_DD" Type="String" MaxLength="4000" Unicode="false" FixedLength="false" />
-          <Property Name="STUDY_SPONSORID" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
-          <Property Name="STUDY_ACTUALDT" Type="DateTime" />
-          <Property Name="STUDY_INVIND_FLAG" Type="String" MaxLength="4000" Unicode="false" FixedLength="false" />
-          <Property Name="CTRP_ACCRREP_LASTRUN_DATE" Type="DateTime" />
-          <Property Name="CTRP_ACCRUAL_GEN_DATE" Type="DateTime" />
-          <Property Name="CTRP_CUTOFF_DATE" Type="DateTime" />
-          <Property Name="CTRP_LAST_DOWNLOAD_BY" Type="String" MaxLength="61" Unicode="false" FixedLength="false" />
-          <Property Name="NCI_TRIAL_IDENTIFIER" Type="String" MaxLength="35" Unicode="false" FixedLength="false" />
-          <Property Name="NCT_NUMBER" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
-          <Property Name="STUDY_ENTERED_BY_FK" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="STUDY_PI_FK" Type="String" MaxLength="1000" Unicode="false" FixedLength="false" />
-          <Property Name="STUDY_COORDINATOR_FK" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="STUDY_DIVISION_FK" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="STUDY_TAREA_FK" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="STUDY_DISEASE_SITE_FK" Type="String" MaxLength="500" Unicode="false" FixedLength="false" />
-          <Property Name="STUDY_PHASE_FK" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="STUDY_RESEARCH_TYPE_FK" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="STUDY_TYPE_FK" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="STUDY_BLINDING_FK" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="STUDY_RANDOM_FK" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="CREATOR_FK" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="LAST_MODIFIED_BY_FK" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="SPONSOR_DD_FK" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="CTRP_LAST_DOWNLOAD_BY_FK" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="STUDY_SCOPE" Type="String" MaxLength="4000" Unicode="false" FixedLength="false" />
+          <Property Name="PK_STUDY" Type="number" Nullable="false" />
+          <Property Name="STUDY_NUMBER" Type="varchar2" MaxLength="100" />
+          <Property Name="STUDY_ENTERED_BY" Type="varchar2" MaxLength="61" />
+          <Property Name="STUDY_PI" Type="varchar2" MaxLength="61" />
+          <Property Name="STUDY_COORDINATOR" Type="varchar2" MaxLength="61" />
+          <Property Name="STUDY_MAJ_AUTH" Type="varchar2" />
+          <Property Name="STUDY_TITLE" Type="varchar2" MaxLength="1000" />
+          <Property Name="STUDY_OBJECTIVE" Type="clob" />
+          <Property Name="STUDY_SUMMARY" Type="clob" />
+          <Property Name="STUDY_AGENT_DEVICE" Type="varchar2" MaxLength="100" />
+          <Property Name="STUDY_DIVISION" Type="varchar2" />
+          <Property Name="STUDY_TAREA" Type="varchar2" />
+          <Property Name="STUDY_DISEASE_SITE" Type="varchar2" />
+          <Property Name="STUDY_ICDCODE1" Type="varchar2" MaxLength="2000" />
+          <Property Name="STUDY_ICDCODE2" Type="varchar2" MaxLength="2000" />
+          <Property Name="STUDY_NATSAMPSIZE" Type="number" />
+          <Property Name="STUDY_DURATION" Type="number" Precision="5" />
+          <Property Name="STUDY_DURATN_UNIT" Type="varchar2" MaxLength="10" />
+          <Property Name="STUDY_EST_BEGIN_DATE" Type="date" />
+          <Property Name="STUDY_PHASE" Type="varchar2" />
+          <Property Name="STUDY_RESEARCH_TYPE" Type="varchar2" />
+          <Property Name="STUDY_TYPE" Type="varchar2" />
+          <Property Name="STUDY_LINKED_TO" Type="varchar2" MaxLength="100" />
+          <Property Name="STUDY_BLINDING" Type="varchar2" />
+          <Property Name="STUDY_RANDOM" Type="varchar2" />
+          <Property Name="STUDY_SPONSOR" Type="varchar2" MaxLength="200" />
+          <Property Name="SPONSOR_CONTACT" Type="varchar2" MaxLength="2000" />
+          <Property Name="STUDY_INFO" Type="varchar2" MaxLength="2000" />
+          <Property Name="STUDY_KEYWRDS" Type="varchar2" MaxLength="500" />
+          <Property Name="FK_ACCOUNT" Type="number" />
+          <Property Name="CREATED_ON" Type="date" />
+          <Property Name="LAST_MODIFIED_BY" Type="varchar2" MaxLength="61" />
+          <Property Name="LAST_MODIFIED_DATE" Type="date" />
+          <Property Name="CREATOR" Type="varchar2" MaxLength="61" />
+          <Property Name="SPONSOR_DD" Type="varchar2" />
+          <Property Name="STUDY_SPONSORID" Type="varchar2" MaxLength="50" />
+          <Property Name="STUDY_ACTUALDT" Type="date" />
+          <Property Name="STUDY_INVIND_FLAG" Type="varchar2" />
+          <Property Name="CTRP_ACCRREP_LASTRUN_DATE" Type="date" />
+          <Property Name="CTRP_ACCRUAL_GEN_DATE" Type="date" />
+          <Property Name="CTRP_CUTOFF_DATE" Type="date" />
+          <Property Name="CTRP_LAST_DOWNLOAD_BY" Type="varchar2" MaxLength="61" />
+          <Property Name="NCI_TRIAL_IDENTIFIER" Type="varchar2" MaxLength="35" />
+          <Property Name="NCT_NUMBER" Type="varchar2" MaxLength="100" />
+          <Property Name="STUDY_ENTERED_BY_FK" Type="number" />
+          <Property Name="STUDY_PI_FK" Type="varchar2" MaxLength="1000" />
+          <Property Name="STUDY_COORDINATOR_FK" Type="number" />
+          <Property Name="STUDY_DIVISION_FK" Type="number" />
+          <Property Name="STUDY_TAREA_FK" Type="number" />
+          <Property Name="STUDY_DISEASE_SITE_FK" Type="varchar2" MaxLength="500" />
+          <Property Name="STUDY_PHASE_FK" Type="number" />
+          <Property Name="STUDY_RESEARCH_TYPE_FK" Type="number" />
+          <Property Name="STUDY_TYPE_FK" Type="number" />
+          <Property Name="STUDY_BLINDING_FK" Type="number" />
+          <Property Name="STUDY_RANDOM_FK" Type="number" />
+          <Property Name="CREATOR_FK" Type="number" />
+          <Property Name="LAST_MODIFIED_BY_FK" Type="number" />
+          <Property Name="SPONSOR_DD_FK" Type="number" />
+          <Property Name="CTRP_LAST_DOWNLOAD_BY_FK" Type="number" />
+          <Property Name="STUDY_SCOPE" Type="varchar2" />
         </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'VDA.VDA_V_STUDYSITES' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
         <EntityType Name="VDA_V_STUDYSITES">
           <Key>
             <PropertyRef Name="PK_STUDYSITES" />
           </Key>
-          <Property Name="PK_STUDYSITES" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="FK_STUDY" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="FK_SITE" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="STUDYSITE_TYPE" Type="String" MaxLength="200" Unicode="false" FixedLength="false" />
-          <Property Name="STUDYSITE_LSAMPLESIZE" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
-          <Property Name="IS_STUDYSITE_PUBLIC" Type="String" MaxLength="3" Unicode="false" FixedLength="false" />
-          <Property Name="INCLUDE_IN_REPORTS" Type="String" MaxLength="3" Unicode="false" FixedLength="false" />
-          <Property Name="RID" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="CREATOR" Type="String" MaxLength="61" Unicode="false" FixedLength="false" />
-          <Property Name="LAST_MODIFIED_BY" Type="String" MaxLength="61" Unicode="false" FixedLength="false" />
-          <Property Name="CREATED_ON" Type="DateTime" />
-          <Property Name="LAST_MODIFIED_ON" Type="DateTime" />
-          <Property Name="IP_ADD" Type="String" MaxLength="15" Unicode="false" FixedLength="false" />
-          <Property Name="STUDYSITE_ENRCOUNT" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="IS_REVIEWBASED_ENR" Type="String" MaxLength="3" Unicode="false" FixedLength="false" />
-          <Property Name="SEND_ENROLLMENT_NOTIFICATION" Type="String" MaxLength="4000" Unicode="false" FixedLength="false" />
-          <Property Name="SEND_ENROLLMENT_APPROVAL" Type="String" MaxLength="4000" Unicode="false" FixedLength="false" />
-          <Property Name="STUDY_NUMBER" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
-          <Property Name="SITE_NAME" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
-          <Property Name="FK_ACCOUNT" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="LAST_MODIFIED_BY_FK" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="CREATOR_FK" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="PK_STUDYSITES" Type="number" Nullable="false" />
+          <Property Name="FK_STUDY" Type="number" />
+          <Property Name="FK_SITE" Type="number" />
+          <Property Name="STUDYSITE_TYPE" Type="varchar2" MaxLength="200" />
+          <Property Name="STUDYSITE_LSAMPLESIZE" Type="varchar2" MaxLength="20" />
+          <Property Name="IS_STUDYSITE_PUBLIC" Type="varchar2" MaxLength="3" />
+          <Property Name="INCLUDE_IN_REPORTS" Type="varchar2" MaxLength="3" />
+          <Property Name="RID" Type="number" />
+          <Property Name="CREATOR" Type="varchar2" MaxLength="61" />
+          <Property Name="LAST_MODIFIED_BY" Type="varchar2" MaxLength="61" />
+          <Property Name="CREATED_ON" Type="date" />
+          <Property Name="LAST_MODIFIED_ON" Type="date" />
+          <Property Name="IP_ADD" Type="varchar2" MaxLength="15" />
+          <Property Name="STUDYSITE_ENRCOUNT" Type="number" />
+          <Property Name="IS_REVIEWBASED_ENR" Type="varchar2" MaxLength="3" />
+          <Property Name="SEND_ENROLLMENT_NOTIFICATION" Type="varchar2" />
+          <Property Name="SEND_ENROLLMENT_APPROVAL" Type="varchar2" />
+          <Property Name="STUDY_NUMBER" Type="varchar2" MaxLength="100" />
+          <Property Name="SITE_NAME" Type="varchar2" MaxLength="50" />
+          <Property Name="FK_ACCOUNT" Type="number" />
+          <Property Name="LAST_MODIFIED_BY_FK" Type="number" />
+          <Property Name="CREATOR_FK" Type="number" />
         </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'VDA.VDA_V_STUDYSTAT' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
         <EntityType Name="VDA_V_STUDYSTAT">
           <Key>
             <PropertyRef Name="PK_STUDYSTAT" />
           </Key>
-          <Property Name="STUDY_NUMBER" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
-          <Property Name="STUDY_START_DATE" Type="DateTime" />
-          <Property Name="STUDY_END_DATE" Type="DateTime" />
-          <Property Name="SSTAT_SITE_NAME" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
-          <Property Name="SSTAT_STUDY_STATUS" Type="String" MaxLength="4000" Unicode="false" FixedLength="false" />
-          <Property Name="SSTAT_VALID_FROM" Type="DateTime" />
-          <Property Name="SSTAT_VALID_UNTIL" Type="DateTime" />
-          <Property Name="SSTAT_NOTES" Type="String" MaxLength="2000" Unicode="false" FixedLength="false" />
-          <Property Name="SSTAT_DOCUMNTD_BY" Type="String" MaxLength="61" Unicode="false" FixedLength="false" />
-          <Property Name="SSTAT_END_DATE_SYSTEM" Type="DateTime" />
-          <Property Name="CREATOR" Type="String" MaxLength="61" Unicode="false" FixedLength="false" />
-          <Property Name="CREATED_ON" Type="DateTime" />
-          <Property Name="LAST_MODIFIED_BY" Type="String" MaxLength="61" Unicode="false" FixedLength="false" />
-          <Property Name="LAST_MODIFIED_DATE" Type="DateTime" />
-          <Property Name="PK_STUDYSTAT" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="FK_STUDY" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="SSTAT_FK_SITE" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="FK_ACCOUNT" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="SSTAT_CURRENT_STAT" Type="String" MaxLength="3" Unicode="false" FixedLength="false" />
-          <Property Name="SSTAT_STATUS_TYPE_FK" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="SSTAT_STATUS_TYPE" Type="String" MaxLength="4000" Unicode="false" FixedLength="false" />
-          <Property Name="LAST_MODIFIED_BY_FK" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="CREATOR_FK" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="STUDY_NUMBER" Type="varchar2" MaxLength="100" />
+          <Property Name="STUDY_START_DATE" Type="date" />
+          <Property Name="STUDY_END_DATE" Type="date" />
+          <Property Name="SSTAT_SITE_NAME" Type="varchar2" MaxLength="50" />
+          <Property Name="SSTAT_STUDY_STATUS" Type="varchar2" />
+          <Property Name="SSTAT_VALID_FROM" Type="date" />
+          <Property Name="SSTAT_VALID_UNTIL" Type="date" />
+          <Property Name="SSTAT_NOTES" Type="varchar2" MaxLength="2000" />
+          <Property Name="SSTAT_DOCUMNTD_BY" Type="varchar2" MaxLength="61" />
+          <Property Name="SSTAT_END_DATE_SYSTEM" Type="date" />
+          <Property Name="CREATOR" Type="varchar2" MaxLength="61" />
+          <Property Name="CREATED_ON" Type="date" />
+          <Property Name="LAST_MODIFIED_BY" Type="varchar2" MaxLength="61" />
+          <Property Name="LAST_MODIFIED_DATE" Type="date" />
+          <Property Name="PK_STUDYSTAT" Type="number" Nullable="false" />
+          <Property Name="FK_STUDY" Type="number" />
+          <Property Name="SSTAT_FK_SITE" Type="number" />
+          <Property Name="FK_ACCOUNT" Type="number" />
+          <Property Name="SSTAT_CURRENT_STAT" Type="varchar2" MaxLength="3" />
+          <Property Name="SSTAT_STATUS_TYPE_FK" Type="number" />
+          <Property Name="SSTAT_STATUS_TYPE" Type="varchar2" />
+          <Property Name="LAST_MODIFIED_BY_FK" Type="number" />
+          <Property Name="CREATOR_FK" Type="number" />
         </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'VDA.VDA_V_STUDYTEAM_MEMBERS' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
         <EntityType Name="VDA_V_STUDYTEAM_MEMBERS">
           <Key>
             <PropertyRef Name="PK_STUDYTEAM" />
           </Key>
-          <Property Name="STUDY_NUMBER" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
-          <Property Name="STUDY_TITLE" Type="String" MaxLength="1000" Unicode="false" FixedLength="false" />
-          <Property Name="USER_SITE_NAME" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
-          <Property Name="USER_NAME" Type="String" MaxLength="61" Unicode="false" FixedLength="false" />
-          <Property Name="USER_PHONE" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
-          <Property Name="USER_EMAIL" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
-          <Property Name="USER_ADDRESS" Type="String" MaxLength="132" Unicode="false" FixedLength="false" />
-          <Property Name="ROLE" Type="String" MaxLength="4000" Unicode="false" FixedLength="false" />
-          <Property Name="FK_STUDY" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="CREATED_ON" Type="DateTime" />
-          <Property Name="FK_ACCOUNT" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="CREATOR" Type="String" MaxLength="61" Unicode="false" FixedLength="false" />
-          <Property Name="LAST_MODIFIED_BY" Type="String" MaxLength="61" Unicode="false" FixedLength="false" />
-          <Property Name="LAST_MODIFIED_DATE" Type="DateTime" />
-          <Property Name="RID" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="PK_STUDYTEAM" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="STUDYTEAM_STATUS" Type="String" MaxLength="30" Unicode="false" FixedLength="false" />
-          <Property Name="LAST_MODIFIED_BY_FK" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="CREATOR_FK" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="STUDY_NUMBER" Type="varchar2" MaxLength="100" />
+          <Property Name="STUDY_TITLE" Type="varchar2" MaxLength="1000" />
+          <Property Name="USER_SITE_NAME" Type="varchar2" MaxLength="50" />
+          <Property Name="USER_NAME" Type="varchar2" MaxLength="61" />
+          <Property Name="USER_PHONE" Type="varchar2" MaxLength="100" />
+          <Property Name="USER_EMAIL" Type="varchar2" MaxLength="100" />
+          <Property Name="USER_ADDRESS" Type="varchar2" MaxLength="132" />
+          <Property Name="ROLE" Type="varchar2" />
+          <Property Name="FK_STUDY" Type="number" />
+          <Property Name="CREATED_ON" Type="date" />
+          <Property Name="FK_ACCOUNT" Type="number" />
+          <Property Name="CREATOR" Type="varchar2" MaxLength="61" />
+          <Property Name="LAST_MODIFIED_BY" Type="varchar2" MaxLength="61" />
+          <Property Name="LAST_MODIFIED_DATE" Type="date" />
+          <Property Name="RID" Type="number" />
+          <Property Name="PK_STUDYTEAM" Type="number" Nullable="false" />
+          <Property Name="STUDYTEAM_STATUS" Type="varchar2" MaxLength="30" />
+          <Property Name="LAST_MODIFIED_BY_FK" Type="number" />
+          <Property Name="CREATOR_FK" Type="number" />
         </EntityType>
         <Association Name="FK_STDYAPNX_STUDY">
-          <End Role="ER_STUDYVER" Type="VelosModel.ER_STUDYVER" Multiplicity="0..1" />
-          <End Role="ER_STUDYAPNDX" Type="VelosModel.ER_STUDYAPNDX" Multiplicity="*" />
+          <End Role="ER_STUDYVER" Type="VelosModel.Store.ER_STUDYVER" Multiplicity="0..1" />
+          <End Role="ER_STUDYAPNDX" Type="VelosModel.Store.ER_STUDYAPNDX" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ER_STUDYVER">
               <PropertyRef Name="PK_STUDYVER" />
@@ -461,6 +612,68 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="VelosModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="VelosDb" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ER_STUDYAPNDX" EntityType="VelosModel.ER_STUDYAPNDX" />
+          <EntitySet Name="ER_STUDYVER" EntityType="VelosModel.ER_STUDYVER" />
+          <EntitySet Name="LCL_V_STUDY_INDIDE" EntityType="VelosModel.LCL_V_STUDY_INDIDE" />
+          <EntitySet Name="LCL_V_STUDYSUMM_PLUSMORE" EntityType="VelosModel.LCL_V_STUDYSUMM_PLUSMORE" />
+          <EntitySet Name="VDA_V_ER_CODELST" EntityType="VelosModel.VDA_V_ER_CODELST" />
+          <EntitySet Name="VDA_V_STUDY_SUMMARY" EntityType="VelosModel.VDA_V_STUDY_SUMMARY" />
+          <EntitySet Name="VDA_V_STUDYSITES" EntityType="VelosModel.VDA_V_STUDYSITES" />
+          <EntitySet Name="VDA_V_STUDYSTAT" EntityType="VelosModel.VDA_V_STUDYSTAT" />
+          <EntitySet Name="VDA_V_STUDYTEAM_MEMBERS" EntityType="VelosModel.VDA_V_STUDYTEAM_MEMBERS" />
+          <AssociationSet Name="FK_STDYAPNX_STUDY" Association="VelosModel.FK_STDYAPNX_STUDY">
+            <End Role="ER_STUDYVER" EntitySet="ER_STUDYVER" />
+            <End Role="ER_STUDYAPNDX" EntitySet="ER_STUDYAPNDX" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="ER_STUDYAPNDX">
+          <Key>
+            <PropertyRef Name="PK_STUDYAPNDX" />
+          </Key>
+          <Property Type="Decimal" Name="PK_STUDYAPNDX" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="FK_STUDY" Precision="38" Scale="0" />
+          <Property Type="String" Name="STUDYAPNDX_TYPE" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDYAPNDX_URI" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDYAPNDX_DESC" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDYAPNDX_PUBFLAG" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="Decimal" Name="RID" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="CREATOR" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="LAST_MODIFIED_BY" Precision="38" Scale="0" />
+          <Property Type="DateTime" Name="LAST_MODIFIED_DATE" />
+          <Property Type="DateTime" Name="CREATED_ON" />
+          <Property Type="String" Name="STUDYAPNDX_FILE" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Type="Binary" Name="STUDYAPNDX_FILEOBJ" MaxLength="Max" FixedLength="false" />
+          <Property Type="String" Name="IP_ADD" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="STUDYAPNDX_FILESIZE" />
+          <Property Type="Decimal" Name="FK_STUDYVER" Precision="38" Scale="0" />
+          <NavigationProperty Name="ER_STUDYVER" Relationship="VelosModel.FK_STDYAPNX_STUDY" FromRole="ER_STUDYAPNDX" ToRole="ER_STUDYVER" />
+        </EntityType>
+        <EntityType Name="ER_STUDYVER">
+          <Key>
+            <PropertyRef Name="PK_STUDYVER" />
+          </Key>
+          <Property Type="Decimal" Name="PK_STUDYVER" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="FK_STUDY" Precision="38" Scale="0" />
+          <Property Type="String" Name="STUDYVER_NUMBER" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDYVER_STATUS" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="STUDYVER_NOTES" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="ORIG_STUDY" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="RID" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="CREATOR" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="LAST_MODIFIED_BY" Precision="38" Scale="0" />
+          <Property Type="DateTime" Name="LAST_MODIFIED_DATE" />
+          <Property Type="DateTime" Name="CREATED_ON" />
+          <Property Type="String" Name="IP_ADD" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="STUDYVER_DATE" />
+          <Property Type="Decimal" Name="STUDYVER_CATEGORY" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="STUDYVER_TYPE" Precision="38" Scale="0" />
+          <NavigationProperty Name="ER_STUDYAPNDX" Relationship="VelosModel.FK_STDYAPNX_STUDY" FromRole="ER_STUDYVER" ToRole="ER_STUDYAPNDX" />
+        </EntityType>
         <EntityType Name="LCL_V_STUDY_INDIDE">
           <Key>
             <PropertyRef Name="PK_STUDY_INDIIDE" />
@@ -580,12 +793,247 @@
           <Property Type="String" Name="MORE_SC_TRIALS" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="MORE_MANAGEDBY" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
-      </Schema>
+        <EntityType Name="VDA_V_ER_CODELST">
+          <Key>
+            <PropertyRef Name="PK_CODELST" />
+          </Key>
+          <Property Type="Decimal" Name="PK_CODELST" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="String" Name="CODELST_TYPE" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CODELST_SUBTYP" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CODELST_DESC" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CODELST_HIDE" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="Decimal" Name="CODELST_SEQ" Precision="38" Scale="0" />
+          <Property Type="String" Name="CODELST_CUSTOM_COL" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CODELST_CUSTOM_COL1" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CODELST_STUDY_ROLE" MaxLength="4000" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="VDA_V_STUDY_SUMMARY">
+          <Key>
+            <PropertyRef Name="PK_STUDY" />
+          </Key>
+          <Property Type="Decimal" Name="PK_STUDY" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="String" Name="STUDY_NUMBER" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_ENTERED_BY" MaxLength="61" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_PI" MaxLength="61" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_COORDINATOR" MaxLength="61" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_MAJ_AUTH" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_TITLE" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_OBJECTIVE" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_SUMMARY" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_AGENT_DEVICE" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_DIVISION" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_TAREA" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_DISEASE_SITE" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_ICDCODE1" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_ICDCODE2" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="STUDY_NATSAMPSIZE" Precision="38" Scale="0" />
+          <Property Type="Int16" Name="STUDY_DURATION" />
+          <Property Type="String" Name="STUDY_DURATN_UNIT" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="STUDY_EST_BEGIN_DATE" />
+          <Property Type="String" Name="STUDY_PHASE" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_RESEARCH_TYPE" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_TYPE" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_LINKED_TO" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_BLINDING" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_RANDOM" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_SPONSOR" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SPONSOR_CONTACT" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_INFO" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_KEYWRDS" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="FK_ACCOUNT" Precision="38" Scale="0" />
+          <Property Type="DateTime" Name="CREATED_ON" />
+          <Property Type="String" Name="LAST_MODIFIED_BY" MaxLength="61" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="LAST_MODIFIED_DATE" />
+          <Property Type="String" Name="CREATOR" MaxLength="61" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SPONSOR_DD" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_SPONSORID" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="STUDY_ACTUALDT" />
+          <Property Type="String" Name="STUDY_INVIND_FLAG" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CTRP_ACCRREP_LASTRUN_DATE" />
+          <Property Type="DateTime" Name="CTRP_ACCRUAL_GEN_DATE" />
+          <Property Type="DateTime" Name="CTRP_CUTOFF_DATE" />
+          <Property Type="String" Name="CTRP_LAST_DOWNLOAD_BY" MaxLength="61" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="NCI_TRIAL_IDENTIFIER" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="NCT_NUMBER" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="STUDY_ENTERED_BY_FK" Precision="38" Scale="0" />
+          <Property Type="String" Name="STUDY_PI_FK" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="STUDY_COORDINATOR_FK" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="STUDY_DIVISION_FK" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="STUDY_TAREA_FK" Precision="38" Scale="0" />
+          <Property Type="String" Name="STUDY_DISEASE_SITE_FK" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="STUDY_PHASE_FK" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="STUDY_RESEARCH_TYPE_FK" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="STUDY_TYPE_FK" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="STUDY_BLINDING_FK" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="STUDY_RANDOM_FK" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="CREATOR_FK" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="LAST_MODIFIED_BY_FK" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="SPONSOR_DD_FK" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="CTRP_LAST_DOWNLOAD_BY_FK" Precision="38" Scale="0" />
+          <Property Type="String" Name="STUDY_SCOPE" MaxLength="4000" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="VDA_V_STUDYSITES">
+          <Key>
+            <PropertyRef Name="PK_STUDYSITES" />
+          </Key>
+          <Property Type="Decimal" Name="PK_STUDYSITES" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="FK_STUDY" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="FK_SITE" Precision="38" Scale="0" />
+          <Property Type="String" Name="STUDYSITE_TYPE" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDYSITE_LSAMPLESIZE" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="IS_STUDYSITE_PUBLIC" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="INCLUDE_IN_REPORTS" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="RID" Precision="38" Scale="0" />
+          <Property Type="String" Name="CREATOR" MaxLength="61" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="LAST_MODIFIED_BY" MaxLength="61" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CREATED_ON" />
+          <Property Type="DateTime" Name="LAST_MODIFIED_ON" />
+          <Property Type="String" Name="IP_ADD" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="STUDYSITE_ENRCOUNT" Precision="38" Scale="0" />
+          <Property Type="String" Name="IS_REVIEWBASED_ENR" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEND_ENROLLMENT_NOTIFICATION" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SEND_ENROLLMENT_APPROVAL" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_NUMBER" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SITE_NAME" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="FK_ACCOUNT" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="LAST_MODIFIED_BY_FK" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="CREATOR_FK" Precision="38" Scale="0" />
+        </EntityType>
+        <EntityType Name="VDA_V_STUDYSTAT">
+          <Key>
+            <PropertyRef Name="PK_STUDYSTAT" />
+          </Key>
+          <Property Type="String" Name="STUDY_NUMBER" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="STUDY_START_DATE" />
+          <Property Type="DateTime" Name="STUDY_END_DATE" />
+          <Property Type="String" Name="SSTAT_SITE_NAME" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SSTAT_STUDY_STATUS" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="SSTAT_VALID_FROM" />
+          <Property Type="DateTime" Name="SSTAT_VALID_UNTIL" />
+          <Property Type="String" Name="SSTAT_NOTES" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SSTAT_DOCUMNTD_BY" MaxLength="61" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="SSTAT_END_DATE_SYSTEM" />
+          <Property Type="String" Name="CREATOR" MaxLength="61" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CREATED_ON" />
+          <Property Type="String" Name="LAST_MODIFIED_BY" MaxLength="61" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="LAST_MODIFIED_DATE" />
+          <Property Type="Decimal" Name="PK_STUDYSTAT" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="FK_STUDY" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="SSTAT_FK_SITE" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="FK_ACCOUNT" Precision="38" Scale="0" />
+          <Property Type="String" Name="SSTAT_CURRENT_STAT" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="SSTAT_STATUS_TYPE_FK" Precision="38" Scale="0" />
+          <Property Type="String" Name="SSTAT_STATUS_TYPE" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="LAST_MODIFIED_BY_FK" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="CREATOR_FK" Precision="38" Scale="0" />
+        </EntityType>
+        <EntityType Name="VDA_V_STUDYTEAM_MEMBERS">
+          <Key>
+            <PropertyRef Name="PK_STUDYTEAM" />
+          </Key>
+          <Property Type="String" Name="STUDY_NUMBER" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_TITLE" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="USER_SITE_NAME" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="USER_NAME" MaxLength="61" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="USER_PHONE" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="USER_EMAIL" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="USER_ADDRESS" MaxLength="132" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ROLE" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="FK_STUDY" Precision="38" Scale="0" />
+          <Property Type="DateTime" Name="CREATED_ON" />
+          <Property Type="Decimal" Name="FK_ACCOUNT" Precision="38" Scale="0" />
+          <Property Type="String" Name="CREATOR" MaxLength="61" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="LAST_MODIFIED_BY" MaxLength="61" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="LAST_MODIFIED_DATE" />
+          <Property Type="Decimal" Name="RID" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="PK_STUDYTEAM" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="String" Name="STUDYTEAM_STATUS" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="LAST_MODIFIED_BY_FK" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="CREATOR_FK" Precision="38" Scale="0" />
+        </EntityType>
+        <Association Name="FK_STDYAPNX_STUDY">
+          <End Type="VelosModel.ER_STUDYVER" Role="ER_STUDYVER" Multiplicity="0..1" />
+          <End Type="VelosModel.ER_STUDYAPNDX" Role="ER_STUDYAPNDX" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ER_STUDYVER">
+              <PropertyRef Name="PK_STUDYVER" />
+            </Principal>
+            <Dependent Role="ER_STUDYAPNDX">
+              <PropertyRef Name="FK_STUDYVER" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="VelosModelStoreContainer" CdmEntityContainer="VelosDb">
+          <EntitySetMapping Name="ER_STUDYAPNDX">
+            <EntityTypeMapping TypeName="VelosModel.ER_STUDYAPNDX">
+              <MappingFragment StoreEntitySet="ER_STUDYAPNDX">
+                <ScalarProperty Name="FK_STUDYVER" ColumnName="FK_STUDYVER" />
+                <ScalarProperty Name="STUDYAPNDX_FILESIZE" ColumnName="STUDYAPNDX_FILESIZE" />
+                <ScalarProperty Name="IP_ADD" ColumnName="IP_ADD" />
+                <ScalarProperty Name="STUDYAPNDX_FILEOBJ" ColumnName="STUDYAPNDX_FILEOBJ" />
+                <ScalarProperty Name="STUDYAPNDX_FILE" ColumnName="STUDYAPNDX_FILE" />
+                <ScalarProperty Name="CREATED_ON" ColumnName="CREATED_ON" />
+                <ScalarProperty Name="LAST_MODIFIED_DATE" ColumnName="LAST_MODIFIED_DATE" />
+                <ScalarProperty Name="LAST_MODIFIED_BY" ColumnName="LAST_MODIFIED_BY" />
+                <ScalarProperty Name="CREATOR" ColumnName="CREATOR" />
+                <ScalarProperty Name="RID" ColumnName="RID" />
+                <ScalarProperty Name="STUDYAPNDX_PUBFLAG" ColumnName="STUDYAPNDX_PUBFLAG" />
+                <ScalarProperty Name="STUDYAPNDX_DESC" ColumnName="STUDYAPNDX_DESC" />
+                <ScalarProperty Name="STUDYAPNDX_URI" ColumnName="STUDYAPNDX_URI" />
+                <ScalarProperty Name="STUDYAPNDX_TYPE" ColumnName="STUDYAPNDX_TYPE" />
+                <ScalarProperty Name="FK_STUDY" ColumnName="FK_STUDY" />
+                <ScalarProperty Name="PK_STUDYAPNDX" ColumnName="PK_STUDYAPNDX" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ER_STUDYVER">
+            <EntityTypeMapping TypeName="VelosModel.ER_STUDYVER">
+              <MappingFragment StoreEntitySet="ER_STUDYVER">
+                <ScalarProperty Name="STUDYVER_TYPE" ColumnName="STUDYVER_TYPE" />
+                <ScalarProperty Name="STUDYVER_CATEGORY" ColumnName="STUDYVER_CATEGORY" />
+                <ScalarProperty Name="STUDYVER_DATE" ColumnName="STUDYVER_DATE" />
+                <ScalarProperty Name="IP_ADD" ColumnName="IP_ADD" />
+                <ScalarProperty Name="CREATED_ON" ColumnName="CREATED_ON" />
+                <ScalarProperty Name="LAST_MODIFIED_DATE" ColumnName="LAST_MODIFIED_DATE" />
+                <ScalarProperty Name="LAST_MODIFIED_BY" ColumnName="LAST_MODIFIED_BY" />
+                <ScalarProperty Name="CREATOR" ColumnName="CREATOR" />
+                <ScalarProperty Name="RID" ColumnName="RID" />
+                <ScalarProperty Name="ORIG_STUDY" ColumnName="ORIG_STUDY" />
+                <ScalarProperty Name="STUDYVER_NOTES" ColumnName="STUDYVER_NOTES" />
+                <ScalarProperty Name="STUDYVER_STATUS" ColumnName="STUDYVER_STATUS" />
+                <ScalarProperty Name="STUDYVER_NUMBER" ColumnName="STUDYVER_NUMBER" />
+                <ScalarProperty Name="FK_STUDY" ColumnName="FK_STUDY" />
+                <ScalarProperty Name="PK_STUDYVER" ColumnName="PK_STUDYVER" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LCL_V_STUDY_INDIDE">
+            <EntityTypeMapping TypeName="VelosModel.LCL_V_STUDY_INDIDE">
+              <MappingFragment StoreEntitySet="LCL_V_STUDY_INDIDE">
+                <ScalarProperty Name="LAST_MODIFIED_DATE" ColumnName="LAST_MODIFIED_DATE" />
+                <ScalarProperty Name="LAST_MODIFIED_BY" ColumnName="LAST_MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_ON" ColumnName="CREATED_ON" />
+                <ScalarProperty Name="CREATOR" ColumnName="CREATOR" />
+                <ScalarProperty Name="IP_ADD" ColumnName="IP_ADD" />
+                <ScalarProperty Name="RID" ColumnName="RID" />
+                <ScalarProperty Name="INDIDE_EXEMPT" ColumnName="INDIDE_EXEMPT" />
+                <ScalarProperty Name="FK_CODELST_ACCESS_TYPE" ColumnName="FK_CODELST_ACCESS_TYPE" />
+                <ScalarProperty Name="INDIDE_EXPAND_ACCESS" ColumnName="INDIDE_EXPAND_ACCESS" />
+                <ScalarProperty Name="FK_CODELST_PROGRAM_CODE" ColumnName="FK_CODELST_PROGRAM_CODE" />
+                <ScalarProperty Name="FK_CODELST_INDIDE_HOLDER" ColumnName="FK_CODELST_INDIDE_HOLDER" />
+                <ScalarProperty Name="FK_CODELST_INDIDE_GRANTOR" ColumnName="FK_CODELST_INDIDE_GRANTOR" />
+                <ScalarProperty Name="INDIDE_NUMBER" ColumnName="INDIDE_NUMBER" />
+                <ScalarProperty Name="INDIDE_TYPE" ColumnName="INDIDE_TYPE" />
+                <ScalarProperty Name="FK_STUDY" ColumnName="FK_STUDY" />
+                <ScalarProperty Name="PK_STUDY_INDIIDE" ColumnName="PK_STUDY_INDIIDE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="LCL_V_STUDYSUMM_PLUSMORE">
             <EntityTypeMapping TypeName="VelosModel.LCL_V_STUDYSUMM_PLUSMORE">
               <MappingFragment StoreEntitySet="LCL_V_STUDYSUMM_PLUSMORE">
@@ -685,6 +1133,169 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="VDA_V_ER_CODELST">
+            <EntityTypeMapping TypeName="VelosModel.VDA_V_ER_CODELST">
+              <MappingFragment StoreEntitySet="VDA_V_ER_CODELST">
+                <ScalarProperty Name="CODELST_STUDY_ROLE" ColumnName="CODELST_STUDY_ROLE" />
+                <ScalarProperty Name="CODELST_CUSTOM_COL1" ColumnName="CODELST_CUSTOM_COL1" />
+                <ScalarProperty Name="CODELST_CUSTOM_COL" ColumnName="CODELST_CUSTOM_COL" />
+                <ScalarProperty Name="CODELST_SEQ" ColumnName="CODELST_SEQ" />
+                <ScalarProperty Name="CODELST_HIDE" ColumnName="CODELST_HIDE" />
+                <ScalarProperty Name="CODELST_DESC" ColumnName="CODELST_DESC" />
+                <ScalarProperty Name="CODELST_SUBTYP" ColumnName="CODELST_SUBTYP" />
+                <ScalarProperty Name="CODELST_TYPE" ColumnName="CODELST_TYPE" />
+                <ScalarProperty Name="PK_CODELST" ColumnName="PK_CODELST" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VDA_V_STUDY_SUMMARY">
+            <EntityTypeMapping TypeName="VelosModel.VDA_V_STUDY_SUMMARY">
+              <MappingFragment StoreEntitySet="VDA_V_STUDY_SUMMARY">
+                <ScalarProperty Name="STUDY_SCOPE" ColumnName="STUDY_SCOPE" />
+                <ScalarProperty Name="CTRP_LAST_DOWNLOAD_BY_FK" ColumnName="CTRP_LAST_DOWNLOAD_BY_FK" />
+                <ScalarProperty Name="SPONSOR_DD_FK" ColumnName="SPONSOR_DD_FK" />
+                <ScalarProperty Name="LAST_MODIFIED_BY_FK" ColumnName="LAST_MODIFIED_BY_FK" />
+                <ScalarProperty Name="CREATOR_FK" ColumnName="CREATOR_FK" />
+                <ScalarProperty Name="STUDY_RANDOM_FK" ColumnName="STUDY_RANDOM_FK" />
+                <ScalarProperty Name="STUDY_BLINDING_FK" ColumnName="STUDY_BLINDING_FK" />
+                <ScalarProperty Name="STUDY_TYPE_FK" ColumnName="STUDY_TYPE_FK" />
+                <ScalarProperty Name="STUDY_RESEARCH_TYPE_FK" ColumnName="STUDY_RESEARCH_TYPE_FK" />
+                <ScalarProperty Name="STUDY_PHASE_FK" ColumnName="STUDY_PHASE_FK" />
+                <ScalarProperty Name="STUDY_DISEASE_SITE_FK" ColumnName="STUDY_DISEASE_SITE_FK" />
+                <ScalarProperty Name="STUDY_TAREA_FK" ColumnName="STUDY_TAREA_FK" />
+                <ScalarProperty Name="STUDY_DIVISION_FK" ColumnName="STUDY_DIVISION_FK" />
+                <ScalarProperty Name="STUDY_COORDINATOR_FK" ColumnName="STUDY_COORDINATOR_FK" />
+                <ScalarProperty Name="STUDY_PI_FK" ColumnName="STUDY_PI_FK" />
+                <ScalarProperty Name="STUDY_ENTERED_BY_FK" ColumnName="STUDY_ENTERED_BY_FK" />
+                <ScalarProperty Name="NCT_NUMBER" ColumnName="NCT_NUMBER" />
+                <ScalarProperty Name="NCI_TRIAL_IDENTIFIER" ColumnName="NCI_TRIAL_IDENTIFIER" />
+                <ScalarProperty Name="CTRP_LAST_DOWNLOAD_BY" ColumnName="CTRP_LAST_DOWNLOAD_BY" />
+                <ScalarProperty Name="CTRP_CUTOFF_DATE" ColumnName="CTRP_CUTOFF_DATE" />
+                <ScalarProperty Name="CTRP_ACCRUAL_GEN_DATE" ColumnName="CTRP_ACCRUAL_GEN_DATE" />
+                <ScalarProperty Name="CTRP_ACCRREP_LASTRUN_DATE" ColumnName="CTRP_ACCRREP_LASTRUN_DATE" />
+                <ScalarProperty Name="STUDY_INVIND_FLAG" ColumnName="STUDY_INVIND_FLAG" />
+                <ScalarProperty Name="STUDY_ACTUALDT" ColumnName="STUDY_ACTUALDT" />
+                <ScalarProperty Name="STUDY_SPONSORID" ColumnName="STUDY_SPONSORID" />
+                <ScalarProperty Name="SPONSOR_DD" ColumnName="SPONSOR_DD" />
+                <ScalarProperty Name="CREATOR" ColumnName="CREATOR" />
+                <ScalarProperty Name="LAST_MODIFIED_DATE" ColumnName="LAST_MODIFIED_DATE" />
+                <ScalarProperty Name="LAST_MODIFIED_BY" ColumnName="LAST_MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_ON" ColumnName="CREATED_ON" />
+                <ScalarProperty Name="FK_ACCOUNT" ColumnName="FK_ACCOUNT" />
+                <ScalarProperty Name="STUDY_KEYWRDS" ColumnName="STUDY_KEYWRDS" />
+                <ScalarProperty Name="STUDY_INFO" ColumnName="STUDY_INFO" />
+                <ScalarProperty Name="SPONSOR_CONTACT" ColumnName="SPONSOR_CONTACT" />
+                <ScalarProperty Name="STUDY_SPONSOR" ColumnName="STUDY_SPONSOR" />
+                <ScalarProperty Name="STUDY_RANDOM" ColumnName="STUDY_RANDOM" />
+                <ScalarProperty Name="STUDY_BLINDING" ColumnName="STUDY_BLINDING" />
+                <ScalarProperty Name="STUDY_LINKED_TO" ColumnName="STUDY_LINKED_TO" />
+                <ScalarProperty Name="STUDY_TYPE" ColumnName="STUDY_TYPE" />
+                <ScalarProperty Name="STUDY_RESEARCH_TYPE" ColumnName="STUDY_RESEARCH_TYPE" />
+                <ScalarProperty Name="STUDY_PHASE" ColumnName="STUDY_PHASE" />
+                <ScalarProperty Name="STUDY_EST_BEGIN_DATE" ColumnName="STUDY_EST_BEGIN_DATE" />
+                <ScalarProperty Name="STUDY_DURATN_UNIT" ColumnName="STUDY_DURATN_UNIT" />
+                <ScalarProperty Name="STUDY_DURATION" ColumnName="STUDY_DURATION" />
+                <ScalarProperty Name="STUDY_NATSAMPSIZE" ColumnName="STUDY_NATSAMPSIZE" />
+                <ScalarProperty Name="STUDY_ICDCODE2" ColumnName="STUDY_ICDCODE2" />
+                <ScalarProperty Name="STUDY_ICDCODE1" ColumnName="STUDY_ICDCODE1" />
+                <ScalarProperty Name="STUDY_DISEASE_SITE" ColumnName="STUDY_DISEASE_SITE" />
+                <ScalarProperty Name="STUDY_TAREA" ColumnName="STUDY_TAREA" />
+                <ScalarProperty Name="STUDY_DIVISION" ColumnName="STUDY_DIVISION" />
+                <ScalarProperty Name="STUDY_AGENT_DEVICE" ColumnName="STUDY_AGENT_DEVICE" />
+                <ScalarProperty Name="STUDY_SUMMARY" ColumnName="STUDY_SUMMARY" />
+                <ScalarProperty Name="STUDY_OBJECTIVE" ColumnName="STUDY_OBJECTIVE" />
+                <ScalarProperty Name="STUDY_TITLE" ColumnName="STUDY_TITLE" />
+                <ScalarProperty Name="STUDY_MAJ_AUTH" ColumnName="STUDY_MAJ_AUTH" />
+                <ScalarProperty Name="STUDY_COORDINATOR" ColumnName="STUDY_COORDINATOR" />
+                <ScalarProperty Name="STUDY_PI" ColumnName="STUDY_PI" />
+                <ScalarProperty Name="STUDY_ENTERED_BY" ColumnName="STUDY_ENTERED_BY" />
+                <ScalarProperty Name="STUDY_NUMBER" ColumnName="STUDY_NUMBER" />
+                <ScalarProperty Name="PK_STUDY" ColumnName="PK_STUDY" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VDA_V_STUDYSITES">
+            <EntityTypeMapping TypeName="VelosModel.VDA_V_STUDYSITES">
+              <MappingFragment StoreEntitySet="VDA_V_STUDYSITES">
+                <ScalarProperty Name="CREATOR_FK" ColumnName="CREATOR_FK" />
+                <ScalarProperty Name="LAST_MODIFIED_BY_FK" ColumnName="LAST_MODIFIED_BY_FK" />
+                <ScalarProperty Name="FK_ACCOUNT" ColumnName="FK_ACCOUNT" />
+                <ScalarProperty Name="SITE_NAME" ColumnName="SITE_NAME" />
+                <ScalarProperty Name="STUDY_NUMBER" ColumnName="STUDY_NUMBER" />
+                <ScalarProperty Name="SEND_ENROLLMENT_APPROVAL" ColumnName="SEND_ENROLLMENT_APPROVAL" />
+                <ScalarProperty Name="SEND_ENROLLMENT_NOTIFICATION" ColumnName="SEND_ENROLLMENT_NOTIFICATION" />
+                <ScalarProperty Name="IS_REVIEWBASED_ENR" ColumnName="IS_REVIEWBASED_ENR" />
+                <ScalarProperty Name="STUDYSITE_ENRCOUNT" ColumnName="STUDYSITE_ENRCOUNT" />
+                <ScalarProperty Name="IP_ADD" ColumnName="IP_ADD" />
+                <ScalarProperty Name="LAST_MODIFIED_ON" ColumnName="LAST_MODIFIED_ON" />
+                <ScalarProperty Name="CREATED_ON" ColumnName="CREATED_ON" />
+                <ScalarProperty Name="LAST_MODIFIED_BY" ColumnName="LAST_MODIFIED_BY" />
+                <ScalarProperty Name="CREATOR" ColumnName="CREATOR" />
+                <ScalarProperty Name="RID" ColumnName="RID" />
+                <ScalarProperty Name="INCLUDE_IN_REPORTS" ColumnName="INCLUDE_IN_REPORTS" />
+                <ScalarProperty Name="IS_STUDYSITE_PUBLIC" ColumnName="IS_STUDYSITE_PUBLIC" />
+                <ScalarProperty Name="STUDYSITE_LSAMPLESIZE" ColumnName="STUDYSITE_LSAMPLESIZE" />
+                <ScalarProperty Name="STUDYSITE_TYPE" ColumnName="STUDYSITE_TYPE" />
+                <ScalarProperty Name="FK_SITE" ColumnName="FK_SITE" />
+                <ScalarProperty Name="FK_STUDY" ColumnName="FK_STUDY" />
+                <ScalarProperty Name="PK_STUDYSITES" ColumnName="PK_STUDYSITES" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VDA_V_STUDYSTAT">
+            <EntityTypeMapping TypeName="VelosModel.VDA_V_STUDYSTAT">
+              <MappingFragment StoreEntitySet="VDA_V_STUDYSTAT">
+                <ScalarProperty Name="CREATOR_FK" ColumnName="CREATOR_FK" />
+                <ScalarProperty Name="LAST_MODIFIED_BY_FK" ColumnName="LAST_MODIFIED_BY_FK" />
+                <ScalarProperty Name="SSTAT_STATUS_TYPE" ColumnName="SSTAT_STATUS_TYPE" />
+                <ScalarProperty Name="SSTAT_STATUS_TYPE_FK" ColumnName="SSTAT_STATUS_TYPE_FK" />
+                <ScalarProperty Name="SSTAT_CURRENT_STAT" ColumnName="SSTAT_CURRENT_STAT" />
+                <ScalarProperty Name="FK_ACCOUNT" ColumnName="FK_ACCOUNT" />
+                <ScalarProperty Name="SSTAT_FK_SITE" ColumnName="SSTAT_FK_SITE" />
+                <ScalarProperty Name="FK_STUDY" ColumnName="FK_STUDY" />
+                <ScalarProperty Name="PK_STUDYSTAT" ColumnName="PK_STUDYSTAT" />
+                <ScalarProperty Name="LAST_MODIFIED_DATE" ColumnName="LAST_MODIFIED_DATE" />
+                <ScalarProperty Name="LAST_MODIFIED_BY" ColumnName="LAST_MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_ON" ColumnName="CREATED_ON" />
+                <ScalarProperty Name="CREATOR" ColumnName="CREATOR" />
+                <ScalarProperty Name="SSTAT_END_DATE_SYSTEM" ColumnName="SSTAT_END_DATE_SYSTEM" />
+                <ScalarProperty Name="SSTAT_DOCUMNTD_BY" ColumnName="SSTAT_DOCUMNTD_BY" />
+                <ScalarProperty Name="SSTAT_NOTES" ColumnName="SSTAT_NOTES" />
+                <ScalarProperty Name="SSTAT_VALID_UNTIL" ColumnName="SSTAT_VALID_UNTIL" />
+                <ScalarProperty Name="SSTAT_VALID_FROM" ColumnName="SSTAT_VALID_FROM" />
+                <ScalarProperty Name="SSTAT_STUDY_STATUS" ColumnName="SSTAT_STUDY_STATUS" />
+                <ScalarProperty Name="SSTAT_SITE_NAME" ColumnName="SSTAT_SITE_NAME" />
+                <ScalarProperty Name="STUDY_END_DATE" ColumnName="STUDY_END_DATE" />
+                <ScalarProperty Name="STUDY_START_DATE" ColumnName="STUDY_START_DATE" />
+                <ScalarProperty Name="STUDY_NUMBER" ColumnName="STUDY_NUMBER" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VDA_V_STUDYTEAM_MEMBERS">
+            <EntityTypeMapping TypeName="VelosModel.VDA_V_STUDYTEAM_MEMBERS">
+              <MappingFragment StoreEntitySet="VDA_V_STUDYTEAM_MEMBERS">
+                <ScalarProperty Name="CREATOR_FK" ColumnName="CREATOR_FK" />
+                <ScalarProperty Name="LAST_MODIFIED_BY_FK" ColumnName="LAST_MODIFIED_BY_FK" />
+                <ScalarProperty Name="STUDYTEAM_STATUS" ColumnName="STUDYTEAM_STATUS" />
+                <ScalarProperty Name="PK_STUDYTEAM" ColumnName="PK_STUDYTEAM" />
+                <ScalarProperty Name="RID" ColumnName="RID" />
+                <ScalarProperty Name="LAST_MODIFIED_DATE" ColumnName="LAST_MODIFIED_DATE" />
+                <ScalarProperty Name="LAST_MODIFIED_BY" ColumnName="LAST_MODIFIED_BY" />
+                <ScalarProperty Name="CREATOR" ColumnName="CREATOR" />
+                <ScalarProperty Name="FK_ACCOUNT" ColumnName="FK_ACCOUNT" />
+                <ScalarProperty Name="CREATED_ON" ColumnName="CREATED_ON" />
+                <ScalarProperty Name="FK_STUDY" ColumnName="FK_STUDY" />
+                <ScalarProperty Name="ROLE" ColumnName="ROLE" />
+                <ScalarProperty Name="USER_ADDRESS" ColumnName="USER_ADDRESS" />
+                <ScalarProperty Name="USER_EMAIL" ColumnName="USER_EMAIL" />
+                <ScalarProperty Name="USER_PHONE" ColumnName="USER_PHONE" />
+                <ScalarProperty Name="USER_NAME" ColumnName="USER_NAME" />
+                <ScalarProperty Name="USER_SITE_NAME" ColumnName="USER_SITE_NAME" />
+                <ScalarProperty Name="STUDY_TITLE" ColumnName="STUDY_TITLE" />
+                <ScalarProperty Name="STUDY_NUMBER" ColumnName="STUDY_NUMBER" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -706,20 +1317,19 @@
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
       <Diagram Name="Model1" ZoomLevel="100">
-        <EntityTypeShape EntityType="VelosModel.ER_CODELST" Width="1.5" PointX="5.75" PointY="0.75" Height="0.4" IsExpanded="false" />
-        <EntityTypeShape EntityType="VelosModel.ER_STUDYAPNDX" Width="1.5" PointX="3" PointY="1" Height="0.4" IsExpanded="false" />
-        <EntityTypeShape EntityType="VelosModel.ER_STUDYVER" Width="1.5" PointX="0.75" PointY="1.125" Height="0.4" IsExpanded="false" />
-        <EntityTypeShape EntityType="VelosModel.VDA_V_ER_CODELST" Width="1.5" PointX="2.75" PointY="6.75" Height="0.4" IsExpanded="false" />
-        <EntityTypeShape EntityType="VelosModel.VDA_V_STUDY_SUMMARY" Width="1.875" PointX="4.75" PointY="6.75" Height="0.4" IsExpanded="false" />
-        <EntityTypeShape EntityType="VelosModel.VDA_V_STUDYSITES" Width="2.125" PointX="6.75" PointY="6.75" Height="0.4" IsExpanded="false" />
-        <EntityTypeShape EntityType="VelosModel.VDA_V_STUDYSTAT" Width="1.5" PointX="8.75" PointY="0.75" Height="0.4" IsExpanded="false" />
-        <EntityTypeShape EntityType="VelosModel.VDA_V_STUDYTEAM_MEMBERS" Width="3.375" PointX="9" PointY="6.75" Height="4.6725065104166656" IsExpanded="true" />
-        <AssociationConnector Association="VelosModel.FK_STDYAPNX_STUDY" ManuallyRouted="false">
-          <ConnectorPoint PointX="2.25" PointY="1.2625" />
-          <ConnectorPoint PointX="3" PointY="1.2625" />
+        <EntityTypeShape EntityType="VelosModel.ER_STUDYAPNDX" Width="1.5" PointX="3" PointY="1" Height="4.2879036458333388" />
+        <EntityTypeShape EntityType="VelosModel.ER_STUDYVER" Width="1.5" PointX="0.75" PointY="1.125" Height="4.0956022135416674" />
+        <EntityTypeShape EntityType="VelosModel.LCL_V_STUDY_INDIDE" Width="2.125" PointX="4.75" PointY="0.75" Height="4.0956022135416674" />
+        <EntityTypeShape EntityType="VelosModel.LCL_V_STUDYSUMM_PLUSMORE" Width="1.5" PointX="5.75" PointY="5.75" Height="18.902812500000007" />
+        <EntityTypeShape EntityType="VelosModel.VDA_V_ER_CODELST" Width="1.5" PointX="0.75" PointY="6.75" Height="2.7494921875000102" />
+        <EntityTypeShape EntityType="VelosModel.VDA_V_STUDY_SUMMARY" Width="1.5" PointX="2.75" PointY="6.75" Height="12.55686523437501" />
+        <EntityTypeShape EntityType="VelosModel.VDA_V_STUDYSITES" Width="2.125" PointX="7.125" PointY="0.625" Height="5.2494108072916674" />
+        <EntityTypeShape EntityType="VelosModel.VDA_V_STUDYSTAT" Width="1.5" PointX="7.75" PointY="6.75" Height="5.4417122395833246" />
+        <EntityTypeShape EntityType="VelosModel.VDA_V_STUDYTEAM_MEMBERS" Width="3" PointX="9.5" PointY="0.75" Height="4.6725065104166674" />
+        <AssociationConnector Association="VelosModel.FK_STDYAPNX_STUDY" >
+          <ConnectorPoint PointX="2.25" PointY="3.1728011067708337" />
+          <ConnectorPoint PointX="3" PointY="3.1728011067708337" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="VelosModel.LCL_V_STUDY_INDIDE" Width="1.5" PointX="0.875" PointY="6.75" Height="0.4" IsExpanded="false" />
-        <EntityTypeShape EntityType="VelosModel.LCL_V_STUDYSUMM_PLUSMORE" Width="3.25" PointX="0.75" PointY="8.75" Height="18.902812500000003" />
       </Diagram>
     </Diagrams>
   </Designer>

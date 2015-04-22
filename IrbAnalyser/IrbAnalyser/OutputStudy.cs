@@ -14,11 +14,10 @@ namespace IrbAnalyser
         //List of newly created study, with more study detail
         public static DataTable study = new DataTable();
 
-        public static DataTable site = new DataTable();
         /// <summary>
         /// Add the columns to the datatable
         /// </summary>
-        public static void initiate()
+        private static void initiate()
         {
             if (study.Columns.Count == 0)
             {
@@ -31,11 +30,6 @@ namespace IrbAnalyser
                 study.Columns.Add("Study number", typeof(string));
                 study.Columns.Add("Official title", typeof(string));
                 study.Columns.Add("Study summary", typeof(string));
-                study.Columns.Add("IND/IDE Information available", typeof(string));
-                study.Columns.Add("IND/IDE Number", typeof(string));
-                study.Columns.Add("IND holder", typeof(string));
-                study.Columns.Add("IND/IDE Grantor*", typeof(string));
-                study.Columns.Add("IND/IDE Holder Type*", typeof(string));
                 study.Columns.Add("Department", typeof(string));
                 study.Columns.Add("Division/Therapeutic area", typeof(string));
                 study.Columns.Add("Entire study sample size", typeof(string));
@@ -44,23 +38,214 @@ namespace IrbAnalyser
                 study.Columns.Add("Primary funding sponsor, if other :", typeof(string));
                 study.Columns.Add("Sponsor contact", typeof(string));
                 study.Columns.Add("Sponsor Protocol ID", typeof(string));
-                study.Columns.Add("Version date", typeof(string));
-                study.Columns.Add("Version number", typeof(string));
-                study.Columns.Add("Type", typeof(string));
-                study.Columns.Add("Category", typeof(string));
-                study.Columns.Add("URL", typeof(string));
-                study.Columns.Add("Version status, Work in progress, approved, archived", typeof(string));
-                study.Columns.Add("Short description", typeof(string));
+            }
+        }
+
+
+        /// <summary>
+        /// Analyse the study report
+        /// </summary>
+        public static void analyse(string filename)
+        {
+            initiate();
+            FileParser fpStudy = new FileParser(filename);
+
+            foreach (DataRow study in fpStudy.data.Rows)
+            {
+                analyseRow(study);
             }
 
-            if (site.Columns.Count == 0)
+            OutputSite.analyseDelete(fpStudy.data);
+        }
+
+
+        /// <summary>
+        /// Analyse a row of the study report
+        /// </summary>
+        /// <param name="dr"></param>
+        private static void analyseRow(DataRow dr)
+        {
+            OutputStatus.analyseRowStudy(dr);
+            OutputSite.analyseRow(dr);
+            OutputDocs.analyseRow(dr);
+            using (Model.VelosDb db = new Model.VelosDb())
             {
-                site.Columns.Add("TYPE", typeof(string));
-                site.Columns.Add("IRB Agency name", typeof(string));
-                site.Columns.Add("IRB no", typeof(string));
-                site.Columns.Add("IRB Study ID", typeof(string));
-                //Need mapping for the site
-                site.Columns.Add("Sitename",typeof(string));
+                string irbstudyId = dr["StudyId"].ToString();
+                string irbagency = dr["IRBAgency"].ToString().ToLower();
+
+                var study = from st in db.LCL_V_STUDYSUMM_PLUSMORE
+                            where st.MORE_IRBSTUDYID == irbstudyId
+                            && st.MORE_IRBAGENCY.ToLower() == irbagency
+                            select st;
+                if (!study.Any())
+                {
+                    addRowStudy(dr, "New study");
+                }
+                else
+                {
+                    bool hasChanged = false;
+
+                    foreach (var stu in study)
+                    {
+                        if (!Tools.compareStr(stu.STUDY_TITLE, dr["Studytitle"]))
+                        {
+                            dr["Studytitle"] = dr["Studytitle"];
+                        }
+                        else
+                        {
+                            hasChanged = true;
+                        }
+
+                        if (Tools.compareStr(stu.STUDY_SUMMARY, dr["Studysummary"]))
+                        {
+                            dr["Studysummary"] = "";
+                        }
+                        else
+                        {
+                            hasChanged = true;
+                        }
+                        /*
+                        var indide = from sd in db.LCL_V_STUDY_INDIDE
+                                     where stu.PK_STUDY == sd.FK_STUDY
+                                     select sd;
+
+                        if (indide.Count() == 0 && dr["IND"].ToString().ToUpper() == "TRUE")
+                        {
+                            hasChanged = true;
+                        }
+                        if (indide.Count() == 0 && dr["IND"].ToString().ToUpper() == "FALSE")
+                        {
+                            dr["IND"] = "";
+                        }
+
+
+                        bool hasntchanged = false;
+
+                        foreach (var ind in indide)
+                        {
+                            if (Tools.compareStr(ind.INDIDE_NUMBER, dr["INDnumber"]))
+                            {
+                                dr["INDnumber"] = "";
+                                hasntchanged = true;
+                            }
+                        }
+
+                        hasChanged = hasntchanged ? hasChanged : true;
+
+                        //TODO What to do with IND Holder
+                        */
+
+                        if (Tools.compareStr(stu.STUDY_DIVISION, dr["Department"]))
+                        {
+                            dr["Department"] = "";
+                        }
+                        else
+                        {
+                            hasChanged = true;
+                        }
+
+                        if (Tools.compareStr(stu.STUDY_TAREA, dr["Division"]))
+                        {
+                            dr["Division"] = "";
+                        }
+                        else
+                        {
+                            hasChanged = true;
+                        }
+
+                        //TODO  Factor in the unit (week, days)
+                        if (Tools.compareStr(stu.STUDY_DURATION, dr["Studyduration"]))
+                        {
+                            dr["Studyduration"] = "";
+                        }
+                        else
+                        {
+                            hasChanged = true;
+                        }
+
+
+                        if (Tools.compareStr(stu.STUDY_EST_BEGIN_DATE, dr["Begindate"]))
+                        {
+                            dr["Begindate"] = "";
+                        }
+                        else
+                        {
+                            hasChanged = true;
+                        }
+
+                        if (Tools.compareStr(stu.STUDY_NATSAMPSIZE, dr["Studysamplesize"]))
+                        {
+                            dr["Studysamplesize"] = "";
+                        }
+                        else
+                        {
+                            hasChanged = true;
+                        }
+
+                        bool cmp = (stu.STUDY_SCOPE == "Multi Center Study" && dr["Multicenter"].ToString().ToLower() == "true") ||
+                            (stu.STUDY_SCOPE == "Single Center Study" && dr["Multicenter"].ToString().ToLower() == "false") ||
+                            //TODO  check null
+                            (stu.STUDY_SCOPE == null && dr["Multicenter"].ToString().ToLower() == "");
+
+                        if (cmp)
+                        {
+                            dr["Multicenter"] = "";
+                        }
+                        else
+                        {
+                            hasChanged = true;
+                        }
+
+                        //TODO Phase need mapping from IRIS, BRANY doesnt have
+                        //TODO This should also use a map
+                        if (Tools.compareStr(stu.STUDY_SPONSOR, dr["Primarysponsorname"]))
+                        {
+                            dr["Primarysponsorname"] = "";
+                        }
+                        else
+                        {
+                            hasChanged = true;
+                        }
+
+                        string[] strs = {dr["Primarysponsorcontactfirstname"].ToString(),
+                    dr["Primarysponsorcontactfirstname"].ToString(),
+                    dr["Primarysponsorcontactfirstname"].ToString()};
+
+                        if (Tools.containStr(stu.STUDY_SPONSOR, strs))
+                        {
+                            dr["Primarysponsorname"] = "";
+                        }
+                        else
+                        {
+                            hasChanged = true;
+                        }
+
+                        if (Tools.compareStr(stu.STUDY_SPONSORID, dr["PrimarysponsorstudyID"]))
+                        {
+                            dr["PrimarysponsorstudyID"] = "";
+                        }
+                        else
+                        {
+                            hasChanged = true;
+                        }
+
+                        var documents = from sd in db.ER_STUDYAPNDX
+                                        where stu.PK_STUDY == sd.FK_STUDY
+                                        select sd;
+
+
+                        if (documents.Count() == 0 && !String.IsNullOrEmpty(dr["Documentlink"].ToString()))
+                        {
+                            hasChanged = true;
+                        }
+                    }
+
+                    if (hasChanged)
+                    {
+                        OutputStudy.addRowStudy(dr, "Modified study");
+                    }
+                }
+
             }
         }
 
@@ -69,8 +254,8 @@ namespace IrbAnalyser
         /// </summary>
         /// <param name="irbNumber"></param>
         /// <param name="studyNumber"></param>
-        public static void addRowStudy(string[] row)
-        {            
+        private static void addRowStudy(string[] row)
+        {
             initiate();
             study.Rows.Add(row);
         }
@@ -80,7 +265,7 @@ namespace IrbAnalyser
         /// </summary>
         /// <param name="irbNumber"></param>
         /// <param name="studyNumber"></param>
-        public static void addRowStudy(DataRow row,string type)
+        private static void addRowStudy(DataRow row, string type)
         {
             initiate();
             DataRow dr = study.NewRow();
@@ -93,242 +278,16 @@ namespace IrbAnalyser
             dr["Study number"] = "";
             dr["Official title"] = row["Studytitle"].ToString();
             dr["Study summary"] = row["Studysummary"].ToString();
-            dr["IND/IDE Information available"] = row["IND"].ToString();
-            dr["IND/IDE Number"] = row["INDnumber"].ToString();
-            dr["IND/IDE Grantor*"] = row["INDHolder"].ToString();
-            dr["IND/IDE Holder Type*"] = "";
             dr["Department"] = row["Department"].ToString();
             dr["Division/Therapeutic area"] = row["Division"].ToString();
             dr["Entire study sample size"] = row["Studysamplesize"].ToString();
-            dr["Phase"] = row["Phase"].ToString() == "" ? "NA" : row["Phase"].ToString() ;
-            dr["Research scope"] = row["Multicenter"].ToString() == "TRUE" ? "Multicenter":"Single center";
+            dr["Phase"] = row["Phase"].ToString() == "" ? "NA" : row["Phase"].ToString();
+            dr["Research scope"] = row["Multicenter"].ToString() == "TRUE" ? "Multicenter" : "Single center";
             dr["Primary funding sponsor, if other :"] = row["Primarysponsorname"].ToString();
-            dr["Sponsor contact"] = row["Primarysponsorcontactfirstname"].ToString() + " " + row["Primarysponsorcontactlastname"].ToString() + " : " + row["Primarysponsorcontactemail"].ToString();
-            dr["Sponsor Protocol ID"] = row["PrimarysponsorstudyID"].ToString();
-            dr["Version date"] = DateTime.Now;
-            dr["Version number"] = row["IRBAgency"].ToString() + " documents";
-            dr["Type"] = "";
-            dr["Category"] = "";
-            dr["URL"] = row["Documentlink"].ToString();
-            dr["Version status, Work in progress, approved, archived"] = "Approved";
-            dr["Short description"] = "";
+            dr["Sponsor contact"] = row["PrimarySponsorSontactFirstName"].ToString() + " " + row["PrimarySponsorSontactLastName"].ToString();
+            dr["Sponsor Protocol ID"] = row["PrimarySponsorStudyId"].ToString();
 
             study.Rows.Add(dr);
         }
-
-
-
-
-        /// <summary>
-        /// Verify if a study has changed and add the changes to the list
-        /// </summary>
-        /// <param name="row"></param>
-        public static void changedValue(DataRow row)
-        {
-            using (Model.VelosDb db = new Model.VelosDb())
-            {
-                string irbstudyId = row["StudyId"].ToString();
-                string irbagency = row["IRBAgency"].ToString().ToLower();
-
-                var study = from st in db.LCL_V_STUDYSUMM_PLUSMORE
-                            where st.MORE_IRBSTUDYID == irbstudyId
-                            && st.MORE_IRBAGENCY.ToLower() == irbagency
-                            select st;
-
-                bool hasChanged = false;
-
-                foreach (var stu in study)
-                {
-                    if (!Tools.compareStr(stu.STUDY_TITLE, row["Studytitle"]))
-                    {
-                        row["Studytitle"] = row["Studytitle"];
-                    }
-                    else
-                    {
-                        hasChanged = true;
-                    }
-
-                    if (Tools.compareStr(stu.STUDY_SUMMARY, row["Studysummary"]))
-                    {
-                        row["Studysummary"] = "";
-                    }
-                    else
-                    {
-                        hasChanged = true;
-                    }
-
-                    var indide = from sd in db.LCL_V_STUDY_INDIDE
-                                 where stu.PK_STUDY == sd.FK_STUDY
-                                 select sd;
-
-                    if (indide.Count() == 0 && row["IND"].ToString().ToUpper() == "TRUE")
-                    {
-                        hasChanged = true;
-                    }
-                    if (indide.Count() == 0 && row["IND"].ToString().ToUpper() == "FALSE")
-                    {
-                        row["IND"] = "";
-                    }
-
-
-                    bool hasntchanged =  false;
-                    
-                    foreach (var ind in indide)
-                    {
-                        if (Tools.compareStr(ind.INDIDE_NUMBER, row["INDnumber"]))
-                        {
-                            row["INDnumber"] = "";
-                            hasntchanged = true;
-                        }                               
-                    }
-
-                    hasChanged = hasntchanged ? hasChanged : true;
-
-                    //TODO What to do with IND Holder
-
-                    if (Tools.compareStr(stu.STUDY_DIVISION, row["Department"]))
-                    {
-                        row["Department"] = "";
-                    }
-                    else
-                    {
-                        hasChanged = true;
-                    }
-
-                    if (Tools.compareStr(stu.STUDY_TAREA, row["Division"]))
-                    {
-                        row["Division"] = "";
-                    }
-                    else
-                    {
-                        hasChanged = true;
-                    }
-
-                    //TODO  Factor in the unit (week, days)
-                    if (Tools.compareStr(stu.STUDY_DURATION, row["Studyduration"]))
-                    {
-                        row["Division"] = "";
-                    }
-                    else
-                    {
-                        hasChanged = true;
-                    }
-
-
-                    if (Tools.compareStr(stu.STUDY_EST_BEGIN_DATE, row["Begindate"]))
-                    {
-                        row["Begindate"] = "";
-                    }
-                    else
-                    {
-                        hasChanged = true;
-                    }
-
-                    if (Tools.compareStr(stu.STUDY_NATSAMPSIZE, row["Studysamplesize"]))
-                    {
-                        row["Studysamplesize"] = "";
-                    }
-                    else
-                    {
-                        hasChanged = true;
-                    }
-
-                    bool cmp = (stu.STUDY_SCOPE == "Multi Center Study" && row["Multicenter"].ToString().ToLower() == "true") ||
-                        (stu.STUDY_SCOPE == "Single Center Study" && row["Multicenter"].ToString().ToLower() == "false") ||
-                        //TODO  check null
-                        (stu.STUDY_SCOPE == null && row["Multicenter"].ToString().ToLower() == "");
-
-                    if (cmp)
-                    {
-                        row["Multicenter"] = "";
-                    }
-                    else
-                    {
-                        hasChanged = true;
-                    }
-
-                    //TODO Phase need mapping from IRIS, BRANY doesnt have
-                    //TODO This should also use a map
-                    if (Tools.compareStr(stu.STUDY_SPONSOR, row["Primarysponsorname"]))
-                    {
-                        row["Primarysponsorname"] = "";
-                    }
-                    else
-                    {
-                        hasChanged = true;
-                    }
-
-                    string[] strs = {row["Primarysponsorcontactfirstname"].ToString(),
-                    row["Primarysponsorcontactfirstname"].ToString(),
-                    row["Primarysponsorcontactfirstname"].ToString()};
-
-                    if (Tools.containStr(stu.STUDY_SPONSOR, strs))
-                    {
-                        row["Primarysponsorname"] = "";
-                    }
-                    else
-                    {
-                        hasChanged = true;
-                    }
-
-                    if (Tools.compareStr(stu.STUDY_SPONSORID, row["PrimarysponsorstudyID"]))
-                    {
-                        row["PrimarysponsorstudyID"] = "";
-                    }
-                    else
-                    {
-                        hasChanged = true;
-                    }
-
-                    var documents = from sd in db.ER_STUDYAPNDX
-                                 where stu.PK_STUDY == sd.FK_STUDY
-                                 select sd;
-
-
-                    if (documents.Count() == 0 && !String.IsNullOrEmpty(row["Documentlink"].ToString()))
-                    {
-                        hasChanged = true;
-                    }
-
-                    hasntchanged =  false;
-                    
-                    foreach (var doc in documents)
-                    {
-                        if (Tools.compareStr(doc.STUDYAPNDX_URI, row["Documentlink"]))
-                        {
-                            row["Documentlink"] = "";
-                            hasntchanged = true;
-                        }                               
-                    }
-
-                    hasChanged = hasntchanged ? hasChanged : true;
-                }
-
-                if (hasChanged)
-                {
-                    OutputStudy.addRowStudy(row,"Modified study");
-                }
-            }        
-        }
-
-
-        /// <summary>
-        /// Print the study table
-        /// </summary>
-        /// <returns></returns>
-        public static string printStudy()
-        {
-            string ret = "";
-            foreach (DataRow dataRow in study.Rows)
-            {
-                ret += "\r\n";
-                foreach (var item in dataRow.ItemArray)
-                {
-                    ret += "  |  " + item;
-                }
-            }
-            return ret;
-        }
-
     }
 }

@@ -9,19 +9,18 @@ namespace IrbAnalyser
 {
     class FileParser
     {
-        public static string filename;
         public DataTable data;
 
         public FileParser(string file)
         {
-            filename = file;
+            getDataTable(file);
         }
 
 
-        public void getDataTable()
+        private void getDataTable(string file)
         {
             data = new DataTable();
-            var lines = File.ReadAllLines(filename).ToList();
+            var lines = File.ReadAllLines(file).ToList();
             if (lines.Count > 0)
             {
                 var column = lines[0].Split((char)9);
