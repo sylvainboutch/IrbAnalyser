@@ -1,3 +1,3 @@
-StudyId	StudySiteId	IRBAgency	IRBNumber	Sitename	EventID	Event	EventCreationDate	EventOutcome	TaskCompletionDate	EventCompletionDate
-"654654"	"632132"	BRANY	"12345"	Einstein-Montefiore	Einstein	"IRBAmendment"	2015-03-12T08:22:12			2015-04-12T08:22:12
-"4564654"	"64654"	BRANY	"123465498"	Einstein-Montefiore	Einstein	"IRBAmendment"	2015-03-12T08:22:12		2015-04-12T08:22:12	
+"StudyId"	"StudySiteId"	"IRBAgency"	"IRBNumber"	"Sitename"	"EventID"	"Event"	"EventCreationDate"	"EventOutcome"	"TaskCompletionDate"	"EventCompletionDate"
+"12345"	"632132"	"BRANY"	"12345"	"Albert Einstein Col. of Med. of Yeshiva University"	"1"	"IRBAmendment"	"2015-03-12T08:22:12"			"2015-04-12T08:22:12"
+"6554444"	"654444"	"BRANY"	"56653321"	"Albert Einstein Col. of Med. of Yeshiva University"	"2"	"IRBAmendment"	"2015-03-12T08:22:12"		"2015-04-12T08:22:12"	

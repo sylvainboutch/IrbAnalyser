@@ -1,10 +1,7 @@
-StudyId	StudySiteId	IRBAgency	IRBNumber	Sitename	StudyTitle	StudySummary	IND	INDnumber	INDholder	Department	Division	Studysamplesize	Sitesamplesize	Multicenter	Phase	PrimarySponsorName	PrimarySponsorSontactFirstName	PrimarySponsorSontactLastName	PrimarySponsorSontactEmail	PrimarySponsorStudyId	DocumentLink1	DocumentLink2	InitialApprovalDate	MostRecentApprovalDate	ExpirationDate
-"""654654"""	"""632132"""	BRANY	"""12345"""	Einstein	"""A study"""	"""A study about bla bla bla"""	FALSE						5	FALSE		"""Bayer"""	"""Roger"""	"""Walter"""	"""abc@ds.dd"""	"""546654"""	"""www.google.com"""	"""546654"""	2015-01-12T22:22:12	2015-01-12T22:22:12	2016-01-12T22:22:12
-"""4564654"""	"""64654"""	BRANY	"""123465498"""	Einstein		"""A study about bla bla bla"""	TRUE	"""46556"""	"""kjh"""				5	TRUE		"""adad"""		"""McDonald"""							
-																									
-																									
-																									
-																									
-																									
-																									
-																									
+"StudyId"	"StudySiteId"	"IRBAgency"	"IRBNumber"	"Sitename"	"StudyTitle"	"StudySummary"	"IND"	"INDnumber"	"INDholder"	"Department"	"Division"	"Studysamplesize"	"Sitesamplesize"	"Multicenter"	"Phase"	"PrimarySponsorName"	"PrimarySponsorContactFirstName"	"PrimarySponsorContactLastName"	"PrimarySponsorContactEmail"	"PrimarySponsorStudyId"	"DocumentLink1"	"DocumentLink2"	"InitialApprovalDate"	"MostRecentApprovalDate"	"ExpirationDate"
+"12345"	"632132"	"BRANY"	"12345"	"Albert Einstein Col. of Med. of Yeshiva University"	"A study"	"A study about bla bla bla"	FALSE						5	FALSE		"Bayer"	"Roger"	"Walter"	"abc@ds.dd"	"546654"	"www.google.com"	"546654"	"2015-01-12T22:22:12"	"2015-01-12T22:22:12"	"2016-01-12T22:22:12"
+"4564654"	"64654"	"BRANY"	"123465498"	"Albert Einstein Col. of Med. of Yeshiva University"		"A study about bla bla bla"	TRUE	"46556"	"kjh"				5	TRUE		"adad"		"McDonald"							
+"54321"	"5432122"	"BRANY"	"54321"	"Westchester Cardiology"	"Testing 54321"	"Testing 54321"	FALSE					5	5	FALSE							"www.pinkbike.com"				
+"6554444"	"654444"	"BRANY"	"56653321"	"Albert Einstein Col. of Med. of Yeshiva University"		"A study about bla bla bla"	TRUE	"46556"	"kjh"				5	TRUE		"adad"		"McDonald"							
+"12345"	"654645465465"	"BRANY"	"12345"	"Westchester Cardiology"	"A study"	"A study about bla bla bla"	FALSE						5	FALSE		"Bayer"	"Roger"	"Walter"	"abc@ds.dd"	"546654"	"www.google.com"	"546654"	"2015-01-12T22:22:12"	"2015-01-12T22:22:12"	"2016-01-12T22:22:12"
+"456"	"645654"	"BRANY"	"456"	"Albert Einstein Col. of Med. of Yeshiva University"	"456"	"456456"	FALSE																		

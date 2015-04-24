@@ -45,12 +45,12 @@ namespace IrbAnalyser
                 DialogResult dr = sfdCsv.ShowDialog();
                 string savefilename = dr == DialogResult.OK ? sfdCsv.FileName : "";
                 List<ExcelWorksheet> lstxls = new List<ExcelWorksheet>();
-                lstxls.Add(new ExcelWorksheet("Studies", "List of studies to create or modify in Velos",OutputStudy.study));
+                
                 lstxls.Add(new ExcelWorksheet("Status", "List of status to add or modify in Velos",OutputStatus.status));
-                lstxls.Add(new ExcelWorksheet("Attachments", "List of version (attachment) to add or modify in Velos", OutputDocs.docs));
-                lstxls.Add(new ExcelWorksheet("Site", "List of organization to add or modify in Velos", OutputSite.sites));
                 lstxls.Add(new ExcelWorksheet("Team", "List of team members to add or modify in Velos", OutputTeam.team));
-
+                lstxls.Add(new ExcelWorksheet("Site", "List of organization to add or modify in Velos", OutputSite.sites));
+                lstxls.Add(new ExcelWorksheet("Attachments", "List of version (attachment) to add or modify in Velos", OutputDocs.docs));
+                lstxls.Add(new ExcelWorksheet("Studies", "List of studies to create or modify in Velos", OutputStudy.study));
 
                 //exc.WriteDataTableToExcel(OutputStudy.study, "New studies", savefilename, "List of studies to create in Velos");
                 exc.WriteDataTableToExcel(savefilename,lstxls);
@@ -75,7 +75,7 @@ namespace IrbAnalyser
 
             OutputTeam.analyse(dir + "Team.txt");
             OutputStatus.analyse(dir);
-            OutputStudy.analyse(dir + "studysite.txt");
+            OutputStudy.analyse(dir);
 
             Tools.CleanUpFile(dir);
 

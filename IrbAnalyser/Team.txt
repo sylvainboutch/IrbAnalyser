@@ -1,3 +1,7 @@
-StudyId	StudySiteID	IRBAgency	IRBNumber	TeamMemberID	PrimaryEmailAdress	OtherEmailAdresses	FirstName	LastName	Role	Site
-"654654"	"632132"	BRANY	"12345"	"adasd"	"ad"	"alsd@asd.cc"	"asd"	"eqw"		EISNTEIN
-"4564654"	"64654"	BRANY	"123465498"	"asdad"	"asd"	"sadalsd@asd.cc"	"adsa"	"qwe"		EINSTEIN
+"StudyId"	"StudySiteID"	"IRBAgency"	"IRBNumber"	"TeamMemberID"	"PrimaryEmailAdress"	"OtherEmailAdresses"	"FirstName"	"LastName"	"Role"	"Site"
+12345	632132	"BRANY"	12345	"George"	"romero@bou.com"	"romero@bou.com"	"George"	"Romero"	"Coordinator"	"Montefiore (Einstein Liver Center)"
+12345	632132	"BRANY"	12345	"Sylvain"	"sylvain.bouchard@einstein.yu.edu"		"Sylvain"	"Bouchard"	"Coordinator"	"Albert Einstein Col. of Med. of Yeshiva University"
+12345	632132	"BRANY"	12345	"Shanta"	"shantha.bethusamy@einstein.yu.edu"		"Shantha"	"Bethusamy"	"PI"	"Albert Einstein Col. of Med. of Yeshiva University"
+4564654	64654	"BRANY"	123465498	"Micheal"	"romero@bou.com"	"micheal@gmail.com"	"Micheal"	"Chricton"	"CRO"	"Westchester Cardiology"
+54321	5432122	"BRANY"	54321	"Sylvain"	"sylvain.bouchard@einstein.yu.edu"		"Sylvain"	"Bouchard"	"Coordinator"	"Albert Einstein Col. of Med. of Yeshiva University"
+54321	5432122	"BRANY"	54321	"Shanta"	"shantha.bethusamy@einstein.yu.edu"		"Shantha"	"Bethusamy"	"Faculty Advisor"	"Albert Einstein Col. of Med. of Yeshiva University"

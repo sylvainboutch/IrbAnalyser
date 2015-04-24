@@ -1,20 +1,9 @@
-StudyId	StudySiteId	IRBAgency	IRBNumber	Sitename	Status	ValidOn				
-"654654"	"632132"	BRANY	"12345"	Einstein	"Approved"	2015-01-12T22:22:12				
-"654654"	"632132"	BRANY	"12345"	Einstein	"Closed"	2015-04-17T02:22:12				
-"4564654"	"64654"	BRANY	"123465498"	Einstein	"Approved"	2015-03-12T08:22:12				
-										
-										
-										
-										
-										
-										
-										
-										
-										
-										
-										
-										
-										
-										
-										
-										
+"StudyId"	"StudySiteId"	"IRBAgency"	"IRBNumber"	"Sitename"	"Status"	"ValidOn"
+12345	632132	"BRANY"	12345	"Albert Einstein Col. of Med. of Yeshiva University"	"Approved"	"2015-01-12T22:22:12"
+12345	632132	"BRANY"	12345	"Albert Einstein Col. of Med. of Yeshiva University"	"Closed"	"2015-04-17T02:22:12"
+12345	632132	"BRANY"	12345	"Westchester Cardiology"	"Withdrawn by PI/Institution"	"2015-03-12T08:22:12"
+4564654	64654	"BRANY"	123465498	"Westchester Cardiology"	"PENDING VETTING"	"2015-03-12T08:22:12"
+54321	5432122	"BRANY"	54321	"Albert Einstein Col. of Med. of Yeshiva University"	"PENDING VETTING"	"2015-03-12T08:22:12"
+54321	5432122	"BRANY"	54321	"Albert Einstein Col. of Med. of Yeshiva University"	"Pending Closure"	"2015-03-12T08:22:12"
+4564654	64654	"BRANY"	123465498	"Westchester Cardiology"	"Other than Human Subject Rsrch"	"2015-03-12T08:22:12"
+"6554444"	"654444"	"BRANY"	"56653321"	"Albert Einstein Col. of Med. of Yeshiva University"	"Approved"	

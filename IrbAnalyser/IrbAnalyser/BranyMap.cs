@@ -12,16 +12,17 @@ namespace IrbAnalyser
     /// </summary>
     public static class BranySiteMap
     {
-        public static readonly StringDictionary siteMapBrany = new StringDictionary()
+        public static readonly Dictionary<string, string> siteMapBrany = new Dictionary<string, string>()
             {
-                { "Montefiore Medical Center", "Eisntein-Montefiore" },
-                { "Albert Einstein Col. of Med. of Yeshiva University", "Eisntein-Montefiore" },
-                { "Westchester Cardiology", "Eisntein-Montefiore" },
-                { "Montefiore (Weiler Division)", "Eisntein-Montefiore" },
-                { "Montefiore (Moses Division)", "Eisntein-Montefiore" },
-                { "Montefiore (Children's Hosp)", "Eisntein-Montefiore" },
-                { "Montefiore (Einstein Liver Center)", "Eisntein-Montefiore" },
-                { "Montefiore Medical Center (IBC)", "Eisntein-Montefiore" }
+                {"",""},
+                { "Montefiore Medical Center", "Montefiore Medical Center" },
+                { "Albert Einstein Col. of Med. of Yeshiva University", "Einstein Montefiore" },
+                { "Westchester Cardiology", "Westchester Cardiology" },
+                { "Montefiore (Weiler Division)", "Montefiore (Weiler Division)" },
+                { "Montefiore (Moses Division)", "Montefiore (Moses Division)" },
+                { "Montefiore (Children's Hosp)", "Children's Hospital at Montefiore" },
+                { "Montefiore (Einstein Liver Center)", "Montefiore (Einstein Liver Center)" },
+                { "Montefiore Medical Center (IBC)", "Montefiore Medical Center (IBC)" }
             };
     }
 
@@ -31,8 +32,9 @@ namespace IrbAnalyser
     /// </summary>
     public static class BranyRoleMap
     {
-        public static readonly StringDictionary roleMapBrany = new StringDictionary()
+        public static readonly Dictionary<string, string> roleMapBrany = new Dictionary<string, string>()
             {
+                {"",""},
                 { "CRO", "NA" },
                 { "Sponsor", "Limited PI" },
                 { "Auditor", "Limited PI" },
@@ -45,8 +47,9 @@ namespace IrbAnalyser
                 { "Research Assistant", "Limited PI" }
             };
 
-        public static readonly StringDictionary groupMapBrany = new StringDictionary()
+        public static readonly Dictionary<string, string> groupMapBrany = new Dictionary<string, string>()
             {
+                {"",""},
                 { "CRO", "NA" },
                 { "Sponsor", "Study team" },
                 { "Auditor", "Study team" },
@@ -65,8 +68,9 @@ namespace IrbAnalyser
     /// </summary>
     public static class BranyStatusMap
     {
-        public static readonly StringDictionary statusMapBrany = new StringDictionary()
+        public static readonly Dictionary<string, string> statusMapBrany = new Dictionary<string, string>()
             {
+                {"",""},
                 { "Approved", "IRB Approved" },
                 { "Approved -IRB only", "IRB Approved" },
                 { "Closed", "Complete " },
@@ -101,8 +105,9 @@ namespace IrbAnalyser
                 { "Withdrawn by PI/Institution", "Withdrawn" },
                 { "Withdrawn by Sponsor", "Withdrawn" }
             };
-        public static readonly StringDictionary typeMapBrany = new StringDictionary()
+        public static readonly Dictionary<string, string> typeMapBrany = new Dictionary<string, string>()
             {
+                {"",""},
                 { "Approved", "Pre Activation" },
                 { "Approved -IRB only", "Pre Activation" },
                 { "Closed", "Study Status" },

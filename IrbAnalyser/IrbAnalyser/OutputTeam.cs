@@ -20,6 +20,12 @@ namespace IrbAnalyser
             if (team.Columns.Count == 0)
             {
                 team.Columns.Add("TYPE", typeof(string));
+
+                team.Columns.Add("IRB Agency name", typeof(string));
+                team.Columns.Add("IRB no", typeof(string));
+                team.Columns.Add("IRB Study ID", typeof(string));
+                team.Columns.Add("Study name", typeof(string));
+
                 team.Columns.Add("Email", typeof(string));
                 team.Columns.Add("AdditionnalEmails", typeof(string));
                 team.Columns.Add("First name", typeof(string));
@@ -36,19 +42,35 @@ namespace IrbAnalyser
         /// <param name="row"></param>
         private static void addRow(DataRow row, string type)
         {
-            var role = BranyRoleMap.roleMapBrany[row["Role"].ToString()];
-            var group = BranyRoleMap.groupMapBrany[row["Role"].ToString()];
+            string role = "";
+            string group = "";
+            string site = "";
+
+            if ((string)row["IRBAgency"] == "BRANY")
+            {
+                role = BranyRoleMap.roleMapBrany[(string)row["Role"]];
+                group = BranyRoleMap.groupMapBrany[(string)row["Role"]];
+                site = BranySiteMap.siteMapBrany[(string)row["Site"]];
+            }
+
             if (role != "NA" && group != "NA")
             {
                 DataRow dr = team.NewRow();
                 dr["TYPE"] = type;
+
+                dr["IRB Agency name"] = (string)row["IRBAgency"];
+                dr["IRB no"] = (string)row["IRBNumber"];
+                dr["IRB Study ID"] = (string)row["StudyId"];
+                dr["Study name"] = Tools.getStudyNumber((string)row["StudyId"], (string)row["IRBAgency"]);
+
+
                 dr["Email"] = row["PrimaryEmailAdress"].ToString();
                 dr["AdditionnalEmails"] = row["OtherEmailAdresses"].ToString();
                 dr["First name"] = row["FirstName"].ToString();
                 dr["Last name"] = row["LastName"].ToString();
                 dr["Role"] = role;
                 dr["Group"] = group;
-                dr["Organization"] = row["Site"].ToString();
+                dr["Organization"] = site;
                 team.Rows.Add(dr);
             }
         }
@@ -57,16 +79,31 @@ namespace IrbAnalyser
         /// Add a new row to the team modification datatable
         /// </summary>
         /// <param name="row"></param>
-        private static void addRow(string type, string email, string name, string role, string site)
+        private static void addRow(string type, string email, string name, string role, string site, string studyid, string agency)
         {
+            string group = "";
+
+            if (agency.ToUpper() == "BRANY")
+            {
+                role = BranyRoleMap.roleMapBrany[role];
+                group = BranyRoleMap.groupMapBrany[role];
+                site = BranySiteMap.siteMapBrany[site];
+            }
+
             DataRow dr = team.NewRow();
             dr["TYPE"] = type;
+
+            dr["IRB Agency name"] = agency;
+            dr["IRB no"] = "";
+            dr["IRB Study ID"] = studyid;
+            dr["Study name"] = Tools.getStudyNumber(studyid, agency);
+
             dr["Email"] = email;
             var indexSplit = name.IndexOf(' ');
             dr["First name"] = name.Substring(0, indexSplit);
             dr["Last name"] = name.Substring(indexSplit, name.Length - indexSplit);
             dr["Role"] = role;
-            dr["Group"] = "Study TEAM";
+            dr["Group"] = group;
             dr["Organization"] = site;
             team.Rows.Add(dr);
         }
@@ -125,8 +162,13 @@ namespace IrbAnalyser
                             changed = true;
                         }
                         else { userRow["Role"] = ""; }
+                        if (user.First().USER_SITE_NAME != BranySiteMap.siteMapBrany[(string)userRow["Site"]])
+                        {
+                            changed = true;
+                        }
+                        else { userRow["Site"] = ""; }
                         //todo map sites and check
-                        if (!changed) { addRow(userRow, "Modified member"); }
+                        if (changed) { addRow(userRow, "Modified member"); }
                     }
                 }
             }
@@ -151,7 +193,7 @@ namespace IrbAnalyser
                 foreach (var user in team)
                 {
                     var countEmail = (from DataRow dr in studys.Rows
-                                      where (string)dr["Sitename"] == user.site.USER_EMAIL
+                                      where (string)dr["Site"] == user.site.USER_EMAIL
                                       select dr).Count();
                     var countStudy = (from DataRow dr in studys.Rows
                                       where (string)dr["IRBAgency"] == user.agency
@@ -159,7 +201,7 @@ namespace IrbAnalyser
                                       select dr).Count();
                     if (countEmail == 0 && countStudy != 0)
                     {
-                        addRow("Deleted member", user.site.USER_EMAIL, user.site.USER_NAME, user.site.ROLE, user.site.USER_SITE_NAME);
+                        addRow("Deleted member", user.site.USER_EMAIL, user.site.USER_NAME, user.site.ROLE, user.site.USER_SITE_NAME, user.studyId, user.agency);
                     }
                 }
             }

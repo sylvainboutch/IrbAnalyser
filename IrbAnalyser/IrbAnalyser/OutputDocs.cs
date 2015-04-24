@@ -15,6 +15,12 @@ namespace IrbAnalyser
             if (docs.Columns.Count == 0)
             {
                 docs.Columns.Add("TYPE", typeof(string));
+
+                docs.Columns.Add("IRB Agency name", typeof(string));
+                docs.Columns.Add("IRB no", typeof(string));
+                docs.Columns.Add("IRB Study ID", typeof(string));
+                docs.Columns.Add("Study name", typeof(string));
+
                 docs.Columns.Add("Version date", typeof(string));
                 docs.Columns.Add("Version number", typeof(string));
                 docs.Columns.Add("Category", typeof(string));
@@ -49,7 +55,7 @@ namespace IrbAnalyser
                                select ver).Count();
                     if (docs == 0)
                     {
-                        addRow("New URL", irbagency, url1, "documents");
+                        addRow("New URL", irbagency, url1, "documents",irbstudyId,irbagency);
                     }
                 }
 
@@ -64,18 +70,23 @@ namespace IrbAnalyser
                                select ver).Count();
                     if (docs == 0)
                     {
-                        addRow("New URL", irbagency, url2, "informed consent");
+                        addRow("New URL", irbagency, url2, "informed consent", irbstudyId, irbagency);
                     }
                 }
 
             }
         }
 
-        public static void addRow(string type, string source, string url, string section)
+        public static void addRow(string type, string source, string url, string section, string studyid, string agency)
         {
             initiate();
             DataRow dr = docs.NewRow();
+
             dr["TYPE"] = type;
+            dr["IRB Agency name"] = agency;
+            dr["IRB no"] = "";
+            dr["IRB Study ID"] = studyid;
+            dr["Study name"] = Tools.getStudyNumber(studyid, agency);
             dr["Version date"] = DateTime.Now.ToShortDateString();
             dr["Version number"] = source.ToUpper() + " " + section;
             dr["Category"] = "External Site Docs";

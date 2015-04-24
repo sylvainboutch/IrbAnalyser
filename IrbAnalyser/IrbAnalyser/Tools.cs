@@ -3,11 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.Data;
 
 namespace IrbAnalyser
 {
     static class Tools
     {
+        public static string getFullName(DataRow dr)
+        {
+            return dr == null ? "" : dr["FirstName"] + " " + dr["LastName"];
+        }
+
+        public static string getStudyNumber(string IRBstudyId, string IRBAgency)
+        {
+            string number = "";
+            using (Model.VelosDb db = new Model.VelosDb())
+            {
+                number = (from stud in db.LCL_V_STUDYSUMM_PLUSMORE
+                          where stud.MORE_IRBSTUDYID.ToLower() == IRBstudyId.ToLower()
+                       && stud.MORE_IRBAGENCY.ToLower() == IRBAgency.ToLower()
+                          select stud.STUDY_NUMBER).FirstOrDefault();
+            }
+            return number;
+        }
+
         public static string cleanStr(string input)
         {
             input = input.ToLowerInvariant();
@@ -22,6 +41,20 @@ namespace IrbAnalyser
                 }
             }
             return sb.ToString();
+        }
+
+        public static string removeQuote(string input)
+        {
+            return input.Trim('"');
+        }
+
+        public static string[] removeQuote(string[] input)
+        {
+            for (int i = 0; i < input.Length; i++)
+            {
+                input[i] = removeQuote(input[i]);
+            }
+            return input;
         }
 
         public static bool compareStr(object str1, object str2)

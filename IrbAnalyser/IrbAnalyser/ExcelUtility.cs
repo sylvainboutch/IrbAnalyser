@@ -19,11 +19,23 @@ namespace IrbAnalyser
         public string reporType;
         public DataTable dataTable;
 
-        public ExcelWorksheet(string wk,string rt,DataTable dt)
+        public ExcelWorksheet(string wk, string rt, DataTable dt)
         {
             worksheetName = wk;
             reporType = rt;
-            dataTable = dt;
+            if (dt.Columns.Contains("Organization"))
+            {
+                dataTable = dt.AsEnumerable().OrderBy(x => x.Field<string>("IRB Agency name"))
+                    .ThenBy(x => x.Field<string>("IRB Study ID"))
+                    .ThenBy(x => x.Field<string>("Organization"))
+                    .CopyToDataTable();
+            }
+            else
+            {
+                dataTable = dt.AsEnumerable().OrderBy(x => x.Field<string>("IRB Agency name"))
+                    .ThenBy(x => x.Field<string>("IRB Study ID"))
+                    .CopyToDataTable();
+            }
         }
     }
 
@@ -160,7 +172,7 @@ namespace IrbAnalyser
                 // Creation a new Workbook
                 excelworkBook = excel.Workbooks.Add(Type.Missing);
 
-                 // Workk sheet
+                // Workk sheet
                 foreach (var worksheet in worksheets)
                 {
                     Microsoft.Office.Interop.Excel.Worksheet excelSheet = excelworkBook.Sheets.Add(Type.Missing, Type.Missing, 1, Type.Missing);

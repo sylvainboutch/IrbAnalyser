@@ -15,7 +15,13 @@ namespace IrbAnalyser
             if (sites.Columns.Count == 0)
             {
                 sites.Columns.Add("TYPE", typeof(string));
-                sites.Columns.Add("Organisation", typeof(string));
+
+                sites.Columns.Add("IRB Agency name", typeof(string));
+                sites.Columns.Add("IRB no", typeof(string));
+                sites.Columns.Add("IRB Study ID", typeof(string));
+                sites.Columns.Add("Study name", typeof(string));
+
+                sites.Columns.Add("Organization", typeof(string));
                 sites.Columns.Add("Local sample size", typeof(string));
             }
         }
@@ -28,22 +34,33 @@ namespace IrbAnalyser
         {
             using (Model.VelosDb db = new Model.VelosDb())
             {
-                string irbstudyId = studyrow["StudyId"].ToString();
-                string irbagency = studyrow["IRBAgency"].ToString().ToLower();
-                string site = studyrow["Sitename"].ToString();
-                string size = studyrow["Sitesamplesize"].ToString();
+
+                string site = "";
+
+                if ((string)studyrow["IRBAgency"] == "BRANY")
+                {
+                    site = BranySiteMap.siteMapBrany[(string)studyrow["Sitename"]];
+                }
+
+                string irbstudyId = (string)studyrow["StudyId"];
+                string irbagency = ((string)studyrow["IRBAgency"]).ToLower();
+                string size = (string)studyrow["Sitesamplesize"];
 
                 if (!String.IsNullOrEmpty(site))
                 {
-                    var docs = (from sit in db.VDA_V_STUDYSITES
+                    var sites = (from sit in db.VDA_V_STUDYSITES
                                 join stud in db.LCL_V_STUDYSUMM_PLUSMORE on sit.FK_STUDY equals stud.PK_STUDY
                                 where stud.MORE_IRBSTUDYID == irbstudyId
                                    && stud.MORE_IRBAGENCY.ToLower() == irbagency
-                                   && sit.SITE_NAME.ToLower() == site
-                                select sit).Count();
-                    if (docs == 0)
+                                   && sit.SITE_NAME == site
+                                select sit);
+                    if (sites.Count() == 0)
                     {
-                        addRow("New Site", site, size);
+                        addRow("New Site", site, size, irbstudyId, irbagency);
+                    }
+                    else if (sites.FirstOrDefault().STUDYSITE_LSAMPLESIZE != size && !String.IsNullOrEmpty(size))
+                    {
+                        addRow("Modified site", site, size, irbstudyId, irbagency);
                     }
                 }
             }
@@ -68,7 +85,7 @@ namespace IrbAnalyser
                 foreach (var site in sites)
                 {
                     var countSite = (from DataRow dr in studys.Rows
-                                     where (string)dr["Sitename"] == site.site
+                                     where BranySiteMap.siteMapBrany[(string)dr["Sitename"]] == site.site
                                      select dr).Count();
                     var countStudy = (from DataRow dr in studys.Rows
                                       where (string)dr["IRBAgency"] == site.agency
@@ -76,18 +93,24 @@ namespace IrbAnalyser
                                       select dr).Count();
                     if (countSite == 0 && countStudy != 0)
                     {
-                        addRow("Deleted site", site.site, "");
+                        addRow("Deleted site", site.site, "", site.studyId, site.agency);
                     }
                 }
             }
         }
 
-        public static void addRow(string type, string site, string size)
+        public static void addRow(string type, string site, string size, string studyid, string agency)
         {
             initiate();
             DataRow dr = sites.NewRow();
             dr["Type"] = type;
-            dr["Organisation"] = site;
+
+            dr["IRB Agency name"] = agency;
+            dr["IRB no"] = "";
+            dr["IRB Study ID"] = studyid;
+            dr["Study name"] = Tools.getStudyNumber(studyid, agency);
+
+            dr["Organization"] = site;
             dr["Local sample size"] = size;
             sites.Rows.Add(dr);
         }
