@@ -48,10 +48,6 @@ namespace IrbAnalyser
 
         public bool WriteDataTableToExcel(System.Data.DataTable dataTable, string worksheetName, string saveAsLocation, string ReporType)
         {
-            Microsoft.Office.Interop.Excel.Application excel;
-            Microsoft.Office.Interop.Excel.Workbook excelworkBook;
-            Microsoft.Office.Interop.Excel.Worksheet excelSheet;
-            Microsoft.Office.Interop.Excel.Range excelCellrange;
 
             try
             {
