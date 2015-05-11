@@ -8,21 +8,35 @@ namespace IrbAnalyser
 {
     class OutputSite
     {
-        public static DataTable sites = new DataTable();
+        public static DataTable newSites = new DataTable();
+        public static DataTable updatedSites = new DataTable();
 
         public static void initiate()
         {
-            if (sites.Columns.Count == 0)
+            if (newSites.Columns.Count == 0)
             {
-                sites.Columns.Add("TYPE", typeof(string));
+                newSites.Columns.Add("TYPE", typeof(string));
 
-                sites.Columns.Add("IRB Agency name", typeof(string));
-                sites.Columns.Add("IRB no", typeof(string));
-                sites.Columns.Add("IRB Study ID", typeof(string));
-                sites.Columns.Add("Study name", typeof(string));
+                newSites.Columns.Add("IRB Agency name", typeof(string));
+                newSites.Columns.Add("IRB no", typeof(string));
+                newSites.Columns.Add("IRB Study ID", typeof(string));
+                newSites.Columns.Add("Study name", typeof(string));
 
-                sites.Columns.Add("Organization", typeof(string));
-                sites.Columns.Add("Local sample size", typeof(string));
+                newSites.Columns.Add("Organization", typeof(string));
+                newSites.Columns.Add("Local sample size", typeof(string));
+            }
+
+            if (updatedSites.Columns.Count == 0)
+            {
+                updatedSites.Columns.Add("TYPE", typeof(string));
+
+                updatedSites.Columns.Add("IRB Agency name", typeof(string));
+                updatedSites.Columns.Add("IRB no", typeof(string));
+                updatedSites.Columns.Add("IRB Study ID", typeof(string));
+                updatedSites.Columns.Add("Study name", typeof(string));
+
+                updatedSites.Columns.Add("Organization", typeof(string));
+                updatedSites.Columns.Add("Local sample size", typeof(string));
             }
         }
 
@@ -30,42 +44,50 @@ namespace IrbAnalyser
         /// Analyse each study row from the import document
         /// </summary>
         /// <param name="studyrow"></param>
-        public static void analyseRow(DataRow studyrow)
+        public static void analyseRow(DataRow studyrow, bool newrecord)
         {
-            using (Model.VelosDb db = new Model.VelosDb())
+
+            string site = "";
+
+            if ((string)studyrow["IRBAgency"] == "BRANY")
             {
+                site = BranySiteMap.siteMapBrany[(string)studyrow["Sitename"]];
+            }
 
-                string site = "";
-
-                if ((string)studyrow["IRBAgency"] == "BRANY")
+            string irbstudyId = (string)studyrow["StudyId"];
+            string irbagency = ((string)studyrow["IRBAgency"]).ToLower();
+            string size = (string)studyrow["Sitesamplesize"];
+            if (!newrecord)
+            {
+                using (Model.VelosDb db = new Model.VelosDb())
                 {
-                    site = BranySiteMap.siteMapBrany[(string)studyrow["Sitename"]];
-                }
-
-                string irbstudyId = (string)studyrow["StudyId"];
-                string irbagency = ((string)studyrow["IRBAgency"]).ToLower();
-                string size = (string)studyrow["Sitesamplesize"];
-
-                if (!String.IsNullOrEmpty(site))
-                {
-                    var sites = (from sit in db.VDA_V_STUDYSITES
-                                join stud in db.LCL_V_STUDYSUMM_PLUSMORE on sit.FK_STUDY equals stud.PK_STUDY
-                                where stud.MORE_IRBSTUDYID == irbstudyId
-                                   && stud.MORE_IRBAGENCY.ToLower() == irbagency
-                                   && sit.SITE_NAME == site
-                                select sit);
-                    if (sites.Count() == 0)
+                    if (!String.IsNullOrEmpty(site))
                     {
-                        addRow("New Site", site, size, irbstudyId, irbagency);
-                    }
-                    else if (sites.FirstOrDefault().STUDYSITE_LSAMPLESIZE != size && !String.IsNullOrEmpty(size))
-                    {
-                        addRow("Modified site", site, size, irbstudyId, irbagency);
+                        var sites = (from sit in db.VDA_V_STUDYSITES
+                                     join stud in db.LCL_V_STUDYSUMM_PLUSMORE on sit.FK_STUDY equals stud.PK_STUDY
+                                     where stud.MORE_IRBSTUDYID == irbstudyId
+                                        && stud.MORE_IRBAGENCY.ToLower() == irbagency
+                                        && sit.SITE_NAME == site
+                                     select sit);
+                        if (sites.Count() == 0)
+                        {
+                            addRow("New Site", site, size, irbstudyId, irbagency, (string)studyrow["IRBNumber"], false);
+                        }
+                        else if (sites.FirstOrDefault().STUDYSITE_LSAMPLESIZE != size && !String.IsNullOrEmpty(size))
+                        {
+                            addRow("Modified site", site, size, irbstudyId, irbagency, (string)studyrow["IRBNumber"], false);
+                        }
                     }
                 }
             }
+            else
+            {
+                addRow("", site, size, irbstudyId, irbagency, (string)studyrow["IRBNumber"], true);
+            }
+
         }
 
+        /*
         /// <summary>
         /// Analyse complete tables to find removed value
         /// </summary>
@@ -73,14 +95,14 @@ namespace IrbAnalyser
         public static void analyseDelete(DataTable studys)
         {
             var std = from rw in studys.AsEnumerable()
-                          select rw.Field<string>("StudyId");
+                      select rw.Field<string>("StudyId");
 
             using (Model.VelosDb db = new Model.VelosDb())
             {
                 var sites = from sit in db.VDA_V_STUDYSITES
                             join stud in db.LCL_V_STUDYSUMM_PLUSMORE on sit.FK_STUDY equals stud.PK_STUDY
                             where std.Contains(stud.MORE_IRBSTUDYID)
-                            select new {site = sit.SITE_NAME, studyId = stud.MORE_IRBSTUDYID, agency = stud.MORE_IRBAGENCY} ;
+                            select new { site = sit.SITE_NAME, studyId = stud.MORE_IRBSTUDYID, agency = stud.MORE_IRBAGENCY };
 
                 foreach (var site in sites)
                 {
@@ -97,22 +119,29 @@ namespace IrbAnalyser
                     }
                 }
             }
-        }
+        }*/
 
-        public static void addRow(string type, string site, string size, string studyid, string agency)
+        public static void addRow(string type, string site, string size, string studyid, string agency, string IRBno, bool newrecord)
         {
             initiate();
-            DataRow dr = sites.NewRow();
+            DataRow dr;
+            if (newrecord)
+            { dr = newSites.NewRow(); }
+            else
+            { dr = updatedSites.NewRow(); }
             dr["Type"] = type;
 
             dr["IRB Agency name"] = agency;
             dr["IRB no"] = "";
             dr["IRB Study ID"] = studyid;
-            dr["Study name"] = Tools.getStudyNumber(studyid, agency);
+            dr["Study name"] = Tools.getStudyNumber(studyid, agency, IRBno);
 
             dr["Organization"] = site;
             dr["Local sample size"] = size;
-            sites.Rows.Add(dr);
+            if (newrecord)
+            { newSites.Rows.Add(dr); }
+            else
+            { updatedSites.Rows.Add(dr); }
         }
     }
 }

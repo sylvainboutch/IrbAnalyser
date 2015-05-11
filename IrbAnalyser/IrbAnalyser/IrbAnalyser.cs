@@ -46,11 +46,22 @@ namespace IrbAnalyser
                 string savefilename = dr == DialogResult.OK ? sfdCsv.FileName : "";
                 List<ExcelWorksheet> lstxls = new List<ExcelWorksheet>();
                 
-                lstxls.Add(new ExcelWorksheet("Status", "List of status to add or modify in Velos",OutputStatus.status));
-                lstxls.Add(new ExcelWorksheet("Team", "List of team members to add or modify in Velos", OutputTeam.team));
-                lstxls.Add(new ExcelWorksheet("Site", "List of organization to add or modify in Velos", OutputSite.sites));
-                lstxls.Add(new ExcelWorksheet("Attachments", "List of version (attachment) to add or modify in Velos", OutputDocs.docs));
-                lstxls.Add(new ExcelWorksheet("Studies", "List of studies to create or modify in Velos", OutputStudy.study));
+                lstxls.Add(new ExcelWorksheet("Status", "List of status to add or modify in Velos",OutputStatus.newStatus));
+                lstxls.Add(new ExcelWorksheet("Team", "List of team members to add or modify in Velos", OutputTeam.newTeam));
+                lstxls.Add(new ExcelWorksheet("Site", "List of organization to add or modify in Velos", OutputSite.newSites));
+                lstxls.Add(new ExcelWorksheet("Attachments", "List of version (attachment) to add or modify in Velos", OutputDocs.newDocs));
+                lstxls.Add(new ExcelWorksheet("Studies", "List of studies to create or modify in Velos", OutputStudy.newStudy));
+                exc.WriteDataTableToExcel(savefilename, lstxls);
+
+                dr = sfdCsv.ShowDialog();
+                savefilename = dr == DialogResult.OK ? sfdCsv.FileName : "";
+                lstxls = new List<ExcelWorksheet>();
+
+                lstxls.Add(new ExcelWorksheet("Status", "List of status to add or modify in Velos", OutputStatus.updatedStatus));
+                lstxls.Add(new ExcelWorksheet("Team", "List of team members to add or modify in Velos", OutputTeam.updatedTeam));
+                lstxls.Add(new ExcelWorksheet("Site", "List of organization to add or modify in Velos", OutputSite.updatedSites));
+                lstxls.Add(new ExcelWorksheet("Attachments", "List of version (attachment) to add or modify in Velos", OutputDocs.updatedDocs));
+                lstxls.Add(new ExcelWorksheet("Studies", "List of studies to create or modify in Velos", OutputStudy.updatedStudy));
 
                 //exc.WriteDataTableToExcel(OutputStudy.study, "New studies", savefilename, "List of studies to create in Velos");
                 exc.WriteDataTableToExcel(savefilename,lstxls);

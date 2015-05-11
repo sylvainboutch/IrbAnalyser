@@ -14,7 +14,7 @@ namespace IrbAnalyser
             return dr == null ? "" : dr["FirstName"] + " " + dr["LastName"];
         }
 
-        public static string getStudyNumber(string IRBstudyId, string IRBAgency)
+        public static string getStudyNumber(string IRBstudyId, string IRBAgency, string IRBnumber)
         {
             string number = "";
             using (Model.VelosDb db = new Model.VelosDb())
@@ -24,7 +24,35 @@ namespace IrbAnalyser
                        && stud.MORE_IRBAGENCY.ToLower() == IRBAgency.ToLower()
                           select stud.STUDY_NUMBER).FirstOrDefault();
             }
+            if (number == null || number.Trim() == "" )
+            {
+                number = generateStudyNumber(IRBAgency, IRBnumber, "Please complete");
+            }
             return number;
+        }
+
+        public static string generateStudyNumber(string irbagency, string irbnumber, string shortTitle)
+        {
+            //string output = DateTime.Now.Year.ToString().Substring(2, 2);
+            string output = irbnumber.Substring(0, 2);
+            output += "_" + shortTitle + "_";
+            output += irbnumber.ToLower() == "brany" ? "B_" : "E_";//OR MSA ? since apperently OCT enters brany CDA
+            output += irbnumber;
+            return output;
+        }
+
+
+        public static bool getOldStudy(string IRBstudyId, string IRBAgency)
+        {
+            bool ret;
+            using (Model.VelosDb db = new Model.VelosDb())
+            {
+                ret = (from stud in db.LCL_V_STUDYSUMM_PLUSMORE
+                          where stud.MORE_IRBSTUDYID.ToLower() == IRBstudyId.ToLower()
+                       && stud.MORE_IRBAGENCY.ToLower() == IRBAgency.ToLower()
+                          select stud.STUDY_NUMBER).Any();
+            }
+            return ret;
         }
 
         public static string cleanStr(string input)
@@ -57,6 +85,13 @@ namespace IrbAnalyser
             return input;
         }
 
+
+        /// <summary>
+        /// Return true if the string a equals
+        /// </summary>
+        /// <param name="str1"></param>
+        /// <param name="str2"></param>
+        /// <returns></returns>
         public static bool compareStr(object str1, object str2)
         {
             if (str1 == null)

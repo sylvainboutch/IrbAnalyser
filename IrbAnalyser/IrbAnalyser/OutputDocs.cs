@@ -8,24 +8,41 @@ namespace IrbAnalyser
 {
     class OutputDocs
     {
-        public static DataTable docs = new DataTable();
+        public static DataTable newDocs = new DataTable();
+        public static DataTable updatedDocs = new DataTable();
 
         private static void initiate()
         {
-            if (docs.Columns.Count == 0)
+            if (newDocs.Columns.Count == 0)
             {
-                docs.Columns.Add("TYPE", typeof(string));
+                newDocs.Columns.Add("TYPE", typeof(string));
 
-                docs.Columns.Add("IRB Agency name", typeof(string));
-                docs.Columns.Add("IRB no", typeof(string));
-                docs.Columns.Add("IRB Study ID", typeof(string));
-                docs.Columns.Add("Study name", typeof(string));
+                newDocs.Columns.Add("IRB Agency name", typeof(string));
+                newDocs.Columns.Add("IRB no", typeof(string));
+                newDocs.Columns.Add("IRB Study ID", typeof(string));
+                newDocs.Columns.Add("Study name", typeof(string));
 
-                docs.Columns.Add("Version date", typeof(string));
-                docs.Columns.Add("Version number", typeof(string));
-                docs.Columns.Add("Category", typeof(string));
-                docs.Columns.Add("URL", typeof(string));
-                docs.Columns.Add("Version status", typeof(string));
+                newDocs.Columns.Add("Version date", typeof(string));
+                newDocs.Columns.Add("Version number", typeof(string));
+                newDocs.Columns.Add("Category", typeof(string));
+                newDocs.Columns.Add("URL", typeof(string));
+                newDocs.Columns.Add("Version status", typeof(string));
+            }
+
+            if (updatedDocs.Columns.Count == 0)
+            {
+                updatedDocs.Columns.Add("TYPE", typeof(string));
+
+                updatedDocs.Columns.Add("IRB Agency name", typeof(string));
+                updatedDocs.Columns.Add("IRB no", typeof(string));
+                updatedDocs.Columns.Add("IRB Study ID", typeof(string));
+                updatedDocs.Columns.Add("Study name", typeof(string));
+
+                updatedDocs.Columns.Add("Version date", typeof(string));
+                updatedDocs.Columns.Add("Version number", typeof(string));
+                updatedDocs.Columns.Add("Category", typeof(string));
+                updatedDocs.Columns.Add("URL", typeof(string));
+                updatedDocs.Columns.Add("Version status", typeof(string));
             }
         }
 
@@ -35,65 +52,93 @@ namespace IrbAnalyser
         /// <param name="studyrow">StudyRow from datatable of study file</param>
         /// <param name="type"></param>
         /// <param name="source"></param>
-        public static void analyseRow(DataRow studyrow)
+        public static void analyseRow(DataRow studyrow, bool newrecord)
         {
-            using (Model.VelosDb db = new Model.VelosDb())
+            string irbstudyId = (string)studyrow["StudyId"];
+            string irbagency = ((string)studyrow["IRBAgency"]).ToLower();
+            string irbno = (string)studyrow["IRBNumber"];
+            string url1 = ((string)studyrow["DocumentLink1"]).ToLower();
+            string url2 = ((string)studyrow["DocumentLink2"]).ToLower();
+
+            if (!newrecord)
             {
-                string irbstudyId = studyrow["StudyId"].ToString();
-                string irbagency = studyrow["IRBAgency"].ToString().ToLower();
-                string url1 = studyrow["DocumentLink1"].ToString().ToLower();
-                string url2 = studyrow["DocumentLink2"].ToString().ToLower();
+                using (Model.VelosDb db = new Model.VelosDb())
+                {
+
+                    if (!String.IsNullOrEmpty(url1))
+                    {
+                        var docs = (from ver in db.ER_STUDYVER
+                                    join apdx in db.ER_STUDYAPNDX on ver.PK_STUDYVER equals apdx.FK_STUDYVER
+                                    join stud in db.LCL_V_STUDYSUMM_PLUSMORE on ver.FK_STUDY equals stud.PK_STUDY
+                                    where stud.MORE_IRBSTUDYID == irbstudyId
+                                       && stud.MORE_IRBAGENCY.ToLower() == irbagency
+                                       && apdx.STUDYAPNDX_URI.ToLower() == url1
+                                    select ver).Count();
+                        if (docs == 0)
+                        {
+                            addRow("New URL", irbagency, url1, "documents", irbstudyId, irbagency, irbno, false);
+                        }
+                    }
+
+                    if (!String.IsNullOrEmpty(url2))
+                    {
+                        var docs = (from ver in db.ER_STUDYVER
+                                    join apdx in db.ER_STUDYAPNDX on ver.PK_STUDYVER equals apdx.FK_STUDYVER
+                                    join stud in db.LCL_V_STUDYSUMM_PLUSMORE on ver.FK_STUDY equals stud.PK_STUDY
+                                    where stud.MORE_IRBSTUDYID == irbstudyId
+                                       && stud.MORE_IRBAGENCY.ToLower() == irbagency
+                                       && apdx.STUDYAPNDX_URI.ToLower() == url2
+                                    select ver).Count();
+                        if (docs == 0)
+                        {
+                            addRow("New URL", irbagency, url2, "informed consent", irbstudyId, irbagency, irbno, false);
+                        }
+                    }
+
+                }
+            }
+            else
+            {
 
                 if (!String.IsNullOrEmpty(url1))
                 {
-                    var docs = (from ver in db.ER_STUDYVER
-                               join apdx in db.ER_STUDYAPNDX on ver.PK_STUDYVER equals apdx.FK_STUDYVER
-                               join stud in db.LCL_V_STUDYSUMM_PLUSMORE on ver.FK_STUDY equals stud.PK_STUDY
-                               where stud.MORE_IRBSTUDYID == irbstudyId
-                                  && stud.MORE_IRBAGENCY.ToLower() == irbagency
-                                  && apdx.STUDYAPNDX_URI.ToLower() == url1
-                               select ver).Count();
-                    if (docs == 0)
-                    {
-                        addRow("New URL", irbagency, url1, "documents",irbstudyId,irbagency);
-                    }
+
+                    addRow("New URL", irbagency, url1, "documents", irbstudyId, irbagency, irbno, true);
                 }
 
                 if (!String.IsNullOrEmpty(url2))
                 {
-                    var docs = (from ver in db.ER_STUDYVER
-                               join apdx in db.ER_STUDYAPNDX on ver.PK_STUDYVER equals apdx.FK_STUDYVER
-                               join stud in db.LCL_V_STUDYSUMM_PLUSMORE on ver.FK_STUDY equals stud.PK_STUDY
-                               where stud.MORE_IRBSTUDYID == irbstudyId
-                                  && stud.MORE_IRBAGENCY.ToLower() == irbagency
-                                  && apdx.STUDYAPNDX_URI.ToLower() == url2
-                               select ver).Count();
-                    if (docs == 0)
-                    {
-                        addRow("New URL", irbagency, url2, "informed consent", irbstudyId, irbagency);
-                    }
+                    addRow("New URL", irbagency, url2, "informed consent", irbstudyId, irbagency, irbno, true);
                 }
-
             }
+
+
         }
 
-        public static void addRow(string type, string source, string url, string section, string studyid, string agency)
+        public static void addRow(string type, string source, string url, string section, string studyid, string agency, string irbno, bool newrecord)
         {
             initiate();
-            DataRow dr = docs.NewRow();
+            DataRow dr;
+            if (newrecord)
+            { dr = newDocs.NewRow(); }
+            else
+            { dr = updatedDocs.NewRow(); }
 
             dr["TYPE"] = type;
             dr["IRB Agency name"] = agency;
-            dr["IRB no"] = "";
+            dr["IRB no"] = irbno;
             dr["IRB Study ID"] = studyid;
-            dr["Study name"] = Tools.getStudyNumber(studyid, agency);
+            dr["Study name"] = Tools.getStudyNumber(studyid, agency, irbno);
             dr["Version date"] = DateTime.Now.ToShortDateString();
             dr["Version number"] = source.ToUpper() + " " + section;
             dr["Category"] = "External Site Docs";
             dr["URL"] = url;
             dr["Version status"] = "Approved";
 
-            docs.Rows.Add(dr);
+            if (newrecord)
+            { newDocs.Rows.Add(dr); }
+            else
+            { updatedDocs.Rows.Add(dr); }
         }
     }
 }

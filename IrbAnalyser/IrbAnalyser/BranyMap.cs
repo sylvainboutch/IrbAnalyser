@@ -24,6 +24,18 @@ namespace IrbAnalyser
                 { "Montefiore (Einstein Liver Center)", "Montefiore (Einstein Liver Center)" },
                 { "Montefiore Medical Center (IBC)", "Montefiore Medical Center (IBC)" }
             };
+
+        public static string getSite(string key)
+        {
+            try 
+            {
+                return siteMapBrany[key];
+            }
+            catch (Exception ex)
+            {
+                return key + "  (NEW !!!)";
+            }
+        }
     }
 
 
@@ -47,6 +59,18 @@ namespace IrbAnalyser
                 { "Research Assistant", "Limited PI" }
             };
 
+        public static string getRole(string key)
+        {
+            try
+            {
+                return roleMapBrany[key];
+            }
+            catch (Exception ex)
+            {
+                return key + "  (NEW !!!)";
+            }
+        }
+
         public static readonly Dictionary<string, string> groupMapBrany = new Dictionary<string, string>()
             {
                 {"",""},
@@ -61,6 +85,19 @@ namespace IrbAnalyser
                 { "PI", "Study team" },
                 { "Research Assistant", "Study team" }
             };
+
+
+        public static string getGroup(string key)
+        {
+            try
+            {
+                return groupMapBrany[key];
+            }
+            catch (Exception ex)
+            {
+                return key + "  (NEW !!!)";
+            }
+        }
     }
 
     /// <summary>
@@ -105,6 +142,19 @@ namespace IrbAnalyser
                 { "Withdrawn by PI/Institution", "Withdrawn" },
                 { "Withdrawn by Sponsor", "Withdrawn" }
             };
+
+        public static string getStatus(string key)
+        {
+            try
+            {
+                return statusMapBrany[key];
+            }
+            catch (Exception ex)
+            {
+                return key + "  (NEW !!!)";
+            }
+        }
+
         public static readonly Dictionary<string, string> typeMapBrany = new Dictionary<string, string>()
             {
                 {"",""},
@@ -142,6 +192,19 @@ namespace IrbAnalyser
                 { "Withdrawn by PI/Institution", "Study Status" },
                 { "Withdrawn by Sponsor", "Study Status" }
             };
+
+        public static string getType(string key)
+        {
+            try
+            {
+                return typeMapBrany[key];
+            }
+            catch (Exception ex)
+            {
+                return key + "  (NEW !!!)";
+            }
+        }
+
     }
 
 

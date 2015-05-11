@@ -23,18 +23,25 @@ namespace IrbAnalyser
         {
             worksheetName = wk;
             reporType = rt;
-            if (dt.Columns.Contains("Organization"))
+            if (dt.Rows.Count > 0)
             {
-                dataTable = dt.AsEnumerable().OrderBy(x => x.Field<string>("IRB Agency name"))
-                    .ThenBy(x => x.Field<string>("IRB Study ID"))
-                    .ThenBy(x => x.Field<string>("Organization"))
-                    .CopyToDataTable();
+                if (dt.Columns.Contains("Organization"))
+                {
+                    dataTable = dt.AsEnumerable().OrderBy(x => x.Field<string>("IRB Agency name"))
+                        .ThenBy(x => x.Field<string>("IRB Study ID"))
+                        .ThenBy(x => x.Field<string>("Organization"))
+                        .CopyToDataTable();
+                }
+                else
+                {
+                    dataTable = dt.AsEnumerable().OrderBy(x => x.Field<string>("IRB Agency name"))
+                        .ThenBy(x => x.Field<string>("IRB Study ID"))
+                        .CopyToDataTable();
+                }
             }
             else
             {
-                dataTable = dt.AsEnumerable().OrderBy(x => x.Field<string>("IRB Agency name"))
-                    .ThenBy(x => x.Field<string>("IRB Study ID"))
-                    .CopyToDataTable();
+                dataTable = dt.Copy();
             }
         }
     }

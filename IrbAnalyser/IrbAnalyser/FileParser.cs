@@ -31,9 +31,6 @@ namespace IrbAnalyser
                 lines.RemoveAt(0);
                 lines.ForEach(line => data.Rows.Add(Tools.removeQuote(line.Split((char)9))));
             }
-
         }
-
-
     }
 }

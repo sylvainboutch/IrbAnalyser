@@ -12,32 +12,52 @@ namespace IrbAnalyser
     public static class OutputStudy
     {
         //List of newly created study, with more study detail
-        public static DataTable study = new DataTable();
+        public static DataTable newStudy = new DataTable();
+        public static DataTable updatedStudy = new DataTable();
 
         /// <summary>
         /// Add the columns to the datatable
         /// </summary>
         private static void initiate()
         {
-            if (study.Columns.Count == 0)
+            if (newStudy.Columns.Count == 0)
             {
-                study.Columns.Add("TYPE", typeof(string));
-                study.Columns.Add("IRB Agency name", typeof(string));
-                study.Columns.Add("IRB no", typeof(string));
-                study.Columns.Add("IRB Study ID", typeof(string));
-                study.Columns.Add("Study number", typeof(string));
-                study.Columns.Add("Regulatory coordinator", typeof(string));
-                study.Columns.Add("Principal Investigator", typeof(string));
-                study.Columns.Add("Official title", typeof(string));
-                study.Columns.Add("Study summary", typeof(string));
-                study.Columns.Add("Department", typeof(string));
-                study.Columns.Add("Division/Therapeutic area", typeof(string));
-                study.Columns.Add("Entire study sample size", typeof(string));
-                study.Columns.Add("Phase", typeof(string));
-                study.Columns.Add("Research scope", typeof(string));
-                study.Columns.Add("Primary funding sponsor, if other :", typeof(string));
-                study.Columns.Add("Sponsor contact", typeof(string));
-                study.Columns.Add("Sponsor Protocol ID", typeof(string));
+                newStudy.Columns.Add("IRB Agency name", typeof(string));
+                newStudy.Columns.Add("IRB no", typeof(string));
+                newStudy.Columns.Add("IRB Study ID", typeof(string));
+                newStudy.Columns.Add("Study number", typeof(string));
+                newStudy.Columns.Add("Regulatory coordinator", typeof(string));
+                newStudy.Columns.Add("Principal Investigator", typeof(string));
+                newStudy.Columns.Add("Official title", typeof(string));
+                newStudy.Columns.Add("Study summary", typeof(string));
+                newStudy.Columns.Add("Department", typeof(string));
+                newStudy.Columns.Add("Division/Therapeutic area", typeof(string));
+                newStudy.Columns.Add("Entire study sample size", typeof(string));
+                newStudy.Columns.Add("Phase", typeof(string));
+                newStudy.Columns.Add("Research scope", typeof(string));
+                newStudy.Columns.Add("Primary funding sponsor, if other :", typeof(string));
+                newStudy.Columns.Add("Sponsor contact", typeof(string));
+                newStudy.Columns.Add("Sponsor Protocol ID", typeof(string));
+            }
+
+            if (updatedStudy.Columns.Count == 0)
+            {
+                updatedStudy.Columns.Add("IRB Agency name", typeof(string));
+                updatedStudy.Columns.Add("IRB no", typeof(string));
+                updatedStudy.Columns.Add("IRB Study ID", typeof(string));
+                updatedStudy.Columns.Add("Study number", typeof(string));
+                updatedStudy.Columns.Add("Regulatory coordinator", typeof(string));
+                updatedStudy.Columns.Add("Principal Investigator", typeof(string));
+                updatedStudy.Columns.Add("Official title", typeof(string));
+                updatedStudy.Columns.Add("Study summary", typeof(string));
+                updatedStudy.Columns.Add("Department", typeof(string));
+                updatedStudy.Columns.Add("Division/Therapeutic area", typeof(string));
+                updatedStudy.Columns.Add("Entire study sample size", typeof(string));
+                updatedStudy.Columns.Add("Phase", typeof(string));
+                updatedStudy.Columns.Add("Research scope", typeof(string));
+                updatedStudy.Columns.Add("Primary funding sponsor, if other :", typeof(string));
+                updatedStudy.Columns.Add("Sponsor contact", typeof(string));
+                updatedStudy.Columns.Add("Sponsor Protocol ID", typeof(string));
             }
         }
 
@@ -48,14 +68,14 @@ namespace IrbAnalyser
         public static void analyse(string filepath)
         {
             initiate();
-            FileParser fpStudy = new FileParser(filepath + "studysite.txt");
+            FileParser fpStudy = new FileParser(filepath + "Study.txt");
 
             foreach (DataRow study in fpStudy.data.Rows)
             {
-                analyseRow(study, filepath + "team.txt");
+                analyseRow(study, filepath + "Team.txt");
             }
 
-            OutputSite.analyseDelete(fpStudy.data);
+            //OutputSite.analyseDelete(fpStudy.data);
         }
 
 
@@ -66,26 +86,32 @@ namespace IrbAnalyser
         private static void analyseRow(DataRow dr, string teamfile)
         {
             string irbstudyId = (string)dr["StudyId"];
-            string irbagency = ((string)dr["IRBAgency"]).ToLower();
+            //string irbagency = ((string)dr["IRBAgency"]).ToLower();
+            string irbagency = "BRANY";
             if (!String.IsNullOrEmpty(irbagency) && !String.IsNullOrEmpty(irbstudyId))
             {
-                OutputStatus.analyseRowStudy(dr);
-                OutputSite.analyseRow(dr);
-                OutputDocs.analyseRow(dr);
+
                 using (Model.VelosDb db = new Model.VelosDb())
                 {
 
                     var study = from st in db.LCL_V_STUDYSUMM_PLUSMORE
-                                where st.MORE_IRBSTUDYID == irbstudyId
-                                && st.MORE_IRBAGENCY.ToLower() == irbagency
+                                where st.MORE_IRBSTUDYID.Trim().ToLower() == irbstudyId.Trim().ToLower()
+                                && st.MORE_IRBAGENCY.ToLower() == irbagency.ToLower()
                                 select st;
                     if (!study.Any())
                     {
-                        addRowStudy(dr, "New study", true, teamfile);
+                        addRowStudy(dr, true, teamfile);
+                        //Add all related values for that study
+                        OutputStatus.analyseRowStudy(dr, true);
+                        OutputSite.analyseRow(dr, true);
+                        OutputDocs.analyseRow(dr, true);
                     }
                     else
                     {
                         bool hasChanged = false;
+                        OutputStatus.analyseRowStudy(dr, false);
+                        OutputSite.analyseRow(dr, false);
+                        OutputDocs.analyseRow(dr, false);
                         string newpi = "";
                         string newrc = "";
                         foreach (var stu in study)
@@ -235,7 +261,7 @@ namespace IrbAnalyser
 
                         if (hasChanged)
                         {
-                            OutputStudy.addRowStudy(dr, "Modified study", false, teamfile, newpi, newrc);
+                            addRowStudy(dr, false, teamfile, newpi, newrc);
                         }
                     }
                 }
@@ -247,30 +273,22 @@ namespace IrbAnalyser
         /// </summary>
         /// <param name="irbNumber"></param>
         /// <param name="studyNumber"></param>
-        private static void addRowStudy(DataRow row, string type, bool newStudy, string teamfile, string newpi = "", string newrc = "")
+        private static void addRowStudy(DataRow row, bool newentry, string teamfile, string newpi = "", string newrc = "")
         {
             initiate();
-            DataRow dr = study.NewRow();
-            dr["TYPE"] = type;
+            DataRow dr;
+            if (newentry)
+            { dr = newStudy.NewRow(); }
+            else
+            { dr = updatedStudy.NewRow(); }
+
             dr["IRB Agency name"] = (string)row["IRBAgency"];
             dr["IRB no"] = (string)row["IRBNumber"];
             dr["IRB Study ID"] = (string)row["StudyId"];
-
-            if (newStudy)
-            {
-                dr["Study number"] = DateTime.Now.Year.ToString().Substring(2,2);
-                dr["Study number"] += ((string)row["IRBAgency"]).ToLower() == "brany" ? "BRANY" : "IRIS";//OR MSA ? since apperently OCT enters brany CDA
-                dr["Study number"] += " PLEASE COMPLETE ";
-                dr["Regulatory coordinator"] = getRC(teamfile, (string)row["IRBAgency"], (string)row["StudyId"]);
-                dr["Principal Investigator"] = getPI(teamfile, (string)row["IRBAgency"], (string)row["StudyId"]);
-            }
-            else
-            {
-                dr["Study number"] = Tools.getStudyNumber((string)row["StudyId"], (string)row["IRBAgency"]);
-                dr["Regulatory coordinator"] = newrc;
-                dr["Principal Investigator"] = newpi;
-            }
-            dr["Official title"] = row["Studytitle"].ToString();
+            dr["Study number"] = Tools.generateStudyNumber((string)row["IRBAgency"], (string)row["IRBNumber"], "Please complete");
+            dr["Regulatory coordinator"] = getRC(teamfile, (string)row["IRBAgency"], (string)row["StudyId"]);
+            dr["Principal Investigator"] = getPI(teamfile, (string)row["IRBAgency"], (string)row["StudyId"]);
+            dr["Official title"] = row["StudySummary"].ToString();
             dr["Study summary"] = row["Studysummary"].ToString();
             dr["Department"] = row["Department"].ToString();
             dr["Division/Therapeutic area"] = row["Division"].ToString();
@@ -281,7 +299,11 @@ namespace IrbAnalyser
             dr["Sponsor contact"] = row["PrimarySponsorContactFirstName"].ToString() + " " + row["PrimarySponsorContactLastName"].ToString();
             dr["Sponsor Protocol ID"] = row["PrimarySponsorStudyId"].ToString();
 
-            study.Rows.Add(dr);
+            if (newentry)
+            { newStudy.Rows.Add(dr); }
+            else
+            { updatedStudy.Rows.Add(dr); }
+
         }
 
         private static string getPI(string teamfile, string agency, string studyId)

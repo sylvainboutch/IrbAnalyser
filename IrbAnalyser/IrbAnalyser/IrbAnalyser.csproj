@@ -95,7 +95,6 @@
       <LastGenOutput>Model1.Designer.cs</LastGenOutput>
     </EntityDeploy>
     <None Include="App.Config" />
-    <None Include="FileFormat\Study.ini" />
     <None Include="Properties\DataSources\IrbAnalyser.Model.VelosDb.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -106,7 +105,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="schema.ini" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="Shell32">
