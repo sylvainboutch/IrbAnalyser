@@ -51,7 +51,7 @@ namespace IrbAnalyser
 
             if ((string)studyrow["IRBAgency"] == "BRANY")
             {
-                site = BranySiteMap.siteMapBrany[(string)studyrow["Sitename"]];
+                site = BranySiteMap.getSite((string)studyrow["Sitename"]);
             }
 
             string irbstudyId = (string)studyrow["StudyId"];

@@ -98,170 +98,192 @@ namespace IrbAnalyser
                                 where st.MORE_IRBSTUDYID.Trim().ToLower() == irbstudyId.Trim().ToLower()
                                 && st.MORE_IRBAGENCY.ToLower() == irbagency.ToLower()
                                 select st;
+
+
+
                     if (!study.Any())
                     {
-                        addRowStudy(dr, true, teamfile);
-                        //Add all related values for that study
+                        bool dtStudy = (from st in OutputStudy.newStudy.AsEnumerable()
+                                        where st.Field<string>("IRB Study ID").Trim().ToLower() == irbstudyId.Trim().ToLower()
+                                        && st.Field<string>("IRB Agency name").Trim().ToLower() == irbagency.Trim().ToLower()
+                                        select st).Any();
+
                         OutputStatus.analyseRowStudy(dr, true);
-                        OutputSite.analyseRow(dr, true);
-                        OutputDocs.analyseRow(dr, true);
+                        if (!dtStudy)
+                        {
+                            addRowStudy(dr, true, teamfile);
+                            //Add all related values for that study                            
+                            OutputSite.analyseRow(dr, true);
+                            OutputDocs.analyseRow(dr, true);
+                        }
                     }
                     else
                     {
-                        bool hasChanged = false;
+                        bool dtStudy = (from st in OutputStudy.updatedStudy.AsEnumerable()
+                                        where st.Field<string>("IRB Study ID").Trim().ToLower() == irbstudyId.Trim().ToLower()
+                                        && st.Field<string>("IRB Agency name").Trim().ToLower() == irbagency.Trim().ToLower()
+                                        select st).Any();
+
                         OutputStatus.analyseRowStudy(dr, false);
-                        OutputSite.analyseRow(dr, false);
-                        OutputDocs.analyseRow(dr, false);
-                        string newpi = "";
-                        string newrc = "";
-                        foreach (var stu in study)
+                        if (!dtStudy)
                         {
-                            newpi = getPI(teamfile, (string)dr["IRBAgency"], (string)dr["StudyId"]);
-                            newrc = getRC(teamfile, (string)dr["IRBAgency"], (string)dr["StudyId"]);
 
-                            if (stu.STUDY_PI != newpi && !String.IsNullOrEmpty(newpi))
-                            {
-                                hasChanged = true;
-                            }
-                            else { newpi = ""; }
+                            OutputSite.analyseRow(dr, false);
+                            OutputDocs.analyseRow(dr, false);
 
-                            if (stu.STUDY_COORDINATOR != newrc && !String.IsNullOrEmpty(newrc))
-                            {
-                                hasChanged = true;
-                            }
-                            else { newrc = ""; }
+                            bool hasChanged = false;
+                            string newpi = "";
+                            string newrc = "";
 
-                            if (!Tools.compareStr(stu.STUDY_TITLE, dr["Studytitle"]))
+                            foreach (var stu in study)
                             {
-                                dr["Studytitle"] = dr["Studytitle"];
-                            }
-                            else
-                            {
-                                hasChanged = true;
-                            }
+                                newpi = getPI(teamfile, (string)dr["IRBAgency"], (string)dr["StudyId"]);
+                                newrc = getRC(teamfile, (string)dr["IRBAgency"], (string)dr["StudyId"]);
 
-                            if (Tools.compareStr(stu.STUDY_SUMMARY, dr["Studysummary"]))
-                            {
-                                dr["Studysummary"] = "";
-                            }
-                            else
-                            {
-                                hasChanged = true;
-                            }
-                            /*
-                            var indide = from sd in db.LCL_V_STUDY_INDIDE
-                                         where stu.PK_STUDY == sd.FK_STUDY
-                                         select sd;
-
-                            if (indide.Count() == 0 && dr["IND"].ToString().ToUpper() == "TRUE")
-                            {
-                                hasChanged = true;
-                            }
-                            if (indide.Count() == 0 && dr["IND"].ToString().ToUpper() == "FALSE")
-                            {
-                                dr["IND"] = "";
-                            }
-
-
-                            bool hasntchanged = false;
-
-                            foreach (var ind in indide)
-                            {
-                                if (Tools.compareStr(ind.INDIDE_NUMBER, dr["INDnumber"]))
+                                if (stu.STUDY_PI != newpi && !String.IsNullOrEmpty(newpi))
                                 {
-                                    dr["INDnumber"] = "";
-                                    hasntchanged = true;
+                                    hasChanged = true;
                                 }
-                            }
+                                else { newpi = ""; }
 
-                            hasChanged = hasntchanged ? hasChanged : true;
+                                if (stu.STUDY_COORDINATOR != newrc && !String.IsNullOrEmpty(newrc))
+                                {
+                                    hasChanged = true;
+                                }
+                                else { newrc = ""; }
 
-                            //TODO What to do with IND Holder
-                            */
+                                if (!Tools.compareStr(stu.STUDY_TITLE, dr["Studytitle"]))
+                                {
+                                    dr["Studytitle"] = dr["Studytitle"];
+                                }
+                                else
+                                {
+                                    hasChanged = true;
+                                }
 
-                            //TODO This would come from IRIS mapping
-                            /*
-                            if (Tools.compareStr(stu.STUDY_DIVISION, dr["Department"]))
-                            {
-                                dr["Department"] = "";
-                            }
-                            else
-                            {
-                                hasChanged = true;
-                            }
+                                if (Tools.compareStr(stu.STUDY_SUMMARY, dr["Studysummary"]))
+                                {
+                                    dr["Studysummary"] = "";
+                                }
+                                else
+                                {
+                                    hasChanged = true;
+                                }
+                                /*
+                                var indide = from sd in db.LCL_V_STUDY_INDIDE
+                                             where stu.PK_STUDY == sd.FK_STUDY
+                                             select sd;
 
-                            if (Tools.compareStr(stu.STUDY_TAREA, dr["Division"]))
-                            {
-                                dr["Division"] = "";
-                            }
-                            else
-                            {
-                                hasChanged = true;
-                            }
-                            */
+                                if (indide.Count() == 0 && dr["IND"].ToString().ToUpper() == "TRUE")
+                                {
+                                    hasChanged = true;
+                                }
+                                if (indide.Count() == 0 && dr["IND"].ToString().ToUpper() == "FALSE")
+                                {
+                                    dr["IND"] = "";
+                                }
 
-                            int samplesize = 0;
-                            Int32.TryParse((string)dr["Studysamplesize"], out samplesize);
 
-                            if (stu.STUDY_NATSAMPSIZE == samplesize)
-                            {
-                                dr["Studysamplesize"] = "";
-                            }
-                            else
-                            {
-                                hasChanged = true;
-                            }
+                                bool hasntchanged = false;
 
-                            bool cmp = (stu.STUDY_SCOPE == "Multi Center Study" && dr["Multicenter"].ToString().ToLower() == "true") ||
-                                (stu.STUDY_SCOPE == "Single Center Study" && dr["Multicenter"].ToString().ToLower() == "false") ||
-                                (stu.STUDY_SCOPE == null && dr["Multicenter"].ToString().ToLower() == "");
+                                foreach (var ind in indide)
+                                {
+                                    if (Tools.compareStr(ind.INDIDE_NUMBER, dr["INDnumber"]))
+                                    {
+                                        dr["INDnumber"] = "";
+                                        hasntchanged = true;
+                                    }
+                                }
 
-                            if (cmp)
-                            {
-                                dr["Multicenter"] = "";
-                            }
-                            else
-                            {
-                                hasChanged = true;
-                            }
+                                hasChanged = hasntchanged ? hasChanged : true;
 
-                            //TODO Phase need mapping from IRIS, BRANY doesnt have
-                            //TODO This should also use a map
-                            if (Tools.compareStr(stu.STUDY_SPONSOR, dr["Primarysponsorname"]))
-                            {
-                                dr["Primarysponsorname"] = "";
-                            }
-                            else
-                            {
-                                hasChanged = true;
-                            }
+                                //TODO What to do with IND Holder
+                                */
 
-                            string[] strs = {dr["Primarysponsorcontactfirstname"].ToString(),
+                                //TODO This would come from IRIS mapping
+                                /*
+                                if (Tools.compareStr(stu.STUDY_DIVISION, dr["Department"]))
+                                {
+                                    dr["Department"] = "";
+                                }
+                                else
+                                {
+                                    hasChanged = true;
+                                }
+
+                                if (Tools.compareStr(stu.STUDY_TAREA, dr["Division"]))
+                                {
+                                    dr["Division"] = "";
+                                }
+                                else
+                                {
+                                    hasChanged = true;
+                                }
+                                */
+
+                                int samplesize = 0;
+                                Int32.TryParse((string)dr["Studysamplesize"], out samplesize);
+
+                                if (stu.STUDY_NATSAMPSIZE == samplesize)
+                                {
+                                    dr["Studysamplesize"] = "";
+                                }
+                                else
+                                {
+                                    hasChanged = true;
+                                }
+
+                                bool cmp = (stu.STUDY_SCOPE == "Multi Center Study" && dr["Multicenter"].ToString().ToLower() == "true") ||
+                                    (stu.STUDY_SCOPE == "Single Center Study" && dr["Multicenter"].ToString().ToLower() == "false") ||
+                                    (stu.STUDY_SCOPE == null && dr["Multicenter"].ToString().ToLower() == "");
+
+                                if (cmp)
+                                {
+                                    dr["Multicenter"] = "";
+                                }
+                                else
+                                {
+                                    hasChanged = true;
+                                }
+
+                                //TODO Phase need mapping from IRIS, BRANY doesnt have
+                                //TODO This should also use a map
+                                if (Tools.compareStr(stu.STUDY_SPONSOR, dr["Primarysponsorname"]))
+                                {
+                                    dr["Primarysponsorname"] = "";
+                                }
+                                else
+                                {
+                                    hasChanged = true;
+                                }
+
+                                string[] strs = {dr["Primarysponsorcontactfirstname"].ToString(),
                     dr["Primarysponsorcontactlastname"].ToString()};
 
-                            if (Tools.containStr(stu.STUDY_SPONSOR, strs))
-                            {
-                                dr["Primarysponsorname"] = "";
-                            }
-                            else
-                            {
-                                hasChanged = true;
+                                if (Tools.containStr(stu.STUDY_SPONSOR, strs))
+                                {
+                                    dr["Primarysponsorname"] = "";
+                                }
+                                else
+                                {
+                                    hasChanged = true;
+                                }
+
+                                if (Tools.compareStr(stu.STUDY_SPONSORID, dr["PrimarysponsorstudyID"]))
+                                {
+                                    dr["PrimarysponsorstudyID"] = "";
+                                }
+                                else
+                                {
+                                    hasChanged = true;
+                                }
+
                             }
 
-                            if (Tools.compareStr(stu.STUDY_SPONSORID, dr["PrimarysponsorstudyID"]))
+                            if (hasChanged)
                             {
-                                dr["PrimarysponsorstudyID"] = "";
+                                addRowStudy(dr, false, teamfile, newpi, newrc);
                             }
-                            else
-                            {
-                                hasChanged = true;
-                            }
-
-                        }
-
-                        if (hasChanged)
-                        {
-                            addRowStudy(dr, false, teamfile, newpi, newrc);
                         }
                     }
                 }
@@ -283,17 +305,17 @@ namespace IrbAnalyser
             { dr = updatedStudy.NewRow(); }
 
             dr["IRB Agency name"] = (string)row["IRBAgency"];
-            dr["IRB no"] = (string)row["IRBNumber"];
+            dr["IRB no"] = ((string)row["IRBNumber"]).Replace("(IBC)", "");
             dr["IRB Study ID"] = (string)row["StudyId"];
             dr["Study number"] = Tools.generateStudyNumber((string)row["IRBAgency"], (string)row["IRBNumber"], "Please complete");
             dr["Regulatory coordinator"] = getRC(teamfile, (string)row["IRBAgency"], (string)row["StudyId"]);
             dr["Principal Investigator"] = getPI(teamfile, (string)row["IRBAgency"], (string)row["StudyId"]);
-            dr["Official title"] = row["StudySummary"].ToString();
+            dr["Official title"] = (string)row["StudyTitle"];
             dr["Study summary"] = row["Studysummary"].ToString();
-            dr["Department"] = row["Department"].ToString();
-            dr["Division/Therapeutic area"] = row["Division"].ToString();
+            dr["Department"] = String.IsNullOrEmpty((string)row["Department"]) && newentry ? "Please specify" : (string)row["Department"];
+            dr["Division/Therapeutic area"] = String.IsNullOrEmpty((string)row["Division"]) && newentry ? "NA" : (string)row["Division"];
             dr["Entire study sample size"] = row["Studysamplesize"].ToString();
-            dr["Phase"] = row["Phase"].ToString() == "" ? "NA" : row["Phase"].ToString();
+            dr["Phase"] = String.IsNullOrEmpty((string)row["Phase"]) && newentry ? "Please Specify" : (string)row["Phase"];
             dr["Research scope"] = row["Multicenter"].ToString() == "TRUE" ? "Multicenter" : "Single center";
             dr["Primary funding sponsor, if other :"] = row["Primarysponsorname"].ToString();
             dr["Sponsor contact"] = row["PrimarySponsorContactFirstName"].ToString() + " " + row["PrimarySponsorContactLastName"].ToString();
@@ -308,7 +330,7 @@ namespace IrbAnalyser
 
         private static string getPI(string teamfile, string agency, string studyId)
         {
-            return getRole(teamfile, agency, studyId, "PI");
+            return getRole(teamfile, agency, studyId, "Investigator");
         }
 
         private static string getRC(string teamfile, string agency, string studyId)

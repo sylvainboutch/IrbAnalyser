@@ -26,6 +26,7 @@ namespace IrbAnalyser
                 newDocs.Columns.Add("Version number", typeof(string));
                 newDocs.Columns.Add("Category", typeof(string));
                 newDocs.Columns.Add("URL", typeof(string));
+                newDocs.Columns.Add("Short description", typeof(string));
                 newDocs.Columns.Add("Version status", typeof(string));
             }
 
@@ -42,6 +43,7 @@ namespace IrbAnalyser
                 updatedDocs.Columns.Add("Version number", typeof(string));
                 updatedDocs.Columns.Add("Category", typeof(string));
                 updatedDocs.Columns.Add("URL", typeof(string));
+                updatedDocs.Columns.Add("Short description", typeof(string));
                 updatedDocs.Columns.Add("Version status", typeof(string));
             }
         }
@@ -133,6 +135,7 @@ namespace IrbAnalyser
             dr["Version number"] = source.ToUpper() + " " + section;
             dr["Category"] = "External Site Docs";
             dr["URL"] = url;
+            dr["Short description"] = newrecord ? "BRANY IRB Documents":"";
             dr["Version status"] = "Approved";
 
             if (newrecord)

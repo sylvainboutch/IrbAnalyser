@@ -15,20 +15,20 @@ namespace IrbAnalyser
         public static readonly Dictionary<string, string> siteMapBrany = new Dictionary<string, string>()
             {
                 {"",""},
-                { "Montefiore Medical Center", "Montefiore Medical Center" },
-                { "Albert Einstein Col. of Med. of Yeshiva University", "Einstein Montefiore" },
+                { "Montefiore Medical Center", "Einstein Montefiore" },
+                { "Albert Einstein Col. of Med. of Yeshiva University", "Albert Einstein Col. of Med. of Yeshiva University" },
                 { "Westchester Cardiology", "Westchester Cardiology" },
                 { "Montefiore (Weiler Division)", "Montefiore (Weiler Division)" },
                 { "Montefiore (Moses Division)", "Montefiore (Moses Division)" },
                 { "Montefiore (Children's Hosp)", "Children's Hospital at Montefiore" },
-                { "Montefiore (Einstein Liver Center)", "Montefiore (Einstein Liver Center)" },
-                { "Montefiore Medical Center (IBC)", "Montefiore Medical Center (IBC)" }
+                { "Montefiore (Einstein Liver Center)", "Montefiore (Einstein Liver Center)" }
             };
 
         public static string getSite(string key)
         {
-            try 
+            try
             {
+                key.Replace("(IBC)", "");
                 return siteMapBrany[key];
             }
             catch (Exception ex)
@@ -56,13 +56,15 @@ namespace IrbAnalyser
                 { "Coordinator", "Study Coordinator" },
                 { "Faculty Advisor", "Limited PI" },
                 { "PI", "PI" },
-                { "Research Assistant", "Limited PI" }
+                { "Research Assistant", "Limited PI" },
+                { "Investigator", "PI" }
             };
 
         public static string getRole(string key)
         {
             try
             {
+                key.Replace("(IBC)", "");
                 return roleMapBrany[key];
             }
             catch (Exception ex)
@@ -83,7 +85,8 @@ namespace IrbAnalyser
                 { "Coordinator", "Study team" },
                 { "Faculty Advisor", "Study team" },
                 { "PI", "Study team" },
-                { "Research Assistant", "Study team" }
+                { "Research Assistant", "Study team" },
+                { "Investigator", "Study team" }
             };
 
 
@@ -198,6 +201,87 @@ namespace IrbAnalyser
             try
             {
                 return typeMapBrany[key];
+            }
+            catch (Exception ex)
+            {
+                return key + "  (NEW !!!)";
+            }
+        }
+
+    }
+
+    /// <summary>
+    /// Class to hold mapping, 2 dictionnary for status and status type
+    /// </summary>
+    public static class BranyEventsMap
+    {
+        public static readonly Dictionary<string, string> eventsMapBrany = new Dictionary<string, string>()
+            {
+                {"1572 Modification","Undefined IRB Event"},
+                {"Additional PI","Undefined IRB Event"},
+                {"Administrative (Translation)","Undefined IRB Event"},
+                {"Administrative Review","Undefined IRB Event"},
+                {"Advertisements","Undefined IRB Event"},
+                {"Amendment","IRB AMENDMENT Submitted**"},
+                {"Continuing Review","Undefined IRB Event"},
+                {"Expedited Continuing Review","Undefined IRB Event"},
+                {"Expedited Initial Review","Undefined IRB Event"},
+                {"Full Board Reconsideration","Undefined IRB Event"},
+                {"New Application for IRB Review","Undefined IRB Event"},
+                {"Noncompliance","Undefined IRB Event"},
+                {"Protocol Exception","Undefined IRB Event"},
+                {"QA Review","Undefined IRB Event"},
+                {"Replacement PI","Undefined IRB Event"},
+                {"Reportable Event","Undefined IRB Event"},
+                {"Revised Letter","Undefined IRB Event"},
+                {"SAE","Undefined IRB Event"},
+                {"Study Closure/Expiration","Undefined IRB Event"},
+                {"Study Enrollment Closure Report","Undefined IRB Event"},
+                {"Unanticipated Problem","Undefined IRB Event"}
+            };
+
+        public static string getStatus(string key)
+        {
+            try
+            {
+                return eventsMapBrany[key];
+            }
+            catch (Exception ex)
+            {
+                return key + "  (NEW !!!)";
+            }
+        }
+
+        public static readonly Dictionary<string, string> eventsTypeMapBrany = new Dictionary<string, string>()
+            {
+                {"1572 Modification","Pre Activation"},
+                {"Additional PI","Pre Activation"},
+                {"Administrative (Translation)","Pre Activation"},
+                {"Administrative Review","Pre Activation"},
+                {"Advertisements","Pre Activation"},
+                {"Amendment","Pre Activation"},
+                {"Continuing Review","Pre Activation"},
+                {"Expedited Continuing Review","Pre Activation"},
+                {"Expedited Initial Review","Pre Activation"},
+                {"Full Board Reconsideration","Pre Activation"},
+                {"New Application for IRB Review","Pre Activation"},
+                {"Noncompliance","Pre Activation"},
+                {"Protocol Exception","Pre Activation"},
+                {"QA Review","Pre Activation"},
+                {"Replacement PI","Pre Activation"},
+                {"Reportable Event","Pre Activation"},
+                {"Revised Letter","Pre Activation"},
+                {"SAE","Pre Activation"},
+                {"Study Closure/Expiration","Pre Activation"},
+                {"Study Enrollment Closure Report","Pre Activation"},
+                {"Unanticipated Problem","Pre Activation"}
+            };
+
+        public static string getType(string key)
+        {
+            try
+            {
+                return eventsTypeMapBrany[key];
             }
             catch (Exception ex)
             {
