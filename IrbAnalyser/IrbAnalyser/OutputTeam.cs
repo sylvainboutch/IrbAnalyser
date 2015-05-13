@@ -182,7 +182,7 @@ namespace IrbAnalyser
                     {
                         var user = from us in db.VDA_V_STUDYTEAM_MEMBERS
                                    join stud in db.LCL_V_STUDYSUMM_PLUSMORE on us.FK_STUDY equals stud.PK_STUDY
-                                   where stud.MORE_IRBSTUDYID == irbstudyId
+                                   where stud.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId)
                                   && stud.MORE_IRBAGENCY.ToLower() == irbagency
                                   && us.USER_EMAIL == email
                                    select us;

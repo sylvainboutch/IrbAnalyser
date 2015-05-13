@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BranyMap.cs" />
+    <Compile Include="Csv.cs" />
     <Compile Include="CsvReader.cs" />
     <Compile Include="DbCompare.cs" />
     <Compile Include="ExcelUtility.cs" />
@@ -69,7 +70,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
-    <Compile Include="OuputSponsors.cs" />
+    <Compile Include="OutputMSD.cs" />
     <Compile Include="OutputDocs.cs" />
     <Compile Include="OutputSite.cs" />
     <Compile Include="OutputStatus.cs" />

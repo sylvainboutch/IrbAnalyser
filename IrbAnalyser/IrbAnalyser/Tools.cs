@@ -14,17 +14,37 @@ namespace IrbAnalyser
             return dr == null ? "" : dr["FirstName"] + " " + dr["LastName"];
         }
 
+        public static string generateStudyIdentifiers(DataTable study, string studyID, string agency)
+        {
+            string result = studyID;
+            var stud = (from st in study.AsEnumerable()
+                       where st.Field<string>("IRB Study ID").Trim().ToLower() == studyID.Trim().ToLower()
+                       && st.Field<string>("IRB Agency name").Trim().ToLower() == agency.Trim().ToLower()
+                        select (st.Field<string>("SiteName") + "::" + st.Field<string>("StudySiteId"))).ToArray();
+            foreach (var stu in stud)
+            {
+                result += "&&" + stu;
+            }
+            return result;
+        }
+
+        public static string parseDate(string date)
+        {
+            DateTime mydate = DateTime.Parse(date);
+            return mydate.Date.ToString("MM/dd/yyyy");
+        }
+
         public static string getStudyNumber(string IRBstudyId, string IRBAgency, string IRBnumber)
         {
             string number = "";
             using (Model.VelosDb db = new Model.VelosDb())
             {
                 number = (from stud in db.LCL_V_STUDYSUMM_PLUSMORE
-                          where stud.MORE_IRBSTUDYID.ToLower() == IRBstudyId.ToLower()
+                          where stud.MORE_IRBSTUDYID.Trim().ToLower().Contains(IRBstudyId.Trim().ToLower())
                        && stud.MORE_IRBAGENCY.ToLower() == IRBAgency.ToLower()
                           select stud.STUDY_NUMBER).FirstOrDefault();
             }
-            if (number == null || number.Trim() == "" )
+            if (number == null || number.Trim() == "")
             {
                 number = generateStudyNumber(IRBAgency, IRBnumber, "Please complete");
             }
@@ -48,9 +68,9 @@ namespace IrbAnalyser
             using (Model.VelosDb db = new Model.VelosDb())
             {
                 ret = (from stud in db.LCL_V_STUDYSUMM_PLUSMORE
-                          where stud.MORE_IRBSTUDYID.ToLower() == IRBstudyId.ToLower()
-                       && stud.MORE_IRBAGENCY.ToLower() == IRBAgency.ToLower()
-                          select stud.STUDY_NUMBER).Any();
+                       where stud.MORE_IRBSTUDYID.Trim().ToLower().Contains(IRBstudyId.Trim().ToLower())
+                    && stud.MORE_IRBAGENCY.ToLower() == IRBAgency.ToLower()
+                       select stud.STUDY_NUMBER).Any();
             }
             return ret;
         }

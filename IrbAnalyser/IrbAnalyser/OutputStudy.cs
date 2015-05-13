@@ -25,6 +25,7 @@ namespace IrbAnalyser
                 newStudy.Columns.Add("IRB Agency name", typeof(string));
                 newStudy.Columns.Add("IRB no", typeof(string));
                 newStudy.Columns.Add("IRB Study ID", typeof(string));
+                newStudy.Columns.Add("IRB Identifiers", typeof(string));
                 newStudy.Columns.Add("Study number", typeof(string));
                 newStudy.Columns.Add("Regulatory coordinator", typeof(string));
                 newStudy.Columns.Add("Principal Investigator", typeof(string));
@@ -45,6 +46,7 @@ namespace IrbAnalyser
                 updatedStudy.Columns.Add("IRB Agency name", typeof(string));
                 updatedStudy.Columns.Add("IRB no", typeof(string));
                 updatedStudy.Columns.Add("IRB Study ID", typeof(string));
+                updatedStudy.Columns.Add("IRB Identifiers", typeof(string));
                 updatedStudy.Columns.Add("Study number", typeof(string));
                 updatedStudy.Columns.Add("Regulatory coordinator", typeof(string));
                 updatedStudy.Columns.Add("Principal Investigator", typeof(string));
@@ -93,9 +95,9 @@ namespace IrbAnalyser
 
                 using (Model.VelosDb db = new Model.VelosDb())
                 {
-
+                    
                     var study = from st in db.LCL_V_STUDYSUMM_PLUSMORE
-                                where st.MORE_IRBSTUDYID.Trim().ToLower() == irbstudyId.Trim().ToLower()
+                                where st.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
                                 && st.MORE_IRBAGENCY.ToLower() == irbagency.ToLower()
                                 select st;
 
@@ -307,6 +309,7 @@ namespace IrbAnalyser
             dr["IRB Agency name"] = (string)row["IRBAgency"];
             dr["IRB no"] = ((string)row["IRBNumber"]).Replace("(IBC)", "");
             dr["IRB Study ID"] = (string)row["StudyId"];
+            dr["IRB Identifiers"] = Tools.generateStudyIdentifiers(dr.Table, (string)row["StudyId"], (string)row["IRBAgency"]);
             dr["Study number"] = Tools.generateStudyNumber((string)row["IRBAgency"], (string)row["IRBNumber"], "Please complete");
             dr["Regulatory coordinator"] = getRC(teamfile, (string)row["IRBAgency"], (string)row["StudyId"]);
             dr["Principal Investigator"] = getPI(teamfile, (string)row["IRBAgency"], (string)row["StudyId"]);
@@ -320,6 +323,17 @@ namespace IrbAnalyser
             dr["Primary funding sponsor, if other :"] = row["Primarysponsorname"].ToString();
             dr["Sponsor contact"] = row["PrimarySponsorContactFirstName"].ToString() + " " + row["PrimarySponsorContactLastName"].ToString();
             dr["Sponsor Protocol ID"] = row["PrimarySponsorStudyId"].ToString();
+
+            string[] labels = new string[3]{"IRB agency name","IRB No.","OFFICE USE ONLY - DO NOT MODIFY - IRB Identifiers"};
+            string[] values = new string[3] { (string)row["IRBAgency"], (string)row["IRBNumber"], (string)row["StudyId"] };
+
+            OutputMSD.initiate();
+
+            for (int i = 0; i < labels.Count(); i++)
+            {
+                OutputMSD.addRow(labels[i], values[i], (string)row["StudyId"], (string)row["IRBAgency"], ((string)row["IRBNumber"]).Replace("(IBC)", ""), newentry);
+            }
+
 
             if (newentry)
             { newStudy.Rows.Add(dr); }

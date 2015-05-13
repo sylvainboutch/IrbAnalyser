@@ -65,7 +65,7 @@ namespace IrbAnalyser
                     {
                         var sites = (from sit in db.VDA_V_STUDYSITES
                                      join stud in db.LCL_V_STUDYSUMM_PLUSMORE on sit.FK_STUDY equals stud.PK_STUDY
-                                     where stud.MORE_IRBSTUDYID == irbstudyId
+                                     where stud.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
                                         && stud.MORE_IRBAGENCY.ToLower() == irbagency
                                         && sit.SITE_NAME == site
                                      select sit);

@@ -112,7 +112,7 @@ namespace IrbAnalyser
                         var statusesDB = from stat in db.VDA_V_STUDYSTAT
                                          join stud in db.LCL_V_STUDYSUMM_PLUSMORE on stat.FK_STUDY equals stud.PK_STUDY
                                          where stud.MORE_IRBSTUDYID == irbstudyId
-                                      && stud.MORE_IRBAGENCY.ToLower() == irbagency
+                                      && stud.MORE_IRBAGENCY.ToLower().Trim().Contains(irbagency.ToLower().Trim())
                                          && stat.SSTAT_STUDY_STATUS == status
                                          && stat.SSTAT_VALID_FROM.Value.Year == start.Year
                                          && stat.SSTAT_VALID_FROM.Value.Month == start.Month
@@ -170,7 +170,7 @@ namespace IrbAnalyser
                     {
                         var statusesDB1 = from stat in db.VDA_V_STUDYSTAT
                                           join stud in db.LCL_V_STUDYSUMM_PLUSMORE on stat.FK_STUDY equals stud.PK_STUDY
-                                          where stud.MORE_IRBSTUDYID == irbstudyId
+                                          where stud.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
                                        && stud.MORE_IRBAGENCY.ToLower() == irbagency
                                           && stat.SSTAT_STUDY_STATUS == status1
                                           && stat.SSTAT_VALID_FROM.Value.Year == start.Year
@@ -186,7 +186,7 @@ namespace IrbAnalyser
 
                             var statusesDB2 = from stat in db.VDA_V_STUDYSTAT
                                               join stud in db.LCL_V_STUDYSUMM_PLUSMORE on stat.FK_STUDY equals stud.PK_STUDY
-                                              where stud.MORE_IRBSTUDYID == irbstudyId
+                                              where stud.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
                                            && stud.MORE_IRBAGENCY.ToLower() == irbagency
                                               && stat.SSTAT_STUDY_STATUS == status2
                                               && stat.SSTAT_VALID_FROM.Value.Year == start.Year
@@ -216,7 +216,7 @@ namespace IrbAnalyser
                     {
                         var statusesDB1 = from stat in db.VDA_V_STUDYSTAT
                                           join stud in db.LCL_V_STUDYSUMM_PLUSMORE on stat.FK_STUDY equals stud.PK_STUDY
-                                          where stud.MORE_IRBSTUDYID == irbstudyId
+                                          where stud.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
                                        && stud.MORE_IRBAGENCY.ToLower() == irbagency
                                           && stat.SSTAT_STUDY_STATUS == status
                                           && stat.SSTAT_VALID_FROM.Value.Year == start.Year
@@ -290,7 +290,7 @@ namespace IrbAnalyser
 
                     var statusesDB = !(from stat in db.VDA_V_STUDYSTAT
                                      join stud in db.LCL_V_STUDYSUMM_PLUSMORE on stat.FK_STUDY equals stud.PK_STUDY
-                                     where stud.MORE_IRBSTUDYID == irbstudyId
+                                       where stud.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
                                   && stud.MORE_IRBAGENCY.ToLower() == irbagency
                                      && stat.SSTAT_STUDY_STATUS == status
                                      && stat.SSTAT_VALID_FROM.Value.Year == start.Year
@@ -354,7 +354,7 @@ namespace IrbAnalyser
             dr["Comment"] = (string)statusRow["Status"];
 
             dr["Documented by"] = "IRB interface";
-            dr["Status Valid From"] = statusRow["ValidOn"];
+            dr["Status Valid From"] = Tools.parseDate((string)statusRow["ValidOn"]);
 
             if (newrecord)
             { newStatus.Rows.Add(dr); }
@@ -390,7 +390,7 @@ namespace IrbAnalyser
             dr["Study status"] = status;
             dr["status type"] = "Pre Activation";
             dr["Documented by"] = "IRB interface";
-            dr["Status Valid From"] = eventRow["EventCreationDate"];
+            dr["Status Valid From"] = Tools.parseDate((string)eventRow["EventCreationDate"]);
             dr["Comment"] = (string)eventRow["Event"];
             //Change to rule, now we create a new IRB Approved status
             dr["Outcome"] = !string.IsNullOrEmpty((string)eventRow["ApprovalDate"])
@@ -406,7 +406,7 @@ namespace IrbAnalyser
                 DateTime.TryParse((string)eventRow["EventCompletionDate"], out end);
             if (end != DateTime.MinValue)
             {
-                dr["Status Valid Until"] = end.Date.ToString("o");
+                dr["Status Valid Until"] = Tools.parseDate((string)end.Date.ToString("o"));
             }
 
             if (newrecord)
@@ -440,8 +440,8 @@ namespace IrbAnalyser
             dr["Study status"] = "IRB Approved";
             dr["status type"] = "Pre Activation";
             dr["Documented by"] = "IRB interface";
-            dr["Status Valid From"] = studyRow["Mostrecentapprovaldate"];
-            dr["Status Valid Until"] = studyRow["Expirationdate"];
+            dr["Status Valid From"] = Tools.parseDate((string)studyRow["Mostrecentapprovaldate"]);
+            dr["Status Valid Until"] = Tools.parseDate((string)studyRow["Expirationdate"]);
 
             if (newrecord)
             { newStatus.Rows.Add(dr); }

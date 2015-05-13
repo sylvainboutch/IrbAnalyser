@@ -44,6 +44,25 @@ namespace IrbAnalyser
                 sfdCsv.Filter = "Excel Files|*.xlsx";
                 DialogResult dr = sfdCsv.ShowDialog();
                 string savefilename = dr == DialogResult.OK ? sfdCsv.FileName : "";
+
+                string savefilenoext = savefilename.Remove(savefilename.Length - 3, 3);
+                string separator = "~";
+
+                Csv.saveCsv(OutputStudy.newStudy,separator,savefilenoext + "_newStudy");
+                Csv.saveCsv(OutputMSD.newMSD, separator, savefilenoext + "_newMSD");
+                Csv.saveCsv(OutputDocs.newDocs, separator, savefilenoext + "_newAttachments");
+                Csv.saveCsv(OutputSite.newSites, separator, savefilenoext + "_newSites");
+                Csv.saveCsv(OutputTeam.newTeam, separator, savefilenoext + "_newTeam");
+                Csv.saveCsv(OutputStatus.newStatus, separator, savefilenoext + "_newStatus");
+
+                Csv.saveCsv(OutputStudy.updatedStudy, separator, savefilenoext + "_updatedStudy");
+                Csv.saveCsv(OutputMSD.updatedMSD, separator, savefilenoext + "_updatedMSD");
+                Csv.saveCsv(OutputDocs.updatedDocs, separator, savefilenoext + "_updatedAttachments");
+                Csv.saveCsv(OutputSite.updatedSites, separator, savefilenoext + "_updatedSites");
+                Csv.saveCsv(OutputTeam.updatedTeam, separator, savefilenoext + "_updatedTeam");
+                Csv.saveCsv(OutputStatus.updatedStatus, separator, savefilenoext + "_updatedStatus");                
+                
+                
                 List<ExcelWorksheet> lstxls = new List<ExcelWorksheet>();
                 
                 lstxls.Add(new ExcelWorksheet("Status", "List of status to add or modify in Velos",OutputStatus.newStatus));

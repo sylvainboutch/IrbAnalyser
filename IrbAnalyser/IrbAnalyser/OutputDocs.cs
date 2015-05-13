@@ -72,7 +72,7 @@ namespace IrbAnalyser
                         var docs = (from ver in db.ER_STUDYVER
                                     join apdx in db.ER_STUDYAPNDX on ver.PK_STUDYVER equals apdx.FK_STUDYVER
                                     join stud in db.LCL_V_STUDYSUMM_PLUSMORE on ver.FK_STUDY equals stud.PK_STUDY
-                                    where stud.MORE_IRBSTUDYID == irbstudyId
+                                    where stud.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
                                        && stud.MORE_IRBAGENCY.ToLower() == irbagency
                                        && apdx.STUDYAPNDX_URI.ToLower() == url1
                                     select ver).Count();
@@ -131,7 +131,7 @@ namespace IrbAnalyser
             dr["IRB no"] = irbno;
             dr["IRB Study ID"] = studyid;
             dr["Study name"] = Tools.getStudyNumber(studyid, agency, irbno);
-            dr["Version date"] = DateTime.Now.ToShortDateString();
+            dr["Version date"] = Tools.parseDate((string)DateTime.Now.ToShortDateString());
             dr["Version number"] = source.ToUpper() + " " + section;
             dr["Category"] = "External Site Docs";
             dr["URL"] = url;
