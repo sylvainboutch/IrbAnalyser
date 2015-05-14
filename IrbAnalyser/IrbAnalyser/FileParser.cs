@@ -11,15 +11,37 @@ namespace IrbAnalyser
     {
         public DataTable data;
 
-        public FileParser(string file)
+        public FileParser(string file, type typ)
         {
-            getDataTable(file);
+            getDataTable(file, typ);
         }
 
+        public static enum type { Study, Team, Status, Event }
 
-        private void getDataTable(string file)
+        private void getDataTable(string file, type typ)
         {
             data = new DataTable();
+
+            switch (typ)
+            {
+                case type.Study:
+                    break;
+                case type.Team:
+                    break;
+                case type.Status:
+                    break;
+                case type.Event:
+                    break;
+            }
+
+            foreach (DataRow dr in data.Rows)
+            {
+                foreach (DataColumn dc in data.Columns)
+                {
+                    dr[dc.ColumnName] = "";
+                }
+            }
+
             var lines = File.ReadAllLines(file).ToList();
             if (lines.Count > 0)
             {
