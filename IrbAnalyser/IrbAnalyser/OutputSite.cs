@@ -71,7 +71,7 @@ namespace IrbAnalyser
                                      select sit);
                         if (sites.Count() == 0)
                         {
-                            addRow("New Site", site, size, irbstudyId, irbagency, (string)studyrow["IRBNumber"], false);
+                            addRow("New Site", site, size, irbstudyId, irbagency, (string)studyrow["IRBNumber"], true);
                         }
                         else if (sites.FirstOrDefault().STUDYSITE_LSAMPLESIZE != size && !String.IsNullOrEmpty(size))
                         {
@@ -82,7 +82,7 @@ namespace IrbAnalyser
             }
             else
             {
-                addRow("", site, size, irbstudyId, irbagency, (string)studyrow["IRBNumber"], true);
+                addRow("New study", site, size, irbstudyId, irbagency, (string)studyrow["IRBNumber"], true);
             }
 
         }

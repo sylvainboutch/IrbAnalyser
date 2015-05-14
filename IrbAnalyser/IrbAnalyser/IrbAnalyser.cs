@@ -55,13 +55,14 @@ namespace IrbAnalyser
                 Csv.saveCsv(OutputTeam.newTeam, separator, savefilenoext + "_newTeam");
                 Csv.saveCsv(OutputStatus.newStatus, separator, savefilenoext + "_newStatus");
 
+                /*
                 Csv.saveCsv(OutputStudy.updatedStudy, separator, savefilenoext + "_updatedStudy");
                 Csv.saveCsv(OutputMSD.updatedMSD, separator, savefilenoext + "_updatedMSD");
                 Csv.saveCsv(OutputDocs.updatedDocs, separator, savefilenoext + "_updatedAttachments");
                 Csv.saveCsv(OutputSite.updatedSites, separator, savefilenoext + "_updatedSites");
                 Csv.saveCsv(OutputTeam.updatedTeam, separator, savefilenoext + "_updatedTeam");
                 Csv.saveCsv(OutputStatus.updatedStatus, separator, savefilenoext + "_updatedStatus");                
-                
+                */
                 
                 List<ExcelWorksheet> lstxls = new List<ExcelWorksheet>();
                 
@@ -70,10 +71,8 @@ namespace IrbAnalyser
                 lstxls.Add(new ExcelWorksheet("Site", "List of organization to add or modify in Velos", OutputSite.newSites));
                 lstxls.Add(new ExcelWorksheet("Attachments", "List of version (attachment) to add or modify in Velos", OutputDocs.newDocs));
                 lstxls.Add(new ExcelWorksheet("Studies", "List of studies to create or modify in Velos", OutputStudy.newStudy));
-                exc.WriteDataTableToExcel(savefilename, lstxls);
+                exc.WriteDataTableToExcel(savefilenoext + "_new.xlsx", lstxls);
 
-                dr = sfdCsv.ShowDialog();
-                savefilename = dr == DialogResult.OK ? sfdCsv.FileName : "";
                 lstxls = new List<ExcelWorksheet>();
 
                 lstxls.Add(new ExcelWorksheet("Status", "List of status to add or modify in Velos", OutputStatus.updatedStatus));
@@ -83,7 +82,7 @@ namespace IrbAnalyser
                 lstxls.Add(new ExcelWorksheet("Studies", "List of studies to create or modify in Velos", OutputStudy.updatedStudy));
 
                 //exc.WriteDataTableToExcel(OutputStudy.study, "New studies", savefilename, "List of studies to create in Velos");
-                exc.WriteDataTableToExcel(savefilename,lstxls);
+                exc.WriteDataTableToExcel(savefilenoext + "_updated.xlsx",lstxls);
                 txtOutput.Text = "Analysis complete.\r\nPlease open the excel file and create/modify studies in Velos accordingly.";
                 btnclicked = true;
                 btnOk.Text = "Close";

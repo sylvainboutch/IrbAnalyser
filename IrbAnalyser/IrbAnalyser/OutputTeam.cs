@@ -188,7 +188,7 @@ namespace IrbAnalyser
                                    select us;
                         if (!user.Any())
                         {
-                            addRow(userRow, "New member", false);
+                            addRow(userRow, "New member", true);
                         }
                         else
                         {
@@ -216,7 +216,7 @@ namespace IrbAnalyser
             }
             else
             {
-                addRow(userRow, "", true);
+                addRow(userRow, "New study", true);
             }
         }
 

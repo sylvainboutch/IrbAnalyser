@@ -121,14 +121,14 @@ namespace IrbAnalyser
                                          select stat;
                         if (!statusesDB.Any())
                         {
-                            addRowStatus(statusRow, "New status", false);
+                            addRowStatus(statusRow, "New status", true);
                         }
                     }
                 }
             }
             else
             {
-                addRowStatus(statusRow, "", true);
+                addRowStatus(statusRow, "New study", true);
             }
         }
 
@@ -196,14 +196,14 @@ namespace IrbAnalyser
                                               select stat;
                             if (!statusesDB2.Any())
                             {
-                                addRowEvent(eventRow,"IRB Approved","New Status",false);
+                                addRowEvent(eventRow,"IRB Approved","New Status",true);
                             }
                         }
 
 
                         if (!statusesDB1.Any())
                         {
-                            addRowEvent(eventRow, "IRB AMENDMENT Submitted**","New status", false);
+                            addRowEvent(eventRow, "IRB AMENDMENT Submitted**","New status", true);
                         }
                         else if ((end != DateTime.MinValue && statusesDB1.FirstOrDefault().SSTAT_VALID_UNTIL == null)
                             || statusesDB1.FirstOrDefault().SSTAT_VALID_UNTIL.Value.Date != end.Date)
@@ -226,7 +226,7 @@ namespace IrbAnalyser
                                           select stat;
                         if (!statusesDB1.Any())
                         {
-                            addRowEvent(eventRow, status, "New status", false);
+                            addRowEvent(eventRow, status, "New status", true);
                         }
                         else if ((end != DateTime.MinValue && statusesDB1.FirstOrDefault().SSTAT_VALID_UNTIL == null)
                             || statusesDB1.FirstOrDefault().SSTAT_VALID_UNTIL.Value.Date != end.Date)
@@ -239,10 +239,10 @@ namespace IrbAnalyser
             }
             else if (status == status1)
             {
-                addRowEvent(eventRow, "IRB AMENDMENT Submitted**", "", true);
+                addRowEvent(eventRow, "IRB AMENDMENT Submitted**", "New study", true);
                 if (end != DateTime.MinValue)
                 {
-                    addRowEvent(eventRow, "IRB Approved", "", true);
+                    addRowEvent(eventRow, "IRB Approved", "New study", true);
                 }
             }
             else
@@ -279,7 +279,7 @@ namespace IrbAnalyser
                                 select st).Any();
                 if (dtStatus)
                 {
-                    addRowStudy(studyrow, "", true);
+                    addRowStudy(studyrow, "New study", true);
                 }
             }
             else
@@ -308,7 +308,7 @@ namespace IrbAnalyser
 
                     if (start != DateTime.MinValue && dtStatus)
                     {
-                        addRowStudy(studyrow, "New status", false);
+                        addRowStudy(studyrow, "New status", true);
                     }
                     /*else if (start != DateTime.MinValue && statusesDB.Any())
                     {
