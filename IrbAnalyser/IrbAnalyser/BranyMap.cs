@@ -54,7 +54,6 @@ namespace IrbAnalyser
                 { "Consultant", "NA" },
                 { "Coordinator", "Study Coordinator" },
                 { "Faculty Advisor", "Limited PI" },
-                { "PI", "PI" },
                 { "Research Assistant", "Limited PI" },
                 { "Investigator", "PI" }
             };

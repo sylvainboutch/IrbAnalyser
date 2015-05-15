@@ -311,6 +311,7 @@ namespace IrbAnalyser
             dr["IRB Study ID"] = (string)row["StudyId"];
             dr["IRB Identifiers"] = Tools.generateStudyIdentifiers(dr.Table, (string)row["StudyId"], (string)row["IRBAgency"]);
             //dr["Study number"] = Tools.generateStudyNumber((string)row["IRBAgency"], (string)row["IRBNumber"], "Please complete");
+            dr["Study number"] = Tools.studyNumber((string)row["StudyId"], (string)row["IRBAgency"], (string)dr["IRB no"], "Please complete");
 
             dr["Regulatory coordinator"] = getRC(teamfile, (string)row["IRBAgency"], (string)row["StudyId"]);
             dr["Principal Investigator"] = getPI(teamfile, (string)row["IRBAgency"], (string)row["StudyId"]);
@@ -345,7 +346,7 @@ namespace IrbAnalyser
 
         private static string getPI(string teamfile, string agency, string studyId)
         {
-            return getRole(teamfile, agency, studyId, "Investigator");
+            return getRole(teamfile, agency, studyId, "PI");
         }
 
         private static string getRC(string teamfile, string agency, string studyId)
@@ -358,6 +359,7 @@ namespace IrbAnalyser
             FileParser fpTeam = new FileParser(teamfile, FileParser.type.Team);
 
             var studyteam = fpTeam.data.AsEnumerable().Where(x => (string)x["IRBAgency"] == agency && (string)x["StudyId"] == studyId);
+
             string role = "";
             if (agency.ToLower() == "brany")
             {

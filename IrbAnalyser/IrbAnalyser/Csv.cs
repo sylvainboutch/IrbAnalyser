@@ -11,6 +11,23 @@ namespace IrbAnalyser
     {
         public static void saveCsv(DataTable dt,string separator, string file)
         {
+            if (dt.Rows.Count > 0)
+            {
+                if (dt.Columns.Contains("Organization"))
+                {
+                    dt = dt.AsEnumerable().OrderBy(x => x.Field<string>("IRB Agency name"))
+                        .ThenBy(x => x.Field<string>("IRB Study ID"))
+                        .ThenBy(x => x.Field<string>("Organization"))
+                        .CopyToDataTable();
+                }
+                else
+                {
+                    dt = dt.AsEnumerable().OrderBy(x => x.Field<string>("IRB Agency name"))
+                        .ThenBy(x => x.Field<string>("IRB Study ID"))
+                        .CopyToDataTable();
+                }
+            }
+
             file = file + ".txt";
 
             StringBuilder sb = new StringBuilder();
