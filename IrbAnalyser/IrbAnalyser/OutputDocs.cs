@@ -58,7 +58,7 @@ namespace IrbAnalyser
         {
             string irbstudyId = (string)studyrow["StudyId"];
             string irbagency = ((string)studyrow["IRBAgency"]).ToLower();
-            string irbno = (string)studyrow["IRBNumber"];
+            string irbno = ((string)studyrow["IRBNumber"]).Replace("(IBC)", "");
             string url1 = ((string)studyrow["DocumentLink1"]).ToLower();
             string url2 = ((string)studyrow["DocumentLink2"]).ToLower();
 
@@ -130,7 +130,7 @@ namespace IrbAnalyser
             dr["IRB Agency name"] = agency;
             dr["IRB no"] = irbno;
             dr["IRB Study ID"] = studyid;
-            dr["Study name"] = Tools.getStudyNumber(studyid, agency, irbno);
+            dr["Study name"] = Tools.studyNumber(studyid, agency, irbno, "Please complete");
             dr["Version date"] = Tools.parseDate((string)DateTime.Now.ToShortDateString());
             dr["Version number"] = source.ToUpper() + " " + section;
             dr["Category"] = "External Site Docs";

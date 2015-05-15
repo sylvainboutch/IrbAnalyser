@@ -68,7 +68,7 @@ namespace IrbAnalyser
             {
                 role = BranyRoleMap.getRole((string)row["Role"]);
                 group = BranyRoleMap.getGroup((string)row["Role"]);
-                site = BranySiteMap.getSite((string)row["SiteName"]);
+                site = BranySiteMap.getSite(((string)row["SiteName"]).Replace("(IBC)", ""));
             }
 
             if (role != "NA" && group != "NA")
@@ -83,10 +83,9 @@ namespace IrbAnalyser
                 dr["TYPE"] = type;
 
                 dr["IRB Agency name"] = (string)row["IRBAgency"];
-                dr["IRB no"] = (string)row["IRBNumber"];
+                dr["IRB no"] = ((string)row["IRBNumber"]).Replace("(IBC)", "");
                 dr["IRB Study ID"] = (string)row["StudyId"];
-                dr["Study name"] = Tools.getStudyNumber((string)row["StudyId"], (string)row["IRBAgency"], (string)row["IRBNumber"]);
-
+                dr["Study name"] = Tools.studyNumber((string)row["StudyId"], (string)row["IRBAgency"], (string)dr["IRB no"], "Please complete");
 
                 dr["Email"] = row["PrimaryEmailAdress"].ToString();
                 dr["AdditionnalEmails"] = row["OtherEmailAdresses"].ToString();
@@ -128,9 +127,9 @@ namespace IrbAnalyser
             dr["TYPE"] = type;
 
             dr["IRB Agency name"] = agency;
-            dr["IRB no"] = "";
+            dr["IRB no"] = irbno;
             dr["IRB Study ID"] = studyid;
-            dr["Study name"] = Tools.getStudyNumber(studyid, agency, irbno);
+            dr["Study name"] = Tools.studyNumber(studyid, agency, irbno, "Please complete");
 
             dr["Email"] = email;
             var indexSplit = name.IndexOf(' ');
@@ -153,7 +152,7 @@ namespace IrbAnalyser
         {
             initiate();
 
-            FileParser fpTeam = new FileParser(filename);
+            FileParser fpTeam = new FileParser(filename, FileParser.type.Team);
 
             foreach (DataRow user in fpTeam.data.Rows)
             {
@@ -203,7 +202,7 @@ namespace IrbAnalyser
                                 changed = true;
                             }
                             else { userRow["Role"] = ""; }
-                            if (user.First().USER_SITE_NAME != BranySiteMap.getSite((string)userRow["SiteName"]))
+                            if (user.First().USER_SITE_NAME != BranySiteMap.getSite((string)userRow["SiteName"]).Replace("(IBC)", ""))
                             {
                                 changed = true;
                             }

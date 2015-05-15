@@ -51,7 +51,7 @@ namespace IrbAnalyser
 
             if ((string)studyrow["IRBAgency"] == "BRANY")
             {
-                site = BranySiteMap.getSite((string)studyrow["Sitename"]);
+                site = BranySiteMap.getSite(((string)studyrow["Sitename"]).Replace("(IBC)", ""));
             }
 
             string irbstudyId = (string)studyrow["StudyId"];
@@ -71,18 +71,18 @@ namespace IrbAnalyser
                                      select sit);
                         if (sites.Count() == 0)
                         {
-                            addRow("New Site", site, size, irbstudyId, irbagency, (string)studyrow["IRBNumber"], true);
+                            addRow("New Site", site, size, irbstudyId, irbagency, ((string)studyrow["IRBNumber"]).Replace("(IBC)", ""), true);
                         }
                         else if (sites.FirstOrDefault().STUDYSITE_LSAMPLESIZE != size && !String.IsNullOrEmpty(size))
                         {
-                            addRow("Modified site", site, size, irbstudyId, irbagency, (string)studyrow["IRBNumber"], false);
+                            addRow("Modified site", site, size, irbstudyId, irbagency, ((string)studyrow["IRBNumber"]).Replace("(IBC)", ""), false);
                         }
                     }
                 }
             }
             else
             {
-                addRow("New study", site, size, irbstudyId, irbagency, (string)studyrow["IRBNumber"], true);
+                addRow("New study", site, size, irbstudyId, irbagency, ((string)studyrow["IRBNumber"]).Replace("(IBC)", ""), true);
             }
 
         }
@@ -132,9 +132,9 @@ namespace IrbAnalyser
             dr["Type"] = type;
 
             dr["IRB Agency name"] = agency;
-            dr["IRB no"] = "";
+            dr["IRB no"] = IRBno;
             dr["IRB Study ID"] = studyid;
-            dr["Study name"] = Tools.getStudyNumber(studyid, agency, IRBno);
+            dr["Study name"] = Tools.studyNumber(studyid, agency, IRBno, "Please complete");
 
             dr["Organization"] = site;
             dr["Local sample size"] = size;

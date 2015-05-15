@@ -47,9 +47,9 @@ namespace IrbAnalyser
             dr["Label"] = label;
 
             dr["IRB Agency name"] = agency;
-            dr["IRB no"] = "";
+            dr["IRB no"] = IRBno; 
             dr["IRB Study ID"] = studyid;
-            dr["Study name"] = Tools.getStudyNumber(studyid, agency, IRBno);
+            dr["Study name"] = Tools.studyNumber(studyid, agency, IRBno, "Please complete");
 
             dr["Value"] = value;
             if (newrecord)

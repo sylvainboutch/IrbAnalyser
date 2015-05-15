@@ -20,7 +20,7 @@ namespace IrbAnalyser
             var stud = (from st in study.AsEnumerable()
                        where st.Field<string>("IRB Study ID").Trim().ToLower() == studyID.Trim().ToLower()
                        && st.Field<string>("IRB Agency name").Trim().ToLower() == agency.Trim().ToLower()
-                        select (st.Field<string>("SiteName") + "::" + st.Field<string>("StudySiteId"))).ToArray();
+                        select (st.Field<string>("SiteName").Replace("(IBC)", "") + "::" + st.Field<string>("StudySiteId"))).ToArray();
             foreach (var stu in stud)
             {
                 result += "&&" + stu;
@@ -30,11 +30,20 @@ namespace IrbAnalyser
 
         public static string parseDate(string date)
         {
-            DateTime mydate = DateTime.Parse(date);
-            return mydate.Date.ToString("MM/dd/yyyy");
+            DateTime dateparsed = DateTime.MinValue;
+            DateTime.TryParse(date,out dateparsed);
+            return dateparsed == DateTime.MinValue ? "" : dateparsed.Date.ToString("MM/dd/yyyy");
         }
 
-        public static string getStudyNumber(string IRBstudyId, string IRBAgency, string IRBnumber)
+        public static string studyNumber(string IRBstudyId, string IRBAgency, string IRBnumber, string shortitle)
+        {
+            string studynumber = getStudyNumber(IRBstudyId, IRBAgency, IRBnumber);
+            if (String.IsNullOrEmpty(studynumber))
+                studynumber = generateStudyNumber(IRBAgency, IRBnumber, shortitle);
+            return studynumber;
+        }
+
+        private static string getStudyNumber(string IRBstudyId, string IRBAgency, string IRBnumber)
         {
             string number = "";
             using (Model.VelosDb db = new Model.VelosDb())
@@ -51,12 +60,12 @@ namespace IrbAnalyser
             return number;
         }
 
-        public static string generateStudyNumber(string irbagency, string irbnumber, string shortTitle)
+        private static string generateStudyNumber(string irbagency, string irbnumber, string shortTitle)
         {
             //string output = DateTime.Now.Year.ToString().Substring(2, 2);
             string output = irbnumber.Substring(0, 2);
             output += "_" + shortTitle + "_";
-            output += irbnumber.ToLower() == "brany" ? "B_" : "E_";//OR MSA ? since apperently OCT enters brany CDA
+            output += irbagency.ToLower() == "brany" ? "B_" : "E_";//OR MSA ? since apperently OCT enters brany CDA
             output += irbnumber;
             return output;
         }

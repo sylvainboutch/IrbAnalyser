@@ -28,8 +28,7 @@ namespace IrbAnalyser
         {
             try
             {
-                key.Replace("(IBC)", "");
-                return siteMapBrany[key];
+                return siteMapBrany[key.Trim()];
             }
             catch (Exception ex)
             {
@@ -64,8 +63,7 @@ namespace IrbAnalyser
         {
             try
             {
-                key.Replace("(IBC)", "");
-                return roleMapBrany[key];
+                return roleMapBrany[key.Trim()];
             }
             catch (Exception ex)
             {
@@ -94,7 +92,7 @@ namespace IrbAnalyser
         {
             try
             {
-                return groupMapBrany[key];
+                return groupMapBrany[key.Trim()];
             }
             catch (Exception ex)
             {
@@ -150,7 +148,7 @@ namespace IrbAnalyser
         {
             try
             {
-                return statusMapBrany[key];
+                return statusMapBrany[key.Trim()];
             }
             catch (Exception ex)
             {
@@ -200,7 +198,7 @@ namespace IrbAnalyser
         {
             try
             {
-                return typeMapBrany[key];
+                return typeMapBrany[key.Trim()];
             }
             catch (Exception ex)
             {
@@ -244,7 +242,7 @@ namespace IrbAnalyser
         {
             try
             {
-                return eventsMapBrany[key];
+                return eventsMapBrany[key.Trim()];
             }
             catch (Exception ex)
             {
@@ -281,7 +279,7 @@ namespace IrbAnalyser
         {
             try
             {
-                return eventsTypeMapBrany[key];
+                return eventsTypeMapBrany[key.Trim()];
             }
             catch (Exception ex)
             {

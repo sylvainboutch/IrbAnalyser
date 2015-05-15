@@ -65,8 +65,8 @@ namespace IrbAnalyser
         public static void analyse(string dir)
         {
             initiate();
-            FileParser fpStatus = new FileParser(dir + "Status.txt");
-            FileParser fpEvent = new FileParser(dir + "Event.txt");
+            FileParser fpStatus = new FileParser(dir + "Status.txt", FileParser.type.Status);
+            FileParser fpEvent = new FileParser(dir + "Event.txt",FileParser.type.Event);
 
             foreach (DataRow dr in fpStatus.data.Rows)
             {
@@ -90,7 +90,7 @@ namespace IrbAnalyser
             string sitename = "";
             if ((string)statusRow["IRBAgency"] == "BRANY")
             {
-                sitename = BranySiteMap.getSite((string)statusRow["Sitename"]);
+                sitename = BranySiteMap.getSite(((string)statusRow["Sitename"]).Replace("(IBC)", ""));
             }
 
             DateTime start = DateTime.Now;
@@ -149,7 +149,7 @@ namespace IrbAnalyser
             string sitename = "";
             if ((string)eventRow["IRBAgency"] == "BRANY")
             {
-                sitename = BranySiteMap.getSite((string)eventRow["Sitename"]);
+                sitename = BranySiteMap.getSite(((string)eventRow["Sitename"]).Replace("(IBC)", ""));
             }
 
             DateTime start = DateTime.Now;
@@ -157,7 +157,7 @@ namespace IrbAnalyser
             start = start == DateTime.MinValue ? DateTime.Now : start;
 
             DateTime end = DateTime.MinValue;
-            DateTime.TryParse((string)eventRow["ApprovalDate"], out end);
+            DateTime.TryParse((string)eventRow["TaskCompletionDate"], out end);
             /*if (end == DateTime.MinValue)
                 DateTime.TryParse((string)eventRow["EventCompletionDate"], out end);*/
 
@@ -247,7 +247,7 @@ namespace IrbAnalyser
             }
             else
             {
-                addRowEvent(eventRow, status, "", true);
+                addRowEvent(eventRow, status, "New study", true);
             }
         }
 
@@ -263,7 +263,7 @@ namespace IrbAnalyser
             string sitename = "";
             if ((string)studyrow["IRBAgency"] == "BRANY")
             {
-                sitename = BranySiteMap.getSite((string)studyrow["Sitename"]);
+                sitename = BranySiteMap.getSite(((string)studyrow["Sitename"]).Replace("(IBC)", ""));
             }
 
             DateTime start = DateTime.Now;
@@ -339,14 +339,14 @@ namespace IrbAnalyser
 
             dr["TYPE"] = type;
             dr["IRB Agency name"] = statusRow["IRBAgency"];
-            dr["IRB no"] = statusRow["IRBNumber"];
+            dr["IRB no"] = ((string)statusRow["IRBNumber"]).Replace("(IBC)", "");
 
             dr["IRB Study ID"] = (string)statusRow["StudyId"];
-            dr["Study name"] = Tools.getStudyNumber((string)statusRow["StudyId"], (string)statusRow["IRBAgency"], (string)statusRow["IRBNumber"]);
+            dr["Study name"] = Tools.studyNumber((string)statusRow["StudyId"], (string)statusRow["IRBAgency"], (string)dr["IRB no"], "Please complete");
 
             if (statusRow["IRBAgency"].ToString().ToLower() == "brany")
             {
-                dr["Organization"] = BranySiteMap.getSite((string)statusRow["Sitename"]);
+                dr["Organization"] = BranySiteMap.getSite(((string)statusRow["Sitename"]).Replace("(IBC)", ""));
                 dr["Study status"] = BranyStatusMap.getStatus((string)statusRow["Status"]);
                 dr["status type"] = BranyStatusMap.getType((string)statusRow["Status"]);
             }
@@ -377,14 +377,14 @@ namespace IrbAnalyser
 
             dr["TYPE"] = type;
             dr["IRB Agency name"] = eventRow["IRBAgency"];
-            dr["IRB no"] = eventRow["IRBNumber"];
+            dr["IRB no"] = ((string)eventRow["IRBNumber"]).Replace("(IBC)", "");
 
             dr["IRB Study ID"] = (string)eventRow["StudyId"];
-            dr["Study name"] = Tools.getStudyNumber((string)eventRow["StudyId"], (string)eventRow["IRBAgency"], (string)eventRow["IRBNumber"]);
+            dr["Study name"] = Tools.studyNumber((string)eventRow["StudyId"], (string)eventRow["IRBAgency"], (string)dr["IRB no"], "Please complete");
 
             if (eventRow["IRBAgency"].ToString().ToLower() == "brany")
             {
-                dr["Organization"] = BranySiteMap.getSite((string)eventRow["Sitename"]);
+                dr["Organization"] = BranySiteMap.getSite(((string)eventRow["Sitename"]).Replace("(IBC)", ""));
             }
 
             dr["Study status"] = status;
@@ -393,15 +393,15 @@ namespace IrbAnalyser
             dr["Status Valid From"] = Tools.parseDate((string)eventRow["EventCreationDate"]);
             dr["Comment"] = (string)eventRow["Event"];
             //Change to rule, now we create a new IRB Approved status
-            dr["Outcome"] = !string.IsNullOrEmpty((string)eventRow["ApprovalDate"])
+            dr["Outcome"] = !string.IsNullOrEmpty((string)eventRow["TaskCompletionDate"])
                 ? "Approved" : "";
 
             /*dr["Outcome"] = !string.IsNullOrEmpty((string)eventRow["EventCompletionDate"])
-                && string.IsNullOrEmpty((string)eventRow["ApprovalDate"])
+                && string.IsNullOrEmpty((string)eventRow["TaskCompletionDate"])
                 ? "Disapproved" : dr["Outcome"];*/
 
             DateTime end = DateTime.MinValue;
-            DateTime.TryParse((string)eventRow["ApprovalDate"], out end);
+            DateTime.TryParse((string)eventRow["TaskCompletionDate"], out end);
             if (end == DateTime.MinValue)
                 DateTime.TryParse((string)eventRow["EventCompletionDate"], out end);
             if (end != DateTime.MinValue)
@@ -430,11 +430,11 @@ namespace IrbAnalyser
             dr["Comment"] = ((string)studyRow["IRBNumber"]).Contains("(IBC)") ? "Status from IBC" : "";
 
             dr["IRB Study ID"] = (string)studyRow["StudyId"];
-            dr["Study name"] = Tools.getStudyNumber((string)studyRow["StudyId"], (string)studyRow["IRBAgency"], (string)studyRow["IRBNumber"]);
+            dr["Study name"] = Tools.studyNumber((string)studyRow["StudyId"], (string)studyRow["IRBAgency"], (string)dr["IRB no"], "Please complete");
 
             if (studyRow["IRBAgency"].ToString().ToLower() == "brany")
             {
-                dr["Organization"] = BranySiteMap.getSite((string)studyRow["Sitename"]);
+                dr["Organization"] = BranySiteMap.getSite(((string)studyRow["Sitename"]).Replace("(IBC)", ""));
             }
 
             dr["Study status"] = "IRB Approved";

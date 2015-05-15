@@ -70,7 +70,7 @@ namespace IrbAnalyser
         public static void analyse(string filepath)
         {
             initiate();
-            FileParser fpStudy = new FileParser(filepath + "Study.txt");
+            FileParser fpStudy = new FileParser(filepath + "Study.txt",FileParser.type.Study);
 
             foreach (DataRow study in fpStudy.data.Rows)
             {
@@ -310,7 +310,8 @@ namespace IrbAnalyser
             dr["IRB no"] = ((string)row["IRBNumber"]).Replace("(IBC)", "");
             dr["IRB Study ID"] = (string)row["StudyId"];
             dr["IRB Identifiers"] = Tools.generateStudyIdentifiers(dr.Table, (string)row["StudyId"], (string)row["IRBAgency"]);
-            dr["Study number"] = Tools.generateStudyNumber((string)row["IRBAgency"], (string)row["IRBNumber"], "Please complete");
+            //dr["Study number"] = Tools.generateStudyNumber((string)row["IRBAgency"], (string)row["IRBNumber"], "Please complete");
+
             dr["Regulatory coordinator"] = getRC(teamfile, (string)row["IRBAgency"], (string)row["StudyId"]);
             dr["Principal Investigator"] = getPI(teamfile, (string)row["IRBAgency"], (string)row["StudyId"]);
             dr["Official title"] = (string)row["StudyTitle"];
@@ -325,13 +326,13 @@ namespace IrbAnalyser
             dr["Sponsor Protocol ID"] = row["PrimarySponsorStudyId"].ToString();
 
             string[] labels = new string[3]{"IRB agency name","IRB No.","OFFICE USE ONLY - DO NOT MODIFY - IRB Identifiers"};
-            string[] values = new string[3] { (string)row["IRBAgency"], (string)row["IRBNumber"], (string)row["StudyId"] };
+            string[] values = new string[3] { (string)row["IRBAgency"], (string)dr["IRB no"], (string)dr["IRB Identifiers"] };
 
             OutputMSD.initiate();
 
             for (int i = 0; i < labels.Count(); i++)
             {
-                OutputMSD.addRow(labels[i], values[i], (string)row["StudyId"], (string)row["IRBAgency"], ((string)row["IRBNumber"]).Replace("(IBC)", ""), newentry);
+                OutputMSD.addRow(labels[i], values[i], (string)row["StudyId"], (string)row["IRBAgency"], (string)dr["IRB no"], newentry);
             }
 
 
@@ -354,7 +355,7 @@ namespace IrbAnalyser
 
         private static string getRole(string teamfile, string agency, string studyId, string roleStr)
         {
-            FileParser fpTeam = new FileParser(teamfile);
+            FileParser fpTeam = new FileParser(teamfile, FileParser.type.Team);
 
             var studyteam = fpTeam.data.AsEnumerable().Where(x => (string)x["IRBAgency"] == agency && (string)x["StudyId"] == studyId);
             string role = "";
