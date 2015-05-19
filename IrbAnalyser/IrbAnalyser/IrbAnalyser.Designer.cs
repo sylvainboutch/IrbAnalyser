@@ -60,7 +60,7 @@
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(419, 23);
             this.btnOk.TabIndex = 1;
-            this.btnOk.Text = "Analyse";
+            this.btnOk.Text = "Analyze";
             this.btnOk.UseVisualStyleBackColor = true;
             this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
             // 
@@ -102,7 +102,7 @@
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.txtOutput);
             this.Name = "IrbAnalyser";
-            this.Text = "Irb Analyser";
+            this.Text = "IRB Analyzer";
             this.ResumeLayout(false);
             this.PerformLayout();
 

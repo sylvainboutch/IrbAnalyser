@@ -27,7 +27,7 @@ namespace IrbAnalyser
                 newStudy.Columns.Add("IRB Study ID", typeof(string));
                 newStudy.Columns.Add("IRB Identifiers", typeof(string));
                 newStudy.Columns.Add("Study number", typeof(string));
-                newStudy.Columns.Add("Regulatory coordinator", typeof(string));
+                newStudy.Columns.Add("Study coordinator", typeof(string));
                 newStudy.Columns.Add("Principal Investigator", typeof(string));
                 newStudy.Columns.Add("Official title", typeof(string));
                 newStudy.Columns.Add("Study summary", typeof(string));
@@ -35,7 +35,7 @@ namespace IrbAnalyser
                 newStudy.Columns.Add("Division/Therapeutic area", typeof(string));
                 newStudy.Columns.Add("Entire study sample size", typeof(string));
                 newStudy.Columns.Add("Phase", typeof(string));
-                newStudy.Columns.Add("Research scope", typeof(string));
+                newStudy.Columns.Add("Study scope", typeof(string));
                 newStudy.Columns.Add("Primary funding sponsor, if other :", typeof(string));
                 newStudy.Columns.Add("Sponsor contact", typeof(string));
                 newStudy.Columns.Add("Sponsor Protocol ID", typeof(string));
@@ -48,7 +48,7 @@ namespace IrbAnalyser
                 updatedStudy.Columns.Add("IRB Study ID", typeof(string));
                 updatedStudy.Columns.Add("IRB Identifiers", typeof(string));
                 updatedStudy.Columns.Add("Study number", typeof(string));
-                updatedStudy.Columns.Add("Regulatory coordinator", typeof(string));
+                updatedStudy.Columns.Add("Study coordinator", typeof(string));
                 updatedStudy.Columns.Add("Principal Investigator", typeof(string));
                 updatedStudy.Columns.Add("Official title", typeof(string));
                 updatedStudy.Columns.Add("Study summary", typeof(string));
@@ -56,7 +56,7 @@ namespace IrbAnalyser
                 updatedStudy.Columns.Add("Division/Therapeutic area", typeof(string));
                 updatedStudy.Columns.Add("Entire study sample size", typeof(string));
                 updatedStudy.Columns.Add("Phase", typeof(string));
-                updatedStudy.Columns.Add("Research scope", typeof(string));
+                updatedStudy.Columns.Add("Study scope", typeof(string));
                 updatedStudy.Columns.Add("Primary funding sponsor, if other :", typeof(string));
                 updatedStudy.Columns.Add("Sponsor contact", typeof(string));
                 updatedStudy.Columns.Add("Sponsor Protocol ID", typeof(string));
@@ -313,15 +313,15 @@ namespace IrbAnalyser
             //dr["Study number"] = Tools.generateStudyNumber((string)row["IRBAgency"], (string)row["IRBNumber"], "Please complete");
             dr["Study number"] = Tools.studyNumber((string)row["StudyId"], (string)row["IRBAgency"], (string)dr["IRB no"], "Please complete");
 
-            dr["Regulatory coordinator"] = getRC(teamfile, (string)row["IRBAgency"], (string)row["StudyId"]);
+            dr["Study coordinator"] = getRC(teamfile, (string)row["IRBAgency"], (string)row["StudyId"]);
             dr["Principal Investigator"] = getPI(teamfile, (string)row["IRBAgency"], (string)row["StudyId"]);
             dr["Official title"] = (string)row["StudyTitle"];
             dr["Study summary"] = row["Studysummary"].ToString();
             dr["Department"] = String.IsNullOrEmpty((string)row["Department"]) && newentry ? "Please specify" : (string)row["Department"];
-            dr["Division/Therapeutic area"] = String.IsNullOrEmpty((string)row["Division"]) && newentry ? "NA" : (string)row["Division"];
+            dr["Division/Therapeutic area"] = String.IsNullOrEmpty((string)row["Division"]) && newentry ? "N/A" : (string)row["Division"];
             dr["Entire study sample size"] = row["Studysamplesize"].ToString();
             dr["Phase"] = String.IsNullOrEmpty((string)row["Phase"]) && newentry ? "Please Specify" : (string)row["Phase"];
-            dr["Research scope"] = row["Multicenter"].ToString() == "TRUE" ? "Multicenter" : "Single center";
+            dr["Study scope"] = row["Multicenter"].ToString() == "TRUE" ? "Multi Center Study" : "Single Center Study";
             dr["Primary funding sponsor, if other :"] = row["Primarysponsorname"].ToString();
             dr["Sponsor contact"] = row["PrimarySponsorContactFirstName"].ToString() + " " + row["PrimarySponsorContactLastName"].ToString();
             dr["Sponsor Protocol ID"] = row["PrimarySponsorStudyId"].ToString();

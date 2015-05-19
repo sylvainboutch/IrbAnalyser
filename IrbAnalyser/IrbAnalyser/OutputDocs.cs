@@ -20,7 +20,7 @@ namespace IrbAnalyser
                 newDocs.Columns.Add("IRB Agency name", typeof(string));
                 newDocs.Columns.Add("IRB no", typeof(string));
                 newDocs.Columns.Add("IRB Study ID", typeof(string));
-                newDocs.Columns.Add("Study name", typeof(string));
+                newDocs.Columns.Add("Study number", typeof(string));
 
                 newDocs.Columns.Add("Version date", typeof(string));
                 newDocs.Columns.Add("Version number", typeof(string));
@@ -37,7 +37,7 @@ namespace IrbAnalyser
                 updatedDocs.Columns.Add("IRB Agency name", typeof(string));
                 updatedDocs.Columns.Add("IRB no", typeof(string));
                 updatedDocs.Columns.Add("IRB Study ID", typeof(string));
-                updatedDocs.Columns.Add("Study name", typeof(string));
+                updatedDocs.Columns.Add("Study number", typeof(string));
 
                 updatedDocs.Columns.Add("Version date", typeof(string));
                 updatedDocs.Columns.Add("Version number", typeof(string));
@@ -130,7 +130,7 @@ namespace IrbAnalyser
             dr["IRB Agency name"] = agency;
             dr["IRB no"] = irbno;
             dr["IRB Study ID"] = studyid;
-            dr["Study name"] = Tools.studyNumber(studyid, agency, irbno, "Please complete");
+            dr["Study number"] = Tools.studyNumber(studyid, agency, irbno, "Please complete");
             dr["Version date"] = Tools.parseDate((string)DateTime.Now.ToShortDateString());
             dr["Version number"] = source.ToUpper() + " " + section;
             dr["Category"] = "External Site Docs";

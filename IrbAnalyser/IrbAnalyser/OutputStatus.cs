@@ -25,7 +25,7 @@ namespace IrbAnalyser
                 newStatus.Columns.Add("IRB Agency name", typeof(string));
                 newStatus.Columns.Add("IRB no", typeof(string));
                 newStatus.Columns.Add("IRB Study ID", typeof(string));
-                newStatus.Columns.Add("Study name", typeof(string));
+                newStatus.Columns.Add("Study number", typeof(string));
 
                 newStatus.Columns.Add("Organization", typeof(string));
 
@@ -44,7 +44,7 @@ namespace IrbAnalyser
                 updatedStatus.Columns.Add("IRB Agency name", typeof(string));
                 updatedStatus.Columns.Add("IRB no", typeof(string));
                 updatedStatus.Columns.Add("IRB Study ID", typeof(string));
-                updatedStatus.Columns.Add("Study name", typeof(string));
+                updatedStatus.Columns.Add("Study number", typeof(string));
 
                 updatedStatus.Columns.Add("Organization", typeof(string));
 
@@ -205,10 +205,13 @@ namespace IrbAnalyser
                         {
                             addRowEvent(eventRow, "IRB AMENDMENT Submitted**","New status", true);
                         }
-                        else if ((end != DateTime.MinValue && statusesDB1.FirstOrDefault().SSTAT_VALID_UNTIL == null)
-                            || statusesDB1.FirstOrDefault().SSTAT_VALID_UNTIL.Value.Date != end.Date)
+                        else if (end != DateTime.MinValue && statusesDB1.FirstOrDefault().SSTAT_VALID_UNTIL == null)
                         {
                             addRowEvent(eventRow,"IRB AMENDMENT Submitted**", "Modified status", false);
+                        }
+                        else if (statusesDB1.FirstOrDefault().SSTAT_VALID_UNTIL != null && statusesDB1.FirstOrDefault().SSTAT_VALID_UNTIL.Value.Date != end.Date)
+                        {
+                            addRowEvent(eventRow, "IRB AMENDMENT Submitted**", "Modified status", false);
                         }
                     }
 
@@ -228,8 +231,11 @@ namespace IrbAnalyser
                         {
                             addRowEvent(eventRow, status, "New status", true);
                         }
-                        else if ((end != DateTime.MinValue && statusesDB1.FirstOrDefault().SSTAT_VALID_UNTIL == null)
-                            || statusesDB1.FirstOrDefault().SSTAT_VALID_UNTIL.Value.Date != end.Date)
+                        else if (end != DateTime.MinValue && statusesDB1.FirstOrDefault().SSTAT_VALID_UNTIL == null)
+                        {
+                            addRowEvent(eventRow, status, "Modified status", false);
+                        }
+                        else if (statusesDB1.FirstOrDefault().SSTAT_VALID_UNTIL != null && statusesDB1.FirstOrDefault().SSTAT_VALID_UNTIL.Value.Date != end.Date)
                         {
                             addRowEvent(eventRow, status, "Modified status", false);
                         }
@@ -268,6 +274,8 @@ namespace IrbAnalyser
 
             DateTime start = DateTime.Now;
             DateTime.TryParse((string)studyrow["MostRecentApprovalDate"], out start);
+            if (start == DateTime.MinValue)
+                DateTime.TryParse((string)studyrow["InitialApprovalDate"], out start);
 
             if (newrecord)
             {
@@ -277,7 +285,7 @@ namespace IrbAnalyser
                                 && st.Field<string>("Study status").Trim().ToLower() == status.Trim().ToLower()
                                 && st.Field<string>("Status Valid From").Trim().ToLower() == ((string)studyrow["Mostrecentapprovaldate"]).Trim().ToLower()
                                 select st).Any();
-                if (dtStatus)
+                if (dtStatus && start != DateTime.MinValue)
                 {
                     addRowStudy(studyrow, "New study", true);
                 }
@@ -342,7 +350,7 @@ namespace IrbAnalyser
             dr["IRB no"] = ((string)statusRow["IRBNumber"]).Replace("(IBC)", "");
 
             dr["IRB Study ID"] = (string)statusRow["StudyId"];
-            dr["Study name"] = Tools.studyNumber((string)statusRow["StudyId"], (string)statusRow["IRBAgency"], (string)dr["IRB no"], "Please complete");
+            dr["Study number"] = Tools.studyNumber((string)statusRow["StudyId"], (string)statusRow["IRBAgency"], (string)dr["IRB no"], "Please complete");
 
             if (statusRow["IRBAgency"].ToString().ToLower() == "brany")
             {
@@ -380,7 +388,7 @@ namespace IrbAnalyser
             dr["IRB no"] = ((string)eventRow["IRBNumber"]).Replace("(IBC)", "");
 
             dr["IRB Study ID"] = (string)eventRow["StudyId"];
-            dr["Study name"] = Tools.studyNumber((string)eventRow["StudyId"], (string)eventRow["IRBAgency"], (string)dr["IRB no"], "Please complete");
+            dr["Study number"] = Tools.studyNumber((string)eventRow["StudyId"], (string)eventRow["IRBAgency"], (string)dr["IRB no"], "Please complete");
 
             if (eventRow["IRBAgency"].ToString().ToLower() == "brany")
             {
@@ -430,7 +438,7 @@ namespace IrbAnalyser
             dr["Comment"] = ((string)studyRow["IRBNumber"]).Contains("(IBC)") ? "Status from IBC" : "";
 
             dr["IRB Study ID"] = (string)studyRow["StudyId"];
-            dr["Study name"] = Tools.studyNumber((string)studyRow["StudyId"], (string)studyRow["IRBAgency"], (string)dr["IRB no"], "Please complete");
+            dr["Study number"] = Tools.studyNumber((string)studyRow["StudyId"], (string)studyRow["IRBAgency"], (string)dr["IRB no"], "Please complete");
 
             if (studyRow["IRBAgency"].ToString().ToLower() == "brany")
             {
@@ -440,7 +448,8 @@ namespace IrbAnalyser
             dr["Study status"] = "IRB Approved";
             dr["status type"] = "Pre Activation";
             dr["Documented by"] = "IRB interface";
-            dr["Status Valid From"] = Tools.parseDate((string)studyRow["Mostrecentapprovaldate"]);
+            dr["Status Valid From"] = Tools.parseDate((string)studyRow["MostRecentApprovalDate"]);
+            dr["Status Valid From"] = dr["Status Valid From"] == "" ? Tools.parseDate((string)studyRow["InitialApprovalDate"]) : "";
             dr["Status Valid Until"] = Tools.parseDate((string)studyRow["Expirationdate"]);
 
             if (newrecord)

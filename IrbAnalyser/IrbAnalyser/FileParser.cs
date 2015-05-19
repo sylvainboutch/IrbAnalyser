@@ -87,13 +87,13 @@ namespace IrbAnalyser
                     break;
             }
 
-            foreach (DataRow dr in data.Rows)
+            /*foreach (DataRow dr in data.Rows)
             {
                 foreach (DataColumn dc in data.Columns)
                 {
                     dr[dc.ColumnName] = "";
                 }
-            }
+            }*/
 
             var lines = File.ReadAllLines(file).ToList();
             if (lines.Count > 0)
@@ -106,6 +106,10 @@ namespace IrbAnalyser
                 {
                     string[] linesplt = line.Split((char)9);
                     DataRow dr = data.NewRow();
+                    foreach (DataColumn dc in data.Columns)
+                    {
+                        dr[dc.ColumnName] = "";
+                    }
                     for (int i=0;i<columns.Count();i++)
                     {
                         if (!String.IsNullOrEmpty(columns[i]))

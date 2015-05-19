@@ -20,7 +20,7 @@ namespace IrbAnalyser
                 newSites.Columns.Add("IRB Agency name", typeof(string));
                 newSites.Columns.Add("IRB no", typeof(string));
                 newSites.Columns.Add("IRB Study ID", typeof(string));
-                newSites.Columns.Add("Study name", typeof(string));
+                newSites.Columns.Add("Study number", typeof(string));
 
                 newSites.Columns.Add("Organization", typeof(string));
                 newSites.Columns.Add("Local sample size", typeof(string));
@@ -33,7 +33,7 @@ namespace IrbAnalyser
                 updatedSites.Columns.Add("IRB Agency name", typeof(string));
                 updatedSites.Columns.Add("IRB no", typeof(string));
                 updatedSites.Columns.Add("IRB Study ID", typeof(string));
-                updatedSites.Columns.Add("Study name", typeof(string));
+                updatedSites.Columns.Add("Study number", typeof(string));
 
                 updatedSites.Columns.Add("Organization", typeof(string));
                 updatedSites.Columns.Add("Local sample size", typeof(string));
@@ -134,7 +134,7 @@ namespace IrbAnalyser
             dr["IRB Agency name"] = agency;
             dr["IRB no"] = IRBno;
             dr["IRB Study ID"] = studyid;
-            dr["Study name"] = Tools.studyNumber(studyid, agency, IRBno, "Please complete");
+            dr["Study number"] = Tools.studyNumber(studyid, agency, IRBno, "Please complete");
 
             dr["Organization"] = site;
             dr["Local sample size"] = size;

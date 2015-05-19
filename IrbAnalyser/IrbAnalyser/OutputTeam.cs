@@ -25,12 +25,13 @@ namespace IrbAnalyser
                 newTeam.Columns.Add("IRB Agency name", typeof(string));
                 newTeam.Columns.Add("IRB no", typeof(string));
                 newTeam.Columns.Add("IRB Study ID", typeof(string));
-                newTeam.Columns.Add("Study name", typeof(string));
+                newTeam.Columns.Add("Study number", typeof(string));
 
                 newTeam.Columns.Add("Email", typeof(string));
                 newTeam.Columns.Add("AdditionnalEmails", typeof(string));
                 newTeam.Columns.Add("First name", typeof(string));
                 newTeam.Columns.Add("Last name", typeof(string));
+                newTeam.Columns.Add("Full name", typeof(string));
                 newTeam.Columns.Add("Role", typeof(string));
                 newTeam.Columns.Add("Group", typeof(string));
                 newTeam.Columns.Add("Organization", typeof(string));
@@ -42,12 +43,13 @@ namespace IrbAnalyser
                 updatedTeam.Columns.Add("IRB Agency name", typeof(string));
                 updatedTeam.Columns.Add("IRB no", typeof(string));
                 updatedTeam.Columns.Add("IRB Study ID", typeof(string));
-                updatedTeam.Columns.Add("Study name", typeof(string));
+                updatedTeam.Columns.Add("Study number", typeof(string));
 
                 updatedTeam.Columns.Add("Email", typeof(string));
                 updatedTeam.Columns.Add("AdditionnalEmails", typeof(string));
                 updatedTeam.Columns.Add("First name", typeof(string));
                 updatedTeam.Columns.Add("Last name", typeof(string));
+                updatedTeam.Columns.Add("Full name", typeof(string));
                 updatedTeam.Columns.Add("Role", typeof(string));
                 updatedTeam.Columns.Add("Group", typeof(string));
                 updatedTeam.Columns.Add("Organization", typeof(string));
@@ -85,12 +87,13 @@ namespace IrbAnalyser
                 dr["IRB Agency name"] = (string)row["IRBAgency"];
                 dr["IRB no"] = ((string)row["IRBNumber"]).Replace("(IBC)", "");
                 dr["IRB Study ID"] = (string)row["StudyId"];
-                dr["Study name"] = Tools.studyNumber((string)row["StudyId"], (string)row["IRBAgency"], (string)dr["IRB no"], "Please complete");
+                dr["Study number"] = Tools.studyNumber((string)row["StudyId"], (string)row["IRBAgency"], (string)dr["IRB no"], "Please complete");
 
                 dr["Email"] = row["PrimaryEmailAdress"].ToString();
                 dr["AdditionnalEmails"] = row["OtherEmailAdresses"].ToString();
                 dr["First name"] = row["FirstName"].ToString();
                 dr["Last name"] = row["LastName"].ToString();
+                dr["Full name"] = row["FirstName"].ToString() + " " + row["LastName"].ToString();
                 dr["Role"] = role;
                 dr["Group"] = group;
                 dr["Organization"] = site;
@@ -129,12 +132,13 @@ namespace IrbAnalyser
             dr["IRB Agency name"] = agency;
             dr["IRB no"] = irbno;
             dr["IRB Study ID"] = studyid;
-            dr["Study name"] = Tools.studyNumber(studyid, agency, irbno, "Please complete");
+            dr["Study number"] = Tools.studyNumber(studyid, agency, irbno, "Please complete");
 
             dr["Email"] = email;
             var indexSplit = name.IndexOf(' ');
             dr["First name"] = name.Substring(0, indexSplit);
             dr["Last name"] = name.Substring(indexSplit, name.Length - indexSplit);
+            dr["Full name"] = name;
             dr["Role"] = role;
             dr["Group"] = group;
             dr["Organization"] = site;

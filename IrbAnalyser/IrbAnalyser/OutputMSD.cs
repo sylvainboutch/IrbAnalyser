@@ -20,7 +20,7 @@ namespace IrbAnalyser
                 newMSD.Columns.Add("IRB Agency name", typeof(string));
                 newMSD.Columns.Add("IRB no", typeof(string));
                 newMSD.Columns.Add("IRB Study ID", typeof(string));
-                newMSD.Columns.Add("Study name", typeof(string));
+                newMSD.Columns.Add("Study number", typeof(string));
                 newMSD.Columns.Add("Label", typeof(string));
                 newMSD.Columns.Add("Value", typeof(string));
             }
@@ -30,7 +30,7 @@ namespace IrbAnalyser
                 updatedMSD.Columns.Add("IRB Agency name", typeof(string));
                 updatedMSD.Columns.Add("IRB no", typeof(string));
                 updatedMSD.Columns.Add("IRB Study ID", typeof(string));
-                updatedMSD.Columns.Add("Study name", typeof(string));
+                updatedMSD.Columns.Add("Study number", typeof(string));
                 updatedMSD.Columns.Add("Label", typeof(string));
                 updatedMSD.Columns.Add("Value", typeof(string));                
             }
@@ -49,7 +49,7 @@ namespace IrbAnalyser
             dr["IRB Agency name"] = agency;
             dr["IRB no"] = IRBno; 
             dr["IRB Study ID"] = studyid;
-            dr["Study name"] = Tools.studyNumber(studyid, agency, IRBno, "Please complete");
+            dr["Study number"] = Tools.studyNumber(studyid, agency, IRBno, "Please complete");
 
             dr["Value"] = value;
             if (newrecord)
