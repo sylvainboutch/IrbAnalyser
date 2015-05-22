@@ -45,24 +45,42 @@ namespace IrbAnalyser
     {
         public static readonly Dictionary<string, string> roleMapBrany = new Dictionary<string, string>()
             {
+                { "Coordinator", "No privilege" },
+                { "Investigator", "No privilege" },
+                { "Faculty Advisor", "No privilege" },
+                { "Research Assistant", "No privilege" },
+                { "Auditor", "No privilege" },
+                { "CC Recipient", "No privilege" },
+                { "Co-Investigator", "No privilege" },
+                { "Sponsor", "No privilege" },
+                { "Consultant", "No privilege" },
                 {"",""},
-                { "CRO", "NA" },
-                { "Sponsor", "Limited PI" },
-                { "Auditor", "Limited PI" },
-                { "CC Recipient", "Limited PI" },
-                { "Co-Investigator", "Limited PI" },
-                { "Consultant", "NA" },
-                { "Coordinator", "Study Coordinator" },
-                { "Faculty Advisor", "Limited PI" },
-                { "Research Assistant", "Limited PI" },
-                { "Investigator", "PI" }
+                { "CRO", "NA" }
             };
 
-        public static string getRole(string key)
+        public static readonly Dictionary<string, string> roleMapBranyPrimary = new Dictionary<string, string>()
+            {
+                { "Coordinator", "Study Coordinator" },
+                { "Investigator", "Primary Investigator" },
+                { "Faculty Advisor", "No privilege" },
+                { "Research Assistant", "No privilege" },
+                { "Auditor", "No privilege" },
+                { "CC Recipient", "No privilege" },
+                { "Co-Investigator", "No privilege" },
+                { "Sponsor", "No privilege" },
+                { "Consultant", "No privilege" },
+                {"",""},
+                { "CRO", "NA" }
+            };
+
+        public static string getRole(string key, bool primary)
         {
             try
             {
-                return roleMapBrany[key.Trim()];
+                if (primary)
+                    return roleMapBranyPrimary[key.Trim()];
+                else
+                    return roleMapBrany[key.Trim()];
             }
             catch (Exception ex)
             {

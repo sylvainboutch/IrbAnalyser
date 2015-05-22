@@ -35,6 +35,7 @@ namespace IrbAnalyser
                 newTeam.Columns.Add("Role", typeof(string));
                 newTeam.Columns.Add("Group", typeof(string));
                 newTeam.Columns.Add("Organization", typeof(string));
+                newTeam.Columns.Add("Primary", typeof(string));
             }
             if (updatedTeam.Columns.Count == 0)
             {
@@ -53,6 +54,7 @@ namespace IrbAnalyser
                 updatedTeam.Columns.Add("Role", typeof(string));
                 updatedTeam.Columns.Add("Group", typeof(string));
                 updatedTeam.Columns.Add("Organization", typeof(string));
+                updatedTeam.Columns.Add("Primary", typeof(string));
             }
         }
 
@@ -65,10 +67,11 @@ namespace IrbAnalyser
             string role = "";
             string group = "";
             string site = "";
+            bool primary = Tools.compareStr(row["Primary"], "true");
 
             if ((string)row["IRBAgency"] == "BRANY")
             {
-                role = BranyRoleMap.getRole((string)row["Role"]);
+                role = BranyRoleMap.getRole((string)row["Role"], primary);
                 group = BranyRoleMap.getGroup((string)row["Role"]);
                 site = BranySiteMap.getSite(((string)row["SiteName"]).Replace("(IBC)", ""));
             }
@@ -103,49 +106,6 @@ namespace IrbAnalyser
                 else
                 { updatedTeam.Rows.Add(dr); }
             }
-        }
-
-        /// <summary>
-        /// Add a new row to the team modification datatable
-        /// </summary>
-        /// <param name="row"></param>
-        private static void addRow(string type, string email, string name, string role, string site, string studyid, string agency, string irbno, bool newrecord)
-        {
-            string group = "";
-
-            if (agency.ToUpper() == "BRANY")
-            {
-                role = BranyRoleMap.getRole(role);
-                group = BranyRoleMap.getGroup(role);
-                site = BranySiteMap.getSite(site);
-            }
-
-            initiate();
-            DataRow dr;
-            if (newrecord)
-            { dr = newTeam.NewRow(); }
-            else
-            { dr = updatedTeam.NewRow(); }
-
-            dr["TYPE"] = type;
-
-            dr["IRB Agency name"] = agency;
-            dr["IRB no"] = irbno;
-            dr["IRB Study ID"] = studyid;
-            dr["Study number"] = Tools.studyNumber(studyid, agency, irbno, "Please complete");
-
-            dr["Email"] = email;
-            var indexSplit = name.IndexOf(' ');
-            dr["First name"] = name.Substring(0, indexSplit);
-            dr["Last name"] = name.Substring(indexSplit, name.Length - indexSplit);
-            dr["Full name"] = name;
-            dr["Role"] = role;
-            dr["Group"] = group;
-            dr["Organization"] = site;
-            if (newrecord)
-            { newTeam.Rows.Add(dr); }
-            else
-            { updatedTeam.Rows.Add(dr); }
         }
 
         /// <summary>
@@ -196,12 +156,15 @@ namespace IrbAnalyser
                         else
                         {
                             var changed = false;
+
+                            bool primary = Tools.compareStr(userRow["Primary"], "true");
+
                             if (user.First().USER_NAME != (string)userRow["FirstName"] + " " + (string)userRow["LastName"])
                             {
                                 changed = true;
                             }
-                            if (user.First().ROLE != BranyRoleMap.getRole((string)userRow["Role"])
-                                && BranyRoleMap.getRole((string)userRow["Role"]) != "NA")
+                            if (user.First().ROLE != BranyRoleMap.getRole((string)userRow["Role"], primary)
+                                && BranyRoleMap.getRole((string)userRow["Role"],primary) != "NA")
                             {
                                 changed = true;
                             }

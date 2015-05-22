@@ -26,6 +26,7 @@ namespace IrbAnalyser
                 newStudy.Columns.Add("IRB no", typeof(string));
                 newStudy.Columns.Add("IRB Study ID", typeof(string));
                 newStudy.Columns.Add("IRB Identifiers", typeof(string));
+                newStudy.Columns.Add("Cancer", typeof(string));
                 newStudy.Columns.Add("Study number", typeof(string));
                 newStudy.Columns.Add("Study coordinator", typeof(string));
                 newStudy.Columns.Add("Principal Investigator", typeof(string));
@@ -47,6 +48,7 @@ namespace IrbAnalyser
                 updatedStudy.Columns.Add("IRB no", typeof(string));
                 updatedStudy.Columns.Add("IRB Study ID", typeof(string));
                 updatedStudy.Columns.Add("IRB Identifiers", typeof(string));
+                updatedStudy.Columns.Add("Cancer", typeof(string));
                 updatedStudy.Columns.Add("Study number", typeof(string));
                 updatedStudy.Columns.Add("Study coordinator", typeof(string));
                 updatedStudy.Columns.Add("Principal Investigator", typeof(string));
@@ -154,9 +156,9 @@ namespace IrbAnalyser
                                 }
                                 else { newrc = ""; }
 
-                                if (!Tools.compareStr(stu.STUDY_TITLE, dr["Studytitle"]))
+                                if (Tools.compareStr(stu.STUDY_TITLE, dr["Studytitle"]))
                                 {
-                                    dr["Studytitle"] = dr["Studytitle"];
+                                    dr["Studytitle"] = "";
                                 }
                                 else
                                 {
@@ -230,7 +232,7 @@ namespace IrbAnalyser
                                 {
                                     dr["Studysamplesize"] = "";
                                 }
-                                else
+                                else if(samplesize != 0)
                                 {
                                     hasChanged = true;
                                 }
@@ -243,7 +245,7 @@ namespace IrbAnalyser
                                 {
                                     dr["Multicenter"] = "";
                                 }
-                                else
+                                else if (dr["Multicenter"].ToString() != "")
                                 {
                                     hasChanged = true;
                                 }
@@ -262,9 +264,10 @@ namespace IrbAnalyser
                                 string[] strs = {dr["Primarysponsorcontactfirstname"].ToString(),
                     dr["Primarysponsorcontactlastname"].ToString()};
 
-                                if (Tools.containStr(stu.STUDY_SPONSOR, strs))
+                                if (Tools.containStr(stu.SPONSOR_CONTACT, strs))
                                 {
-                                    dr["Primarysponsorname"] = "";
+                                    dr["Primarysponsorcontactfirstname"] = "";
+                                    dr["Primarysponsorcontactlastname"] = "";
                                 }
                                 else
                                 {
@@ -297,7 +300,7 @@ namespace IrbAnalyser
         /// </summary>
         /// <param name="irbNumber"></param>
         /// <param name="studyNumber"></param>
-        private static void addRowStudy(DataRow row, bool newentry, string teamfile, string newpi = "", string newrc = "")
+        private static void addRowStudy(DataRow row, bool newentry, string teamfile, string newpi = null, string newrc = null)
         {
             initiate();
             DataRow dr;
@@ -313,21 +316,51 @@ namespace IrbAnalyser
             //dr["Study number"] = Tools.generateStudyNumber((string)row["IRBAgency"], (string)row["IRBNumber"], "Please complete");
             dr["Study number"] = Tools.studyNumber((string)row["StudyId"], (string)row["IRBAgency"], (string)dr["IRB no"], "Please complete");
 
-            dr["Study coordinator"] = getRC(teamfile, (string)row["IRBAgency"], (string)row["StudyId"]);
-            dr["Principal Investigator"] = getPI(teamfile, (string)row["IRBAgency"], (string)row["StudyId"]);
+            if (newpi == null)
+            {
+                dr["Principal Investigator"] = getPI(teamfile, (string)row["IRBAgency"], (string)row["StudyId"]);
+            }
+            else
+            {
+                dr["Principal Investigator"] = newpi;
+            }
+
+            if (newrc == null)
+            {
+                dr["Study coordinator"] = getRC(teamfile, (string)row["IRBAgency"], (string)row["StudyId"]);
+            }
+            else
+            {
+                dr["Study coordinator"] = newrc;
+            }
+
+            
+            
             dr["Official title"] = (string)row["StudyTitle"];
             dr["Study summary"] = row["Studysummary"].ToString();
             dr["Department"] = String.IsNullOrEmpty((string)row["Department"]) && newentry ? "Please specify" : (string)row["Department"];
             dr["Division/Therapeutic area"] = String.IsNullOrEmpty((string)row["Division"]) && newentry ? "N/A" : (string)row["Division"];
             dr["Entire study sample size"] = row["Studysamplesize"].ToString();
             dr["Phase"] = String.IsNullOrEmpty((string)row["Phase"]) && newentry ? "Please Specify" : (string)row["Phase"];
-            dr["Study scope"] = row["Multicenter"].ToString() == "TRUE" ? "Multi Center Study" : "Single Center Study";
+
+            if (Tools.compareStr(row["Multicenter"].ToString(),"TRUE"))
+                dr["Study scope"] = "Multi Center Study";
+            else if (Tools.compareStr(row["Multicenter"].ToString(), "FALSE"))
+                dr["Study scope"] = "Single Center Study";
+            else
+                dr["Study scope"] = "";
+
             dr["Primary funding sponsor, if other :"] = row["Primarysponsorname"].ToString();
             dr["Sponsor contact"] = row["PrimarySponsorContactFirstName"].ToString() + " " + row["PrimarySponsorContactLastName"].ToString();
             dr["Sponsor Protocol ID"] = row["PrimarySponsorStudyId"].ToString();
 
-            string[] labels = new string[3]{"IRB agency name","IRB No.","OFFICE USE ONLY - DO NOT MODIFY - IRB Identifiers"};
-            string[] values = new string[3] { (string)row["IRBAgency"], (string)dr["IRB no"], (string)dr["IRB Identifiers"] };
+            string[] labels = new string[4] { "IRB agency name", "IRB No.", "OFFICE USE ONLY - DO NOT MODIFY - IRB Identifiers", "Is this a cancer related study ?*" };
+            string[] irbno = ((string)dr["IRB no"]).Split('-');
+            string cancer = "N";
+            if (irbno.Count() >= 2 && irbno[1] == "06")
+                cancer = "Y";
+            dr["Cancer"] = cancer;
+            string[] values = new string[4] { (string)row["IRBAgency"], (string)dr["IRB no"], (string)dr["IRB Identifiers"], cancer };
 
             OutputMSD.initiate();
 
@@ -335,6 +368,7 @@ namespace IrbAnalyser
             {
                 OutputMSD.addRow(labels[i], values[i], (string)row["StudyId"], (string)row["IRBAgency"], (string)dr["IRB no"], newentry);
             }
+
 
 
             if (newentry)
