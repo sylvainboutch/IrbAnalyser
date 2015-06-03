@@ -65,7 +65,7 @@ namespace IrbAnalyser
                                     join apdx in db.ER_STUDYAPNDX on ver.PK_STUDYVER equals apdx.FK_STUDYVER
                                     join stud in db.LCL_V_STUDYSUMM_PLUSMORE on ver.FK_STUDY equals stud.PK_STUDY
                                     where stud.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
-                                       && stud.MORE_IRBAGENCY.ToLower() == Tools.Agency.ToString().ToLower()
+                                       && stud.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
                                        && apdx.STUDYAPNDX_URI.ToLower() == url
                                     select ver).Count();
                         if (docs == 0)
@@ -78,36 +78,34 @@ namespace IrbAnalyser
             }
             else
             {
-
                 if (!String.IsNullOrEmpty(url))
                 {
 
-                    addRow("New URL", irbagency, url1, "documents", irbstudyId, irbagency, irbno, true);
+                    addRow("New study", url, "documents", irbstudyId, irbno, true);
                 }
             }
 
 
         }
 
-        public static void addRow(string type, string source, string url, string section, string studyid, string irbno, bool newrecord)
+        public static void addRow(string type, string url, string section, string studyid, string irbno, bool newrecord)
         {
             initiate();
             DataRow dr;
-            DataRow dr2;
+            DataRow dr2 = updatedDocs.NewRow();
             if (newrecord)
             { 
                 dr = newDocs.NewRow();
-                dr2 = updatedDocs.NewRow();
             }
             else
             { dr = updatedDocs.NewRow(); }
 
             dr["TYPE"] = type;
-            dr["IRB no"] = irbno;
-            dr["IRB Study ID"] = studyid;
-            dr["Study number"] = Tools.studyNumber(studyid, agency, irbno, "Please complete");
+
+            dr["Study number"] = Tools.getStudyNumber(studyid, irbno);
+
             dr["Version date"] = Tools.parseDate((string)DateTime.Now.ToShortDateString());
-            dr["Version number"] = source.ToUpper() + " " + section;
+            dr["Version number"] = Agency.agencyStrLwr.ToUpper() + " " + section;
             dr["Category"] = "External Site Docs";
             dr["URL"] = url;
             dr["Short description"] = newrecord ? "BRANY IRB Documents":"";
@@ -116,7 +114,7 @@ namespace IrbAnalyser
             if (newrecord)
             { 
                 newDocs.Rows.Add(dr);
-                dr = dr2;
+                dr2 = dr;
                 updatedDocs.Rows.Add(dr2);
             }
             else

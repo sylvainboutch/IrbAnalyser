@@ -106,22 +106,6 @@ namespace IrbAnalyser.Model
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<LCL_V_STUDYSUMM_PLUSMORE> LCL_V_STUDYSUMM_PLUSMORE
-        {
-            get
-            {
-                if ((_LCL_V_STUDYSUMM_PLUSMORE == null))
-                {
-                    _LCL_V_STUDYSUMM_PLUSMORE = base.CreateObjectSet<LCL_V_STUDYSUMM_PLUSMORE>("LCL_V_STUDYSUMM_PLUSMORE");
-                }
-                return _LCL_V_STUDYSUMM_PLUSMORE;
-            }
-        }
-        private ObjectSet<LCL_V_STUDYSUMM_PLUSMORE> _LCL_V_STUDYSUMM_PLUSMORE;
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
         public ObjectSet<VDA_V_STUDYSITES> VDA_V_STUDYSITES
         {
             get
@@ -230,6 +214,22 @@ namespace IrbAnalyser.Model
             }
         }
         private ObjectSet<VDA_V_STUDY_SUMMARY> _VDA_V_STUDY_SUMMARY;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<LCL_V_STUDYSUMM_PLUSMORE> LCL_V_STUDYSUMM_PLUSMORE
+        {
+            get
+            {
+                if ((_LCL_V_STUDYSUMM_PLUSMORE == null))
+                {
+                    _LCL_V_STUDYSUMM_PLUSMORE = base.CreateObjectSet<LCL_V_STUDYSUMM_PLUSMORE>("LCL_V_STUDYSUMM_PLUSMORE");
+                }
+                return _LCL_V_STUDYSUMM_PLUSMORE;
+            }
+        }
+        private ObjectSet<LCL_V_STUDYSUMM_PLUSMORE> _LCL_V_STUDYSUMM_PLUSMORE;
 
         #endregion
 
@@ -249,14 +249,6 @@ namespace IrbAnalyser.Model
         public void AddToER_STUDYVER(ER_STUDYVER eR_STUDYVER)
         {
             base.AddObject("ER_STUDYVER", eR_STUDYVER);
-        }
-    
-        /// <summary>
-        /// Deprecated Method for adding a new object to the LCL_V_STUDYSUMM_PLUSMORE EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddToLCL_V_STUDYSUMM_PLUSMORE(LCL_V_STUDYSUMM_PLUSMORE lCL_V_STUDYSUMM_PLUSMORE)
-        {
-            base.AddObject("LCL_V_STUDYSUMM_PLUSMORE", lCL_V_STUDYSUMM_PLUSMORE);
         }
     
         /// <summary>
@@ -313,6 +305,14 @@ namespace IrbAnalyser.Model
         public void AddToVDA_V_STUDY_SUMMARY(VDA_V_STUDY_SUMMARY vDA_V_STUDY_SUMMARY)
         {
             base.AddObject("VDA_V_STUDY_SUMMARY", vDA_V_STUDY_SUMMARY);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the LCL_V_STUDYSUMM_PLUSMORE EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToLCL_V_STUDYSUMM_PLUSMORE(LCL_V_STUDYSUMM_PLUSMORE lCL_V_STUDYSUMM_PLUSMORE)
+        {
+            base.AddObject("LCL_V_STUDYSUMM_PLUSMORE", lCL_V_STUDYSUMM_PLUSMORE);
         }
 
         #endregion
@@ -26815,6 +26815,30 @@ namespace IrbAnalyser.Model
         private global::System.String _STUDY_SCOPE;
         partial void OnSTUDY_SCOPEChanging(global::System.String value);
         partial void OnSTUDY_SCOPEChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String MORE_CRO
+        {
+            get
+            {
+                return _MORE_CRO;
+            }
+            set
+            {
+                OnMORE_CROChanging(value);
+                ReportPropertyChanging("MORE_CRO");
+                _MORE_CRO = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_CRO");
+                OnMORE_CROChanged();
+            }
+        }
+        private global::System.String _MORE_CRO;
+        partial void OnMORE_CROChanging(global::System.String value);
+        partial void OnMORE_CROChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
