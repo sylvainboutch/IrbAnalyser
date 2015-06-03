@@ -22,7 +22,7 @@ namespace IrbAnalyser
         {
             InitializeComponent();
 
-            cboSource.DataSource = Enum.GetValues(typeof(Tools.AgencyList));
+            cboSource.DataSource = Enum.GetValues(typeof(Agency.AgencyList));
             cboSource.SelectedIndex = 0;
         }
         private static bool btnclicked = false;
@@ -103,15 +103,18 @@ namespace IrbAnalyser
         /// </summary>
         private void Analyse()
         {
-            string dir = Tools.UnZip(ofdStudy.FileName);
+            string dir = Zip.UnZip(ofdStudy.FileName);
+            Agency.AgencyList agency = Agency.AgencyList.BRANY;
+            Enum.TryParse<Agency.AgencyList>(cboSource.SelectedValue.ToString(), out agency);
+            Agency.AgencyVal = agency;
 
-            Enum.TryParse<Tools.AgencyList>(cboSource.SelectedValue.ToString(), out Tools.Agency); 
+            Tools.filename = dir;
 
             OutputTeam.analyse(dir + "Team.txt");
             OutputStatus.analyse(dir);
             OutputStudy.analyse(dir);
 
-            Tools.CleanUpFile(dir);
+            Zip.CleanUpFile(dir);
 
         }
 

@@ -16,6 +16,11 @@ namespace IrbAnalyser
             getDataTable(file, typ);
         }
 
+        public FileParser()
+        {
+            data = new DataTable();
+        }
+
         public enum type { Study, Team, Status, Event }
 
         private void getDataTable(string file, type typ)
@@ -28,7 +33,7 @@ namespace IrbAnalyser
                     data.Columns.Add("StudyId");
                     data.Columns.Add("StudySiteId");
                     data.Columns.Add("IRBNumber");
-                    data.Columns.Add("Sitename");
+                    data.Columns.Add("SiteName");
                     data.Columns.Add("StudyTitle");
                     data.Columns.Add("StudySummary");
                     data.Columns.Add("StudyAcronym");
@@ -63,10 +68,10 @@ namespace IrbAnalyser
                     data.Columns.Add("SiteName");
                     data.Columns.Add("TeamMemberID");
                     data.Columns.Add("Primary");
-                    data.Columns.Add("PrimaryEmailAdress");
+                    data.Columns.Add("PrimaryEMailAddress");
                     data.Columns.Add("OtherEmailAdresses");
                     data.Columns.Add("FirstName");
-                    data.Columns.Add("LastNAme");
+                    data.Columns.Add("LastName");
                     data.Columns.Add("Role");
                     break;
                 case type.Event:
@@ -109,7 +114,7 @@ namespace IrbAnalyser
                     for (int i=0;i<columns.Count();i++)
                     {
                         if (!String.IsNullOrEmpty(columns[i]))
-                            dr[columns[i]] = Tools.removeQuote((linesplt[i]));
+                            dr[columns[i]] = Tools.parse((linesplt[i]));
                     }
                     data.Rows.Add(dr);
                 }

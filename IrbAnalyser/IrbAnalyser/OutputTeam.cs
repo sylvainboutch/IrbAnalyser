@@ -63,7 +63,7 @@ namespace IrbAnalyser
             string site = "";
             bool primary = Tools.compareStr(row["Primary"], "Y");
 
-            if (Tools.Agency == Tools.AgencyList.BRANY)
+            if (Agency.AgencyVal == Agency.AgencyList.BRANY)
             {
                 role = BranyRoleMap.getRole((string)row["Role"], primary);
                 //group = BranyRoleMap.getGroup((string)row["Role"]);
@@ -83,7 +83,7 @@ namespace IrbAnalyser
 
                 dr["Study number"] = Tools.getStudyNumber((string)row["StudyId"], ((string)row["IRBNumber"]).Replace("(IBC)", ""));
 
-                dr["Email"] = row["PrimaryEmailAdress"].ToString();
+                dr["Email"] = row["PrimaryEMailAddress"].ToString();
                 dr["AdditionnalEmails"] = row["OtherEmailAdresses"].ToString();
                 dr["First name"] = row["FirstName"].ToString();
                 dr["Last name"] = row["LastName"].ToString();
@@ -125,7 +125,7 @@ namespace IrbAnalyser
         {
             string irbstudyId = userRow["StudyId"].ToString();
 
-            string email = (string)userRow["PrimaryEmailAdress"];
+            string email = (string)userRow["PrimaryEMailAddress"];
 
             if (Tools.getOldStudy((string)userRow["StudyId"]))
             {
@@ -137,7 +137,7 @@ namespace IrbAnalyser
                         var user = from us in db.VDA_V_STUDYTEAM_MEMBERS
                                    join stud in db.LCL_V_STUDYSUMM_PLUSMORE on us.FK_STUDY equals stud.PK_STUDY
                                    where stud.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId)
-                                  && stud.MORE_IRBAGENCY.ToLower() == Tools.Agency.ToString().ToLower()
+                                  && stud.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
                                   && us.USER_EMAIL == email
                                    select us;
                         if (!user.Any())

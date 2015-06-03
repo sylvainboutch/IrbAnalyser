@@ -20,7 +20,7 @@ namespace IrbAnalyser
         {
             using (Model.VelosDb db = new Model.VelosDb())
             {
-                var study = from st in db.VDA_V_STUDY_SUMMARY
+                var study = from st in db.LCL_V_STUDYSUMM_PLUSMORE
                             select st;
 
                 var output = "OUPUT : \r\n";

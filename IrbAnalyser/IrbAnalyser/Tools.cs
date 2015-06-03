@@ -7,12 +7,12 @@ using System.Data;
 
 namespace IrbAnalyser
 {
+
     static class Tools
     {
+        public static string filename = "";
 
-        public static enum AgencyList { BRANY };
-
-        public static AgencyList Agency = AgencyList.BRANY;
+        private static FileParser fpStudy = new FileParser();
 
         public static string getFullName(DataRow dr)
         {
@@ -24,7 +24,7 @@ namespace IrbAnalyser
             string result = studyID;
             var stud = (from st in study.AsEnumerable()
                        where st.Field<string>("IRB Study ID").Trim().ToLower() == studyID.Trim().ToLower()
-                       && st.Field<string>("IRB Agency name").Trim().ToLower() == Tools.Agency.ToString().ToLower()
+                       && st.Field<string>("IRB Agency name").Trim().ToLower() == Agency.agencyStrLwr
                         select (st.Field<string>("SiteName").Replace("(IBC)", "") + "::" + st.Field<string>("StudySiteId"))).ToArray();
             foreach (var stu in stud)
             {
@@ -42,17 +42,15 @@ namespace IrbAnalyser
 
         public static string getStudyNumber(string IRBstudyId, string IRBnumber)
         {
-            var stud = (from st in OutputStudy.newStudy.AsEnumerable()
-                        where st.Field<string>("IRB Study ID").Trim().ToLower() == IRBstudyId.Trim().ToLower()
-                        && st.Field<string>("IRB Agency name").Trim().ToLower() == Tools.Agency.ToString().ToLower()
-                        select (st.Field<string>("Accronym"))).ToArray();
-            string accronym = stud.Count() > 0 ? stud[0] : "";
+            if (fpStudy.data.Rows.Count == 0)
+            { 
+                fpStudy = new FileParser(filename + "Study.txt",FileParser.type.Study);
+            }
 
-            stud = (from st in OutputStudy.updatedStudy.AsEnumerable()
-                        where st.Field<string>("IRB Study ID").Trim().ToLower() == IRBstudyId.Trim().ToLower()
-                        && st.Field<string>("IRB Agency name").Trim().ToLower() == Tools.Agency.ToString().ToLower()
-                        select (st.Field<string>("Accronym"))).ToArray();
-            accronym = stud.Count() > 0 ? stud[0] : accronym;
+            var stud = (from st in fpStudy.data.AsEnumerable()
+                        where st.Field<string>("StudyId").Trim().ToLower() == IRBstudyId.Trim().ToLower()
+                        select (st.Field<string>("StudyAcronym"))).ToArray();
+            string accronym = stud.Count() > 0 ? stud[0] : "";
 
             return getStudyNumber(IRBstudyId, IRBnumber, accronym);
         }
@@ -64,7 +62,7 @@ namespace IrbAnalyser
             {
                 number = (from stud in db.LCL_V_STUDYSUMM_PLUSMORE
                           where stud.MORE_IRBSTUDYID.Trim().ToLower().Contains(IRBstudyId.Trim().ToLower())
-                       && stud.MORE_IRBAGENCY.ToLower() == Tools.Agency.ToString().ToLower()
+                       && stud.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
                           select stud.STUDY_NUMBER).FirstOrDefault();
             }
             if (number == null || number.Trim() == "")
@@ -81,7 +79,7 @@ namespace IrbAnalyser
             //string output = irbnumber.Substring(0, 2);
             string output = irbnumber.Replace("-", "");
             output += "_" + accronym + "_";
-            output += Tools.Agency == Tools.AgencyList.BRANY ? "B" : "OCT";//OR MSA ? since apperently OCT enters brany CDA
+            output += Agency.AgencyVal == Agency.AgencyList.BRANY ? "B" : "OCT";//OR MSA ? since apperently OCT enters brany CDA
             //output += irbnumber;
             return output;
         }
@@ -94,7 +92,7 @@ namespace IrbAnalyser
             {
                 ret = (from stud in db.LCL_V_STUDYSUMM_PLUSMORE
                        where stud.MORE_IRBSTUDYID.Trim().ToLower().Contains(IRBstudyId.Trim().ToLower())
-                    && stud.MORE_IRBAGENCY.ToLower() == Tools.Agency.ToString().ToLower()
+                    && stud.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
                        select stud.STUDY_NUMBER).Any();
             }
             return ret;
@@ -114,6 +112,13 @@ namespace IrbAnalyser
                 }
             }
             return sb.ToString();
+        }
+
+        public static string parse(string input)
+        {
+            input = input.Trim('"');
+            input = input == "NULL" ? "" : input;
+            return input;
         }
 
         public static string removeQuote(string input)
@@ -178,52 +183,6 @@ namespace IrbAnalyser
                 contain = cleanStr(str1.ToString()).Contains(cleanStr(str)) ? true : contain;
             }
             return contain;
-        }
-
-        /// <summary>
-        /// UnZip the files to a temp folder and return the path to the folder
-        /// </summary>
-        /// <param name="zipFile"></param>
-        /// <returns></returns>
-        public static string UnZip(string zipFile)
-        {
-            string directory = Path.GetTempPath();
-            directory = directory + "IRBreport\\";
-
-            UnZip(zipFile, directory);
-
-            return directory;
-        }
-
-        public static void CleanUpFile(string filepath)
-        {
-            DirectoryInfo directory = new DirectoryInfo(filepath);
-            foreach (System.IO.FileInfo file in directory.GetFiles()) file.Delete();
-            foreach (System.IO.DirectoryInfo subDirectory in directory.GetDirectories()) subDirectory.Delete(true);
-        }
-
-        /// <summary>
-        /// Unzip a file to a specific folder
-        /// </summary>
-        /// <param name="zipFile"></param>
-        /// <param name="folderPath"></param>
-        public static void UnZip(string zipFile, string folderPath)
-        {
-            //from : http://www.fluxbytes.com/csharp/unzipping-files-using-shell32-in-c/
-            if (!File.Exists(zipFile))
-                throw new FileNotFoundException();
-
-            if (!Directory.Exists(folderPath))
-                Directory.CreateDirectory(folderPath);
-
-            Shell32.Shell objShell = new Shell32.Shell();
-            Shell32.Folder destinationFolder = objShell.NameSpace(folderPath);
-            Shell32.Folder sourceFile = objShell.NameSpace(zipFile);
-
-            foreach (var file in sourceFile.Items())
-            {
-                destinationFolder.CopyHere(file, 4 | 16);
-            }
         }
 
     }
