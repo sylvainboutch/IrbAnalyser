@@ -27,11 +27,11 @@ namespace IrbAnalyser
                 case type.Study:
                     data.Columns.Add("StudyId");
                     data.Columns.Add("StudySiteId");
-                    data.Columns.Add("IRBAgency");
                     data.Columns.Add("IRBNumber");
-                    data.Columns.Add("SiteName");
+                    data.Columns.Add("Sitename");
                     data.Columns.Add("StudyTitle");
                     data.Columns.Add("StudySummary");
+                    data.Columns.Add("StudyAcronym");
                     data.Columns.Add("Department");
                     data.Columns.Add("Division");
                     data.Columns.Add("Studysamplesize");
@@ -43,8 +43,7 @@ namespace IrbAnalyser
                     data.Columns.Add("PrimarySponsorContactLastName");
                     data.Columns.Add("PrimarySponsorContactEmail");
                     data.Columns.Add("PrimarySponsorStudyId");
-                    data.Columns.Add("DocumentLink1");
-                    data.Columns.Add("DocumentLink2");
+                    data.Columns.Add("DocumentLink");
                     data.Columns.Add("InitialApprovalDate");
                     data.Columns.Add("MostRecentApprovalDate");
                     data.Columns.Add("ExpirationDate");
@@ -52,7 +51,6 @@ namespace IrbAnalyser
                 case type.Status:
                     data.Columns.Add("StudyId");
                     data.Columns.Add("StudySiteId");
-                    data.Columns.Add("IRBAgency");
                     data.Columns.Add("IRBNumber");
                     data.Columns.Add("SiteName");
                     data.Columns.Add("Status");
@@ -61,7 +59,6 @@ namespace IrbAnalyser
                 case type.Team:
                     data.Columns.Add("StudyId");
                     data.Columns.Add("StudySiteId");
-                    data.Columns.Add("IRBAgency");
                     data.Columns.Add("IRBNumber");
                     data.Columns.Add("SiteName");
                     data.Columns.Add("TeamMemberID");
@@ -75,7 +72,6 @@ namespace IrbAnalyser
                 case type.Event:
                     data.Columns.Add("StudyId");
                     data.Columns.Add("StudySiteId");
-                    data.Columns.Add("IRBAgency");
                     data.Columns.Add("IRBNumber");
                     data.Columns.Add("SiteName");
                     data.Columns.Add("EventId");

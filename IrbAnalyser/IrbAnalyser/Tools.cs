@@ -9,17 +9,22 @@ namespace IrbAnalyser
 {
     static class Tools
     {
+
+        public static enum AgencyList { BRANY };
+
+        public static AgencyList Agency = AgencyList.BRANY;
+
         public static string getFullName(DataRow dr)
         {
             return dr == null ? "" : dr["FirstName"] + " " + dr["LastName"];
         }
 
-        public static string generateStudyIdentifiers(DataTable study, string studyID, string agency)
+        public static string generateStudyIdentifiers(DataTable study, string studyID)
         {
             string result = studyID;
             var stud = (from st in study.AsEnumerable()
                        where st.Field<string>("IRB Study ID").Trim().ToLower() == studyID.Trim().ToLower()
-                       && st.Field<string>("IRB Agency name").Trim().ToLower() == agency.Trim().ToLower()
+                       && st.Field<string>("IRB Agency name").Trim().ToLower() == Tools.Agency.ToString().ToLower()
                         select (st.Field<string>("SiteName").Replace("(IBC)", "") + "::" + st.Field<string>("StudySiteId"))).ToArray();
             foreach (var stu in stud)
             {
@@ -35,50 +40,61 @@ namespace IrbAnalyser
             return dateparsed == DateTime.MinValue ? "" : dateparsed.Date.ToString("MM/dd/yyyy");
         }
 
-        public static string studyNumber(string IRBstudyId, string IRBAgency, string IRBnumber, string shortitle)
+        public static string getStudyNumber(string IRBstudyId, string IRBnumber)
         {
-            string studynumber = getStudyNumber(IRBstudyId, IRBAgency, IRBnumber);
-            if (String.IsNullOrEmpty(studynumber))
-                studynumber = generateStudyNumber(IRBAgency, IRBnumber, shortitle);
-            return studynumber;
+            var stud = (from st in OutputStudy.newStudy.AsEnumerable()
+                        where st.Field<string>("IRB Study ID").Trim().ToLower() == IRBstudyId.Trim().ToLower()
+                        && st.Field<string>("IRB Agency name").Trim().ToLower() == Tools.Agency.ToString().ToLower()
+                        select (st.Field<string>("Accronym"))).ToArray();
+            string accronym = stud.Count() > 0 ? stud[0] : "";
+
+            stud = (from st in OutputStudy.updatedStudy.AsEnumerable()
+                        where st.Field<string>("IRB Study ID").Trim().ToLower() == IRBstudyId.Trim().ToLower()
+                        && st.Field<string>("IRB Agency name").Trim().ToLower() == Tools.Agency.ToString().ToLower()
+                        select (st.Field<string>("Accronym"))).ToArray();
+            accronym = stud.Count() > 0 ? stud[0] : accronym;
+
+            return getStudyNumber(IRBstudyId, IRBnumber, accronym);
         }
 
-        private static string getStudyNumber(string IRBstudyId, string IRBAgency, string IRBnumber)
+        public static string getStudyNumber(string IRBstudyId, string IRBnumber, string accronym)
         {
             string number = "";
             using (Model.VelosDb db = new Model.VelosDb())
             {
                 number = (from stud in db.LCL_V_STUDYSUMM_PLUSMORE
                           where stud.MORE_IRBSTUDYID.Trim().ToLower().Contains(IRBstudyId.Trim().ToLower())
-                       && stud.MORE_IRBAGENCY.ToLower() == IRBAgency.ToLower()
+                       && stud.MORE_IRBAGENCY.ToLower() == Tools.Agency.ToString().ToLower()
                           select stud.STUDY_NUMBER).FirstOrDefault();
             }
             if (number == null || number.Trim() == "")
             {
-                number = generateStudyNumber(IRBAgency, IRBnumber, "Please complete");
+                accronym = string.IsNullOrWhiteSpace(accronym) ? "Please complete" : accronym;
+                number = generateStudyNumber(IRBnumber, accronym);
             }
             return number;
         }
 
-        private static string generateStudyNumber(string irbagency, string irbnumber, string shortTitle)
+        private static string generateStudyNumber(string irbnumber, string accronym)
         {
             //string output = DateTime.Now.Year.ToString().Substring(2, 2);
-            string output = irbnumber.Substring(0, 2);
-            output += "_" + shortTitle + "_";
-            output += irbagency.ToLower() == "brany" ? "B_" : "E_";//OR MSA ? since apperently OCT enters brany CDA
-            output += irbnumber;
+            //string output = irbnumber.Substring(0, 2);
+            string output = irbnumber.Replace("-", "");
+            output += "_" + accronym + "_";
+            output += Tools.Agency == Tools.AgencyList.BRANY ? "B" : "OCT";//OR MSA ? since apperently OCT enters brany CDA
+            //output += irbnumber;
             return output;
         }
 
 
-        public static bool getOldStudy(string IRBstudyId, string IRBAgency)
+        public static bool getOldStudy(string IRBstudyId)
         {
             bool ret;
             using (Model.VelosDb db = new Model.VelosDb())
             {
                 ret = (from stud in db.LCL_V_STUDYSUMM_PLUSMORE
                        where stud.MORE_IRBSTUDYID.Trim().ToLower().Contains(IRBstudyId.Trim().ToLower())
-                    && stud.MORE_IRBAGENCY.ToLower() == IRBAgency.ToLower()
+                    && stud.MORE_IRBAGENCY.ToLower() == Tools.Agency.ToString().ToLower()
                        select stud.STUDY_NUMBER).Any();
             }
             return ret;

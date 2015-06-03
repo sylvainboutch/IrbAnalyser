@@ -38,6 +38,8 @@
             this.ofdStatus = new System.Windows.Forms.OpenFileDialog();
             this.ofdEvent = new System.Windows.Forms.OpenFileDialog();
             this.ofdMember = new System.Windows.Forms.OpenFileDialog();
+            this.cboSource = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // txtOutput
@@ -91,11 +93,30 @@
             this.label1.TabIndex = 10;
             this.label1.Text = "Zip file";
             // 
+            // cboSource
+            // 
+            this.cboSource.FormattingEnabled = true;
+            this.cboSource.Location = new System.Drawing.Point(188, 82);
+            this.cboSource.Name = "cboSource";
+            this.cboSource.Size = new System.Drawing.Size(121, 21);
+            this.cboSource.TabIndex = 11;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(117, 85);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(65, 13);
+            this.label2.TabIndex = 12;
+            this.label2.Text = "Data source";
+            // 
             // IrbAnalyser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(419, 327);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.cboSource);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnStudy);
             this.Controls.Add(this.txtStudy);
@@ -120,6 +141,8 @@
         private System.Windows.Forms.OpenFileDialog ofdStatus;
         private System.Windows.Forms.OpenFileDialog ofdEvent;
         private System.Windows.Forms.OpenFileDialog ofdMember;
+        private System.Windows.Forms.ComboBox cboSource;
+        private System.Windows.Forms.Label label2;
     }
 }
 

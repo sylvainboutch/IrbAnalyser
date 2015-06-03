@@ -22,9 +22,6 @@ namespace IrbAnalyser
             {
                 newTeam.Columns.Add("TYPE", typeof(string));
 
-                newTeam.Columns.Add("IRB Agency name", typeof(string));
-                newTeam.Columns.Add("IRB no", typeof(string));
-                newTeam.Columns.Add("IRB Study ID", typeof(string));
                 newTeam.Columns.Add("Study number", typeof(string));
 
                 newTeam.Columns.Add("Email", typeof(string));
@@ -33,7 +30,7 @@ namespace IrbAnalyser
                 newTeam.Columns.Add("Last name", typeof(string));
                 newTeam.Columns.Add("Full name", typeof(string));
                 newTeam.Columns.Add("Role", typeof(string));
-                newTeam.Columns.Add("Group", typeof(string));
+                //newTeam.Columns.Add("Group", typeof(string));
                 newTeam.Columns.Add("Organization", typeof(string));
                 newTeam.Columns.Add("Primary", typeof(string));
             }
@@ -41,9 +38,6 @@ namespace IrbAnalyser
             {
                 updatedTeam.Columns.Add("TYPE", typeof(string));
 
-                updatedTeam.Columns.Add("IRB Agency name", typeof(string));
-                updatedTeam.Columns.Add("IRB no", typeof(string));
-                updatedTeam.Columns.Add("IRB Study ID", typeof(string));
                 updatedTeam.Columns.Add("Study number", typeof(string));
 
                 updatedTeam.Columns.Add("Email", typeof(string));
@@ -52,7 +46,7 @@ namespace IrbAnalyser
                 updatedTeam.Columns.Add("Last name", typeof(string));
                 updatedTeam.Columns.Add("Full name", typeof(string));
                 updatedTeam.Columns.Add("Role", typeof(string));
-                updatedTeam.Columns.Add("Group", typeof(string));
+                //updatedTeam.Columns.Add("Group", typeof(string));
                 updatedTeam.Columns.Add("Organization", typeof(string));
                 updatedTeam.Columns.Add("Primary", typeof(string));
             }
@@ -65,18 +59,18 @@ namespace IrbAnalyser
         private static void addRow(DataRow row, string type, bool newrecord)
         {
             string role = "";
-            string group = "";
+            //string group = "";
             string site = "";
-            bool primary = Tools.compareStr(row["Primary"], "true");
+            bool primary = Tools.compareStr(row["Primary"], "Y");
 
-            if ((string)row["IRBAgency"] == "BRANY")
+            if (Tools.Agency == Tools.AgencyList.BRANY)
             {
                 role = BranyRoleMap.getRole((string)row["Role"], primary);
-                group = BranyRoleMap.getGroup((string)row["Role"]);
+                //group = BranyRoleMap.getGroup((string)row["Role"]);
                 site = BranySiteMap.getSite(((string)row["SiteName"]).Replace("(IBC)", ""));
             }
 
-            if (role != "NA" && group != "NA")
+            if (role != "NA")
             {
                 initiate();
                 DataRow dr;
@@ -87,10 +81,7 @@ namespace IrbAnalyser
 
                 dr["TYPE"] = type;
 
-                dr["IRB Agency name"] = (string)row["IRBAgency"];
-                dr["IRB no"] = ((string)row["IRBNumber"]).Replace("(IBC)", "");
-                dr["IRB Study ID"] = (string)row["StudyId"];
-                dr["Study number"] = Tools.studyNumber((string)row["StudyId"], (string)row["IRBAgency"], (string)dr["IRB no"], "Please complete");
+                dr["Study number"] = Tools.getStudyNumber((string)row["StudyId"], ((string)row["IRBNumber"]).Replace("(IBC)", ""));
 
                 dr["Email"] = row["PrimaryEmailAdress"].ToString();
                 dr["AdditionnalEmails"] = row["OtherEmailAdresses"].ToString();
@@ -98,7 +89,7 @@ namespace IrbAnalyser
                 dr["Last name"] = row["LastName"].ToString();
                 dr["Full name"] = row["FirstName"].ToString() + " " + row["LastName"].ToString();
                 dr["Role"] = role;
-                dr["Group"] = group;
+                //dr["Group"] = group;
                 dr["Organization"] = site;
 
                 if (newrecord)
@@ -133,10 +124,10 @@ namespace IrbAnalyser
         private static void analyseRow(DataRow userRow)
         {
             string irbstudyId = userRow["StudyId"].ToString();
-            string irbagency = userRow["IRBAgency"].ToString().ToLower();
+
             string email = (string)userRow["PrimaryEmailAdress"];
 
-            if (Tools.getOldStudy((string)userRow["StudyId"], (string)userRow["IRBAgency"]))
+            if (Tools.getOldStudy((string)userRow["StudyId"]))
             {
                 using (Model.VelosDb db = new Model.VelosDb())
                 {
@@ -146,7 +137,7 @@ namespace IrbAnalyser
                         var user = from us in db.VDA_V_STUDYTEAM_MEMBERS
                                    join stud in db.LCL_V_STUDYSUMM_PLUSMORE on us.FK_STUDY equals stud.PK_STUDY
                                    where stud.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId)
-                                  && stud.MORE_IRBAGENCY.ToLower() == irbagency
+                                  && stud.MORE_IRBAGENCY.ToLower() == Tools.Agency.ToString().ToLower()
                                   && us.USER_EMAIL == email
                                    select us;
                         if (!user.Any())

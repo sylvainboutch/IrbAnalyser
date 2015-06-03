@@ -21,6 +21,9 @@ namespace IrbAnalyser
         public IrbAnalyser()
         {
             InitializeComponent();
+
+            cboSource.DataSource = Enum.GetValues(typeof(Tools.AgencyList));
+            cboSource.SelectedIndex = 0;
         }
         private static bool btnclicked = false;
         private void btnOk_Click(object sender, EventArgs e)
@@ -48,7 +51,7 @@ namespace IrbAnalyser
                 string savefilenoext = savefilename.Remove(savefilename.Length - 5, 5);
                 string separator = "~";
 
-                Csv.saveCsv(OutputStudy.newStudy,separator,savefilenoext + "_newStudy");
+                Csv.saveCsv(OutputStudy.newStudy, separator, savefilenoext + "_newStudy");
                 Csv.saveCsv(OutputMSD.newMSD, separator, savefilenoext + "_newMSD");
                 Csv.saveCsv(OutputDocs.newDocs, separator, savefilenoext + "_newAttachments");
                 Csv.saveCsv(OutputSite.newSites, separator, savefilenoext + "_newSites");
@@ -63,10 +66,10 @@ namespace IrbAnalyser
                 Csv.saveCsv(OutputTeam.updatedTeam, separator, savefilenoext + "_updatedTeam");
                 Csv.saveCsv(OutputStatus.updatedStatus, separator, savefilenoext + "_updatedStatus");                
                 */
-                
+
                 List<ExcelWorksheet> lstxls = new List<ExcelWorksheet>();
-                
-                lstxls.Add(new ExcelWorksheet("Status", "List of status to add in Velos",OutputStatus.newStatus));
+
+                lstxls.Add(new ExcelWorksheet("Status", "List of status to add in Velos", OutputStatus.newStatus));
                 lstxls.Add(new ExcelWorksheet("Team", "List of team members to add Velos", OutputTeam.newTeam));
                 lstxls.Add(new ExcelWorksheet("Site", "List of organization to add in Velos", OutputSite.newSites));
                 lstxls.Add(new ExcelWorksheet("Attachments", "List of version (attachment) to add in Velos", OutputDocs.newDocs));
@@ -82,7 +85,7 @@ namespace IrbAnalyser
                 lstxls.Add(new ExcelWorksheet("Studies", "List of studies to modify in Velos", OutputStudy.updatedStudy));
 
                 //exc.WriteDataTableToExcel(OutputStudy.study, "New studies", savefilename, "List of studies to create in Velos");
-                exc.WriteDataTableToExcel(savefilenoext + "_updated.xlsx",lstxls);
+                exc.WriteDataTableToExcel(savefilenoext + "_updated.xlsx", lstxls);
                 txtOutput.Text = "Analysis complete.\r\nPlease open the excel file and create/modify studies in Velos accordingly.";
                 btnclicked = true;
                 btnOk.Text = "Close";
@@ -101,6 +104,8 @@ namespace IrbAnalyser
         private void Analyse()
         {
             string dir = Tools.UnZip(ofdStudy.FileName);
+
+            Enum.TryParse<Tools.AgencyList>(cboSource.SelectedValue.ToString(), out Tools.Agency); 
 
             OutputTeam.analyse(dir + "Team.txt");
             OutputStatus.analyse(dir);

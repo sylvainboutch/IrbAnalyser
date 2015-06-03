@@ -21,10 +21,7 @@ namespace IrbAnalyser
         {
             if (newStatus.Columns.Count == 0)
             {
-                newStatus.Columns.Add("TYPE", typeof(string));
-                newStatus.Columns.Add("IRB Agency name", typeof(string));
-                newStatus.Columns.Add("IRB no", typeof(string));
-                newStatus.Columns.Add("IRB Study ID", typeof(string));
+                updatedStatus.Columns.Add("TYPE", typeof(string));
                 newStatus.Columns.Add("Study number", typeof(string));
 
                 newStatus.Columns.Add("Organization", typeof(string));
@@ -41,9 +38,6 @@ namespace IrbAnalyser
             if (updatedStatus.Columns.Count == 0)
             {
                 updatedStatus.Columns.Add("TYPE", typeof(string));
-                updatedStatus.Columns.Add("IRB Agency name", typeof(string));
-                updatedStatus.Columns.Add("IRB no", typeof(string));
-                updatedStatus.Columns.Add("IRB Study ID", typeof(string));
                 updatedStatus.Columns.Add("Study number", typeof(string));
 
                 updatedStatus.Columns.Add("Organization", typeof(string));
@@ -86,9 +80,8 @@ namespace IrbAnalyser
         private static void analyseRowStatus(DataRow statusRow)
         {
             string irbstudyId = (string)statusRow["StudyId"];
-            string irbagency = ((string)statusRow["IRBAgency"]).ToLower();
             string sitename = "";
-            if ((string)statusRow["IRBAgency"] == "BRANY")
+            if (Tools.Agency == Tools.AgencyList.BRANY)
             {
                 sitename = BranySiteMap.getSite(((string)statusRow["Sitename"]).Replace("(IBC)", ""));
             }
@@ -97,22 +90,21 @@ namespace IrbAnalyser
             DateTime.TryParse((string)statusRow["ValidOn"], out start);
             start = start == DateTime.MinValue ? DateTime.Now : start;
             string status = "";
-            if (irbagency == "brany") status = BranyStatusMap.getStatus((string)statusRow["Status"]);
+            if (Tools.Agency == Tools.AgencyList.BRANY) status = BranyStatusMap.getStatus((string)statusRow["Status"]);
             // todo einstein status map
-            //if (irbagency == "einstein") status = BranyStatusMap.statusMapBrany[(string)statusRow["StudyId"]];
 
-            if (Tools.getOldStudy(irbstudyId, irbagency))
+            if (Tools.getOldStudy(irbstudyId))
             {
                 using (Model.VelosDb db = new Model.VelosDb())
                 {
 
 
-                    if (!String.IsNullOrEmpty(irbstudyId) && !String.IsNullOrEmpty(irbagency) && !String.IsNullOrEmpty(sitename))
+                    if (!String.IsNullOrEmpty(irbstudyId) && !String.IsNullOrEmpty(sitename))
                     {
                         var statusesDB = from stat in db.VDA_V_STUDYSTAT
                                          join stud in db.LCL_V_STUDYSUMM_PLUSMORE on stat.FK_STUDY equals stud.PK_STUDY
                                          where stud.MORE_IRBSTUDYID == irbstudyId
-                                      && stud.MORE_IRBAGENCY.ToLower().Trim().Contains(irbagency.ToLower().Trim())
+                                      && stud.MORE_IRBAGENCY.ToLower().Trim().Contains(Tools.Agency.ToString().ToLower())
                                          && stat.SSTAT_STUDY_STATUS == status
                                          && stat.SSTAT_VALID_FROM.Value.Year == start.Year
                                          && stat.SSTAT_VALID_FROM.Value.Month == start.Month
@@ -139,18 +131,20 @@ namespace IrbAnalyser
         private static void analyseRowEvent(DataRow eventRow)
         {
             string irbstudyId = eventRow["StudyId"].ToString();
-            string irbagency = eventRow["IRBAgency"].ToString().ToLower();
 
-            string status = BranyEventsMap.getStatus((string)eventRow["Event"]);
-            string type = BranyEventsMap.getType((string)eventRow["Event"]);
+            string status = "";
+            string type = "";
+            string sitename = "";
+
+            if (Tools.Agency == Tools.AgencyList.BRANY)
+            {
+                status = BranyEventsMap.getStatus((string)eventRow["Event"]);
+                type = BranyEventsMap.getType((string)eventRow["Event"]);
+                sitename = BranySiteMap.getSite(((string)eventRow["Sitename"]).Replace("(IBC)", ""));
+            }
 
             string status1 = "IRB AMENDMENT Submitted**";
             string status2 = "IRB Approved";
-            string sitename = "";
-            if ((string)eventRow["IRBAgency"] == "BRANY")
-            {
-                sitename = BranySiteMap.getSite(((string)eventRow["Sitename"]).Replace("(IBC)", ""));
-            }
 
             DateTime start = DateTime.Now;
             DateTime.TryParse((string)eventRow["EventCreationDate"], out start);
@@ -162,7 +156,7 @@ namespace IrbAnalyser
                 DateTime.TryParse((string)eventRow["EventCompletionDate"], out end);
 
 
-            if (Tools.getOldStudy((string)eventRow["StudyId"], (string)eventRow["IRBAgency"]))
+            if (Tools.getOldStudy((string)eventRow["StudyId"]))
             {
                 using (Model.VelosDb db = new Model.VelosDb())
                 {
@@ -173,7 +167,7 @@ namespace IrbAnalyser
                             var statusesDB1 = from stat in db.VDA_V_STUDYSTAT
                                               join stud in db.LCL_V_STUDYSUMM_PLUSMORE on stat.FK_STUDY equals stud.PK_STUDY
                                               where stud.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
-                                           && stud.MORE_IRBAGENCY.ToLower() == irbagency
+                                           && stud.MORE_IRBAGENCY.ToLower() == Tools.Agency.ToString().ToLower()
                                               && stat.SSTAT_STUDY_STATUS == status1
                                               && stat.SSTAT_VALID_FROM.Value.Year == start.Year
                                               && stat.SSTAT_VALID_FROM.Value.Month == start.Month
@@ -190,7 +184,7 @@ namespace IrbAnalyser
                             var statusesDB2 = from stat in db.VDA_V_STUDYSTAT
                                               join stud in db.LCL_V_STUDYSUMM_PLUSMORE on stat.FK_STUDY equals stud.PK_STUDY
                                               where stud.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
-                                           && stud.MORE_IRBAGENCY.ToLower() == irbagency
+                                           && stud.MORE_IRBAGENCY.ToLower() == Tools.Agency.ToString().ToLower()
                                               && stat.SSTAT_STUDY_STATUS == status2
                                               && stat.SSTAT_VALID_FROM.Value.Year == start.Year
                                               && stat.SSTAT_VALID_FROM.Value.Month == start.Month
@@ -213,7 +207,7 @@ namespace IrbAnalyser
                         var statusesDB3 = from stat in db.VDA_V_STUDYSTAT
                                           join stud in db.LCL_V_STUDYSUMM_PLUSMORE on stat.FK_STUDY equals stud.PK_STUDY
                                           where stud.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
-                                       && stud.MORE_IRBAGENCY.ToLower() == irbagency
+                                       && stud.MORE_IRBAGENCY.ToLower() == Tools.Agency.ToString().ToLower()
                                           && stat.SSTAT_STUDY_STATUS == status
                                           && stat.SSTAT_VALID_FROM.Value.Year == start.Year
                                           && stat.SSTAT_VALID_FROM.Value.Month == start.Month
@@ -257,9 +251,9 @@ namespace IrbAnalyser
         public static void analyseRowStudy(DataRow studyrow, bool newrecord)
         {
             string irbstudyId = studyrow["StudyId"].ToString();
-            string irbagency = studyrow["IRBAgency"].ToString().ToLower();
+
             string sitename = "";
-            if ((string)studyrow["IRBAgency"] == "BRANY")
+            if (Tools.Agency == Tools.AgencyList.BRANY)
             {
                 sitename = BranySiteMap.getSite(((string)studyrow["Sitename"]).Replace("(IBC)", ""));
             }
@@ -274,7 +268,7 @@ namespace IrbAnalyser
             {
                 bool dtStatus = !(from st in OutputStatus.newStatus.AsEnumerable()
                                   where st.Field<string>("IRB Study ID").Trim().ToLower() == irbstudyId.Trim().ToLower()
-                                  && st.Field<string>("IRB Agency name").Trim().ToLower() == irbagency.Trim().ToLower()
+                                  && st.Field<string>("IRB Agency name").Trim().ToLower() == Tools.Agency.ToString().ToLower()
                                   && st.Field<string>("Study status").Trim().ToLower() == "irb approved"
                                   && st.Field<string>("Status Valid From").Trim().ToLower() == ((string)studyrow["InitialApprovalDate"]).Trim().ToLower()
                                   select st).Any();
@@ -286,7 +280,7 @@ namespace IrbAnalyser
 
                 dtStatus = !(from st in OutputStatus.newStatus.AsEnumerable()
                                   where st.Field<string>("IRB Study ID").Trim().ToLower() == irbstudyId.Trim().ToLower()
-                                  && st.Field<string>("IRB Agency name").Trim().ToLower() == irbagency.Trim().ToLower()
+                                  && st.Field<string>("IRB Agency name").Trim().ToLower() == Tools.Agency.ToString().ToLower()
                                   && st.Field<string>("Study status").Trim().ToLower() == "irb renewal approved"
                                   && st.Field<string>("Status Valid From").Trim().ToLower() == ((string)studyrow["MostRecentApprovalDate"]).Trim().ToLower()
                                   select st).Any();
@@ -306,7 +300,7 @@ namespace IrbAnalyser
                     var statusesDB = !(from stat in db.VDA_V_STUDYSTAT
                                        join stud in db.LCL_V_STUDYSUMM_PLUSMORE on stat.FK_STUDY equals stud.PK_STUDY
                                        where stud.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
-                                  && stud.MORE_IRBAGENCY.ToLower() == irbagency
+                                  && stud.MORE_IRBAGENCY.ToLower() == Tools.Agency.ToString().ToLower()
                                      && stat.SSTAT_STUDY_STATUS == "irb approved"
                                      && stat.SSTAT_VALID_FROM.Value.Year == initial.Year
                                      && stat.SSTAT_VALID_FROM.Value.Month == initial.Month
@@ -316,7 +310,7 @@ namespace IrbAnalyser
 
                     bool dtStatus = !(from st in OutputStatus.newStatus.AsEnumerable()
                                       where st.Field<string>("IRB Study ID").Trim().ToLower() == irbstudyId.Trim().ToLower()
-                                      && st.Field<string>("IRB Agency name").Trim().ToLower() == irbagency.Trim().ToLower()
+                                      && st.Field<string>("IRB Agency name").Trim().ToLower() == Tools.Agency.ToString().ToLower()
                                       && st.Field<string>("Study status").Trim().ToLower() == "irb approved"
                                       && st.Field<string>("Status Valid From").Trim().ToLower() == ((string)studyrow["InitialApprovalDate"]).Trim().ToLower()
                                       select st).Any();
@@ -330,7 +324,7 @@ namespace IrbAnalyser
                     statusesDB = !(from stat in db.VDA_V_STUDYSTAT
                                        join stud in db.LCL_V_STUDYSUMM_PLUSMORE on stat.FK_STUDY equals stud.PK_STUDY
                                        where stud.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
-                                  && stud.MORE_IRBAGENCY.ToLower() == irbagency
+                                  && stud.MORE_IRBAGENCY.ToLower() == Tools.Agency.ToString().ToLower()
                                      && stat.SSTAT_STUDY_STATUS == "irb renewal approved"
                                      && stat.SSTAT_VALID_FROM.Value.Year == renew.Year
                                      && stat.SSTAT_VALID_FROM.Value.Month == renew.Month
@@ -340,7 +334,7 @@ namespace IrbAnalyser
 
                     dtStatus = !(from st in OutputStatus.newStatus.AsEnumerable()
                                       where st.Field<string>("IRB Study ID").Trim().ToLower() == irbstudyId.Trim().ToLower()
-                                      && st.Field<string>("IRB Agency name").Trim().ToLower() == irbagency.Trim().ToLower()
+                                      && st.Field<string>("IRB Agency name").Trim().ToLower() == Tools.Agency.ToString().ToLower()
                                       && st.Field<string>("Study status").Trim().ToLower() == "irb renewal approved"
                                       && st.Field<string>("Status Valid From").Trim().ToLower() == ((string)studyrow["MostRecentApprovalDate"]).Trim().ToLower()
                                       select st).Any();
@@ -381,13 +375,10 @@ namespace IrbAnalyser
             { dr = updatedStatus.NewRow(); }
 
             dr["TYPE"] = type;
-            dr["IRB Agency name"] = statusRow["IRBAgency"];
-            dr["IRB no"] = ((string)statusRow["IRBNumber"]).Replace("(IBC)", "");
 
-            dr["IRB Study ID"] = (string)statusRow["StudyId"];
-            dr["Study number"] = Tools.studyNumber((string)statusRow["StudyId"], (string)statusRow["IRBAgency"], (string)dr["IRB no"], "Please complete");
+            dr["Study number"] = Tools.getStudyNumber((string)statusRow["StudyId"], ((string)statusRow["IRBNumber"]).Replace("(IBC)", ""));
 
-            if (statusRow["IRBAgency"].ToString().ToLower() == "brany")
+            if (Tools.Agency == Tools.AgencyList.BRANY)
             {
                 dr["Organization"] = BranySiteMap.getSite(((string)statusRow["Sitename"]).Replace("(IBC)", ""));
                 dr["Study status"] = BranyStatusMap.getStatus((string)statusRow["Status"]);
@@ -419,13 +410,10 @@ namespace IrbAnalyser
             { dr = updatedStatus.NewRow(); }
 
             dr["TYPE"] = type;
-            dr["IRB Agency name"] = eventRow["IRBAgency"];
-            dr["IRB no"] = ((string)eventRow["IRBNumber"]).Replace("(IBC)", "");
 
-            dr["IRB Study ID"] = (string)eventRow["StudyId"];
-            dr["Study number"] = Tools.studyNumber((string)eventRow["StudyId"], (string)eventRow["IRBAgency"], (string)dr["IRB no"], "Please complete");
+            dr["Study number"] = Tools.getStudyNumber((string)eventRow["StudyId"], ((string)eventRow["IRBNumber"]).Replace("(IBC)", ""));
 
-            if (eventRow["IRBAgency"].ToString().ToLower() == "brany")
+            if (Tools.Agency == Tools.AgencyList.BRANY)
             {
                 dr["Organization"] = BranySiteMap.getSite(((string)eventRow["Sitename"]).Replace("(IBC)", ""));
             }
@@ -468,14 +456,10 @@ namespace IrbAnalyser
             else
             { dr = updatedStatus.NewRow(); }
             dr["TYPE"] = type;
-            dr["IRB Agency name"] = studyRow["IRBAgency"];
-            dr["IRB no"] = ((string)studyRow["IRBNumber"]).Replace("(IBC)", "");
             dr["Comment"] = ((string)studyRow["IRBNumber"]).Contains("(IBC)") ? "Status from IBC" : "";
+            dr["Study number"] = Tools.getStudyNumber((string)studyRow["StudyId"], ((string)studyRow["IRBNumber"]).Replace("(IBC)", ""));
 
-            dr["IRB Study ID"] = (string)studyRow["StudyId"];
-            dr["Study number"] = Tools.studyNumber((string)studyRow["StudyId"], (string)studyRow["IRBAgency"], (string)dr["IRB no"], "Please complete");
-
-            if (studyRow["IRBAgency"].ToString().ToLower() == "brany")
+            if (Tools.Agency == Tools.AgencyList.BRANY)
             {
                 dr["Organization"] = BranySiteMap.getSite(((string)studyRow["Sitename"]).Replace("(IBC)", ""));
             }
@@ -484,7 +468,7 @@ namespace IrbAnalyser
             dr["status type"] = "Pre Activation";
             dr["Documented by"] = "IRB interface";
             dr["Status Valid From"] = Tools.parseDate((string)studyRow["MostRecentApprovalDate"]);
-            dr["Status Valid From"] = dr["Status Valid From"] == "" ? Tools.parseDate((string)studyRow["InitialApprovalDate"]) : "";
+            dr["Status Valid From"] = (string)dr["Status Valid From"] == "" ? Tools.parseDate((string)studyRow["InitialApprovalDate"]) : "";
             dr["Status Valid Until"] = Tools.parseDate((string)studyRow["Expirationdate"]);
 
             if (newrecord)

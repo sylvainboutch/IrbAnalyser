@@ -14,12 +14,7 @@ namespace IrbAnalyser
         public static void initiate()
         {
             if (newMSD.Columns.Count == 0)
-            {
-                
-
-                newMSD.Columns.Add("IRB Agency name", typeof(string));
-                newMSD.Columns.Add("IRB no", typeof(string));
-                newMSD.Columns.Add("IRB Study ID", typeof(string));
+            {               
                 newMSD.Columns.Add("Study number", typeof(string));
                 newMSD.Columns.Add("Label", typeof(string));
                 newMSD.Columns.Add("Value", typeof(string));
@@ -27,16 +22,13 @@ namespace IrbAnalyser
 
             if (updatedMSD.Columns.Count == 0)
             {
-                updatedMSD.Columns.Add("IRB Agency name", typeof(string));
-                updatedMSD.Columns.Add("IRB no", typeof(string));
-                updatedMSD.Columns.Add("IRB Study ID", typeof(string));
                 updatedMSD.Columns.Add("Study number", typeof(string));
                 updatedMSD.Columns.Add("Label", typeof(string));
                 updatedMSD.Columns.Add("Value", typeof(string));                
             }
         }
 
-        public static void addRow(string label, string value, string studyid, string agency, string IRBno, bool newrecord)
+        public static void addRow(string label, string value, string studyid, string IRBno, string accronym, bool newrecord)
         {
             initiate();
             DataRow dr;
@@ -46,10 +38,7 @@ namespace IrbAnalyser
             { dr = updatedMSD.NewRow(); }
             dr["Label"] = label;
 
-            dr["IRB Agency name"] = agency;
-            dr["IRB no"] = IRBno; 
-            dr["IRB Study ID"] = studyid;
-            dr["Study number"] = Tools.studyNumber(studyid, agency, IRBno, "Please complete");
+            dr["Study number"] = Tools.getStudyNumber(studyid, IRBno, accronym);
 
             dr["Value"] = value;
             if (newrecord)

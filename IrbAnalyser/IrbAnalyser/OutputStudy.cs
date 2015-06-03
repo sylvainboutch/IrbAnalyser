@@ -11,10 +11,11 @@ namespace IrbAnalyser
     /// </summary>
     public static class OutputStudy
     {
+
         //List of newly created study, with more study detail
         public static DataTable newStudy = new DataTable();
         public static DataTable updatedStudy = new DataTable();
-
+        
         /// <summary>
         /// Add the columns to the datatable
         /// </summary>
@@ -25,13 +26,12 @@ namespace IrbAnalyser
                 newStudy.Columns.Add("IRB Agency name", typeof(string));
                 newStudy.Columns.Add("IRB no", typeof(string));
                 newStudy.Columns.Add("IRB Study ID", typeof(string));
-                newStudy.Columns.Add("IRB Identifiers", typeof(string));
-                newStudy.Columns.Add("Cancer", typeof(string));
+                newStudy.Columns.Add("IRB Identifiers", typeof(string));               
                 newStudy.Columns.Add("Study number", typeof(string));
                 newStudy.Columns.Add("Study coordinator", typeof(string));
                 newStudy.Columns.Add("Principal Investigator", typeof(string));
                 newStudy.Columns.Add("Official title", typeof(string));
-                newStudy.Columns.Add("Study summary", typeof(string));
+                newStudy.Columns.Add("Official title", typeof(string));
                 newStudy.Columns.Add("Department", typeof(string));
                 newStudy.Columns.Add("Division/Therapeutic area", typeof(string));
                 newStudy.Columns.Add("Entire study sample size", typeof(string));
@@ -40,6 +40,8 @@ namespace IrbAnalyser
                 newStudy.Columns.Add("Primary funding sponsor, if other :", typeof(string));
                 newStudy.Columns.Add("Sponsor contact", typeof(string));
                 newStudy.Columns.Add("Sponsor Protocol ID", typeof(string));
+                newStudy.Columns.Add("CRO", typeof(string));
+                newStudy.Columns.Add("Cancer", typeof(string));
             }
 
             if (updatedStudy.Columns.Count == 0)
@@ -48,7 +50,6 @@ namespace IrbAnalyser
                 updatedStudy.Columns.Add("IRB no", typeof(string));
                 updatedStudy.Columns.Add("IRB Study ID", typeof(string));
                 updatedStudy.Columns.Add("IRB Identifiers", typeof(string));
-                updatedStudy.Columns.Add("Cancer", typeof(string));
                 updatedStudy.Columns.Add("Study number", typeof(string));
                 updatedStudy.Columns.Add("Study coordinator", typeof(string));
                 updatedStudy.Columns.Add("Principal Investigator", typeof(string));
@@ -62,6 +63,8 @@ namespace IrbAnalyser
                 updatedStudy.Columns.Add("Primary funding sponsor, if other :", typeof(string));
                 updatedStudy.Columns.Add("Sponsor contact", typeof(string));
                 updatedStudy.Columns.Add("Sponsor Protocol ID", typeof(string));
+                updatedStudy.Columns.Add("CRO", typeof(string));
+                updatedStudy.Columns.Add("Cancer", typeof(string));
             }
         }
 
@@ -90,9 +93,8 @@ namespace IrbAnalyser
         private static void analyseRow(DataRow dr, string teamfile)
         {
             string irbstudyId = (string)dr["StudyId"];
-            //string irbagency = ((string)dr["IRBAgency"]).ToLower();
-            string irbagency = "BRANY";
-            if (!String.IsNullOrEmpty(irbagency) && !String.IsNullOrEmpty(irbstudyId))
+
+            if (!String.IsNullOrEmpty(irbstudyId))
             {
 
                 using (Model.VelosDb db = new Model.VelosDb())
@@ -100,7 +102,7 @@ namespace IrbAnalyser
                     
                     var study = from st in db.LCL_V_STUDYSUMM_PLUSMORE
                                 where st.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
-                                && st.MORE_IRBAGENCY.ToLower() == irbagency.ToLower()
+                                && st.MORE_IRBAGENCY.ToLower() == Tools.Agency.ToString().ToLower()
                                 select st;
 
 
@@ -109,7 +111,7 @@ namespace IrbAnalyser
                     {
                         bool dtStudy = (from st in OutputStudy.newStudy.AsEnumerable()
                                         where st.Field<string>("IRB Study ID").Trim().ToLower() == irbstudyId.Trim().ToLower()
-                                        && st.Field<string>("IRB Agency name").Trim().ToLower() == irbagency.Trim().ToLower()
+                                        && st.Field<string>("IRB Agency name").Trim().ToLower() == Tools.Agency.ToString().ToLower()
                                         select st).Any();
 
                         OutputStatus.analyseRowStudy(dr, true);
@@ -125,7 +127,7 @@ namespace IrbAnalyser
                     {
                         bool dtStudy = (from st in OutputStudy.updatedStudy.AsEnumerable()
                                         where st.Field<string>("IRB Study ID").Trim().ToLower() == irbstudyId.Trim().ToLower()
-                                        && st.Field<string>("IRB Agency name").Trim().ToLower() == irbagency.Trim().ToLower()
+                                        && st.Field<string>("IRB Agency name").Trim().ToLower() == Tools.Agency.ToString().ToLower()
                                         select st).Any();
 
                         OutputStatus.analyseRowStudy(dr, false);
@@ -138,11 +140,13 @@ namespace IrbAnalyser
                             bool hasChanged = false;
                             string newpi = "";
                             string newrc = "";
+                            string newcro;
 
                             foreach (var stu in study)
                             {
-                                newpi = getPI(teamfile, (string)dr["IRBAgency"], (string)dr["StudyId"]);
-                                newrc = getRC(teamfile, (string)dr["IRBAgency"], (string)dr["StudyId"]);
+                                newpi = getPI(teamfile, (string)dr["StudyId"]);
+                                newrc = getRC(teamfile, (string)dr["StudyId"]);
+                                newcro = getCRO(teamfile, (string)dr["StudyId"]);
 
                                 if (stu.STUDY_PI != newpi && !String.IsNullOrEmpty(newpi))
                                 {
@@ -155,6 +159,12 @@ namespace IrbAnalyser
                                     hasChanged = true;
                                 }
                                 else { newrc = ""; }
+
+                                if (stu. != newcro && !String.IsNullOrEmpty(newcro))
+                                {
+                                    hasChanged = true;
+                                }
+                                else { newcro= ""; }
 
                                 if (Tools.compareStr(stu.STUDY_TITLE, dr["Studytitle"]))
                                 {
@@ -309,16 +319,16 @@ namespace IrbAnalyser
             else
             { dr = updatedStudy.NewRow(); }
 
-            dr["IRB Agency name"] = (string)row["IRBAgency"];
+            dr["IRB Agency name"] = Tools.Agency;
             dr["IRB no"] = ((string)row["IRBNumber"]).Replace("(IBC)", "");
             dr["IRB Study ID"] = (string)row["StudyId"];
-            dr["IRB Identifiers"] = Tools.generateStudyIdentifiers(dr.Table, (string)row["StudyId"], (string)row["IRBAgency"]);
-            //dr["Study number"] = Tools.generateStudyNumber((string)row["IRBAgency"], (string)row["IRBNumber"], "Please complete");
-            dr["Study number"] = Tools.studyNumber((string)row["StudyId"], (string)row["IRBAgency"], (string)dr["IRB no"], "Please complete");
+            dr["IRB Identifiers"] = Tools.generateStudyIdentifiers(dr.Table, (string)row["StudyId"]);
+
+            dr["Study number"] = Tools.getStudyNumber((string)row["StudyId"], (string)dr["IRB no"], (string)row["StudyAcronym"]);
 
             if (newpi == null)
             {
-                dr["Principal Investigator"] = getPI(teamfile, (string)row["IRBAgency"], (string)row["StudyId"]);
+                dr["Principal Investigator"] = getPI(teamfile, (string)row["StudyId"]);
             }
             else
             {
@@ -327,7 +337,7 @@ namespace IrbAnalyser
 
             if (newrc == null)
             {
-                dr["Study coordinator"] = getRC(teamfile, (string)row["IRBAgency"], (string)row["StudyId"]);
+                dr["Study coordinator"] = getRC(teamfile, (string)row["StudyId"]);
             }
             else
             {
@@ -360,13 +370,13 @@ namespace IrbAnalyser
             if (irbno.Count() >= 2 && irbno[1] == "06")
                 cancer = "Y";
             dr["Cancer"] = cancer;
-            string[] values = new string[4] { (string)row["IRBAgency"], (string)dr["IRB no"], (string)dr["IRB Identifiers"], cancer };
+            string[] values = new string[4] { Tools.Agency.ToString(), (string)dr["IRB no"], (string)dr["IRB Identifiers"], cancer };
 
             OutputMSD.initiate();
 
             for (int i = 0; i < labels.Count(); i++)
             {
-                OutputMSD.addRow(labels[i], values[i], (string)row["StudyId"], (string)row["IRBAgency"], (string)dr["IRB no"], newentry);
+                OutputMSD.addRow(labels[i], values[i], (string)row["StudyId"], (string)dr["IRB no"], (string)row["StudyAcronym"], newentry);
             }
 
 
@@ -378,28 +388,30 @@ namespace IrbAnalyser
 
         }
 
-        private static string getPI(string teamfile, string agency, string studyId)
+        private static string getPI(string teamfile, string studyId)
         {
-            return getRole(teamfile, agency, studyId, "PI");
+            return getRole(teamfile, studyId, "Investigator");
         }
 
-        private static string getRC(string teamfile, string agency, string studyId)
+        private static string getRC(string teamfile, string studyId)
         {
-            return getRole(teamfile, agency, studyId, "Study Coordinator");
+            return getRole(teamfile, studyId, "Coordinator");
         }
 
-        private static string getRole(string teamfile, string agency, string studyId, string roleStr)
+
+        private static string getCRO(string teamfile, string studyId)
+        {
+            return getRole(teamfile, studyId, "CRO");
+        }
+
+        private static string getRole(string teamfile, string studyId, string role)
         {
             FileParser fpTeam = new FileParser(teamfile, FileParser.type.Team);
 
-            var studyteam = fpTeam.data.AsEnumerable().Where(x => (string)x["IRBAgency"] == agency && (string)x["StudyId"] == studyId);
+            var studyteam = fpTeam.data.AsEnumerable().Where(x => (string)x["StudyId"] == studyId);
 
-            string role = "";
-            if (agency.ToLower() == "brany")
-            {
-                role = BranyRoleMap.roleMapBrany.FirstOrDefault(x => x.Value == roleStr).Key;
-            }
-            return Tools.getFullName(studyteam.FirstOrDefault(x => (string)x["Role"] == role));
+
+            return Tools.getFullName(studyteam.FirstOrDefault(x => (string)x["Role"] == role && (string)x["Primary"] == "Y"));
         }
 
     }
