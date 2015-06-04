@@ -21,8 +21,9 @@ namespace IrbAnalyser
         {
             if (newStatus.Columns.Count == 0)
             {
-                updatedStatus.Columns.Add("TYPE", typeof(string));
+                newStatus.Columns.Add("TYPE", typeof(string));
                 newStatus.Columns.Add("Study number", typeof(string));
+                newStatus.Columns.Add("IRB Study ID", typeof(string));
 
                 newStatus.Columns.Add("Organization", typeof(string));
 
@@ -39,6 +40,7 @@ namespace IrbAnalyser
             {
                 updatedStatus.Columns.Add("TYPE", typeof(string));
                 updatedStatus.Columns.Add("Study number", typeof(string));
+                updatedStatus.Columns.Add("IRB Study ID", typeof(string));
 
                 updatedStatus.Columns.Add("Organization", typeof(string));
 
@@ -268,7 +270,6 @@ namespace IrbAnalyser
             {
                 bool dtStatus = !(from st in OutputStatus.newStatus.AsEnumerable()
                                   where st.Field<string>("IRB Study ID").Trim().ToLower() == irbstudyId.Trim().ToLower()
-                                  && st.Field<string>("IRB Agency name").Trim().ToLower() == Agency.agencyStrLwr
                                   && st.Field<string>("Study status").Trim().ToLower() == "irb approved"
                                   && st.Field<string>("Status Valid From").Trim().ToLower() == ((string)studyrow["InitialApprovalDate"]).Trim().ToLower()
                                   select st).Any();
@@ -280,7 +281,6 @@ namespace IrbAnalyser
 
                 dtStatus = !(from st in OutputStatus.newStatus.AsEnumerable()
                                   where st.Field<string>("IRB Study ID").Trim().ToLower() == irbstudyId.Trim().ToLower()
-                                  && st.Field<string>("IRB Agency name").Trim().ToLower() == Agency.agencyStrLwr
                                   && st.Field<string>("Study status").Trim().ToLower() == "irb renewal approved"
                                   && st.Field<string>("Status Valid From").Trim().ToLower() == ((string)studyrow["MostRecentApprovalDate"]).Trim().ToLower()
                                   select st).Any();
@@ -310,7 +310,6 @@ namespace IrbAnalyser
 
                     bool dtStatus = !(from st in OutputStatus.newStatus.AsEnumerable()
                                       where st.Field<string>("IRB Study ID").Trim().ToLower() == irbstudyId.Trim().ToLower()
-                                      && st.Field<string>("IRB Agency name").Trim().ToLower() == Agency.agencyStrLwr
                                       && st.Field<string>("Study status").Trim().ToLower() == "irb approved"
                                       && st.Field<string>("Status Valid From").Trim().ToLower() == ((string)studyrow["InitialApprovalDate"]).Trim().ToLower()
                                       select st).Any();
@@ -334,7 +333,6 @@ namespace IrbAnalyser
 
                     dtStatus = !(from st in OutputStatus.newStatus.AsEnumerable()
                                       where st.Field<string>("IRB Study ID").Trim().ToLower() == irbstudyId.Trim().ToLower()
-                                      && st.Field<string>("IRB Agency name").Trim().ToLower() == Agency.agencyStrLwr
                                       && st.Field<string>("Study status").Trim().ToLower() == "irb renewal approved"
                                       && st.Field<string>("Status Valid From").Trim().ToLower() == ((string)studyrow["MostRecentApprovalDate"]).Trim().ToLower()
                                       select st).Any();
@@ -378,6 +376,8 @@ namespace IrbAnalyser
 
             dr["Study number"] = Tools.getStudyNumber((string)statusRow["StudyId"], ((string)statusRow["IRBNumber"]).Replace("(IBC)", ""));
 
+            dr["IRB Study ID"] = (string)statusRow["StudyId"];
+
             if (Agency.AgencyVal == Agency.AgencyList.BRANY)
             {
                 dr["Organization"] = BranySiteMap.getSite(((string)statusRow["Sitename"]).Replace("(IBC)", ""));
@@ -412,6 +412,8 @@ namespace IrbAnalyser
             dr["TYPE"] = type;
 
             dr["Study number"] = Tools.getStudyNumber((string)eventRow["StudyId"], ((string)eventRow["IRBNumber"]).Replace("(IBC)", ""));
+
+            dr["IRB Study ID"] = (string)eventRow["StudyId"];
 
             if (Agency.AgencyVal == Agency.AgencyList.BRANY)
             {
@@ -458,6 +460,8 @@ namespace IrbAnalyser
             dr["TYPE"] = type;
             dr["Comment"] = ((string)studyRow["IRBNumber"]).Contains("(IBC)") ? "Status from IBC" : "";
             dr["Study number"] = Tools.getStudyNumber((string)studyRow["StudyId"], ((string)studyRow["IRBNumber"]).Replace("(IBC)", ""));
+
+            dr["IRB Study ID"] = (string)studyRow["StudyId"];
 
             if (Agency.AgencyVal == Agency.AgencyList.BRANY)
             {

@@ -92,7 +92,6 @@ namespace IrbAnalyser
         {
             initiate();
             DataRow dr;
-            DataRow dr2 = updatedDocs.NewRow();
             if (newrecord)
             { 
                 dr = newDocs.NewRow();
@@ -114,8 +113,7 @@ namespace IrbAnalyser
             if (newrecord)
             { 
                 newDocs.Rows.Add(dr);
-                dr2 = dr;
-                updatedDocs.Rows.Add(dr2);
+                updatedDocs.ImportRow(dr);
             }
             else
             { updatedDocs.Rows.Add(dr); }

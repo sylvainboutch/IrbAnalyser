@@ -16,7 +16,7 @@ namespace IrbAnalyser
         public static DataTable newStudy = new DataTable();
         public static DataTable updatedStudy = new DataTable();
 
-        private static FileParser fpTeam = new FileParser(Tools.filename + "Team.txt", FileParser.type.Team);
+        private static FileParser fpTeam = new FileParser();
 
         /// <summary>
         /// Add the columns to the datatable

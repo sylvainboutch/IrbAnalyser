@@ -23,9 +23,10 @@ namespace IrbAnalyser
         {
             worksheetName = wk;
             reporType = rt;
-            if (dt.Rows.Count > 0)
+
+            /*if (dt.Rows.Count > 0)
             {
-                if (dt.Columns.Contains("Organization"))
+                if (dt.Columns.Contains("Organization") && dt.Columns.Contains("IRB Agency name"))
                 {
                     dataTable = dt.AsEnumerable().OrderBy(x => x.Field<string>("IRB Agency name"))
                         .ThenBy(x => x.Field<string>("IRB Study ID"))
@@ -42,7 +43,13 @@ namespace IrbAnalyser
             else
             {
                 dataTable = dt.Copy();
+            }*/
+            if (dt.Rows.Count > 0)
+            {
+                dataTable = dt.AsEnumerable().OrderBy(x => x.Field<string>("Study number"))
+                    .CopyToDataTable();
             }
+
         }
     }
 
@@ -178,66 +185,69 @@ namespace IrbAnalyser
                 // Workk sheet
                 foreach (var worksheet in worksheets)
                 {
-                    Microsoft.Office.Interop.Excel.Worksheet excelSheet = excelworkBook.Sheets.Add(Type.Missing, Type.Missing, 1, Type.Missing);
-                    Microsoft.Office.Interop.Excel.Range excelCellrange;
-                    excelSheet.Name = worksheet.worksheetName;
-
-
-                    excelSheet.Cells[1, 1] = worksheet.reporType;
-                    excelSheet.Cells[1, 2] = "Date : " + DateTime.Now.ToShortDateString();
-
-                    // loop through each row and add values to our sheet
-                    int rowcount = 2;
-
-                    //Add the column header
-                    for (int i = 1; i <= worksheet.dataTable.Columns.Count; i++)
+                    if (worksheet.dataTable != null)
                     {
-                        excelSheet.Cells[2, i] = worksheet.dataTable.Columns[i - 1].ColumnName;
-                        excelSheet.Cells.Font.Color = System.Drawing.Color.Black;
-                    }
+                        Microsoft.Office.Interop.Excel.Worksheet excelSheet = excelworkBook.Sheets.Add(Type.Missing, Type.Missing, 1, Type.Missing);
+                        Microsoft.Office.Interop.Excel.Range excelCellrange;
+                        excelSheet.Name = worksheet.worksheetName;
 
-                    foreach (DataRow datarow in worksheet.dataTable.Rows)
-                    {
-                        rowcount += 1;
+
+                        excelSheet.Cells[1, 1] = worksheet.reporType;
+                        excelSheet.Cells[1, 2] = "Date : " + DateTime.Now.ToShortDateString();
+
+                        // loop through each row and add values to our sheet
+                        int rowcount = 2;
+
+                        //Add the column header
                         for (int i = 1; i <= worksheet.dataTable.Columns.Count; i++)
                         {
+                            excelSheet.Cells[2, i] = worksheet.dataTable.Columns[i - 1].ColumnName;
+                            excelSheet.Cells.Font.Color = System.Drawing.Color.Black;
+                        }
 
-                            excelSheet.Cells[rowcount, i] = datarow[i - 1].ToString();
-
-                            //for alternate rows
-                            if (rowcount > 3)
+                        foreach (DataRow datarow in worksheet.dataTable.Rows)
+                        {
+                            rowcount += 1;
+                            for (int i = 1; i <= worksheet.dataTable.Columns.Count; i++)
                             {
-                                if (i == worksheet.dataTable.Columns.Count)
-                                {
-                                    if (rowcount % 2 == 0)
-                                    {
-                                        excelCellrange = excelSheet.Range[excelSheet.Cells[rowcount, 1], excelSheet.Cells[rowcount, worksheet.dataTable.Columns.Count]];
-                                        FormattingExcelCells(excelCellrange, "#CCCCFF", System.Drawing.Color.Black, false);
-                                    }
 
+                                excelSheet.Cells[rowcount, i] = datarow[i - 1].ToString();
+
+                                //for alternate rows
+                                if (rowcount > 3)
+                                {
+                                    if (i == worksheet.dataTable.Columns.Count)
+                                    {
+                                        if (rowcount % 2 == 0)
+                                        {
+                                            excelCellrange = excelSheet.Range[excelSheet.Cells[rowcount, 1], excelSheet.Cells[rowcount, worksheet.dataTable.Columns.Count]];
+                                            FormattingExcelCells(excelCellrange, "#CCCCFF", System.Drawing.Color.Black, false);
+                                        }
+
+                                    }
                                 }
+
                             }
 
                         }
 
-                    }
+                        if (worksheet.dataTable.Columns.Count > 0)
+                        {
+                            excelCellrange = excelSheet.Range[excelSheet.Cells[1, 1], excelSheet.Cells[rowcount, worksheet.dataTable.Columns.Count]];
+                            excelCellrange.EntireColumn.AutoFit();
 
-                    if (worksheet.dataTable.Columns.Count > 0)
-                    {
-                        excelCellrange = excelSheet.Range[excelSheet.Cells[1, 1], excelSheet.Cells[rowcount, worksheet.dataTable.Columns.Count]];
-                        excelCellrange.EntireColumn.AutoFit();
-
-                        Microsoft.Office.Interop.Excel.Borders border = excelCellrange.Borders;
-                        border.LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous;
-                        border.Weight = 2d;
+                            Microsoft.Office.Interop.Excel.Borders border = excelCellrange.Borders;
+                            border.LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous;
+                            border.Weight = 2d;
 
 
-                        excelCellrange = excelSheet.Range[excelSheet.Cells[1, 1], excelSheet.Cells[2, worksheet.dataTable.Columns.Count]];
-                        FormattingExcelCells(excelCellrange, "#000099", System.Drawing.Color.White, true);
+                            excelCellrange = excelSheet.Range[excelSheet.Cells[1, 1], excelSheet.Cells[2, worksheet.dataTable.Columns.Count]];
+                            FormattingExcelCells(excelCellrange, "#000099", System.Drawing.Color.White, true);
+                        }
+
                     }
 
                 }
-
 
                 foreach (Microsoft.Office.Interop.Excel.Worksheet ws in excelworkBook.Worksheets)
                 {
@@ -245,7 +255,8 @@ namespace IrbAnalyser
                 }
                 //now save the workbook and exit Excel
 
-                excelworkBook.SaveAs(saveAsLocation); ;
+                excelworkBook.SaveAs(saveAsLocation);
+
                 excelworkBook.Close();
                 excel.Quit();
                 return true;
