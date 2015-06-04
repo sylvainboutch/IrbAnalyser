@@ -4,229 +4,212 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="VelosModel.Store" Alias="Self" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="11.2" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+      <Schema Namespace="VelosModel.Store" Alias="Self" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="11.2" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
         <EntityContainer Name="VelosModelStoreContainer">
-          <EntitySet Name="ER_STUDYAPNDX" EntityType="VelosModel.Store.ER_STUDYAPNDX" store:Type="Tables" Schema="ERES" />
-          <EntitySet Name="ER_STUDYVER" EntityType="VelosModel.Store.ER_STUDYVER" store:Type="Tables" Schema="ERES" />
+          <EntitySet Name="LCL_V_STUDYVER_APNDX" EntityType="VelosModel.Store.LCL_V_STUDYVER_APNDX" store:Type="Views" Schema="VDA" />
           <EntitySet Name="LCL_V_STUDYSUMM_PLUSMORE" EntityType="VelosModel.Store.LCL_V_STUDYSUMM_PLUSMORE" store:Type="Views" store:Schema="VDA" store:Name="LCL_V_STUDYSUMM_PLUSMORE">
-            <DefiningQuery>SELECT 
-      "LCL_V_STUDYSUMM_PLUSMORE"."PK_STUDY" AS "PK_STUDY", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_NUMBER" AS "STUDY_NUMBER", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_ENTERED_BY" AS "STUDY_ENTERED_BY", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_PI" AS "STUDY_PI", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_COORDINATOR" AS "STUDY_COORDINATOR", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_MAJ_AUTH" AS "STUDY_MAJ_AUTH", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_TITLE" AS "STUDY_TITLE", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_OBJECTIVE" AS "STUDY_OBJECTIVE", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_SUMMARY" AS "STUDY_SUMMARY", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_AGENT_DEVICE" AS "STUDY_AGENT_DEVICE", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_DIVISION" AS "STUDY_DIVISION", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_TAREA" AS "STUDY_TAREA", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_DISEASE_SITE" AS "STUDY_DISEASE_SITE", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_ICDCODE1" AS "STUDY_ICDCODE1", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_ICDCODE2" AS "STUDY_ICDCODE2", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_NATSAMPSIZE" AS "STUDY_NATSAMPSIZE", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_DURATION" AS "STUDY_DURATION", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_DURATN_UNIT" AS "STUDY_DURATN_UNIT", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_EST_BEGIN_DATE" AS "STUDY_EST_BEGIN_DATE", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_PHASE" AS "STUDY_PHASE", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_RESEARCH_TYPE" AS "STUDY_RESEARCH_TYPE", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_TYPE" AS "STUDY_TYPE", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_LINKED_TO" AS "STUDY_LINKED_TO", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_BLINDING" AS "STUDY_BLINDING", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_RANDOM" AS "STUDY_RANDOM", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_SPONSOR" AS "STUDY_SPONSOR", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."SPONSOR_CONTACT" AS "SPONSOR_CONTACT", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_INFO" AS "STUDY_INFO", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_KEYWRDS" AS "STUDY_KEYWRDS", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."FK_ACCOUNT" AS "FK_ACCOUNT", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."CREATED_ON" AS "CREATED_ON", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."LAST_MODIFIED_BY" AS "LAST_MODIFIED_BY", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."LAST_MODIFIED_DATE" AS "LAST_MODIFIED_DATE", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."CREATOR" AS "CREATOR", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."SPONSOR_DD" AS "SPONSOR_DD", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_SPONSORID" AS "STUDY_SPONSORID", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_ACTUALDT" AS "STUDY_ACTUALDT", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_INVIND_FLAG" AS "STUDY_INVIND_FLAG", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."CTRP_ACCRREP_LASTRUN_DATE" AS "CTRP_ACCRREP_LASTRUN_DATE", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."CTRP_ACCRUAL_GEN_DATE" AS "CTRP_ACCRUAL_GEN_DATE", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."CTRP_CUTOFF_DATE" AS "CTRP_CUTOFF_DATE", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."CTRP_LAST_DOWNLOAD_BY" AS "CTRP_LAST_DOWNLOAD_BY", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."NCI_TRIAL_IDENTIFIER" AS "NCI_TRIAL_IDENTIFIER", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."NCT_NUMBER" AS "NCT_NUMBER", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_ENTERED_BY_FK" AS "STUDY_ENTERED_BY_FK", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_PI_FK" AS "STUDY_PI_FK", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_COORDINATOR_FK" AS "STUDY_COORDINATOR_FK", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_DIVISION_FK" AS "STUDY_DIVISION_FK", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_TAREA_FK" AS "STUDY_TAREA_FK", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_DISEASE_SITE_FK" AS "STUDY_DISEASE_SITE_FK", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_PHASE_FK" AS "STUDY_PHASE_FK", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_RESEARCH_TYPE_FK" AS "STUDY_RESEARCH_TYPE_FK", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_TYPE_FK" AS "STUDY_TYPE_FK", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_BLINDING_FK" AS "STUDY_BLINDING_FK", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_RANDOM_FK" AS "STUDY_RANDOM_FK", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."CREATOR_FK" AS "CREATOR_FK", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."LAST_MODIFIED_BY_FK" AS "LAST_MODIFIED_BY_FK", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."SPONSOR_DD_FK" AS "SPONSOR_DD_FK", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."CTRP_LAST_DOWNLOAD_BY_FK" AS "CTRP_LAST_DOWNLOAD_BY_FK", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_SCOPE" AS "STUDY_SCOPE", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."MORE_CRO" AS "MORE_CRO", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."MORE_AT_CTA" AS "MORE_AT_CTA", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."MORE_AT_DTA" AS "MORE_AT_DTA", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."MORE_AT_II" AS "MORE_AT_II", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."MORE_AT_MTA" AS "MORE_AT_MTA", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."MORE_AT_MA" AS "MORE_AT_MA", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."MORE_AT_SA" AS "MORE_AT_SA", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."MORE_ANTICIPATED_ENDDT" AS "MORE_ANTICIPATED_ENDDT", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."MORE_CDA" AS "MORE_CDA", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."MORE_FUNDSRC1" AS "MORE_FUNDSRC1", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."MORE_FUNDSRC2" AS "MORE_FUNDSRC2", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."MORE_GRANTNUM" AS "MORE_GRANTNUM", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."MORE_IRBNUM" AS "MORE_IRBNUM", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."MORE_IRBSTUDYID" AS "MORE_IRBSTUDYID", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."MORE_IRBAGENCY" AS "MORE_IRBAGENCY", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."MORE_IBDT" AS "MORE_IBDT", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."MORE_LEADORGTRIALID" AS "MORE_LEADORGTRIALID", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."MORE_NUMPROTSRCVD" AS "MORE_NUMPROTSRCVD", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."MORE_PONUM" AS "MORE_PONUM", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."MORE_PRIMPURPOSE" AS "MORE_PRIMPURPOSE", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."MORE_PROGCODE" AS "MORE_PROGCODE", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."MORE_PROTLINKED" AS "MORE_PROTLINKED", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."MORE_RECCATG" AS "MORE_RECCATG", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."MORE_SECPURPOSE" AS "MORE_SECPURPOSE", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."MORE_SITENUM" AS "MORE_SITENUM", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."MORE_SPONSORNUM" AS "MORE_SPONSORNUM", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."MORE_SC_AGENT" AS "MORE_SC_AGENT", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."MORE_SC_ANCILLARY" AS "MORE_SC_ANCILLARY", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."MORE_SC_CORR" AS "MORE_SC_CORR", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."MORE_SC_DEVICE" AS "MORE_SC_DEVICE", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."MORE_SC_EPIDEMEOLOGIC" AS "MORE_SC_EPIDEMEOLOGIC", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."MORE_SC_OTHER" AS "MORE_SC_OTHER", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."MORE_SC_TRIALS" AS "MORE_SC_TRIALS", 
-      "LCL_V_STUDYSUMM_PLUSMORE"."MORE_MANAGEDBY" AS "MORE_MANAGEDBY"
-      FROM "VDA"."LCL_V_STUDYSUMM_PLUSMORE" "LCL_V_STUDYSUMM_PLUSMORE"</DefiningQuery>
+            <DefiningQuery>
+              SELECT
+              "LCL_V_STUDYSUMM_PLUSMORE"."PK_STUDY" AS "PK_STUDY",
+              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_NUMBER" AS "STUDY_NUMBER",
+              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_ENTERED_BY" AS "STUDY_ENTERED_BY",
+              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_PI" AS "STUDY_PI",
+              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_COORDINATOR" AS "STUDY_COORDINATOR",
+              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_MAJ_AUTH" AS "STUDY_MAJ_AUTH",
+              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_TITLE" AS "STUDY_TITLE",
+              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_OBJECTIVE" AS "STUDY_OBJECTIVE",
+              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_SUMMARY" AS "STUDY_SUMMARY",
+              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_AGENT_DEVICE" AS "STUDY_AGENT_DEVICE",
+              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_DIVISION" AS "STUDY_DIVISION",
+              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_TAREA" AS "STUDY_TAREA",
+              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_DISEASE_SITE" AS "STUDY_DISEASE_SITE",
+              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_ICDCODE1" AS "STUDY_ICDCODE1",
+              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_ICDCODE2" AS "STUDY_ICDCODE2",
+              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_NATSAMPSIZE" AS "STUDY_NATSAMPSIZE",
+              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_DURATION" AS "STUDY_DURATION",
+              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_DURATN_UNIT" AS "STUDY_DURATN_UNIT",
+              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_EST_BEGIN_DATE" AS "STUDY_EST_BEGIN_DATE",
+              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_PHASE" AS "STUDY_PHASE",
+              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_RESEARCH_TYPE" AS "STUDY_RESEARCH_TYPE",
+              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_TYPE" AS "STUDY_TYPE",
+              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_LINKED_TO" AS "STUDY_LINKED_TO",
+              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_BLINDING" AS "STUDY_BLINDING",
+              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_RANDOM" AS "STUDY_RANDOM",
+              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_SPONSOR" AS "STUDY_SPONSOR",
+              "LCL_V_STUDYSUMM_PLUSMORE"."SPONSOR_CONTACT" AS "SPONSOR_CONTACT",
+              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_INFO" AS "STUDY_INFO",
+              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_KEYWRDS" AS "STUDY_KEYWRDS",
+              "LCL_V_STUDYSUMM_PLUSMORE"."FK_ACCOUNT" AS "FK_ACCOUNT",
+              "LCL_V_STUDYSUMM_PLUSMORE"."CREATED_ON" AS "CREATED_ON",
+              "LCL_V_STUDYSUMM_PLUSMORE"."LAST_MODIFIED_BY" AS "LAST_MODIFIED_BY",
+              "LCL_V_STUDYSUMM_PLUSMORE"."LAST_MODIFIED_DATE" AS "LAST_MODIFIED_DATE",
+              "LCL_V_STUDYSUMM_PLUSMORE"."CREATOR" AS "CREATOR",
+              "LCL_V_STUDYSUMM_PLUSMORE"."SPONSOR_DD" AS "SPONSOR_DD",
+              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_SPONSORID" AS "STUDY_SPONSORID",
+              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_ACTUALDT" AS "STUDY_ACTUALDT",
+              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_INVIND_FLAG" AS "STUDY_INVIND_FLAG",
+              "LCL_V_STUDYSUMM_PLUSMORE"."CTRP_ACCRREP_LASTRUN_DATE" AS "CTRP_ACCRREP_LASTRUN_DATE",
+              "LCL_V_STUDYSUMM_PLUSMORE"."CTRP_ACCRUAL_GEN_DATE" AS "CTRP_ACCRUAL_GEN_DATE",
+              "LCL_V_STUDYSUMM_PLUSMORE"."CTRP_CUTOFF_DATE" AS "CTRP_CUTOFF_DATE",
+              "LCL_V_STUDYSUMM_PLUSMORE"."CTRP_LAST_DOWNLOAD_BY" AS "CTRP_LAST_DOWNLOAD_BY",
+              "LCL_V_STUDYSUMM_PLUSMORE"."NCI_TRIAL_IDENTIFIER" AS "NCI_TRIAL_IDENTIFIER",
+              "LCL_V_STUDYSUMM_PLUSMORE"."NCT_NUMBER" AS "NCT_NUMBER",
+              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_ENTERED_BY_FK" AS "STUDY_ENTERED_BY_FK",
+              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_PI_FK" AS "STUDY_PI_FK",
+              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_COORDINATOR_FK" AS "STUDY_COORDINATOR_FK",
+              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_DIVISION_FK" AS "STUDY_DIVISION_FK",
+              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_TAREA_FK" AS "STUDY_TAREA_FK",
+              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_DISEASE_SITE_FK" AS "STUDY_DISEASE_SITE_FK",
+              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_PHASE_FK" AS "STUDY_PHASE_FK",
+              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_RESEARCH_TYPE_FK" AS "STUDY_RESEARCH_TYPE_FK",
+              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_TYPE_FK" AS "STUDY_TYPE_FK",
+              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_BLINDING_FK" AS "STUDY_BLINDING_FK",
+              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_RANDOM_FK" AS "STUDY_RANDOM_FK",
+              "LCL_V_STUDYSUMM_PLUSMORE"."CREATOR_FK" AS "CREATOR_FK",
+              "LCL_V_STUDYSUMM_PLUSMORE"."LAST_MODIFIED_BY_FK" AS "LAST_MODIFIED_BY_FK",
+              "LCL_V_STUDYSUMM_PLUSMORE"."SPONSOR_DD_FK" AS "SPONSOR_DD_FK",
+              "LCL_V_STUDYSUMM_PLUSMORE"."CTRP_LAST_DOWNLOAD_BY_FK" AS "CTRP_LAST_DOWNLOAD_BY_FK",
+              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_SCOPE" AS "STUDY_SCOPE",
+              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_CRO" AS "MORE_CRO",
+              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_AT_CTA" AS "MORE_AT_CTA",
+              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_AT_DTA" AS "MORE_AT_DTA",
+              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_AT_II" AS "MORE_AT_II",
+              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_AT_MTA" AS "MORE_AT_MTA",
+              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_AT_MA" AS "MORE_AT_MA",
+              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_AT_SA" AS "MORE_AT_SA",
+              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_ANTICIPATED_ENDDT" AS "MORE_ANTICIPATED_ENDDT",
+              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_CDA" AS "MORE_CDA",
+              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_FUNDSRC1" AS "MORE_FUNDSRC1",
+              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_FUNDSRC2" AS "MORE_FUNDSRC2",
+              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_GRANTNUM" AS "MORE_GRANTNUM",
+              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_IRBNUM" AS "MORE_IRBNUM",
+              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_IRBSTUDYID" AS "MORE_IRBSTUDYID",
+              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_IRBAGENCY" AS "MORE_IRBAGENCY",
+              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_IBDT" AS "MORE_IBDT",
+              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_LEADORGTRIALID" AS "MORE_LEADORGTRIALID",
+              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_NUMPROTSRCVD" AS "MORE_NUMPROTSRCVD",
+              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_PONUM" AS "MORE_PONUM",
+              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_PRIMPURPOSE" AS "MORE_PRIMPURPOSE",
+              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_PROGCODE" AS "MORE_PROGCODE",
+              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_PROTLINKED" AS "MORE_PROTLINKED",
+              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_RECCATG" AS "MORE_RECCATG",
+              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_SECPURPOSE" AS "MORE_SECPURPOSE",
+              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_SITENUM" AS "MORE_SITENUM",
+              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_SPONSORNUM" AS "MORE_SPONSORNUM",
+              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_SC_AGENT" AS "MORE_SC_AGENT",
+              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_SC_ANCILLARY" AS "MORE_SC_ANCILLARY",
+              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_SC_CORR" AS "MORE_SC_CORR",
+              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_SC_DEVICE" AS "MORE_SC_DEVICE",
+              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_SC_EPIDEMEOLOGIC" AS "MORE_SC_EPIDEMEOLOGIC",
+              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_SC_OTHER" AS "MORE_SC_OTHER",
+              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_SC_TRIALS" AS "MORE_SC_TRIALS",
+              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_MANAGEDBY" AS "MORE_MANAGEDBY"
+              FROM "VDA"."LCL_V_STUDYSUMM_PLUSMORE" "LCL_V_STUDYSUMM_PLUSMORE"
+            </DefiningQuery>
           </EntitySet>
           <EntitySet Name="VDA_V_STUDYSITES" EntityType="VelosModel.Store.VDA_V_STUDYSITES" store:Type="Views" store:Schema="VDA" store:Name="VDA_V_STUDYSITES">
-            <DefiningQuery>SELECT 
-      "VDA_V_STUDYSITES"."PK_STUDYSITES" AS "PK_STUDYSITES", 
-      "VDA_V_STUDYSITES"."FK_STUDY" AS "FK_STUDY", 
-      "VDA_V_STUDYSITES"."FK_SITE" AS "FK_SITE", 
-      "VDA_V_STUDYSITES"."STUDYSITE_TYPE" AS "STUDYSITE_TYPE", 
-      "VDA_V_STUDYSITES"."STUDYSITE_LSAMPLESIZE" AS "STUDYSITE_LSAMPLESIZE", 
-      "VDA_V_STUDYSITES"."IS_STUDYSITE_PUBLIC" AS "IS_STUDYSITE_PUBLIC", 
-      "VDA_V_STUDYSITES"."INCLUDE_IN_REPORTS" AS "INCLUDE_IN_REPORTS", 
-      "VDA_V_STUDYSITES"."RID" AS "RID", 
-      "VDA_V_STUDYSITES"."CREATOR" AS "CREATOR", 
-      "VDA_V_STUDYSITES"."LAST_MODIFIED_BY" AS "LAST_MODIFIED_BY", 
-      "VDA_V_STUDYSITES"."CREATED_ON" AS "CREATED_ON", 
-      "VDA_V_STUDYSITES"."LAST_MODIFIED_ON" AS "LAST_MODIFIED_ON", 
-      "VDA_V_STUDYSITES"."IP_ADD" AS "IP_ADD", 
-      "VDA_V_STUDYSITES"."STUDYSITE_ENRCOUNT" AS "STUDYSITE_ENRCOUNT", 
-      "VDA_V_STUDYSITES"."IS_REVIEWBASED_ENR" AS "IS_REVIEWBASED_ENR", 
-      "VDA_V_STUDYSITES"."SEND_ENROLLMENT_NOTIFICATION" AS "SEND_ENROLLMENT_NOTIFICATION", 
-      "VDA_V_STUDYSITES"."SEND_ENROLLMENT_APPROVAL" AS "SEND_ENROLLMENT_APPROVAL", 
-      "VDA_V_STUDYSITES"."STUDY_NUMBER" AS "STUDY_NUMBER", 
-      "VDA_V_STUDYSITES"."SITE_NAME" AS "SITE_NAME", 
-      "VDA_V_STUDYSITES"."FK_ACCOUNT" AS "FK_ACCOUNT", 
-      "VDA_V_STUDYSITES"."LAST_MODIFIED_BY_FK" AS "LAST_MODIFIED_BY_FK", 
-      "VDA_V_STUDYSITES"."CREATOR_FK" AS "CREATOR_FK"
-      FROM "VDA"."VDA_V_STUDYSITES" "VDA_V_STUDYSITES"</DefiningQuery>
+            <DefiningQuery>
+              SELECT
+              "VDA_V_STUDYSITES"."PK_STUDYSITES" AS "PK_STUDYSITES",
+              "VDA_V_STUDYSITES"."FK_STUDY" AS "FK_STUDY",
+              "VDA_V_STUDYSITES"."FK_SITE" AS "FK_SITE",
+              "VDA_V_STUDYSITES"."STUDYSITE_TYPE" AS "STUDYSITE_TYPE",
+              "VDA_V_STUDYSITES"."STUDYSITE_LSAMPLESIZE" AS "STUDYSITE_LSAMPLESIZE",
+              "VDA_V_STUDYSITES"."IS_STUDYSITE_PUBLIC" AS "IS_STUDYSITE_PUBLIC",
+              "VDA_V_STUDYSITES"."INCLUDE_IN_REPORTS" AS "INCLUDE_IN_REPORTS",
+              "VDA_V_STUDYSITES"."RID" AS "RID",
+              "VDA_V_STUDYSITES"."CREATOR" AS "CREATOR",
+              "VDA_V_STUDYSITES"."LAST_MODIFIED_BY" AS "LAST_MODIFIED_BY",
+              "VDA_V_STUDYSITES"."CREATED_ON" AS "CREATED_ON",
+              "VDA_V_STUDYSITES"."LAST_MODIFIED_ON" AS "LAST_MODIFIED_ON",
+              "VDA_V_STUDYSITES"."IP_ADD" AS "IP_ADD",
+              "VDA_V_STUDYSITES"."STUDYSITE_ENRCOUNT" AS "STUDYSITE_ENRCOUNT",
+              "VDA_V_STUDYSITES"."IS_REVIEWBASED_ENR" AS "IS_REVIEWBASED_ENR",
+              "VDA_V_STUDYSITES"."SEND_ENROLLMENT_NOTIFICATION" AS "SEND_ENROLLMENT_NOTIFICATION",
+              "VDA_V_STUDYSITES"."SEND_ENROLLMENT_APPROVAL" AS "SEND_ENROLLMENT_APPROVAL",
+              "VDA_V_STUDYSITES"."STUDY_NUMBER" AS "STUDY_NUMBER",
+              "VDA_V_STUDYSITES"."SITE_NAME" AS "SITE_NAME",
+              "VDA_V_STUDYSITES"."FK_ACCOUNT" AS "FK_ACCOUNT",
+              "VDA_V_STUDYSITES"."LAST_MODIFIED_BY_FK" AS "LAST_MODIFIED_BY_FK",
+              "VDA_V_STUDYSITES"."CREATOR_FK" AS "CREATOR_FK",
+              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_IRBAGENCY",
+              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_IRBSTUDYID"
+              FROM "VDA"."VDA_V_STUDYSITES" "VDA_V_STUDYSITES"
+              LEFT JOIN "VDA"."LCL_V_STUDYSUMM_PLUSMORE" ON
+              "LCL_V_STUDYSUMM_PLUSMORE"."PK_STUDY" = "VDA_V_STUDYSITES"."FK_STUDY"
+            </DefiningQuery>
           </EntitySet>
           <EntitySet Name="VDA_V_STUDYSTAT" EntityType="VelosModel.Store.VDA_V_STUDYSTAT" store:Type="Views" store:Schema="VDA" store:Name="VDA_V_STUDYSTAT">
-            <DefiningQuery>SELECT 
-      "VDA_V_STUDYSTAT"."STUDY_NUMBER" AS "STUDY_NUMBER", 
-      "VDA_V_STUDYSTAT"."STUDY_START_DATE" AS "STUDY_START_DATE", 
-      "VDA_V_STUDYSTAT"."STUDY_END_DATE" AS "STUDY_END_DATE", 
-      "VDA_V_STUDYSTAT"."SSTAT_SITE_NAME" AS "SSTAT_SITE_NAME", 
-      "VDA_V_STUDYSTAT"."SSTAT_STUDY_STATUS" AS "SSTAT_STUDY_STATUS", 
-      "VDA_V_STUDYSTAT"."SSTAT_VALID_FROM" AS "SSTAT_VALID_FROM", 
-      "VDA_V_STUDYSTAT"."SSTAT_VALID_UNTIL" AS "SSTAT_VALID_UNTIL", 
-      "VDA_V_STUDYSTAT"."SSTAT_NOTES" AS "SSTAT_NOTES", 
-      "VDA_V_STUDYSTAT"."SSTAT_DOCUMNTD_BY" AS "SSTAT_DOCUMNTD_BY", 
-      "VDA_V_STUDYSTAT"."SSTAT_END_DATE_SYSTEM" AS "SSTAT_END_DATE_SYSTEM", 
-      "VDA_V_STUDYSTAT"."CREATOR" AS "CREATOR", 
-      "VDA_V_STUDYSTAT"."CREATED_ON" AS "CREATED_ON", 
-      "VDA_V_STUDYSTAT"."LAST_MODIFIED_BY" AS "LAST_MODIFIED_BY", 
-      "VDA_V_STUDYSTAT"."LAST_MODIFIED_DATE" AS "LAST_MODIFIED_DATE", 
-      "VDA_V_STUDYSTAT"."PK_STUDYSTAT" AS "PK_STUDYSTAT", 
-      "VDA_V_STUDYSTAT"."FK_STUDY" AS "FK_STUDY", 
-      "VDA_V_STUDYSTAT"."SSTAT_FK_SITE" AS "SSTAT_FK_SITE", 
-      "VDA_V_STUDYSTAT"."FK_ACCOUNT" AS "FK_ACCOUNT", 
-      "VDA_V_STUDYSTAT"."SSTAT_CURRENT_STAT" AS "SSTAT_CURRENT_STAT", 
-      "VDA_V_STUDYSTAT"."SSTAT_STATUS_TYPE_FK" AS "SSTAT_STATUS_TYPE_FK", 
-      "VDA_V_STUDYSTAT"."SSTAT_STATUS_TYPE" AS "SSTAT_STATUS_TYPE", 
-      "VDA_V_STUDYSTAT"."LAST_MODIFIED_BY_FK" AS "LAST_MODIFIED_BY_FK", 
-      "VDA_V_STUDYSTAT"."CREATOR_FK" AS "CREATOR_FK"
-      FROM "VDA"."VDA_V_STUDYSTAT" "VDA_V_STUDYSTAT"</DefiningQuery>
+            <DefiningQuery>
+              SELECT
+              "VDA_V_STUDYSTAT"."STUDY_NUMBER" AS "STUDY_NUMBER",
+              "VDA_V_STUDYSTAT"."STUDY_START_DATE" AS "STUDY_START_DATE",
+              "VDA_V_STUDYSTAT"."STUDY_END_DATE" AS "STUDY_END_DATE",
+              "VDA_V_STUDYSTAT"."SSTAT_SITE_NAME" AS "SSTAT_SITE_NAME",
+              "VDA_V_STUDYSTAT"."SSTAT_STUDY_STATUS" AS "SSTAT_STUDY_STATUS",
+              "VDA_V_STUDYSTAT"."SSTAT_VALID_FROM" AS "SSTAT_VALID_FROM",
+              "VDA_V_STUDYSTAT"."SSTAT_VALID_UNTIL" AS "SSTAT_VALID_UNTIL",
+              "VDA_V_STUDYSTAT"."SSTAT_NOTES" AS "SSTAT_NOTES",
+              "VDA_V_STUDYSTAT"."SSTAT_DOCUMNTD_BY" AS "SSTAT_DOCUMNTD_BY",
+              "VDA_V_STUDYSTAT"."SSTAT_END_DATE_SYSTEM" AS "SSTAT_END_DATE_SYSTEM",
+              "VDA_V_STUDYSTAT"."CREATOR" AS "CREATOR",
+              "VDA_V_STUDYSTAT"."CREATED_ON" AS "CREATED_ON",
+              "VDA_V_STUDYSTAT"."LAST_MODIFIED_BY" AS "LAST_MODIFIED_BY",
+              "VDA_V_STUDYSTAT"."LAST_MODIFIED_DATE" AS "LAST_MODIFIED_DATE",
+              "VDA_V_STUDYSTAT"."PK_STUDYSTAT" AS "PK_STUDYSTAT",
+              "VDA_V_STUDYSTAT"."FK_STUDY" AS "FK_STUDY",
+              "VDA_V_STUDYSTAT"."SSTAT_FK_SITE" AS "SSTAT_FK_SITE",
+              "VDA_V_STUDYSTAT"."FK_ACCOUNT" AS "FK_ACCOUNT",
+              "VDA_V_STUDYSTAT"."SSTAT_CURRENT_STAT" AS "SSTAT_CURRENT_STAT",
+              "VDA_V_STUDYSTAT"."SSTAT_STATUS_TYPE_FK" AS "SSTAT_STATUS_TYPE_FK",
+              "VDA_V_STUDYSTAT"."SSTAT_STATUS_TYPE" AS "SSTAT_STATUS_TYPE",
+              "VDA_V_STUDYSTAT"."LAST_MODIFIED_BY_FK" AS "LAST_MODIFIED_BY_FK",
+              "VDA_V_STUDYSTAT"."CREATOR_FK" AS "CREATOR_FK",
+              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_IRBAGENCY",
+              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_IRBSTUDYID"
+              FROM "VDA"."VDA_V_STUDYSTAT" "VDA_V_STUDYSTAT"
+              LEFT JOIN "VDA"."LCL_V_STUDYSUMM_PLUSMORE" ON
+              "LCL_V_STUDYSUMM_PLUSMORE"."PK_STUDY" = "VDA_V_STUDYSTAT"."FK_STUDY"
+            </DefiningQuery>
           </EntitySet>
           <EntitySet Name="VDA_V_STUDYTEAM_MEMBERS" EntityType="VelosModel.Store.VDA_V_STUDYTEAM_MEMBERS" store:Type="Views" store:Schema="VDA" store:Name="VDA_V_STUDYTEAM_MEMBERS">
-            <DefiningQuery>SELECT 
-      "VDA_V_STUDYTEAM_MEMBERS"."STUDY_NUMBER" AS "STUDY_NUMBER", 
-      "VDA_V_STUDYTEAM_MEMBERS"."STUDY_TITLE" AS "STUDY_TITLE", 
-      "VDA_V_STUDYTEAM_MEMBERS"."USER_SITE_NAME" AS "USER_SITE_NAME", 
-      "VDA_V_STUDYTEAM_MEMBERS"."USER_NAME" AS "USER_NAME", 
-      "VDA_V_STUDYTEAM_MEMBERS"."USER_PHONE" AS "USER_PHONE", 
-      "VDA_V_STUDYTEAM_MEMBERS"."USER_EMAIL" AS "USER_EMAIL", 
-      "VDA_V_STUDYTEAM_MEMBERS"."USER_ADDRESS" AS "USER_ADDRESS", 
-      "VDA_V_STUDYTEAM_MEMBERS"."ROLE" AS "ROLE", 
-      "VDA_V_STUDYTEAM_MEMBERS"."FK_STUDY" AS "FK_STUDY", 
-      "VDA_V_STUDYTEAM_MEMBERS"."CREATED_ON" AS "CREATED_ON", 
-      "VDA_V_STUDYTEAM_MEMBERS"."FK_ACCOUNT" AS "FK_ACCOUNT", 
-      "VDA_V_STUDYTEAM_MEMBERS"."CREATOR" AS "CREATOR", 
-      "VDA_V_STUDYTEAM_MEMBERS"."LAST_MODIFIED_BY" AS "LAST_MODIFIED_BY", 
-      "VDA_V_STUDYTEAM_MEMBERS"."LAST_MODIFIED_DATE" AS "LAST_MODIFIED_DATE", 
-      "VDA_V_STUDYTEAM_MEMBERS"."RID" AS "RID", 
-      "VDA_V_STUDYTEAM_MEMBERS"."PK_STUDYTEAM" AS "PK_STUDYTEAM", 
-      "VDA_V_STUDYTEAM_MEMBERS"."STUDYTEAM_STATUS" AS "STUDYTEAM_STATUS", 
-      "VDA_V_STUDYTEAM_MEMBERS"."LAST_MODIFIED_BY_FK" AS "LAST_MODIFIED_BY_FK", 
-      "VDA_V_STUDYTEAM_MEMBERS"."CREATOR_FK" AS "CREATOR_FK"
-      FROM "VDA"."VDA_V_STUDYTEAM_MEMBERS" "VDA_V_STUDYTEAM_MEMBERS"</DefiningQuery>
+            <DefiningQuery>
+              SELECT
+              "VDA_V_STUDYTEAM_MEMBERS"."STUDY_NUMBER" AS "STUDY_NUMBER",
+              "VDA_V_STUDYTEAM_MEMBERS"."STUDY_TITLE" AS "STUDY_TITLE",
+              "VDA_V_STUDYTEAM_MEMBERS"."USER_SITE_NAME" AS "USER_SITE_NAME",
+              "VDA_V_STUDYTEAM_MEMBERS"."USER_NAME" AS "USER_NAME",
+              "VDA_V_STUDYTEAM_MEMBERS"."USER_PHONE" AS "USER_PHONE",
+              "VDA_V_STUDYTEAM_MEMBERS"."USER_EMAIL" AS "USER_EMAIL",
+              "VDA_V_STUDYTEAM_MEMBERS"."USER_ADDRESS" AS "USER_ADDRESS",
+              "VDA_V_STUDYTEAM_MEMBERS"."ROLE" AS "ROLE",
+              "VDA_V_STUDYTEAM_MEMBERS"."FK_STUDY" AS "FK_STUDY",
+              "VDA_V_STUDYTEAM_MEMBERS"."CREATED_ON" AS "CREATED_ON",
+              "VDA_V_STUDYTEAM_MEMBERS"."FK_ACCOUNT" AS "FK_ACCOUNT",
+              "VDA_V_STUDYTEAM_MEMBERS"."CREATOR" AS "CREATOR",
+              "VDA_V_STUDYTEAM_MEMBERS"."LAST_MODIFIED_BY" AS "LAST_MODIFIED_BY",
+              "VDA_V_STUDYTEAM_MEMBERS"."LAST_MODIFIED_DATE" AS "LAST_MODIFIED_DATE",
+              "VDA_V_STUDYTEAM_MEMBERS"."RID" AS "RID",
+              "VDA_V_STUDYTEAM_MEMBERS"."PK_STUDYTEAM" AS "PK_STUDYTEAM",
+              "VDA_V_STUDYTEAM_MEMBERS"."STUDYTEAM_STATUS" AS "STUDYTEAM_STATUS",
+              "VDA_V_STUDYTEAM_MEMBERS"."LAST_MODIFIED_BY_FK" AS "LAST_MODIFIED_BY_FK",
+              "VDA_V_STUDYTEAM_MEMBERS"."CREATOR_FK" AS "CREATOR_FK",
+              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_IRBAGENCY",
+              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_IRBSTUDYID"
+              FROM "VDA"."VDA_V_STUDYTEAM_MEMBERS" "VDA_V_STUDYTEAM_MEMBERS"
+              LEFT JOIN "VDA"."LCL_V_STUDYSUMM_PLUSMORE" ON
+              "LCL_V_STUDYSUMM_PLUSMORE"."PK_STUDY" = "VDA_V_STUDYTEAM_MEMBERS"."FK_STUDY"
+            </DefiningQuery>
           </EntitySet>
-          <AssociationSet Name="FK_STDYAPNX_STUDY" Association="VelosModel.Store.FK_STDYAPNX_STUDY">
-            <End Role="ER_STUDYVER" EntitySet="ER_STUDYVER" />
-            <End Role="ER_STUDYAPNDX" EntitySet="ER_STUDYAPNDX" />
-          </AssociationSet>
         </EntityContainer>
-        <EntityType Name="ER_STUDYAPNDX">
+        <EntityType Name="LCL_V_STUDYVER_APNDX">
           <Key>
-            <PropertyRef Name="PK_STUDYAPNDX" />
+            <PropertyRef Name="PK_STUDY" />
           </Key>
-          <Property Name="PK_STUDYAPNDX" Type="number" Nullable="false" />
-          <Property Name="FK_STUDY" Type="number" />
-          <Property Name="STUDYAPNDX_TYPE" Type="varchar2" MaxLength="20" />
+          <Property Name="PK_STUDY" Type="number" Nullable="false" />
+          <Property Name="MORE_IRBAGENCY" Type="varchar2" MaxLength="100" />
+          <Property Name="MORE_IRBSTUDYID" Type="varchar2" MaxLength="100" />
           <Property Name="STUDYAPNDX_URI" Type="varchar2" MaxLength="300" />
-          <Property Name="STUDYAPNDX_DESC" Type="varchar2" MaxLength="500" />
-          <Property Name="STUDYAPNDX_PUBFLAG" Type="char" MaxLength="1" />
-          <Property Name="RID" Type="number" />
-          <Property Name="CREATOR" Type="number" />
-          <Property Name="LAST_MODIFIED_BY" Type="number" />
-          <Property Name="LAST_MODIFIED_DATE" Type="date" />
-          <Property Name="CREATED_ON" Type="date" />
-          <Property Name="STUDYAPNDX_FILE" Type="varchar2" MaxLength="500" />
-          <Property Name="STUDYAPNDX_FILEOBJ" Type="blob" />
-          <Property Name="IP_ADD" Type="varchar2" MaxLength="15" />
-          <Property Name="STUDYAPNDX_FILESIZE" Type="number" Precision="10" />
-          <Property Name="FK_STUDYVER" Type="number" />
-        </EntityType>
-        <EntityType Name="ER_STUDYVER">
-          <Key>
-            <PropertyRef Name="PK_STUDYVER" />
-          </Key>
-          <Property Name="PK_STUDYVER" Type="number" Nullable="false" />
-          <Property Name="FK_STUDY" Type="number" />
-          <Property Name="STUDYVER_NUMBER" Type="varchar2" MaxLength="100" />
-          <Property Name="STUDYVER_STATUS" Type="char" MaxLength="1" />
-          <Property Name="STUDYVER_NOTES" Type="varchar2" MaxLength="2000" />
-          <Property Name="ORIG_STUDY" Type="number" />
-          <Property Name="RID" Type="number" />
-          <Property Name="CREATOR" Type="number" />
-          <Property Name="LAST_MODIFIED_BY" Type="number" />
-          <Property Name="LAST_MODIFIED_DATE" Type="date" />
-          <Property Name="CREATED_ON" Type="date" />
-          <Property Name="IP_ADD" Type="varchar2" MaxLength="15" />
-          <Property Name="STUDYVER_DATE" Type="date" />
-          <Property Name="STUDYVER_CATEGORY" Type="number" />
-          <Property Name="STUDYVER_TYPE" Type="number" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'VDA.LCL_V_STUDYSUMM_PLUSMORE' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -359,6 +342,8 @@
           <Property Name="FK_ACCOUNT" Type="number" />
           <Property Name="LAST_MODIFIED_BY_FK" Type="number" />
           <Property Name="CREATOR_FK" Type="number" />
+          <Property Name="MORE_IRBSTUDYID" Type="varchar2" MaxLength="100" />
+          <Property Name="MORE_IRBAGENCY" Type="varchar2" MaxLength="100" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'VDA.VDA_V_STUDYSTAT' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -390,6 +375,8 @@
           <Property Name="SSTAT_STATUS_TYPE" Type="varchar2" />
           <Property Name="LAST_MODIFIED_BY_FK" Type="number" />
           <Property Name="CREATOR_FK" Type="number" />
+          <Property Name="MORE_IRBSTUDYID" Type="varchar2" MaxLength="100" />
+          <Property Name="MORE_IRBAGENCY" Type="varchar2" MaxLength="100" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'VDA.VDA_V_STUDYTEAM_MEMBERS' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -417,20 +404,11 @@
           <Property Name="STUDYTEAM_STATUS" Type="varchar2" MaxLength="30" />
           <Property Name="LAST_MODIFIED_BY_FK" Type="number" />
           <Property Name="CREATOR_FK" Type="number" />
+          <Property Name="MORE_IRBSTUDYID" Type="varchar2" MaxLength="100" />
+          <Property Name="MORE_IRBAGENCY" Type="varchar2" MaxLength="100" />
         </EntityType>
-        <Association Name="FK_STDYAPNX_STUDY">
-          <End Role="ER_STUDYVER" Type="VelosModel.Store.ER_STUDYVER" Multiplicity="0..1" />
-          <End Role="ER_STUDYAPNDX" Type="VelosModel.Store.ER_STUDYAPNDX" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ER_STUDYVER">
-              <PropertyRef Name="PK_STUDYVER" />
-            </Principal>
-            <Dependent Role="ER_STUDYAPNDX">
-              <PropertyRef Name="FK_STUDYVER" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="VelosModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
@@ -439,13 +417,17 @@
           <EntitySet Name="VDA_V_STUDYSITES" EntityType="VelosModel.VDA_V_STUDYSITES" />
           <EntitySet Name="VDA_V_STUDYSTAT" EntityType="VelosModel.VDA_V_STUDYSTAT" />
           <EntitySet Name="VDA_V_STUDYTEAM_MEMBERS" EntityType="VelosModel.VDA_V_STUDYTEAM_MEMBERS" />
-          <EntitySet Name="ER_STUDYAPNDX" EntityType="VelosModel.ER_STUDYAPNDX" />
-          <EntitySet Name="ER_STUDYVER" EntityType="VelosModel.ER_STUDYVER" />
-          <AssociationSet Name="FK_STDYAPNX_STUDY" Association="VelosModel.FK_STDYAPNX_STUDY">
-            <End Role="ER_STUDYVER" EntitySet="ER_STUDYVER" />
-            <End Role="ER_STUDYAPNDX" EntitySet="ER_STUDYAPNDX" />
-          </AssociationSet>
+          <EntitySet Name="LCL_V_STUDYVER_APNDX" EntityType="VelosModel.LCL_V_STUDYVER_APNDX" />
         </EntityContainer>
+        <EntityType Name="LCL_V_STUDYVER_APNDX">
+          <Key>
+            <PropertyRef Name="PK_STUDY" />
+          </Key>
+          <Property Type="Decimal" Name="PK_STUDY" Precision="38" Scale="0" Nullable="false" />
+          <Property Type="String" Name="MORE_IRBAGENCY" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_IRBSTUDYID" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDYAPNDX_URI" MaxLength="300" FixedLength="false" Unicode="false" />
+        </EntityType>
         <EntityType Name="LCL_V_STUDYSUMM_PLUSMORE">
           <Key>
             <PropertyRef Name="PK_STUDY" />
@@ -571,6 +553,8 @@
           <Property Type="Decimal" Name="FK_ACCOUNT" Precision="38" Scale="0" />
           <Property Type="Decimal" Name="LAST_MODIFIED_BY_FK" Precision="38" Scale="0" />
           <Property Type="Decimal" Name="CREATOR_FK" Precision="38" Scale="0" />
+          <Property Type="String" Name="MORE_IRBSTUDYID" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_IRBAGENCY" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="VDA_V_STUDYSTAT">
           <Key>
@@ -599,6 +583,8 @@
           <Property Type="String" Name="SSTAT_STATUS_TYPE" MaxLength="4000" FixedLength="false" Unicode="false" />
           <Property Type="Decimal" Name="LAST_MODIFIED_BY_FK" Precision="38" Scale="0" />
           <Property Type="Decimal" Name="CREATOR_FK" Precision="38" Scale="0" />
+          <Property Type="String" Name="MORE_IRBSTUDYID" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_IRBAGENCY" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="VDA_V_STUDYTEAM_MEMBERS">
           <Key>
@@ -623,68 +609,25 @@
           <Property Type="String" Name="STUDYTEAM_STATUS" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Type="Decimal" Name="LAST_MODIFIED_BY_FK" Precision="38" Scale="0" />
           <Property Type="Decimal" Name="CREATOR_FK" Precision="38" Scale="0" />
+          <Property Type="String" Name="MORE_IRBSTUDYID" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_IRBAGENCY" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="ER_STUDYAPNDX">
-          <Key>
-            <PropertyRef Name="PK_STUDYAPNDX" />
-          </Key>
-          <Property Type="Decimal" Name="PK_STUDYAPNDX" Nullable="false" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="FK_STUDY" Precision="38" Scale="0" />
-          <Property Type="String" Name="STUDYAPNDX_TYPE" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="STUDYAPNDX_URI" MaxLength="300" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="STUDYAPNDX_DESC" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="STUDYAPNDX_PUBFLAG" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="Decimal" Name="RID" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="CREATOR" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="LAST_MODIFIED_BY" Precision="38" Scale="0" />
-          <Property Type="DateTime" Name="LAST_MODIFIED_DATE" />
-          <Property Type="DateTime" Name="CREATED_ON" />
-          <Property Type="String" Name="STUDYAPNDX_FILE" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Type="Binary" Name="STUDYAPNDX_FILEOBJ" MaxLength="Max" FixedLength="false" />
-          <Property Type="String" Name="IP_ADD" MaxLength="15" FixedLength="false" Unicode="false" />
-          <Property Type="Int32" Name="STUDYAPNDX_FILESIZE" />
-          <Property Type="Decimal" Name="FK_STUDYVER" Precision="38" Scale="0" />
-          <NavigationProperty Name="ER_STUDYVER" Relationship="VelosModel.FK_STDYAPNX_STUDY" FromRole="ER_STUDYAPNDX" ToRole="ER_STUDYVER" />
-        </EntityType>
-        <EntityType Name="ER_STUDYVER">
-          <Key>
-            <PropertyRef Name="PK_STUDYVER" />
-          </Key>
-          <Property Type="Decimal" Name="PK_STUDYVER" Nullable="false" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="FK_STUDY" Precision="38" Scale="0" />
-          <Property Type="String" Name="STUDYVER_NUMBER" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="STUDYVER_STATUS" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Type="String" Name="STUDYVER_NOTES" MaxLength="2000" FixedLength="false" Unicode="false" />
-          <Property Type="Decimal" Name="ORIG_STUDY" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="RID" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="CREATOR" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="LAST_MODIFIED_BY" Precision="38" Scale="0" />
-          <Property Type="DateTime" Name="LAST_MODIFIED_DATE" />
-          <Property Type="DateTime" Name="CREATED_ON" />
-          <Property Type="String" Name="IP_ADD" MaxLength="15" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="STUDYVER_DATE" />
-          <Property Type="Decimal" Name="STUDYVER_CATEGORY" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="STUDYVER_TYPE" Precision="38" Scale="0" />
-          <NavigationProperty Name="ER_STUDYAPNDX" Relationship="VelosModel.FK_STDYAPNX_STUDY" FromRole="ER_STUDYVER" ToRole="ER_STUDYAPNDX" />
-        </EntityType>
-        <Association Name="FK_STDYAPNX_STUDY">
-          <End Type="VelosModel.ER_STUDYVER" Role="ER_STUDYVER" Multiplicity="0..1" />
-          <End Type="VelosModel.ER_STUDYAPNDX" Role="ER_STUDYAPNDX" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ER_STUDYVER">
-              <PropertyRef Name="PK_STUDYVER" />
-            </Principal>
-            <Dependent Role="ER_STUDYAPNDX">
-              <PropertyRef Name="FK_STUDYVER" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        </Schema>
+      </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="VelosModelStoreContainer" CdmEntityContainer="VelosDb">
+          <EntitySetMapping Name="LCL_V_STUDYVER_APNDX">
+            <EntityTypeMapping TypeName="VelosModel.LCL_V_STUDYVER_APNDX">
+              <MappingFragment StoreEntitySet="LCL_V_STUDYVER_APNDX">
+                <ScalarProperty Name="STUDYAPNDX_URI" ColumnName="STUDYAPNDX_URI" />
+                <ScalarProperty Name="MORE_IRBSTUDYID" ColumnName="MORE_IRBSTUDYID" />
+                <ScalarProperty Name="MORE_IRBAGENCY" ColumnName="MORE_IRBAGENCY" />
+                <ScalarProperty Name="PK_STUDY" ColumnName="PK_STUDY" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="LCL_V_STUDYSUMM_PLUSMORE">
             <EntityTypeMapping TypeName="VelosModel.LCL_V_STUDYSUMM_PLUSMORE">
               <MappingFragment StoreEntitySet="LCL_V_STUDYSUMM_PLUSMORE">
@@ -810,6 +753,8 @@
                 <ScalarProperty Name="FK_SITE" ColumnName="FK_SITE" />
                 <ScalarProperty Name="FK_STUDY" ColumnName="FK_STUDY" />
                 <ScalarProperty Name="PK_STUDYSITES" ColumnName="PK_STUDYSITES" />
+                <ScalarProperty Name="MORE_IRBAGENCY" ColumnName="MORE_IRBAGENCY" />
+                <ScalarProperty Name="MORE_IRBSTUDYID" ColumnName="MORE_IRBSTUDYID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -839,6 +784,8 @@
                 <ScalarProperty Name="STUDY_END_DATE" ColumnName="STUDY_END_DATE" />
                 <ScalarProperty Name="STUDY_START_DATE" ColumnName="STUDY_START_DATE" />
                 <ScalarProperty Name="STUDY_NUMBER" ColumnName="STUDY_NUMBER" />
+                <ScalarProperty Name="MORE_IRBAGENCY" ColumnName="MORE_IRBAGENCY" />
+                <ScalarProperty Name="MORE_IRBSTUDYID" ColumnName="MORE_IRBSTUDYID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -864,49 +811,8 @@
                 <ScalarProperty Name="USER_SITE_NAME" ColumnName="USER_SITE_NAME" />
                 <ScalarProperty Name="STUDY_TITLE" ColumnName="STUDY_TITLE" />
                 <ScalarProperty Name="STUDY_NUMBER" ColumnName="STUDY_NUMBER" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ER_STUDYAPNDX">
-            <EntityTypeMapping TypeName="VelosModel.ER_STUDYAPNDX">
-              <MappingFragment StoreEntitySet="ER_STUDYAPNDX">
-                <ScalarProperty Name="FK_STUDYVER" ColumnName="FK_STUDYVER" />
-                <ScalarProperty Name="STUDYAPNDX_FILESIZE" ColumnName="STUDYAPNDX_FILESIZE" />
-                <ScalarProperty Name="IP_ADD" ColumnName="IP_ADD" />
-                <ScalarProperty Name="STUDYAPNDX_FILEOBJ" ColumnName="STUDYAPNDX_FILEOBJ" />
-                <ScalarProperty Name="STUDYAPNDX_FILE" ColumnName="STUDYAPNDX_FILE" />
-                <ScalarProperty Name="CREATED_ON" ColumnName="CREATED_ON" />
-                <ScalarProperty Name="LAST_MODIFIED_DATE" ColumnName="LAST_MODIFIED_DATE" />
-                <ScalarProperty Name="LAST_MODIFIED_BY" ColumnName="LAST_MODIFIED_BY" />
-                <ScalarProperty Name="CREATOR" ColumnName="CREATOR" />
-                <ScalarProperty Name="RID" ColumnName="RID" />
-                <ScalarProperty Name="STUDYAPNDX_PUBFLAG" ColumnName="STUDYAPNDX_PUBFLAG" />
-                <ScalarProperty Name="STUDYAPNDX_DESC" ColumnName="STUDYAPNDX_DESC" />
-                <ScalarProperty Name="STUDYAPNDX_URI" ColumnName="STUDYAPNDX_URI" />
-                <ScalarProperty Name="STUDYAPNDX_TYPE" ColumnName="STUDYAPNDX_TYPE" />
-                <ScalarProperty Name="FK_STUDY" ColumnName="FK_STUDY" />
-                <ScalarProperty Name="PK_STUDYAPNDX" ColumnName="PK_STUDYAPNDX" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ER_STUDYVER">
-            <EntityTypeMapping TypeName="VelosModel.ER_STUDYVER">
-              <MappingFragment StoreEntitySet="ER_STUDYVER">
-                <ScalarProperty Name="STUDYVER_TYPE" ColumnName="STUDYVER_TYPE" />
-                <ScalarProperty Name="STUDYVER_CATEGORY" ColumnName="STUDYVER_CATEGORY" />
-                <ScalarProperty Name="STUDYVER_DATE" ColumnName="STUDYVER_DATE" />
-                <ScalarProperty Name="IP_ADD" ColumnName="IP_ADD" />
-                <ScalarProperty Name="CREATED_ON" ColumnName="CREATED_ON" />
-                <ScalarProperty Name="LAST_MODIFIED_DATE" ColumnName="LAST_MODIFIED_DATE" />
-                <ScalarProperty Name="LAST_MODIFIED_BY" ColumnName="LAST_MODIFIED_BY" />
-                <ScalarProperty Name="CREATOR" ColumnName="CREATOR" />
-                <ScalarProperty Name="RID" ColumnName="RID" />
-                <ScalarProperty Name="ORIG_STUDY" ColumnName="ORIG_STUDY" />
-                <ScalarProperty Name="STUDYVER_NOTES" ColumnName="STUDYVER_NOTES" />
-                <ScalarProperty Name="STUDYVER_STATUS" ColumnName="STUDYVER_STATUS" />
-                <ScalarProperty Name="STUDYVER_NUMBER" ColumnName="STUDYVER_NUMBER" />
-                <ScalarProperty Name="FK_STUDY" ColumnName="FK_STUDY" />
-                <ScalarProperty Name="PK_STUDYVER" ColumnName="PK_STUDYVER" />
+                <ScalarProperty Name="MORE_IRBAGENCY" ColumnName="MORE_IRBAGENCY" />
+                <ScalarProperty Name="MORE_IRBSTUDYID" ColumnName="MORE_IRBSTUDYID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -930,10 +836,10 @@
     </Options>
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
-      <Diagram Name="Model1" ZoomLevel="93">
+      <Diagram Name="Model1" ZoomLevel="100">
         <EntityTypeShape EntityType="VelosModel.LCL_V_STUDYSUMM_PLUSMORE" Width="1.5" PointX="0.75" PointY="0.75" Height="19.095113932291667" />
         <EntityTypeShape EntityType="VelosModel.VDA_V_STUDYSITES" Width="1.5" PointX="2.75" PointY="0.75" Height="5.2494108072916674" />
-        <EntityTypeShape EntityType="VelosModel.VDA_V_STUDYSTAT" Width="1.5" PointX="4.75" PointY="0.75" Height="5.4417122395833317" />
+        <EntityTypeShape EntityType="VelosModel.VDA_V_STUDYSTAT" Width="1.5" PointX="4.75" PointY="0.75" Height="5.8463151041666652" />
         <EntityTypeShape EntityType="VelosModel.VDA_V_STUDYTEAM_MEMBERS" Width="1.5" PointX="6.75" PointY="0.75" Height="4.6725065104166674" />
         <EntityTypeShape EntityType="VelosModel.ER_STUDYAPNDX" Width="1.5" PointX="5.625" PointY="8" Height="4.2879036458333388" />
         <EntityTypeShape EntityType="VelosModel.ER_STUDYVER" Width="1.5" PointX="3.375" PointY="8.125" Height="4.0956022135416674" />

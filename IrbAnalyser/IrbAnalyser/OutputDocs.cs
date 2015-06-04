@@ -11,6 +11,33 @@ namespace IrbAnalyser
         public static DataTable newDocs = new DataTable();
         public static DataTable updatedDocs = new DataTable();
 
+        private static IEnumerable<Model.LCL_V_STUDYVER_APNDX> _versions;
+        public static IEnumerable<Model.LCL_V_STUDYVER_APNDX> versions
+        {
+            get
+            {
+                if (_versions == null || _versions.Count() == 0)
+                {
+                    using (Model.VelosDb db = new Model.VelosDb())
+                    {
+
+                        var query = (from st in db.LCL_V_STUDYVER_APNDX
+                                     where st.MORE_IRBAGENCY != null
+                                     && st.MORE_IRBSTUDYID != null
+                                     && st.STUDYAPNDX_URI != null
+                                     select st);
+                        _versions = query.ToList<Model.LCL_V_STUDYVER_APNDX>();
+                    }
+                }
+                return _versions;
+            }
+            set
+            {
+                _versions = value;
+            }
+        }
+
+
         private static void initiate()
         {
             if (newDocs.Columns.Count == 0)
@@ -56,24 +83,18 @@ namespace IrbAnalyser
 
             if (!newrecord)
             {
-                using (Model.VelosDb db = new Model.VelosDb())
+
+                if (!String.IsNullOrEmpty(url))
                 {
-
-                    if (!String.IsNullOrEmpty(url))
+                    var docs = (from ver in versions
+                                where ver.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
+                                   && ver.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
+                                   && ver.STUDYAPNDX_URI.ToLower() == url
+                                select ver).Count();
+                    if (docs == 0)
                     {
-                        var docs = (from ver in db.ER_STUDYVER
-                                    join apdx in db.ER_STUDYAPNDX on ver.PK_STUDYVER equals apdx.FK_STUDYVER
-                                    join stud in db.LCL_V_STUDYSUMM_PLUSMORE on ver.FK_STUDY equals stud.PK_STUDY
-                                    where stud.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
-                                       && stud.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
-                                       && apdx.STUDYAPNDX_URI.ToLower() == url
-                                    select ver).Count();
-                        if (docs == 0)
-                        {
-                            addRow("New URL", url, "documents", irbstudyId, irbno, false);
-                        }
+                        addRow("New URL", url, "documents", irbstudyId, irbno, false);
                     }
-
                 }
             }
             else
@@ -93,7 +114,7 @@ namespace IrbAnalyser
             initiate();
             DataRow dr;
             if (newrecord)
-            { 
+            {
                 dr = newDocs.NewRow();
             }
             else
@@ -107,11 +128,11 @@ namespace IrbAnalyser
             dr["Version number"] = Agency.agencyStrLwr.ToUpper() + " " + section;
             dr["Category"] = "External Site Docs";
             dr["URL"] = url;
-            dr["Short description"] = newrecord ? "BRANY IRB Documents":"";
+            dr["Short description"] = newrecord ? "BRANY IRB Documents" : "";
             dr["Version status"] = "Approved";
 
             if (newrecord)
-            { 
+            {
                 newDocs.Rows.Add(dr);
                 updatedDocs.ImportRow(dr);
             }

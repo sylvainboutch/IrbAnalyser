@@ -11,6 +11,32 @@ namespace IrbAnalyser
         public static DataTable newSites = new DataTable();
         public static DataTable updatedSites = new DataTable();
 
+        private static IEnumerable<Model.VDA_V_STUDYSITES> _sites;
+        public static IEnumerable<Model.VDA_V_STUDYSITES> sites
+        {
+            get
+            {
+                if (_sites == null || _sites.Count() == 0)
+                {
+                    using (Model.VelosDb db = new Model.VelosDb())
+                    {
+
+                        var query = (from st in db.VDA_V_STUDYSITES
+                                     where st.MORE_IRBAGENCY != null
+                                     && st.MORE_IRBSTUDYID != null
+                                     select st);
+                        _sites = query.ToList<Model.VDA_V_STUDYSITES>();
+                    }
+                }
+                return _sites;
+            }
+            set
+            {
+                _sites = value;
+            }
+        }
+
+
         public static void initiate()
         {
             if (newSites.Columns.Count == 0)
@@ -52,7 +78,7 @@ namespace IrbAnalyser
             string size = (string)studyrow["Sitesamplesize"];
             if (!newrecord)
             {
-                using (Model.VelosDb db = new Model.VelosDb())
+                /*using (Model.VelosDb db = new Model.VelosDb())
                 {
                     if (!String.IsNullOrEmpty(site))
                     {
@@ -71,7 +97,24 @@ namespace IrbAnalyser
                             addRow("Modified site", site, size, irbstudyId, ((string)studyrow["IRBNumber"]).Replace("(IBC)", ""), false);
                         }
                     }
+                }*/
+                if (!String.IsNullOrEmpty(site))
+                {
+                    var sites2 = (from sit in sites
+                                  where sit.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
+                                    && sit.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
+                                    && sit.SITE_NAME == site
+                                 select sit);
+                    if (sites2.Count() == 0)
+                    {
+                        addRow("New Site", site, size, irbstudyId, ((string)studyrow["IRBNumber"]).Replace("(IBC)", ""), true);
+                    }
+                    else if (sites2.FirstOrDefault().STUDYSITE_LSAMPLESIZE != size && !String.IsNullOrEmpty(size))
+                    {
+                        addRow("Modified site", site, size, irbstudyId, ((string)studyrow["IRBNumber"]).Replace("(IBC)", ""), false);
+                    }
                 }
+
             }
             else
             {

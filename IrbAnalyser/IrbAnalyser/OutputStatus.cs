@@ -14,6 +14,33 @@ namespace IrbAnalyser
         public static DataTable newStatus = new DataTable();
         public static DataTable updatedStatus = new DataTable();
 
+
+        private static IEnumerable<Model.VDA_V_STUDYSTAT> _allstatus;
+        public static IEnumerable<Model.VDA_V_STUDYSTAT> allstatus
+        {
+            get
+            {
+                if (_allstatus == null || _allstatus.Count() == 0)
+                {
+                    using (Model.VelosDb db = new Model.VelosDb())
+                    {
+
+                        var query = (from st in db.VDA_V_STUDYSTAT
+                                     where st.MORE_IRBAGENCY != null
+                                     && st.MORE_IRBSTUDYID != null
+                                     select st);
+                        _allstatus = query.ToList<Model.VDA_V_STUDYSTAT>();
+                    }
+                }
+                return _allstatus;
+            }
+            set
+            {
+                _allstatus = value;
+            }
+        }
+
+
         /// <summary>
         /// Add the columns to the datatable
         /// </summary>
@@ -90,33 +117,25 @@ namespace IrbAnalyser
             DateTime start = DateTime.Now;
             DateTime.TryParse((string)statusRow["ValidOn"], out start);
             start = start == DateTime.MinValue ? DateTime.Now : start;
-            string status = "";
-            if (Agency.AgencyVal == Agency.AgencyList.BRANY) status = BranyStatusMap.getStatus((string)statusRow["Status"]);
+            string status1 = "";
+            if (Agency.AgencyVal == Agency.AgencyList.BRANY) status1 = BranyStatusMap.getStatus((string)statusRow["Status"]);
             // todo einstein status map
 
-            if (Tools.getOldStudy(irbstudyId))
+            if (Tools.getOldStudy(irbstudyId) && !String.IsNullOrEmpty(irbstudyId) && !String.IsNullOrEmpty(sitename))
             {
-                using (Model.VelosDb db = new Model.VelosDb())
+
+                var statusesDB = from stat in allstatus
+                                 where stat.MORE_IRBSTUDYID == irbstudyId
+                              && stat.MORE_IRBAGENCY.ToLower().Trim().Contains(Agency.agencyStrLwr)
+                                 && stat.SSTAT_STUDY_STATUS == status1
+                                 && stat.SSTAT_VALID_FROM.Value.Year == start.Year
+                                 && stat.SSTAT_VALID_FROM.Value.Month == start.Month
+                                 && stat.SSTAT_VALID_FROM.Value.Day == start.Day
+                                 && stat.SSTAT_SITE_NAME == sitename
+                                 select stat;
+                if (!statusesDB.Any())
                 {
-
-
-                    if (!String.IsNullOrEmpty(irbstudyId) && !String.IsNullOrEmpty(sitename))
-                    {
-                        var statusesDB = from stat in db.VDA_V_STUDYSTAT
-                                         join stud in db.LCL_V_STUDYSUMM_PLUSMORE on stat.FK_STUDY equals stud.PK_STUDY
-                                         where stud.MORE_IRBSTUDYID == irbstudyId
-                                      && stud.MORE_IRBAGENCY.ToLower().Trim().Contains(Agency.agencyStrLwr)
-                                         && stat.SSTAT_STUDY_STATUS == status
-                                         && stat.SSTAT_VALID_FROM.Value.Year == start.Year
-                                         && stat.SSTAT_VALID_FROM.Value.Month == start.Month
-                                         && stat.SSTAT_VALID_FROM.Value.Day == start.Day
-                                         && stat.SSTAT_SITE_NAME == sitename
-                                         select stat;
-                        if (!statusesDB.Any())
-                        {
-                            addRowStatus(statusRow, "New status", true);
-                        }
-                    }
+                    addRowStatus(statusRow, "New status", true);
                 }
             }
             else
@@ -159,73 +178,68 @@ namespace IrbAnalyser
 
             if (Tools.getOldStudy((string)eventRow["StudyId"]))
             {
-                using (Model.VelosDb db = new Model.VelosDb())
+                if (status == status1)
                 {
-                    if (status == status1)
+                    if (end != DateTime.MinValue)
                     {
-                        if (end != DateTime.MinValue)
-                        {
-                            var statusesDB1 = from stat in db.VDA_V_STUDYSTAT
-                                              join stud in db.LCL_V_STUDYSUMM_PLUSMORE on stat.FK_STUDY equals stud.PK_STUDY
-                                              where stud.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
-                                           && stud.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
-                                              && stat.SSTAT_STUDY_STATUS == status1
-                                              && stat.SSTAT_VALID_FROM.Value.Year == start.Year
-                                              && stat.SSTAT_VALID_FROM.Value.Month == start.Month
-                                              && stat.SSTAT_VALID_FROM.Value.Day == start.Day
-                                              && stat.SSTAT_SITE_NAME == sitename
-                                              //&& stat.SSTAT_NOTES == ((string)eventRow["Event"]).Trim().ToLower()
-                                              select stat;
-
-                            if (statusesDB1.Any() && statusesDB1.First().SSTAT_VALID_UNTIL != end)
-                            {
-                                addRowEvent(eventRow, "IRB AMENDMENT Submitted**", "Modified status", false);
-                            }
-
-                            var statusesDB2 = from stat in db.VDA_V_STUDYSTAT
-                                              join stud in db.LCL_V_STUDYSUMM_PLUSMORE on stat.FK_STUDY equals stud.PK_STUDY
-                                              where stud.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
-                                           && stud.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
-                                              && stat.SSTAT_STUDY_STATUS == status2
-                                              && stat.SSTAT_VALID_FROM.Value.Year == start.Year
-                                              && stat.SSTAT_VALID_FROM.Value.Month == start.Month
-                                              && stat.SSTAT_VALID_FROM.Value.Day == start.Day
-                                              && stat.SSTAT_SITE_NAME == sitename
-                                              select stat;
-
-                            if (!statusesDB2.Any())
-                            {
-                                addRowEvent(eventRow, "IRB Amendment Approved", "New status", true);
-                            }
-                            else if (statusesDB2.First().SSTAT_VALID_UNTIL != end)
-                            {
-                                addRowEvent(eventRow, "IRB Amendment Approved", "Modified status", false);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        var statusesDB3 = from stat in db.VDA_V_STUDYSTAT
-                                          join stud in db.LCL_V_STUDYSUMM_PLUSMORE on stat.FK_STUDY equals stud.PK_STUDY
-                                          where stud.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
-                                       && stud.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
-                                          && stat.SSTAT_STUDY_STATUS == status
+                        var statusesDB1 = from stat in allstatus
+                                          where stat.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
+                                       && stat.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
+                                          && stat.SSTAT_STUDY_STATUS == status1
                                           && stat.SSTAT_VALID_FROM.Value.Year == start.Year
                                           && stat.SSTAT_VALID_FROM.Value.Month == start.Month
                                           && stat.SSTAT_VALID_FROM.Value.Day == start.Day
                                           && stat.SSTAT_SITE_NAME == sitename
                                           //&& stat.SSTAT_NOTES == ((string)eventRow["Event"]).Trim().ToLower()
                                           select stat;
-                        if (!statusesDB3.Any())
+
+                        if (statusesDB1.Any() && statusesDB1.First().SSTAT_VALID_UNTIL != end)
                         {
-                            addRowEvent(eventRow, "Undefined IRB Event", "New status", true);
+                            addRowEvent(eventRow, "IRB AMENDMENT Submitted**", "Modified status", false);
                         }
-                        else if (statusesDB3.First().SSTAT_VALID_UNTIL != end)
+
+                        var statusesDB2 = from stat in allstatus
+                                          where stat.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
+                                       && stat.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
+                                          && stat.SSTAT_STUDY_STATUS == status2
+                                          && stat.SSTAT_VALID_FROM.Value.Year == start.Year
+                                          && stat.SSTAT_VALID_FROM.Value.Month == start.Month
+                                          && stat.SSTAT_VALID_FROM.Value.Day == start.Day
+                                          && stat.SSTAT_SITE_NAME == sitename
+                                          select stat;
+
+                        if (!statusesDB2.Any())
                         {
-                            addRowEvent(eventRow, "Undefined IRB Event", "Modified status", false);
+                            addRowEvent(eventRow, "IRB Amendment Approved", "New status", true);
+                        }
+                        else if (statusesDB2.First().SSTAT_VALID_UNTIL != end)
+                        {
+                            addRowEvent(eventRow, "IRB Amendment Approved", "Modified status", false);
                         }
                     }
                 }
+                else
+                {
+                    var statusesDB3 = from stat in allstatus
+                                      where stat.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
+                                   && stat.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
+                                      && stat.SSTAT_STUDY_STATUS == status
+                                      && stat.SSTAT_VALID_FROM.Value.Year == start.Year
+                                      && stat.SSTAT_VALID_FROM.Value.Month == start.Month
+                                      && stat.SSTAT_VALID_FROM.Value.Day == start.Day
+                                      && stat.SSTAT_SITE_NAME == sitename
+                                      //&& stat.SSTAT_NOTES == ((string)eventRow["Event"]).Trim().ToLower()
+                                      select stat;
+                    if (!statusesDB3.Any())
+                    {
+                        addRowEvent(eventRow, "Undefined IRB Event", "New status", true);
+                    }
+                    else if (statusesDB3.First().SSTAT_VALID_UNTIL != end)
+                    {
+                        addRowEvent(eventRow, "Undefined IRB Event", "Modified status", false);
+                    }
+                }
+
             }
             else
             {
@@ -275,14 +289,14 @@ namespace IrbAnalyser
 
                 if (dtStatus && initial != DateTime.MinValue)
                 {
-                    addRowStudy(studyrow, "IRB Approved","New study", true);
+                    addRowStudy(studyrow, "IRB Approved", "New study", true);
                 }
 
                 dtStatus = !(from st in OutputStatus.newStatus.AsEnumerable()
-                                  where st.Field<string>("IRB Study ID").Trim().ToLower() == irbstudyId.Trim().ToLower()
-                                  && st.Field<string>("Study status").Trim().ToLower() == "irb renewal approved"
-                                  && st.Field<string>("Status Valid From").Trim().ToLower() == ((string)studyrow["MostRecentApprovalDate"]).Trim().ToLower()
-                                  select st).Any();
+                             where st.Field<string>("IRB Study ID").Trim().ToLower() == irbstudyId.Trim().ToLower()
+                             && st.Field<string>("Study status").Trim().ToLower() == "irb renewal approved"
+                             && st.Field<string>("Status Valid From").Trim().ToLower() == ((string)studyrow["MostRecentApprovalDate"]).Trim().ToLower()
+                             select st).Any();
 
                 if (dtStatus && renew != DateTime.MinValue)
                 {
@@ -292,69 +306,64 @@ namespace IrbAnalyser
             }
             else
             {
-                using (Model.VelosDb db = new Model.VelosDb())
+
+
+                var statusesDB = !(from stat in allstatus
+                                   where stat.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
+                              && stat.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
+                                 && stat.SSTAT_STUDY_STATUS == "irb approved"
+                                 && stat.SSTAT_VALID_FROM.Value.Year == initial.Year
+                                 && stat.SSTAT_VALID_FROM.Value.Month == initial.Month
+                                 && stat.SSTAT_VALID_FROM.Value.Day == initial.Day
+                                 && stat.SSTAT_SITE_NAME == sitename
+                                   select stat).Any();
+
+                bool dtStatus = !(from st in OutputStatus.newStatus.AsEnumerable()
+                                  where st.Field<string>("IRB Study ID").Trim().ToLower() == irbstudyId.Trim().ToLower()
+                                  && st.Field<string>("Study status").Trim().ToLower() == "irb approved"
+                                  && st.Field<string>("Status Valid From").Trim().ToLower() == ((string)studyrow["InitialApprovalDate"]).Trim().ToLower()
+                                  select st).Any();
+
+                if (initial != DateTime.MinValue && dtStatus)
                 {
-
-
-                    var statusesDB = !(from stat in db.VDA_V_STUDYSTAT
-                                       join stud in db.LCL_V_STUDYSUMM_PLUSMORE on stat.FK_STUDY equals stud.PK_STUDY
-                                       where stud.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
-                                  && stud.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
-                                     && stat.SSTAT_STUDY_STATUS == "irb approved"
-                                     && stat.SSTAT_VALID_FROM.Value.Year == initial.Year
-                                     && stat.SSTAT_VALID_FROM.Value.Month == initial.Month
-                                     && stat.SSTAT_VALID_FROM.Value.Day == initial.Day
-                                     && stat.SSTAT_SITE_NAME == sitename
-                                       select stat).Any();
-
-                    bool dtStatus = !(from st in OutputStatus.newStatus.AsEnumerable()
-                                      where st.Field<string>("IRB Study ID").Trim().ToLower() == irbstudyId.Trim().ToLower()
-                                      && st.Field<string>("Study status").Trim().ToLower() == "irb approved"
-                                      && st.Field<string>("Status Valid From").Trim().ToLower() == ((string)studyrow["InitialApprovalDate"]).Trim().ToLower()
-                                      select st).Any();
-
-                    if (initial != DateTime.MinValue && dtStatus)
-                    {
-                        addRowStudy(studyrow, "irb approved", "New status", true);
-                    }
-
-
-                    statusesDB = !(from stat in db.VDA_V_STUDYSTAT
-                                       join stud in db.LCL_V_STUDYSUMM_PLUSMORE on stat.FK_STUDY equals stud.PK_STUDY
-                                       where stud.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
-                                  && stud.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
-                                     && stat.SSTAT_STUDY_STATUS == "irb renewal approved"
-                                     && stat.SSTAT_VALID_FROM.Value.Year == renew.Year
-                                     && stat.SSTAT_VALID_FROM.Value.Month == renew.Month
-                                     && stat.SSTAT_VALID_FROM.Value.Day == renew.Day
-                                     && stat.SSTAT_SITE_NAME == sitename
-                                       select stat).Any();
-
-                    dtStatus = !(from st in OutputStatus.newStatus.AsEnumerable()
-                                      where st.Field<string>("IRB Study ID").Trim().ToLower() == irbstudyId.Trim().ToLower()
-                                      && st.Field<string>("Study status").Trim().ToLower() == "irb renewal approved"
-                                      && st.Field<string>("Status Valid From").Trim().ToLower() == ((string)studyrow["MostRecentApprovalDate"]).Trim().ToLower()
-                                      select st).Any();
-
-                    if (renew != DateTime.MinValue && dtStatus)
-                    {
-                        addRowStudy(studyrow, "irb renewal approved", "New status", true);
-                    }
-
-
-
-
-                    /*else if (start != DateTime.MinValue && statusesDB.Any())
-                    {
-                        DateTime end = DateTime.Now;
-                        DateTime.TryParse((string)studyrow["Expirationdate"], out end);
-                        if ((statusesDB.FirstOrDefault().SSTAT_VALID_UNTIL == null && end != DateTime.MinValue)
-                            || (statusesDB.FirstOrDefault().SSTAT_VALID_UNTIL.Value.Date != end.Date))
-                        {
-                            addRowStudy(studyrow, "Modified status", false);
-                        }
-                    }*/
+                    addRowStudy(studyrow, "irb approved", "New status", true);
                 }
+
+
+                statusesDB = !(from stat in allstatus
+                               where stat.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
+                          && stat.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
+                             && stat.SSTAT_STUDY_STATUS == "irb renewal approved"
+                             && stat.SSTAT_VALID_FROM.Value.Year == renew.Year
+                             && stat.SSTAT_VALID_FROM.Value.Month == renew.Month
+                             && stat.SSTAT_VALID_FROM.Value.Day == renew.Day
+                             && stat.SSTAT_SITE_NAME == sitename
+                               select stat).Any();
+
+                dtStatus = !(from st in OutputStatus.newStatus.AsEnumerable()
+                             where st.Field<string>("IRB Study ID").Trim().ToLower() == irbstudyId.Trim().ToLower()
+                             && st.Field<string>("Study status").Trim().ToLower() == "irb renewal approved"
+                             && st.Field<string>("Status Valid From").Trim().ToLower() == ((string)studyrow["MostRecentApprovalDate"]).Trim().ToLower()
+                             select st).Any();
+
+                if (renew != DateTime.MinValue && dtStatus)
+                {
+                    addRowStudy(studyrow, "irb renewal approved", "New status", true);
+                }
+
+
+
+
+                /*else if (start != DateTime.MinValue && statusesDB.Any())
+                {
+                    DateTime end = DateTime.Now;
+                    DateTime.TryParse((string)studyrow["Expirationdate"], out end);
+                    if ((statusesDB.FirstOrDefault().SSTAT_VALID_UNTIL == null && end != DateTime.MinValue)
+                        || (statusesDB.FirstOrDefault().SSTAT_VALID_UNTIL.Value.Date != end.Date))
+                    {
+                        addRowStudy(studyrow, "Modified status", false);
+                    }
+                }*/
             }
         }
 

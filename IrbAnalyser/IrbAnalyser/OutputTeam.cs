@@ -13,6 +13,32 @@ namespace IrbAnalyser
         public static DataTable newTeam = new DataTable();
         public static DataTable updatedTeam = new DataTable();
 
+        private static IEnumerable<Model.VDA_V_STUDYTEAM_MEMBERS> _team;
+        public static IEnumerable<Model.VDA_V_STUDYTEAM_MEMBERS> team
+        {
+            get
+            {
+                if (_team == null || _team.Count() == 0)
+                {
+                    using (Model.VelosDb db = new Model.VelosDb())
+                    {
+
+                        var query = (from st in db.VDA_V_STUDYTEAM_MEMBERS
+                                     where st.MORE_IRBAGENCY != null
+                                     && st.MORE_IRBSTUDYID != null
+                                     select st);
+                        _team = query.ToList<Model.VDA_V_STUDYTEAM_MEMBERS>();
+                    }
+                }
+                return _team;
+            }
+            set
+            {
+                _team = value;
+            }
+        }
+
+
         /// <summary>
         /// Intiate the datatable
         /// </summary>
@@ -129,47 +155,46 @@ namespace IrbAnalyser
 
             if (Tools.getOldStudy((string)userRow["StudyId"]))
             {
-                using (Model.VelosDb db = new Model.VelosDb())
+                //using (Model.VelosDb db = new Model.VelosDb())
+                //{
+
+                if (!String.IsNullOrEmpty(email))
                 {
-
-                    if (!String.IsNullOrEmpty(email))
+                    var user = from us in team
+                               where us.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId)
+                              && us.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
+                              && us.USER_EMAIL == email
+                               select us;
+                    if (!user.Any())
                     {
-                        var user = from us in db.VDA_V_STUDYTEAM_MEMBERS
-                                   join stud in db.LCL_V_STUDYSUMM_PLUSMORE on us.FK_STUDY equals stud.PK_STUDY
-                                   where stud.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId)
-                                  && stud.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
-                                  && us.USER_EMAIL == email
-                                   select us;
-                        if (!user.Any())
-                        {
-                            addRow(userRow, "New member", true);
-                        }
-                        else
-                        {
-                            var changed = false;
+                        addRow(userRow, "New member", true);
+                    }
+                    else
+                    {
+                        var changed = false;
 
-                            bool primary = Tools.compareStr(userRow["Primary"], "true");
+                        bool primary = Tools.compareStr(userRow["Primary"], "true");
 
-                            if (user.First().USER_NAME != (string)userRow["FirstName"] + " " + (string)userRow["LastName"])
-                            {
-                                changed = true;
-                            }
-                            if (user.First().ROLE != BranyRoleMap.getRole((string)userRow["Role"], primary)
-                                && BranyRoleMap.getRole((string)userRow["Role"],primary) != "NA")
-                            {
-                                changed = true;
-                            }
-                            else { userRow["Role"] = ""; }
-                            if (user.First().USER_SITE_NAME != BranySiteMap.getSite((string)userRow["SiteName"]).Replace("(IBC)", ""))
-                            {
-                                changed = true;
-                            }
-                            else { userRow["SiteName"] = ""; }
-                            //todo map sites and check
-                            if (changed) { addRow(userRow, "Modified member", false); }
+                        if (user.First().USER_NAME != (string)userRow["FirstName"] + " " + (string)userRow["LastName"])
+                        {
+                            changed = true;
                         }
+                        if (user.First().ROLE != BranyRoleMap.getRole((string)userRow["Role"], primary)
+                            && BranyRoleMap.getRole((string)userRow["Role"], primary) != "NA")
+                        {
+                            changed = true;
+                        }
+                        else { userRow["Role"] = ""; }
+                        if (user.First().USER_SITE_NAME != BranySiteMap.getSite((string)userRow["SiteName"]).Replace("(IBC)", ""))
+                        {
+                            changed = true;
+                        }
+                        else { userRow["SiteName"] = ""; }
+                        //todo map sites and check
+                        if (changed) { addRow(userRow, "Modified member", false); }
                     }
                 }
+                //}
             }
             else
             {
