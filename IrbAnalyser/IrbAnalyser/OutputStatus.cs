@@ -63,7 +63,6 @@ namespace IrbAnalyser
             initiate();
             FileParser fpStatus = new FileParser(dir + "Status.txt", FileParser.type.Status);
             FileParser fpEvent = new FileParser(dir + "Event.txt", FileParser.type.Event);
-
             foreach (DataRow dr in fpStatus.data.Rows)
             {
                 analyseRowStatus(dr);

@@ -47,9 +47,15 @@ namespace IrbAnalyser
                 fpStudy = new FileParser(filename + "Study.txt",FileParser.type.Study);
             }
 
-            var stud = (from st in fpStudy.data.AsEnumerable()
+            /*var stud = (from st in fpStudy.data.AsEnumerable()
+                        where st.Field<string>("StudyId").Trim().ToLower() == IRBstudyId.Trim().ToLower()
+                        select (st.Field<string>("StudyAcronym"))).ToArray();*/
+
+            var stud = (from st in OutputStudy.fpstudys.data.AsEnumerable()
                         where st.Field<string>("StudyId").Trim().ToLower() == IRBstudyId.Trim().ToLower()
                         select (st.Field<string>("StudyAcronym"))).ToArray();
+
+            
             string accronym = stud.Count() > 0 ? stud[0] : "";
 
             return getStudyNumber(IRBstudyId, IRBnumber, accronym);
@@ -58,13 +64,19 @@ namespace IrbAnalyser
         public static string getStudyNumber(string IRBstudyId, string IRBnumber, string accronym)
         {
             string number = "";
-            using (Model.VelosDb db = new Model.VelosDb())
+            /*using (Model.VelosDb db = new Model.VelosDb())
             {
                 number = (from stud in db.LCL_V_STUDYSUMM_PLUSMORE
                           where stud.MORE_IRBSTUDYID.Trim().ToLower().Contains(IRBstudyId.Trim().ToLower())
                        && stud.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
                           select stud.STUDY_NUMBER).FirstOrDefault();
-            }
+            }*/
+
+            number = (from stud in OutputStudy.studys
+                      where stud.MORE_IRBSTUDYID.Trim().ToLower().Contains(IRBstudyId.Trim().ToLower())
+                   && stud.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
+                      select stud.STUDY_NUMBER).FirstOrDefault();
+
             if (number == null || number.Trim() == "")
             {
                 accronym = string.IsNullOrWhiteSpace(accronym) ? "Please complete" : accronym;
@@ -88,13 +100,22 @@ namespace IrbAnalyser
         public static bool getOldStudy(string IRBstudyId)
         {
             bool ret;
-            using (Model.VelosDb db = new Model.VelosDb())
+            /*using (Model.VelosDb db = new Model.VelosDb())
             {
                 ret = (from stud in db.LCL_V_STUDYSUMM_PLUSMORE
                        where stud.MORE_IRBSTUDYID.Trim().ToLower().Contains(IRBstudyId.Trim().ToLower())
                     && stud.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
                        select stud.STUDY_NUMBER).Any();
-            }
+            }*/
+
+            ret = OutputStudy.studys.Any(x => x.MORE_IRBSTUDYID.Trim().ToLower().Contains(IRBstudyId.Trim().ToLower())
+                && x.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr);
+
+            /*ret = (from stud in OutputStudy.studys
+                   where stud.MORE_IRBSTUDYID.Trim().ToLower().Contains(IRBstudyId.Trim().ToLower())
+                && stud.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
+                   select stud.STUDY_NUMBER).Any();*/
+
             return ret;
         }
 

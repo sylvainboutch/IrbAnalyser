@@ -18,6 +18,55 @@ namespace IrbAnalyser
 
         private static FileParser fpTeam = new FileParser();
 
+        private static IEnumerable<Model.LCL_V_STUDYSUMM_PLUSMORE> _studys;
+        public static IEnumerable<Model.LCL_V_STUDYSUMM_PLUSMORE> studys
+        {
+            get
+            {
+                if (_studys == null || _studys.Count() == 0)
+                {
+                    using (Model.VelosDb db = new Model.VelosDb())
+                    {
+
+                        var query = (from st in db.LCL_V_STUDYSUMM_PLUSMORE
+                                     where st.MORE_IRBAGENCY != null
+                                     && st.MORE_IRBSTUDYID != null
+                                 select st);
+                        _studys = query.ToList<Model.LCL_V_STUDYSUMM_PLUSMORE>();
+                    }
+                }
+                return _studys;
+            }
+            set
+            {
+                _studys = value;
+            }
+        }
+
+
+        private static FileParser _fpstudys;
+        public static FileParser fpstudys
+        {
+            get
+            {
+                if (_fpstudys == null || _fpstudys.data == null || _fpstudys.data.Rows.Count == 0)
+                {
+                    using (Model.VelosDb db = new Model.VelosDb())
+                    {
+
+                        _fpstudys = new FileParser(Tools.filename + "Study.txt", FileParser.type.Study);
+                    }
+                }
+                return _fpstudys;
+            }
+            set
+            {
+                _fpstudys = value;
+            }
+        }
+
+
+
         /// <summary>
         /// Add the columns to the datatable
         /// </summary>
@@ -28,7 +77,7 @@ namespace IrbAnalyser
                 newStudy.Columns.Add("IRB Agency name", typeof(string));
                 newStudy.Columns.Add("IRB no", typeof(string));
                 newStudy.Columns.Add("IRB Study ID", typeof(string));
-                newStudy.Columns.Add("IRB Identifiers", typeof(string));               
+                newStudy.Columns.Add("IRB Identifiers", typeof(string));
                 newStudy.Columns.Add("Study number", typeof(string));
                 newStudy.Columns.Add("Study coordinator", typeof(string));
                 newStudy.Columns.Add("Principal Investigator", typeof(string));
@@ -77,13 +126,19 @@ namespace IrbAnalyser
         public static void analyse(string filepath)
         {
             initiate();
-            FileParser fpStudy = new FileParser(filepath + "Study.txt",FileParser.type.Study);
+            FileParser fpStudy = new FileParser(filepath + "Study.txt", FileParser.type.Study);
+            System.Diagnostics.Stopwatch timer = new System.Diagnostics.Stopwatch();
+            timer.Start();
+
 
             foreach (DataRow study in fpStudy.data.Rows)
             {
                 analyseRow(study);
             }
 
+
+            timer.Stop();
+            Console.Write(timer.ElapsedMilliseconds.ToString() + " ms");
             //OutputSite.analyseDelete(fpStudy.data);
         }
 
@@ -99,10 +154,10 @@ namespace IrbAnalyser
             if (!String.IsNullOrEmpty(irbstudyId))
             {
 
-                using (Model.VelosDb db = new Model.VelosDb())
-                {
-                    
-                    var study = from st in db.LCL_V_STUDYSUMM_PLUSMORE
+                //using (Model.VelosDb db = new Model.VelosDb())
+                //{
+
+                    var study = from st in studys
                                 where st.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
                                 && st.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
                                 select st;
@@ -166,7 +221,7 @@ namespace IrbAnalyser
                                 {
                                     hasChanged = true;
                                 }
-                                else { newcro= ""; }
+                                else { newcro = ""; }
 
                                 if (Tools.compareStr(stu.STUDY_TITLE, dr["StudyTitle"]))
                                 {
@@ -244,7 +299,7 @@ namespace IrbAnalyser
                                 {
                                     dr["Studysamplesize"] = "";
                                 }
-                                else if(samplesize != 0)
+                                else if (samplesize != 0)
                                 {
                                     hasChanged = true;
                                 }
@@ -302,7 +357,7 @@ namespace IrbAnalyser
                                 addRowStudy(dr, false, newpi, newrc, newcro);
                             }
                         }
-                    }
+                    //}
                 }
             }
         }
@@ -354,7 +409,7 @@ namespace IrbAnalyser
             {
                 dr["CRO"] = newcro;
             }
-            
+
             dr["Official title"] = (string)row["StudyTitle"];
             dr["Study summary"] = row["Studysummary"].ToString();
             dr["Department"] = String.IsNullOrEmpty((string)row["Department"]) && newentry ? "Please specify" : (string)row["Department"];
@@ -362,7 +417,7 @@ namespace IrbAnalyser
             dr["Entire study sample size"] = row["Studysamplesize"].ToString();
             dr["Phase"] = String.IsNullOrEmpty((string)row["Phase"]) && newentry ? "Please Specify" : (string)row["Phase"];
 
-            if (Tools.compareStr(row["Multicenter"].ToString(),"TRUE"))
+            if (Tools.compareStr(row["Multicenter"].ToString(), "TRUE"))
                 dr["Study scope"] = "Multi Center Study";
             else if (Tools.compareStr(row["Multicenter"].ToString(), "FALSE"))
                 dr["Study scope"] = "Single Center Study";
@@ -373,7 +428,7 @@ namespace IrbAnalyser
             dr["Sponsor contact"] = row["PrimarySponsorContactFirstName"].ToString() + " " + row["PrimarySponsorContactLastName"].ToString();
             dr["Sponsor Protocol ID"] = row["PrimarySponsorStudyId"].ToString();
 
-            string[] labels = new string[5] { "CRO","IRB agency name", "IRB No.", "OFFICE USE ONLY - DO NOT MODIFY - IRB Identifiers", "Is this a cancer related study ?*" };
+            string[] labels = new string[5] { "CRO", "IRB agency name", "IRB No.", "OFFICE USE ONLY - DO NOT MODIFY - IRB Identifiers", "Is this a cancer related study ?*" };
             string[] irbno = ((string)dr["IRB no"]).Split('-');
             string cancer = "N";
             if (irbno.Count() >= 2 && irbno[1] == "06")

@@ -7,7 +7,7 @@ using System.IO;
 
 namespace IrbAnalyser
 {
-    class FileParser
+    public class FileParser
     {
         public DataTable data;
 

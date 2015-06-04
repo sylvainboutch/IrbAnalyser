@@ -18,6 +18,12 @@ namespace IrbAnalyser
 {
     public partial class IrbAnalyser : Form
     {
+
+        public void setTxt(string text)
+        {
+            this.txtOutput.Text = text;
+        }
+
         public IrbAnalyser()
         {
             InitializeComponent();
