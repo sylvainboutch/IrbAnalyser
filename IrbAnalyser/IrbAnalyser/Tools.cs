@@ -119,6 +119,23 @@ namespace IrbAnalyser
             return ret;
         }
 
+        public static string cleanMap(string input)
+        {
+            input = input.Trim();       
+            string output = "";
+            StringBuilder sb = new StringBuilder();
+            foreach (char c in input)
+            {
+                if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '.' || c == '_' || c == ' ' || c == '/' || c == '(' || c == ')')
+                {
+                    sb.Append(c);
+                }
+            }
+            output = sb.ToString();
+            output = output.Replace("  ", " ");
+            return output;
+        }
+
         public static string cleanStr(string input)
         {
             input = input.ToLowerInvariant();
@@ -139,6 +156,7 @@ namespace IrbAnalyser
         {
             input = input.Trim('"');
             input = input == "NULL" ? "" : input;
+
             return input;
         }
 

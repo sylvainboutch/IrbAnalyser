@@ -100,10 +100,16 @@ namespace IrbAnalyser
             {
                 initiate();
                 DataRow dr;
+
+
                 if (newrecord)
-                { dr = newTeam.NewRow(); }
+                {
+                    dr = newTeam.NewRow(); 
+                }
                 else
-                { dr = updatedTeam.NewRow(); }
+                { 
+                    dr = updatedTeam.NewRow(); 
+                }
 
                 dr["TYPE"] = type;
 
@@ -119,9 +125,55 @@ namespace IrbAnalyser
                 dr["Organization"] = site;
 
                 if (newrecord)
-                { newTeam.Rows.Add(dr); }
+                {
+                    var dtUser = from user in OutputTeam.newTeam.AsEnumerable()
+                                 where user.Field<string>("Email").Trim().ToLower() == ((string)row["PrimaryEMailAddress"]).Trim().ToLower()
+                                 && user.Field<string>("Study number").Trim().ToLower() == ((string)dr["Study number"]).Trim().ToLower()
+                                 select user;
+                    if (dtUser.Count() > 0)
+                    {
+                        foreach (DataRow rw in dtUser)
+                        {
+                            if (rw.Field<string>("Role") != role && role == "Study Coordinator")
+                            {
+                                rw["Role"] = role;
+                            }
+                            else if (rw.Field<string>("Role") != role && role == "Primary Investigator" && rw.Field<string>("Role") != "Study Coordinator")
+                            {
+                                rw["Role"] = role;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        newTeam.Rows.Add(dr);
+                    } 
+                }
                 else
-                { updatedTeam.Rows.Add(dr); }
+                {
+                    var dtUser = from user in OutputTeam.updatedTeam.AsEnumerable()
+                                 where user.Field<string>("Email").Trim().ToLower() == ((string)row["PrimaryEMailAddress"]).Trim().ToLower()
+                                 && user.Field<string>("Study number").Trim().ToLower() == ((string)dr["Study number"]).Trim().ToLower()
+                                 select user;
+                    if (dtUser.Count() > 0)
+                    {
+                        foreach (DataRow rw in dtUser)
+                        {
+                            if (rw.Field<string>("Role") != role && role == "Study Coordinator")
+                            {
+                                rw["Role"] = role;
+                            }
+                            else if (rw.Field<string>("Role") != role && role == "Primary Investigator" && rw.Field<string>("Role") != "Study Coordinator")
+                            {
+                                rw["Role"] = role;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        updatedTeam.Rows.Add(dr);
+                    }                
+                }
             }
         }
 

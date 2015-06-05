@@ -16,12 +16,12 @@ namespace IrbAnalyser
             {
                 {"",""},
                 { "Montefiore Medical Center", "Einstein Montefiore" },
-                { "Albert Einstein Col. of Med. of Yeshiva University", "Albert Einstein Col. of Med. of Yeshiva University" },
-                { "Westchester Cardiology", "Westchester Cardiology" },
-                { "Montefiore (Weiler Division)", "Montefiore (Weiler Division)" },
-                { "Montefiore (Moses Division)", "Montefiore (Moses Division)" },
-                { "Montefiore (Children's Hosp)", "Children's Hospital at Montefiore" },
-                { "Montefiore (Einstein Liver Center)", "Montefiore (Einstein Liver Center)" }
+                { "Albert Einstein Col. of Med. of Yeshiva University", "Einstein Montefiore" },
+                { "Westchester Cardiology", "Einstein Montefiore" },
+                { "Montefiore (Weiler Division)", "Einstein Montefiore" },
+                { "Montefiore (Moses Division)", "Einstein Montefiore" },
+                { "Montefiore (Children's Hosp)", "Einstein Montefiore" },
+                { "Montefiore (Einstein Liver Center)", "Einstein Montefiore" }
             };
 
         public static string getSite(string key)
@@ -127,45 +127,51 @@ namespace IrbAnalyser
             {
                 {"",""},
                 { "Approved", "IRB Approved" },
-                { "Approved -IRB only", "IRB Approved" },
+                { "Approved IRB only", "IRB Approved" },
                 { "Closed", "Complete " },
-                { "Closed - IRB only", "Complete " },
+                { "Closed IRB only", "Complete " },
                 { "Closed to Enrollment", "Closed to accrual" },
-                { "Closed to Enrollment -IRB only", "Closed to accrual" },
+                { "Closed to enrollment IRB only", "Closed to accrual" },
                 { "Deferred", "IRB Deferred" },
-                { "Deferred – IRB only", "IRB Deferred" },
+                { "Deferred IRB only", "IRB Deferred" },
                 { "Disapproved", "IRB Disapproved " },
                 { "Emergency Use ONLY", "Undefined IRB Event" },
                 { "Exempt", "IRB Exempt" },
-                { "Exempt - Closed/Completed", "Complete " },
-                { "Expired - DO NOTHING in the interface to the study information", "NA" },
-                { "Not Engaged in Human Sub Rsrch", "NOSTUDY" },
-                { "Other than Human Subject Rsrch", "NOSTUDY" },
+                { "Exempt Closed/Completed", "Complete " },
+                { "Expired", "NA" },
+                { "Not Engaged in Human Sub Rsrch", "Archived" },
+                { "Other than Human Subject Rsrch", "Archived" },
                 { "Pending Approval", "IRB INITIAL Submitted" },
-                { "Pending Approval – IRB only", "IRB INITIAL Submitted" },
+                { "Pending Approval IRB only", "IRB INITIAL Submitted" },
                 { "Pending Closure", "Undefined IRB Event" },
-                { "Pending closure – IRB only", "Undefined IRB Event" },
+                { "Pending closure IRB only", "Undefined IRB Event" },
                 { "Pending Review", "IRB INITIAL Submitted" },
-                { "Pending Review – IRB only", "IRB INITIAL Submitted" },
+                { "Pending Review IRB only", "IRB INITIAL Submitted" },
                 { "PENDING VETTING", "IRB INITIAL Submitted Draft - Record created" },
                 { "Submission pending", "Draft - Record created" },
-                { "Submission pending – IRB only", "Draft - Record created" },
+                { "Submission pending IRB only", "Draft - Record created" },
                 { "Suspended by entity other than IRB", "Temporarily Closed to Accrual and Intervention" },
-                { "Suspended by entity other than IRB - IRB only", "Temporarily Closed to Accrual and Intervention" },
+                { "Suspended by entity other than IRB IRB only", "Temporarily Closed to Accrual and Intervention" },
                 { "Suspended by IRB", "Temporarily Closed to Accrual and Intervention" },
-                { "Suspended by IRB - IRB only", "Temporarily Closed to Accrual and Intervention" },
+                { "Suspended by IRB IRB only", "Temporarily Closed to Accrual and Intervention" },
                 { "Terminated by IRB", "IRB Disapproved " },
-                { "Terminated by IRB – IRB only", "IRB Disapproved " },
-                { "Transferred to Another Record - trigger an alert to ric", "Undefined IRB Event" },
+                { "Terminated by IRB IRB only", "IRB Disapproved " },
+                { "Transferred to Another Record", "Undefined IRB Event" },
                 { "Withdrawn by PI/Institution", "Withdrawn" },
-                { "Withdrawn by Sponsor", "Withdrawn" }
+                { "Withdrawn by Sponsor", "Withdrawn" },
+                { "Pulled", "Undefined IRB Event" },
+                { "Approved (IBC)", "Undefined IRB Event" },
+                { "Approved IBC Only", "Undefined IRB Event" },
+                { "Pending Review (IBC)", "Undefined IRB Event" },
+                { "Closed to Enrollment (IBC)", "Closed to accrual" },
+                { "Dropped by Investigator", "Undefined IRB Event" }
             };
 
         public static string getStatus(string key)
         {
             try
             {
-                return statusMapBrany[key.Trim()];
+                return statusMapBrany[Tools.cleanMap(key)];
             }
             catch (Exception ex)
             {
@@ -177,45 +183,51 @@ namespace IrbAnalyser
             {
                 {"",""},
                 { "Approved", "Pre Activation" },
-                { "Approved -IRB only", "Pre Activation" },
+                { "Approved IRB only", "Pre Activation" },
                 { "Closed", "Study Status" },
-                { "Closed - IRB only", "Study Status" },
+                { "Closed IRB only", "Study Status" },
                 { "Closed to Enrollment", "Study Status" },
-                { "Closed to Enrollment -IRB only", "Study Status" },
+                { "Closed to enrollment IRB only", "Study Status" },
                 { "Deferred", "Pre Activation" },
-                { "Deferred – IRB only", "Pre Activation" },
+                { "Deferred IRB only", "Pre Activation" },
                 { "Disapproved", "Pre Activation" },
                 { "Emergency Use ONLY", "Pre Activation" },
                 { "Exempt", "Pre Activation" },
-                { "Exempt - Closed/Completed", "Study Status" },
+                { "Exempt ClosedCompleted", "Study Status" },
                 { "Expired", "NA" },
-                { "Not Engaged in Human Sub Rsrch", "NOSTUDY" },
-                { "Other than Human Subject Rsrch", "NOSTUDY" },
+                { "Not Engaged in Human Sub Rsrch", "Study Status" },
+                { "Other than Human Subject Rsrch", "Study Status" },
                 { "Pending Approval", "Pre Activation" },
-                { "Pending Approval – IRB only", "Pre Activation" },
+                { "Pending Approval IRB only", "Pre Activation" },
                 { "Pending Closure", "Pre Activation" },
-                { "Pending closure – IRB only", "Pre Activation" },
+                { "Pending closure IRB only", "Pre Activation" },
                 { "Pending Review", "Pre Activation" },
-                { "Pending Review – IRB only", "Pre Activation" },
+                { "Pending Review IRB only", "Pre Activation" },
                 { "PENDING VETTING", "Pre Activation" },
                 { "Submission pending", "Pre Activation" },
-                { "Submission pending – IRB only", "Pre Activation" },
+                { "Submission pending IRB only", "Pre Activation" },
                 { "Suspended by entity other than IRB", "Study Status" },
-                { "Suspended by entity other than IRB - IRB only", "Study Status" },
+                { "Suspended by entity other than IRB IRB only", "Study Status" },
                 { "Suspended by IRB", "Study Status" },
-                { "Suspended by IRB - IRB only", "Study Status" },
+                { "Suspended by IRB IRB only", "Study Status" },
                 { "Terminated by IRB", "Pre Activation" },
-                { "Terminated by IRB – IRB only", "Pre Activation" },
-                { "Transferred to Another Record - trigger an alert to ric", "Pre Activation" },
+                { "Terminated by IRB IRB only", "Pre Activation" },
+                { "Transferred to Another Record trigger an alert to ric", "Pre Activation" },
                 { "Withdrawn by PI/Institution", "Study Status" },
-                { "Withdrawn by Sponsor", "Study Status" }
+                { "Withdrawn by Sponsor", "Study Status" },
+                { "Pulled", "Pre Activation" },
+                { "Approved IBC Only", "Pre Activation" },
+                { "Approved (IBC)", "Pre Activation" },
+                { "Pending Review (IBC)", "Pre Activation" },
+                { "Dropped by Investigator", "Pre Activation" },
+                { "Closed to Enrollment (IBC)", "Study Status" }
             };
 
         public static string getType(string key)
         {
             try
             {
-                return typeMapBrany[key.Trim()];
+                return typeMapBrany[Tools.cleanMap(key)];
             }
             catch (Exception ex)
             {
@@ -252,7 +264,29 @@ namespace IrbAnalyser
                 {"SAE","Undefined IRB Event"},
                 {"Study Closure/Expiration","Undefined IRB Event"},
                 {"Study Enrollment Closure Report","Undefined IRB Event"},
-                {"Unanticipated Problem","Undefined IRB Event"}
+                {"Unanticipated Problem","Undefined IRB Event"},
+                {"Re-Review of IRB-Requested Changes","Undefined IRB Event"},
+                {"IND Safety Report","Undefined IRB Event"},
+                {"Incomplete Submission","Undefined IRB Event"},
+                {"Protocol Deviation","Undefined IRB Event"},
+                {"Safety Report(s) - No Review","Undefined IRB Event"},
+                {"Personnel Change","Undefined IRB Event"},
+                {"COI Review","Undefined IRB Event"},
+                {"PI Signature Needed","Undefined IRB Event"},
+                {"Emergency Use of a Test Article","Undefined IRB Event"},
+                {"xForm Request Form Only","Undefined IRB Event"},
+                {"IND Safety Report with ICF Changes","Undefined IRB Event"},
+                {"IBC Screening","Undefined IRB Event"},
+                {"IBC Review","Undefined IRB Event"},
+                {"IBC Continuing/Periodic Review","Undefined IRB Event"},
+                {"Advertisements Re-Review","Undefined IRB Event"},
+                {"New Protocol Event (Not ready for IRB Review)","Undefined IRB Event"},
+                {"Initial Submission Documents","Undefined IRB Event"},
+                {"FYI to Full Board","Undefined IRB Event"},
+                {"Subject Complaint","Undefined IRB Event"},
+                {"Exempt Status Determination","Undefined IRB Event"},
+                {"Compassionate Use Request","Undefined IRB Event"}
+
             };
 
         public static string getStatus(string key)
@@ -289,7 +323,28 @@ namespace IrbAnalyser
                 {"SAE","Pre Activation"},
                 {"Study Closure/Expiration","Pre Activation"},
                 {"Study Enrollment Closure Report","Pre Activation"},
-                {"Unanticipated Problem","Pre Activation"}
+                {"Unanticipated Problem","Pre Activation"},
+                {"Re-Review of IRB-Requested Changes","Pre Activation"},
+                {"IND Safety Report","Pre Activation"},
+                {"Incomplete Submission","Pre Activation"},
+                {"Protocol Deviation","Pre Activation"},
+                {"Safety Report(s) - No Review","Pre Activation"},
+                {"Personnel Change","Pre Activation"},
+                {"COI Review","Pre Activation"},
+                {"PI Signature Needed","Pre Activation"},
+                {"Emergency Use of a Test Article","Pre Activation"},
+                {"xForm Request Form Only","Pre Activation"},
+                {"IND Safety Report with ICF Changes","Pre Activation"},
+                {"IBC Screening","Pre Activation"},
+                {"IBC Review","Pre Activation"},
+                {"IBC Continuing/Periodic Review","Pre Activation"},
+                {"Advertisements Re-Review","Pre Activation"},
+                {"New Protocol Event (Not ready for IRB Review)","Pre Activation"},
+                {"Initial Submission Documents","Pre Activation"},
+                {"FYI to Full Board","Pre Activation"},
+                {"Subject Complaint","Pre Activation"},
+                {"Exempt Status Determination","Pre Activation"},
+                {"Compassionate Use Request","Pre Activation"}
             };
 
         public static string getType(string key)

@@ -96,7 +96,7 @@ namespace IrbAnalyser
                 }
             }*/
 
-            var lines = File.ReadAllLines(file).ToList();
+            var lines = File.ReadAllLines(file, Encoding.UTF8).ToList();
             if (lines.Count > 0)
             {
                 var columns = Tools.removeQuote(lines[0].Split((char)9));
@@ -115,6 +115,10 @@ namespace IrbAnalyser
                     {
                         if (!String.IsNullOrEmpty(columns[i]))
                             dr[columns[i]] = Tools.parse((linesplt[i]));
+                        if (linesplt[i].Contains("�"))
+                        {
+                            dr[columns[i]] = linesplt[i].Replace("�", "-");
+                        }
                     }
                     data.Rows.Add(dr);
                 }
