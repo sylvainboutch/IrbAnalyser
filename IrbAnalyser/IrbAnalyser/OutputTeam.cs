@@ -38,6 +38,29 @@ namespace IrbAnalyser
             }
         }
 
+        private static IEnumerable<Model.LCL_V_USER> _accounts;
+        public static IEnumerable<Model.LCL_V_USER> accounts
+        {
+            get
+            {
+                if (_accounts == null || _accounts.Count() == 0)
+                {
+                    using (Model.VelosDb db = new Model.VelosDb())
+                    {
+
+                        var query = (from st in db.LCL_V_USER
+                                     select st);
+                        _accounts = query.ToList<Model.LCL_V_USER>();
+                    }
+                }
+                return _accounts;
+            }
+            set
+            {
+                _accounts = value;
+            }
+        }
+
 
         /// <summary>
         /// Intiate the datatable
@@ -205,52 +228,60 @@ namespace IrbAnalyser
 
             string email = (string)userRow["PrimaryEMailAddress"];
 
-            if (Tools.getOldStudy((string)userRow["StudyId"]))
-            {
-                //using (Model.VelosDb db = new Model.VelosDb())
-                //{
+            var issuperuser = (from us in accounts
+                       where us.USER_EMAIL == email
+                       && us.GRP_SUPUSR_FLAG == 1
+                       select us).Any();
 
-                if (!String.IsNullOrEmpty(email))
+            if (!issuperuser)
+            {
+                if (Tools.getOldStudy((string)userRow["StudyId"]))
                 {
-                    var user = from us in team
-                               where us.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId)
-                              && us.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
-                              && us.USER_EMAIL == email
-                               select us;
-                    if (!user.Any())
-                    {
-                        addRow(userRow, "New member", true);
-                    }
-                    else
-                    {
-                        var changed = false;
+                    //using (Model.VelosDb db = new Model.VelosDb())
+                    //{
 
-                        bool primary = Tools.compareStr(userRow["Primary"], "true");
+                    if (!String.IsNullOrEmpty(email))
+                    {
+                        var user = from us in team
+                                   where us.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId)
+                                  && us.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
+                                  && us.USER_EMAIL == email
+                                   select us;
+                        if (!user.Any())
+                        {
+                            addRow(userRow, "New member", true);
+                        }
+                        else
+                        {
+                            var changed = false;
 
-                        if (user.First().USER_NAME != (string)userRow["FirstName"] + " " + (string)userRow["LastName"])
-                        {
-                            changed = true;
+                            bool primary = Tools.compareStr(userRow["Primary"], "true");
+
+                            if (user.First().USER_NAME != (string)userRow["FirstName"] + " " + (string)userRow["LastName"])
+                            {
+                                changed = true;
+                            }
+                            if (user.First().ROLE != BranyRoleMap.getRole((string)userRow["Role"], primary)
+                                && BranyRoleMap.getRole((string)userRow["Role"], primary) != "NA")
+                            {
+                                changed = true;
+                            }
+                            else { userRow["Role"] = ""; }
+                            if (user.First().USER_SITE_NAME != BranySiteMap.getSite((string)userRow["SiteName"]).Replace("(IBC)", ""))
+                            {
+                                changed = true;
+                            }
+                            else { userRow["SiteName"] = ""; }
+                            //todo map sites and check
+                            if (changed) { addRow(userRow, "Modified member", false); }
                         }
-                        if (user.First().ROLE != BranyRoleMap.getRole((string)userRow["Role"], primary)
-                            && BranyRoleMap.getRole((string)userRow["Role"], primary) != "NA")
-                        {
-                            changed = true;
-                        }
-                        else { userRow["Role"] = ""; }
-                        if (user.First().USER_SITE_NAME != BranySiteMap.getSite((string)userRow["SiteName"]).Replace("(IBC)", ""))
-                        {
-                            changed = true;
-                        }
-                        else { userRow["SiteName"] = ""; }
-                        //todo map sites and check
-                        if (changed) { addRow(userRow, "Modified member", false); }
                     }
+                    //}
                 }
-                //}
-            }
-            else
-            {
-                addRow(userRow, "New study", true);
+                else
+                {
+                    addRow(userRow, "New study", true);
+                }
             }
         }
 

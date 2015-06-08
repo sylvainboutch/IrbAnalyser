@@ -6,6 +6,41 @@
     <edmx:StorageModels>
       <Schema Namespace="VelosModel.Store" Alias="Self" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="11.2" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
         <EntityContainer Name="VelosModelStoreContainer">
+          <EntitySet Name="LCL_V_USER" EntityType="VelosModel.Store.LCL_V_USER" store:Type="Views" store:Schema="VDA" store:Name="LCL_V_USER">
+            <DefiningQuery>
+              SELECT
+              "LCL_V_USER"."USER_TYPE" AS "USER_TYPE",
+              "LCL_V_USER"."USER_DEFAULT_GROUP_FK" AS "USER_DEFAULT_GROUP_FK",
+              "LCL_V_USER"."SITE_NAME" AS "SITE_NAME",
+              "LCL_V_USER"."USER_NAME" AS "USER_NAME",
+              "LCL_V_USER"."USER_JOBTYPE" AS "USER_JOBTYPE",
+              "LCL_V_USER"."USER_ADDRESS" AS "USER_ADDRESS",
+              "LCL_V_USER"."USER_CITY" AS "USER_CITY",
+              "LCL_V_USER"."USER_STATE" AS "USER_STATE",
+              "LCL_V_USER"."USER_ZIP" AS "USER_ZIP",
+              "LCL_V_USER"."USER_COUNTRY" AS "USER_COUNTRY",
+              "LCL_V_USER"."USER_PHONE" AS "USER_PHONE",
+              "LCL_V_USER"."USER_EMAIL" AS "USER_EMAIL",
+              "LCL_V_USER"."USER_TIMEZONE" AS "USER_TIMEZONE",
+              "LCL_V_USER"."USER_SPECIALTY" AS "USER_SPECIALTY",
+              "LCL_V_USER"."USER_WRKEXP" AS "USER_WRKEXP",
+              "LCL_V_USER"."USER_PHASEINV" AS "USER_PHASEINV",
+              "LCL_V_USER"."USER_DEFAULTGRP" AS "USER_DEFAULTGRP",
+              "LCL_V_USER"."USER_USRNAME" AS "USER_USRNAME",
+              "LCL_V_USER"."USER_STATUS" AS "USER_STATUS",
+              "LCL_V_USER"."FK_ACCOUNT" AS "FK_ACCOUNT",
+              "LCL_V_USER"."CREATED_ON" AS "CREATED_ON",
+              "LCL_V_USER"."LAST_MODIFIED_BY" AS "LAST_MODIFIED_BY",
+              "LCL_V_USER"."LAST_MODIFIED_DATE" AS "LAST_MODIFIED_DATE",
+              "LCL_V_USER"."CREATOR" AS "CREATOR",
+              "LCL_V_USER"."RID" AS "RID",
+              "LCL_V_USER"."PK_USER" AS "PK_USER",
+              "LCL_V_USER"."LAST_MODIFIED_BY_FK" AS "LAST_MODIFIED_BY_FK",
+              "LCL_V_USER"."CREATOR_FK" AS "CREATOR_FK",
+              "LCL_V_USER"."GRP_SUPUSR_FLAG" AS "GRP_SUPUSR_FLAG"
+              FROM "VDA"."LCL_V_USER" "LCL_V_USER"
+            </DefiningQuery>
+          </EntitySet>
           <EntitySet Name="LCL_V_STUDYVER_APNDX" EntityType="VelosModel.Store.LCL_V_STUDYVER_APNDX" store:Type="Views" Schema="VDA" />
           <EntitySet Name="LCL_V_STUDYSUMM_PLUSMORE" EntityType="VelosModel.Store.LCL_V_STUDYSUMM_PLUSMORE" store:Type="Views" store:Schema="VDA" store:Name="LCL_V_STUDYSUMM_PLUSMORE">
             <DefiningQuery>
@@ -202,6 +237,40 @@
             </DefiningQuery>
           </EntitySet>
         </EntityContainer>
+        <EntityType Name="LCL_V_USER">
+          <Key>
+            <PropertyRef Name="PK_USER" />
+          </Key>
+          <Property Name="USER_TYPE" Type="varchar2" />
+          <Property Name="USER_DEFAULT_GROUP_FK" Type="number" />
+          <Property Name="SITE_NAME" Type="varchar2" MaxLength="50" />
+          <Property Name="USER_NAME" Type="varchar2" MaxLength="61" />
+          <Property Name="USER_JOBTYPE" Type="varchar2" />
+          <Property Name="USER_ADDRESS" Type="varchar2" MaxLength="50" />
+          <Property Name="USER_CITY" Type="varchar2" MaxLength="30" />
+          <Property Name="USER_STATE" Type="varchar2" MaxLength="30" />
+          <Property Name="USER_ZIP" Type="varchar2" MaxLength="15" />
+          <Property Name="USER_COUNTRY" Type="varchar2" MaxLength="30" />
+          <Property Name="USER_PHONE" Type="varchar2" MaxLength="100" />
+          <Property Name="USER_EMAIL" Type="varchar2" MaxLength="100" />
+          <Property Name="USER_TIMEZONE" Type="char" MaxLength="100" />
+          <Property Name="USER_SPECIALTY" Type="varchar2" />
+          <Property Name="USER_WRKEXP" Type="varchar2" MaxLength="100" />
+          <Property Name="USER_PHASEINV" Type="varchar2" MaxLength="100" />
+          <Property Name="USER_DEFAULTGRP" Type="varchar2" MaxLength="50" />
+          <Property Name="USER_USRNAME" Type="varchar2" MaxLength="20" />
+          <Property Name="USER_STATUS" Type="varchar2" MaxLength="11" />
+          <Property Name="FK_ACCOUNT" Type="number" />
+          <Property Name="CREATED_ON" Type="date" />
+          <Property Name="LAST_MODIFIED_BY" Type="varchar2" MaxLength="61" />
+          <Property Name="LAST_MODIFIED_DATE" Type="date" />
+          <Property Name="CREATOR" Type="varchar2" MaxLength="61" />
+          <Property Name="RID" Type="number" />
+          <Property Name="PK_USER" Type="number" Nullable="false" />
+          <Property Name="LAST_MODIFIED_BY_FK" Type="number" />
+          <Property Name="CREATOR_FK" Type="number" />
+          <Property Name="GRP_SUPUSR_FLAG" Type="number" />
+        </EntityType>
         <EntityType Name="LCL_V_STUDYVER_APNDX">
           <Key>
             <PropertyRef Name="PK_STUDY" />
@@ -418,7 +487,42 @@
           <EntitySet Name="VDA_V_STUDYSTAT" EntityType="VelosModel.VDA_V_STUDYSTAT" />
           <EntitySet Name="VDA_V_STUDYTEAM_MEMBERS" EntityType="VelosModel.VDA_V_STUDYTEAM_MEMBERS" />
           <EntitySet Name="LCL_V_STUDYVER_APNDX" EntityType="VelosModel.LCL_V_STUDYVER_APNDX" />
+          <EntitySet Name="LCL_V_USER" EntityType="VelosModel.LCL_V_USER" />
         </EntityContainer>
+        <EntityType Name="LCL_V_USER">
+          <Key>
+            <PropertyRef Name="PK_USER" />
+          </Key>
+          <Property Type="String" Name="USER_TYPE" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="USER_DEFAULT_GROUP_FK" Precision="38" Scale="0" />
+          <Property Type="String" Name="SITE_NAME" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="USER_NAME" MaxLength="61" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="USER_JOBTYPE" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="USER_ADDRESS" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="USER_CITY" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="USER_STATE" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="USER_ZIP" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="USER_COUNTRY" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="USER_PHONE" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="USER_EMAIL" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="USER_TIMEZONE" MaxLength="100" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="USER_SPECIALTY" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="USER_WRKEXP" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="USER_PHASEINV" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="USER_DEFAULTGRP" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="USER_USRNAME" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="USER_STATUS" MaxLength="11" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="FK_ACCOUNT" Precision="38" Scale="0" />
+          <Property Type="DateTime" Name="CREATED_ON" />
+          <Property Type="String" Name="LAST_MODIFIED_BY" MaxLength="61" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="LAST_MODIFIED_DATE" />
+          <Property Type="String" Name="CREATOR" MaxLength="61" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="RID" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="PK_USER" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="LAST_MODIFIED_BY_FK" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="CREATOR_FK" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="GRP_SUPUSR_FLAG" Precision="38" Scale="0" />
+        </EntityType>
         <EntityType Name="LCL_V_STUDYVER_APNDX">
           <Key>
             <PropertyRef Name="PK_STUDY" />
@@ -618,6 +722,41 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="VelosModelStoreContainer" CdmEntityContainer="VelosDb">
+          <EntitySetMapping Name="LCL_V_USER">
+            <EntityTypeMapping TypeName="VelosModel.LCL_V_USER">
+              <MappingFragment StoreEntitySet="LCL_V_USER">
+                <ScalarProperty Name="GRP_SUPUSR_FLAG" ColumnName="GRP_SUPUSR_FLAG" />
+                <ScalarProperty Name="CREATOR_FK" ColumnName="CREATOR_FK" />
+                <ScalarProperty Name="LAST_MODIFIED_BY_FK" ColumnName="LAST_MODIFIED_BY_FK" />
+                <ScalarProperty Name="PK_USER" ColumnName="PK_USER" />
+                <ScalarProperty Name="RID" ColumnName="RID" />
+                <ScalarProperty Name="CREATOR" ColumnName="CREATOR" />
+                <ScalarProperty Name="LAST_MODIFIED_DATE" ColumnName="LAST_MODIFIED_DATE" />
+                <ScalarProperty Name="LAST_MODIFIED_BY" ColumnName="LAST_MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_ON" ColumnName="CREATED_ON" />
+                <ScalarProperty Name="FK_ACCOUNT" ColumnName="FK_ACCOUNT" />
+                <ScalarProperty Name="USER_STATUS" ColumnName="USER_STATUS" />
+                <ScalarProperty Name="USER_USRNAME" ColumnName="USER_USRNAME" />
+                <ScalarProperty Name="USER_DEFAULTGRP" ColumnName="USER_DEFAULTGRP" />
+                <ScalarProperty Name="USER_PHASEINV" ColumnName="USER_PHASEINV" />
+                <ScalarProperty Name="USER_WRKEXP" ColumnName="USER_WRKEXP" />
+                <ScalarProperty Name="USER_SPECIALTY" ColumnName="USER_SPECIALTY" />
+                <ScalarProperty Name="USER_TIMEZONE" ColumnName="USER_TIMEZONE" />
+                <ScalarProperty Name="USER_EMAIL" ColumnName="USER_EMAIL" />
+                <ScalarProperty Name="USER_PHONE" ColumnName="USER_PHONE" />
+                <ScalarProperty Name="USER_COUNTRY" ColumnName="USER_COUNTRY" />
+                <ScalarProperty Name="USER_ZIP" ColumnName="USER_ZIP" />
+                <ScalarProperty Name="USER_STATE" ColumnName="USER_STATE" />
+                <ScalarProperty Name="USER_CITY" ColumnName="USER_CITY" />
+                <ScalarProperty Name="USER_ADDRESS" ColumnName="USER_ADDRESS" />
+                <ScalarProperty Name="USER_JOBTYPE" ColumnName="USER_JOBTYPE" />
+                <ScalarProperty Name="USER_NAME" ColumnName="USER_NAME" />
+                <ScalarProperty Name="SITE_NAME" ColumnName="SITE_NAME" />
+                <ScalarProperty Name="USER_DEFAULT_GROUP_FK" ColumnName="USER_DEFAULT_GROUP_FK" />
+                <ScalarProperty Name="USER_TYPE" ColumnName="USER_TYPE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="LCL_V_STUDYVER_APNDX">
             <EntityTypeMapping TypeName="VelosModel.LCL_V_STUDYVER_APNDX">
               <MappingFragment StoreEntitySet="LCL_V_STUDYVER_APNDX">
@@ -836,7 +975,7 @@
     </Options>
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
-      <Diagram Name="Model1" ZoomLevel="100">
+      <Diagram Name="Model1" ZoomLevel="46">
         <EntityTypeShape EntityType="VelosModel.LCL_V_STUDYSUMM_PLUSMORE" Width="1.5" PointX="0.75" PointY="0.75" Height="19.095113932291667" />
         <EntityTypeShape EntityType="VelosModel.VDA_V_STUDYSITES" Width="1.5" PointX="2.75" PointY="0.75" Height="5.2494108072916674" />
         <EntityTypeShape EntityType="VelosModel.VDA_V_STUDYSTAT" Width="1.5" PointX="4.75" PointY="0.75" Height="5.8463151041666652" />
