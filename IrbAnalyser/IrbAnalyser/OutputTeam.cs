@@ -9,9 +9,16 @@ namespace IrbAnalyser
 {
     class OutputTeam
     {
+        public static string PI = "Clinical PI";
+        public static string RC = "RC_full";
+        public static string defaultDisabledRole = "No Privilege";
+        public static string enabledGroup = "Study Member";
+        public static string disabledGroup = "NO_PRIVILEGE";
+
         //List of team members
         public static DataTable newTeam = new DataTable();
         public static DataTable updatedTeam = new DataTable();
+        public static DataTable trainingNeededTeam = new DataTable();
 
         private static IEnumerable<Model.VDA_V_STUDYTEAM_MEMBERS> _team;
         public static IEnumerable<Model.VDA_V_STUDYTEAM_MEMBERS> team
@@ -26,6 +33,7 @@ namespace IrbAnalyser
                         var query = (from st in db.VDA_V_STUDYTEAM_MEMBERS
                                      where st.MORE_IRBAGENCY != null
                                      && st.MORE_IRBSTUDYID != null
+                                     && st.USER_EMAIL != null
                                      select st);
                         _team = query.ToList<Model.VDA_V_STUDYTEAM_MEMBERS>();
                     }
@@ -49,6 +57,7 @@ namespace IrbAnalyser
                     {
 
                         var query = (from st in db.LCL_V_USER
+                                    where st.USER_EMAIL != null
                                      select st);
                         _accounts = query.ToList<Model.LCL_V_USER>();
                     }
@@ -99,13 +108,30 @@ namespace IrbAnalyser
                 updatedTeam.Columns.Add("Organization", typeof(string));
                 updatedTeam.Columns.Add("Primary", typeof(string));
             }
+            if (trainingNeededTeam.Columns.Count == 0)
+            {
+                trainingNeededTeam.Columns.Add("TYPE", typeof(string));
+
+                trainingNeededTeam.Columns.Add("Study number", typeof(string));
+
+                trainingNeededTeam.Columns.Add("Email", typeof(string));
+                trainingNeededTeam.Columns.Add("AdditionnalEmails", typeof(string));
+                trainingNeededTeam.Columns.Add("First name", typeof(string));
+                trainingNeededTeam.Columns.Add("Last name", typeof(string));
+                trainingNeededTeam.Columns.Add("Full name", typeof(string));
+                trainingNeededTeam.Columns.Add("Role", typeof(string));
+                //newTeam.Columns.Add("Group", typeof(string));
+                trainingNeededTeam.Columns.Add("Organization", typeof(string));
+                trainingNeededTeam.Columns.Add("Primary", typeof(string));
+            }
+
         }
 
         /// <summary>
         /// Add a new row to the team modification datatable
         /// </summary>
         /// <param name="row"></param>
-        private static void addRow(DataRow row, string type, bool newrecord)
+        private static void addRow(DataRow row, string type, DataTable records)
         {
             string role = "";
             //string group = "";
@@ -124,15 +150,7 @@ namespace IrbAnalyser
                 initiate();
                 DataRow dr;
 
-
-                if (newrecord)
-                {
-                    dr = newTeam.NewRow(); 
-                }
-                else
-                { 
-                    dr = updatedTeam.NewRow(); 
-                }
+                dr = records.NewRow();
 
                 dr["TYPE"] = type;
 
@@ -147,55 +165,27 @@ namespace IrbAnalyser
                 //dr["Group"] = group;
                 dr["Organization"] = site;
 
-                if (newrecord)
+                var dtUser = from user in records.AsEnumerable()
+                             where user.Field<string>("Email").Trim().ToLower() == ((string)row["PrimaryEMailAddress"]).Trim().ToLower()
+                             && user.Field<string>("Study number").Trim().ToLower() == ((string)dr["Study number"]).Trim().ToLower()
+                             select user;
+                if (dtUser.Count() > 0)
                 {
-                    var dtUser = from user in OutputTeam.newTeam.AsEnumerable()
-                                 where user.Field<string>("Email").Trim().ToLower() == ((string)row["PrimaryEMailAddress"]).Trim().ToLower()
-                                 && user.Field<string>("Study number").Trim().ToLower() == ((string)dr["Study number"]).Trim().ToLower()
-                                 select user;
-                    if (dtUser.Count() > 0)
+                    foreach (DataRow rw in dtUser)
                     {
-                        foreach (DataRow rw in dtUser)
+                        if (rw.Field<string>("Role") != role && role == RC)
                         {
-                            if (rw.Field<string>("Role") != role && role == "Study Coordinator")
-                            {
-                                rw["Role"] = role;
-                            }
-                            else if (rw.Field<string>("Role") != role && role == "Primary Investigator" && rw.Field<string>("Role") != "Study Coordinator")
-                            {
-                                rw["Role"] = role;
-                            }
+                            rw["Role"] = role;
+                        }
+                        else if (rw.Field<string>("Role") != role && role == PI && rw.Field<string>("Role") != RC)
+                        {
+                            rw["Role"] = role;
                         }
                     }
-                    else
-                    {
-                        newTeam.Rows.Add(dr);
-                    } 
                 }
                 else
                 {
-                    var dtUser = from user in OutputTeam.updatedTeam.AsEnumerable()
-                                 where user.Field<string>("Email").Trim().ToLower() == ((string)row["PrimaryEMailAddress"]).Trim().ToLower()
-                                 && user.Field<string>("Study number").Trim().ToLower() == ((string)dr["Study number"]).Trim().ToLower()
-                                 select user;
-                    if (dtUser.Count() > 0)
-                    {
-                        foreach (DataRow rw in dtUser)
-                        {
-                            if (rw.Field<string>("Role") != role && role == "Study Coordinator")
-                            {
-                                rw["Role"] = role;
-                            }
-                            else if (rw.Field<string>("Role") != role && role == "Primary Investigator" && rw.Field<string>("Role") != "Study Coordinator")
-                            {
-                                rw["Role"] = role;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        updatedTeam.Rows.Add(dr);
-                    }                
+                    records.Rows.Add(dr);
                 }
             }
         }
@@ -226,62 +216,87 @@ namespace IrbAnalyser
         {
             string irbstudyId = userRow["StudyId"].ToString();
 
-            string email = (string)userRow["PrimaryEMailAddress"];
+            string email = ((string)userRow["PrimaryEMailAddress"]).ToLower();
 
             var issuperuser = (from us in accounts
-                       where us.USER_EMAIL == email
-                       && us.GRP_SUPUSR_FLAG == 1
-                       select us).Any();
+                               where us.USER_EMAIL.ToLower() == email
+                               && us.GRP_SUPUSR_FLAG == 1
+                               && us.USER_STATUS == "Active"
+                               select us).Any();
 
-            if (!issuperuser)
+            var isactiveuser = (from us in accounts
+                               where us.USER_EMAIL.ToLower() == email
+                               && us.USER_STATUS == "Active"
+                               select us).Any();
+
+            var currentuser = ((from us in accounts
+                                where us.USER_EMAIL.ToLower() == email
+                                select us).FirstOrDefault());
+
+            if (currentuser != null)
             {
-                if (Tools.getOldStudy((string)userRow["StudyId"]))
+                if (!issuperuser && currentuser.USER_DEFAULTGRP == enabledGroup && isactiveuser)
                 {
-                    //using (Model.VelosDb db = new Model.VelosDb())
-                    //{
-
-                    if (!String.IsNullOrEmpty(email))
+                    if (Tools.getOldStudy((string)userRow["StudyId"]))
                     {
-                        var user = from us in team
-                                   where us.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId)
-                                  && us.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
-                                  && us.USER_EMAIL == email
-                                   select us;
-                        if (!user.Any())
-                        {
-                            addRow(userRow, "New member", true);
-                        }
-                        else
-                        {
-                            var changed = false;
+                        //using (Model.VelosDb db = new Model.VelosDb())
+                        //{
 
-                            bool primary = Tools.compareStr(userRow["Primary"], "true");
+                        if (!String.IsNullOrEmpty(email))
+                        {
+                            var user = from us in team
+                                       where us.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId)
+                                      && us.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
+                                      && us.USER_EMAIL.ToLower() == email
+                                       select us;
+                            if (!user.Any())
+                            {
+                                addRow(userRow, "New member", newTeam);
+                            }
+                            else
+                            {
+                                var changed = false;
 
-                            if (user.First().USER_NAME != (string)userRow["FirstName"] + " " + (string)userRow["LastName"])
-                            {
-                                changed = true;
+                                bool primary = Tools.compareStr(userRow["Primary"], "true");
+
+                                if (user.First().USER_NAME != (string)userRow["FirstName"] + " " + (string)userRow["LastName"])
+                                {
+                                    changed = true;
+                                }
+                                if (user.First().ROLE != BranyRoleMap.getRole((string)userRow["Role"], primary)
+                                    && BranyRoleMap.getRole((string)userRow["Role"], primary) != "NA")
+                                {
+                                    changed = true;
+                                }
+                                else { userRow["Role"] = ""; }
+                                if (user.First().USER_SITE_NAME != BranySiteMap.getSite((string)userRow["SiteName"]).Replace("(IBC)", ""))
+                                {
+                                    changed = true;
+                                }
+                                else { userRow["SiteName"] = ""; }
+                                //todo map sites and check
+                                if (changed) { addRow(userRow, "Modified member", updatedTeam); }
                             }
-                            if (user.First().ROLE != BranyRoleMap.getRole((string)userRow["Role"], primary)
-                                && BranyRoleMap.getRole((string)userRow["Role"], primary) != "NA")
-                            {
-                                changed = true;
-                            }
-                            else { userRow["Role"] = ""; }
-                            if (user.First().USER_SITE_NAME != BranySiteMap.getSite((string)userRow["SiteName"]).Replace("(IBC)", ""))
-                            {
-                                changed = true;
-                            }
-                            else { userRow["SiteName"] = ""; }
-                            //todo map sites and check
-                            if (changed) { addRow(userRow, "Modified member", false); }
                         }
+                        //}
                     }
-                    //}
+                    else
+                    {
+                        addRow(userRow, "New study", newTeam);
+                    }
                 }
-                else
+                else if (currentuser.USER_DEFAULTGRP != enabledGroup && currentuser.USER_EMAIL == email && isactiveuser && !issuperuser)
                 {
-                    addRow(userRow, "New study", true);
+                    addRow(userRow, "User needs training", trainingNeededTeam);
                 }
+                else if (!isactiveuser)
+                {
+                    addRow(userRow, "Inactive User", trainingNeededTeam);
+                }
+            }
+            else
+            {
+                addRow(userRow, "User needs access", trainingNeededTeam);
             }
         }
 

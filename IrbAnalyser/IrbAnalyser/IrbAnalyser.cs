@@ -89,9 +89,14 @@ namespace IrbAnalyser
                 lstxls.Add(new ExcelWorksheet("Site", "List of organization to modify in Velos", OutputSite.updatedSites));
                 lstxls.Add(new ExcelWorksheet("Attachments", "List of version (attachment) to modify in Velos", OutputDocs.updatedDocs));
                 lstxls.Add(new ExcelWorksheet("Studies", "List of studies to modify in Velos", OutputStudy.updatedStudy));
-
-                //exc.WriteDataTableToExcel(OutputStudy.study, "New studies", savefilename, "List of studies to create in Velos");
                 exc.WriteDataTableToExcel(savefilenoext + "_updated.xlsx", lstxls);
+
+                lstxls = new List<ExcelWorksheet>();
+
+                lstxls.Add(new ExcelWorksheet("Team", "List of team members to modify in Velos", OutputTeam.trainingNeededTeam));
+                exc.WriteDataTableToExcel(savefilenoext + "_training.xlsx", lstxls);
+
+
                 txtOutput.Text = "Analysis complete.\r\nPlease open the excel file and create/modify studies in Velos accordingly.";
                 btnclicked = true;
                 btnOk.Text = "Close";

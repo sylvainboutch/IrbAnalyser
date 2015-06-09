@@ -43,10 +43,14 @@ namespace IrbAnalyser
     /// </summary>
     public static class BranyRoleMap
     {
+        public static string PI = "Investigator";
+        public static string RC = "Coordinator";
+        public static string CRO = "CRO";
+
         public static readonly Dictionary<string, string> roleMapBrany = new Dictionary<string, string>()
             {
-                { "Coordinator", "No privilege" },
-                { "Investigator", "No privilege" },
+                { RC, "No privilege" },
+                { PI, "No privilege" },
                 { "Faculty Advisor", "No privilege" },
                 { "Research Assistant", "No privilege" },
                 { "Auditor", "No privilege" },
@@ -55,13 +59,13 @@ namespace IrbAnalyser
                 { "Sponsor", "No privilege" },
                 { "Consultant", "No privilege" },
                 {"",""},
-                { "CRO", "NA" }
+                { CRO, "NA" }
             };
 
         public static readonly Dictionary<string, string> roleMapBranyPrimary = new Dictionary<string, string>()
             {
-                { "Coordinator", "Study Coordinator" },
-                { "Investigator", "Primary Investigator" },
+                { PI, OutputTeam.RC },
+                { RC, OutputTeam.PI },
                 { "Faculty Advisor", "No privilege" },
                 { "Research Assistant", "No privilege" },
                 { "Auditor", "No privilege" },
@@ -70,7 +74,7 @@ namespace IrbAnalyser
                 { "Sponsor", "No privilege" },
                 { "Consultant", "No privilege" },
                 {"",""},
-                { "CRO", "NA" }
+                { CRO, "NA" }
             };
 
         public static string getRole(string key, bool primary)

@@ -454,18 +454,18 @@ namespace IrbAnalyser
 
         private static string getPI(string studyId)
         {
-            return getRole(studyId, "Investigator");
+            return getRole(studyId, BranyRoleMap.PI);
         }
 
         private static string getRC(string studyId)
         {
-            return getRole(studyId, "Coordinator");
+            return getRole(studyId, BranyRoleMap.RC);
         }
 
 
         private static string getCRO(string studyId)
         {
-            return getRole(studyId, "CRO");
+            return getRole(studyId, BranyRoleMap.CRO);
         }
 
 
