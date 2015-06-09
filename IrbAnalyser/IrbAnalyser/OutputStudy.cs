@@ -205,13 +205,19 @@ namespace IrbAnalyser
                                 newrc = getRC((string)dr["StudyId"]);
                                 newcro = getCRO((string)dr["StudyId"]);
 
+
+                                //BE CAREFULL IN THE VIEW :
+                                //STUDY_ENTERED_BY = Regulatory Coordinator
+                                //STUDY_PI = PRINCIPAL INVESTIGATOR
+                                //STUDY_COORDINATOR = STUDY_COORDINATOR
+
                                 if (stu.STUDY_PI != newpi && !String.IsNullOrEmpty(newpi))
                                 {
                                     hasChanged = true;
                                 }
                                 else { newpi = ""; }
 
-                                if (stu.STUDY_COORDINATOR != newrc && !String.IsNullOrEmpty(newrc))
+                                if (stu.STUDY_ENTERED_BY != newrc && !String.IsNullOrEmpty(newrc))
                                 {
                                     hasChanged = true;
                                 }
@@ -350,6 +356,26 @@ namespace IrbAnalyser
                                     hasChanged = true;
                                 }
 
+                                string[] irbno = ((string)dr["IRBNumber"]).Replace("(IBC)", "").Split('-');
+
+                                string cancer = "N";
+                                if (irbno.Count() >= 2 && irbno[1] == "06")
+                                cancer = "Y";
+
+                                if (stu.MORE_CANCER == "Y" && cancer == "N")
+                                {
+                                    hasChanged = true;
+                                    dr["Cancer"] = "N";
+                                }
+
+                                if ((stu.MORE_CANCER == "N" || stu.MORE_CANCER == null) && cancer == "Y")
+                                {
+                                    hasChanged = true;
+                                    dr["Cancer"] = "Y";
+                                }
+
+
+
                             }
 
                             if (hasChanged)
@@ -428,13 +454,11 @@ namespace IrbAnalyser
             dr["Sponsor contact"] = row["PrimarySponsorContactFirstName"].ToString() + " " + row["PrimarySponsorContactLastName"].ToString();
             dr["Sponsor Protocol ID"] = row["PrimarySponsorStudyId"].ToString();
 
-            string[] labels = new string[5] { "CRO", "IRB agency name", "IRB No.", "OFFICE USE ONLY - DO NOT MODIFY - IRB Identifiers", "Is this a cancer related study ?*" };
-            string[] irbno = ((string)dr["IRB no"]).Split('-');
-            string cancer = "N";
-            if (irbno.Count() >= 2 && irbno[1] == "06")
-                cancer = "Y";
-            dr["Cancer"] = cancer;
-            string[] values = new string[5] { (string)dr["CRO"], Agency.agencyStrLwr.ToUpper(), (string)dr["IRB no"], (string)dr["IRB Identifiers"], cancer };
+            string[] labels = new string[6] { "Study Managed by", "CRO", "IRB agency name", "IRB No.", "OFFICE USE ONLY - DO NOT MODIFY - IRB Identifiers", "Is this a cancer related study ?" };
+
+            dr["Cancer"] = row["Cancer"];
+
+            string[] values = new string[6] { Agency.agencyStrLwr.ToUpper(), (string)dr["CRO"], Agency.agencyStrLwr.ToUpper(), (string)dr["IRB no"], (string)dr["IRB Identifiers"], (string)dr["Cancer"] };
 
             OutputMSD.initiate();
 

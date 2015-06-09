@@ -1694,6 +1694,30 @@ namespace IrbAnalyser.Model
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
+        public global::System.String MORE_CANCER
+        {
+            get
+            {
+                return _MORE_CANCER;
+            }
+            set
+            {
+                OnMORE_CANCERChanging(value);
+                ReportPropertyChanging("MORE_CANCER");
+                _MORE_CANCER = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_CANCER");
+                OnMORE_CANCERChanged();
+            }
+        }
+        private global::System.String _MORE_CANCER;
+        partial void OnMORE_CANCERChanging(global::System.String value);
+        partial void OnMORE_CANCERChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
         public global::System.String MORE_CRO
         {
             get

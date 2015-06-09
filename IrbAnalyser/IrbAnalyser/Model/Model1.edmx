@@ -105,6 +105,7 @@
               "LCL_V_STUDYSUMM_PLUSMORE"."SPONSOR_DD_FK" AS "SPONSOR_DD_FK",
               "LCL_V_STUDYSUMM_PLUSMORE"."CTRP_LAST_DOWNLOAD_BY_FK" AS "CTRP_LAST_DOWNLOAD_BY_FK",
               "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_SCOPE" AS "STUDY_SCOPE",
+              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_CANCER" AS "MORE_CANCER",
               "LCL_V_STUDYSUMM_PLUSMORE"."MORE_CRO" AS "MORE_CRO",
               "LCL_V_STUDYSUMM_PLUSMORE"."MORE_AT_CTA" AS "MORE_AT_CTA",
               "LCL_V_STUDYSUMM_PLUSMORE"."MORE_AT_DTA" AS "MORE_AT_DTA",
@@ -347,6 +348,7 @@
           <Property Name="SPONSOR_DD_FK" Type="number" />
           <Property Name="CTRP_LAST_DOWNLOAD_BY_FK" Type="number" />
           <Property Name="STUDY_SCOPE" Type="varchar2" />
+          <Property Name="MORE_CANCER" Type="varchar2" MaxLength="100" />
           <Property Name="MORE_CRO" Type="varchar2" MaxLength="100" />
           <Property Name="MORE_AT_CTA" Type="varchar2" MaxLength="100" />
           <Property Name="MORE_AT_DTA" Type="varchar2" MaxLength="100" />
@@ -596,6 +598,7 @@
           <Property Type="Decimal" Name="SPONSOR_DD_FK" Precision="38" Scale="0" />
           <Property Type="Decimal" Name="CTRP_LAST_DOWNLOAD_BY_FK" Precision="38" Scale="0" />
           <Property Type="String" Name="STUDY_SCOPE" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_CANCER" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="MORE_CRO" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="MORE_AT_CTA" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="MORE_AT_DTA" MaxLength="100" FixedLength="false" Unicode="false" />
@@ -803,6 +806,7 @@
                 <ScalarProperty Name="MORE_AT_II" ColumnName="MORE_AT_II" />
                 <ScalarProperty Name="MORE_AT_DTA" ColumnName="MORE_AT_DTA" />
                 <ScalarProperty Name="MORE_AT_CTA" ColumnName="MORE_AT_CTA" />
+                <ScalarProperty Name="MORE_CANCER" ColumnName="MORE_CANCER" />
                 <ScalarProperty Name="MORE_CRO" ColumnName="MORE_CRO" />
                 <ScalarProperty Name="STUDY_SCOPE" ColumnName="STUDY_SCOPE" />
                 <ScalarProperty Name="CTRP_LAST_DOWNLOAD_BY_FK" ColumnName="CTRP_LAST_DOWNLOAD_BY_FK" />

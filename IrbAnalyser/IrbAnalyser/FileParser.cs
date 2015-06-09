@@ -52,6 +52,7 @@ namespace IrbAnalyser
                     data.Columns.Add("InitialApprovalDate");
                     data.Columns.Add("MostRecentApprovalDate");
                     data.Columns.Add("ExpirationDate");
+                    data.Columns.Add("Cancer");
                     break;
                 case type.Status:
                     data.Columns.Add("StudyId");

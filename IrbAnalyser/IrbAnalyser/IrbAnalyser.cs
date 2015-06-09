@@ -94,7 +94,7 @@ namespace IrbAnalyser
                 lstxls = new List<ExcelWorksheet>();
 
                 lstxls.Add(new ExcelWorksheet("Team", "List of team members to modify in Velos", OutputTeam.trainingNeededTeam));
-                exc.WriteDataTableToExcel(savefilenoext + "_training.xlsx", lstxls);
+                exc.WriteDataTableToExcel(savefilenoext + "_triggers.xlsx", lstxls);
 
 
                 txtOutput.Text = "Analysis complete.\r\nPlease open the excel file and create/modify studies in Velos accordingly.";

@@ -79,7 +79,7 @@ namespace IrbAnalyser
 
             if (number == null || number.Trim() == "")
             {
-                accronym = string.IsNullOrWhiteSpace(accronym) ? "Please complete" : accronym;
+                accronym = string.IsNullOrWhiteSpace(accronym) ? "Please complete" : cleanTitle(accronym);
                 number = generateStudyNumber(IRBnumber, accronym);
             }
             return number;
@@ -136,6 +136,24 @@ namespace IrbAnalyser
             return output;
         }
 
+        public static string cleanTitle(string input)
+        {
+            input = input.Trim();
+            string output = "";
+            StringBuilder sb = new StringBuilder();
+            foreach (char c in input)
+            {
+                if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') )
+                {
+                    sb.Append(c);
+                }
+            }
+            output = sb.ToString();
+            output = output.Replace("  ", " ");
+            return output;
+        }
+
+        
         public static string cleanStr(string input)
         {
             input = input.ToLowerInvariant();

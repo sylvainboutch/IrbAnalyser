@@ -9,8 +9,8 @@ namespace IrbAnalyser
 {
     class OutputTeam
     {
-        public static string PI = "Clinical PI";
-        public static string RC = "RC_full";
+        public static string PI = "PI-Full Access";
+        public static string RC = "Regulatory Coordinator Full";
         public static string defaultDisabledRole = "No Privilege";
         public static string enabledGroup = "Study Member";
         public static string disabledGroup = "NO_PRIVILEGE";
