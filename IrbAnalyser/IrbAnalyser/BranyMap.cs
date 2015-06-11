@@ -248,9 +248,9 @@ namespace IrbAnalyser
     {
         public static readonly Dictionary<string, string> eventsMapBrany = new Dictionary<string, string>()
             {
-                {"1572 Modification","Undefined IRB Event"},
+                {"1572 Modification","NA"},
                 {"Additional PI","Undefined IRB Event"},
-                {"Administrative (Translation)","Undefined IRB Event"},
+                {"Administrative (Translation)","NA"},
                 {"Administrative Review","Undefined IRB Event"},
                 {"Advertisements","Undefined IRB Event"},
                 {"Amendment","IRB AMENDMENT Submitted**"},

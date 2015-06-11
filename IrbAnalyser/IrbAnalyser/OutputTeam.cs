@@ -9,8 +9,9 @@ namespace IrbAnalyser
 {
     class OutputTeam
     {
-        public static string PI = "PI-Full Access";
+        public static string PI = "PI-View Access";
         public static string RC = "Regulatory Coordinator Full";
+        public static string SC = "Study Coordinator";
         public static string defaultDisabledRole = "No Privilege";
         public static string enabledGroup = "Study Member";
         public static string disabledGroup = "NO_PRIVILEGE";
@@ -18,7 +19,8 @@ namespace IrbAnalyser
         //List of team members
         public static DataTable newTeam = new DataTable();
         public static DataTable updatedTeam = new DataTable();
-        public static DataTable trainingNeededTeam = new DataTable();
+        public static DataTable triggerTeam = new DataTable();
+        public static DataTable newNonSystemUser = new DataTable();
 
         private static IEnumerable<Model.VDA_V_STUDYTEAM_MEMBERS> _team;
         public static IEnumerable<Model.VDA_V_STUDYTEAM_MEMBERS> team
@@ -57,7 +59,7 @@ namespace IrbAnalyser
                     {
 
                         var query = (from st in db.LCL_V_USER
-                                    where st.USER_EMAIL != null
+                                     where st.USER_EMAIL != null
                                      select st);
                         _accounts = query.ToList<Model.LCL_V_USER>();
                     }
@@ -69,6 +71,28 @@ namespace IrbAnalyser
                 _accounts = value;
             }
         }
+
+
+        private static FileParser _fpteam;
+        public static FileParser fpTeam
+        {
+            get
+            {
+                if (_fpteam == null || _fpteam.data == null || _fpteam.data.Rows.Count == 0)
+                {
+                    using (Model.VelosDb db = new Model.VelosDb())
+                    {
+                        _fpteam = new FileParser(Tools.filename + "Team.txt", FileParser.type.Team);
+                    }
+                }
+                return _fpteam;
+            }
+            set
+            {
+                _fpteam = value;
+            }
+        }
+
 
 
         /// <summary>
@@ -108,21 +132,43 @@ namespace IrbAnalyser
                 updatedTeam.Columns.Add("Organization", typeof(string));
                 updatedTeam.Columns.Add("Primary", typeof(string));
             }
-            if (trainingNeededTeam.Columns.Count == 0)
+            if (triggerTeam.Columns.Count == 0)
             {
-                trainingNeededTeam.Columns.Add("TYPE", typeof(string));
+                triggerTeam.Columns.Add("TYPE", typeof(string));
 
-                trainingNeededTeam.Columns.Add("Study number", typeof(string));
+                triggerTeam.Columns.Add("Study number", typeof(string));
 
-                trainingNeededTeam.Columns.Add("Email", typeof(string));
-                trainingNeededTeam.Columns.Add("AdditionnalEmails", typeof(string));
-                trainingNeededTeam.Columns.Add("First name", typeof(string));
-                trainingNeededTeam.Columns.Add("Last name", typeof(string));
-                trainingNeededTeam.Columns.Add("Full name", typeof(string));
-                trainingNeededTeam.Columns.Add("Role", typeof(string));
+                triggerTeam.Columns.Add("Email", typeof(string));
+                triggerTeam.Columns.Add("AdditionnalEmails", typeof(string));
+                triggerTeam.Columns.Add("First name", typeof(string));
+                triggerTeam.Columns.Add("Last name", typeof(string));
+                triggerTeam.Columns.Add("Full name", typeof(string));
+                triggerTeam.Columns.Add("Role", typeof(string));
                 //newTeam.Columns.Add("Group", typeof(string));
-                trainingNeededTeam.Columns.Add("Organization", typeof(string));
-                trainingNeededTeam.Columns.Add("Primary", typeof(string));
+                triggerTeam.Columns.Add("Organization", typeof(string));
+                triggerTeam.Columns.Add("Primary", typeof(string));
+            }
+            if (newNonSystemUser.Columns.Count == 0)
+            {
+                newNonSystemUser.Columns.Add("TYPE", typeof(string));
+
+                newNonSystemUser.Columns.Add("Study number", typeof(string));
+
+                newNonSystemUser.Columns.Add("Email", typeof(string));
+                newNonSystemUser.Columns.Add("AdditionnalEmails", typeof(string));
+                newNonSystemUser.Columns.Add("First name", typeof(string));
+                newNonSystemUser.Columns.Add("Last name", typeof(string));
+                newNonSystemUser.Columns.Add("Full name", typeof(string));
+                newNonSystemUser.Columns.Add("Role", typeof(string));
+                //newTeam.Columns.Add("Group", typeof(string));
+                newNonSystemUser.Columns.Add("Organization", typeof(string));
+                newNonSystemUser.Columns.Add("Primary", typeof(string));
+
+
+                newNonSystemUser.Columns.Add("TimeZone", typeof(string));
+                newNonSystemUser.Columns.Add("Group", typeof(string));
+                newNonSystemUser.Columns.Add("Login", typeof(string));
+
             }
 
         }
@@ -165,6 +211,13 @@ namespace IrbAnalyser
                 //dr["Group"] = group;
                 dr["Organization"] = site;
 
+                if (type == "New non system user")
+                {
+                    dr["TimeZone"] = "GMT-5";
+                    dr["Group"] = "NO_PRIVILEGE";
+                    dr["Login"] = ((string)row["PrimaryEMailAddress"]).Split('@')[0];
+                }
+
                 var dtUser = from user in records.AsEnumerable()
                              where user.Field<string>("Email").Trim().ToLower() == ((string)row["PrimaryEMailAddress"]).Trim().ToLower()
                              && user.Field<string>("Study number").Trim().ToLower() == ((string)dr["Study number"]).Trim().ToLower()
@@ -191,6 +244,33 @@ namespace IrbAnalyser
         }
 
         /// <summary>
+        /// Add a new row to the team modification datatable
+        /// </summary>
+        /// <param name="row"></param>
+        private static void addRowVelosUser(Model.VDA_V_STUDYTEAM_MEMBERS row, string type, DataTable records)
+        {
+            initiate();
+            DataRow dr;
+
+            dr = records.NewRow();
+
+            dr["TYPE"] = type;
+
+            dr["Study number"] = row.STUDY_NUMBER;
+
+            dr["Email"] = row.USER_EMAIL;
+            dr["First name"] = row.USER_NAME.Split(' ')[0];
+            dr["Last name"] = row.USER_NAME.Split(' ')[1];
+            dr["Full name"] = row.USER_NAME;
+            dr["Role"] = row.ROLE;
+            //dr["Group"] = group;
+            dr["Organization"] = row.USER_SITE_NAME;
+
+            records.Rows.Add(dr);
+
+        }
+
+        /// <summary>
         /// Analyse the team member file
         /// </summary>
         /// <param name="team"></param>
@@ -198,14 +278,12 @@ namespace IrbAnalyser
         {
             initiate();
 
-            FileParser fpTeam = new FileParser(filename, FileParser.type.Team);
-
             foreach (DataRow user in fpTeam.data.Rows)
             {
                 analyseRow(user);
             }
 
-            //analyseDelete(fpTeam.data);
+            analyseDelete();
         }
 
         /// <summary>
@@ -225,9 +303,9 @@ namespace IrbAnalyser
                                select us).Any();
 
             var isactiveuser = (from us in accounts
-                               where us.USER_EMAIL.ToLower() == email
-                               && us.USER_STATUS == "Active"
-                               select us).Any();
+                                where us.USER_EMAIL.ToLower() == email
+                                && us.USER_STATUS == "Active"
+                                select us).Any();
 
             var currentuser = ((from us in accounts
                                 where us.USER_EMAIL.ToLower() == email
@@ -287,51 +365,80 @@ namespace IrbAnalyser
                 }
                 else if (currentuser.USER_DEFAULTGRP != enabledGroup && currentuser.USER_EMAIL == email && isactiveuser && !issuperuser)
                 {
-                    addRow(userRow, "User needs training", trainingNeededTeam);
+                    addRow(userRow, "User needs training", triggerTeam);
                 }
                 else if (!isactiveuser)
                 {
-                    addRow(userRow, "Inactive User", trainingNeededTeam);
+                    addRow(userRow, "Inactive User", triggerTeam);
+                    addRow(userRow, "Add inactive user to study", newTeam);
                 }
             }
             else
             {
-                addRow(userRow, "User needs access", trainingNeededTeam);
+                addRow(userRow, "User needs access", triggerTeam);
+                addRow(userRow, "New non system user", newNonSystemUser);
             }
         }
 
-        /*/// <summary>
+        /// <summary>
         /// Analyse complete tables to find removed value
         /// </summary>
         /// <param name="studys"></param>
-        private static void analyseDelete(DataTable studys)
+        private static void analyseDelete()
         {
-            var std = from rw in studys.AsEnumerable()
-                      select rw.Field<string>("StudyId");
-
-            using (Model.VelosDb db = new Model.VelosDb())
+            foreach (var user in team)
             {
-                var team = from users in db.VDA_V_STUDYTEAM_MEMBERS
-                           join stud in db.LCL_V_STUDYSUMM_PLUSMORE on users.FK_STUDY equals stud.PK_STUDY
-                           where std.Contains(stud.MORE_IRBSTUDYID)
-                           select new { site = users, studyId = stud.MORE_IRBSTUDYID, agency = stud.MORE_IRBAGENCY };
-
-                foreach (var user in team)
+                if (user.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr)
                 {
-                    var countEmail = (from DataRow dr in studys.Rows
-                                      where (string)dr["SiteName"] == user.site.USER_EMAIL
+                    var agency = user.MORE_IRBAGENCY;
+
+                    var studyId = Tools.getStudyIdentifiers(user.MORE_IRBSTUDYID);
+
+                    var countEmail = (from DataRow dr in fpTeam.data.Rows
+                                      where (string)dr["StudyId"] == studyId
+                                      && ((string)dr["PrimaryEMailAddress"]).ToLower().Trim() == user.USER_EMAIL.ToLower().Trim()
                                       select dr).Count();
-                    var countStudy = (from DataRow dr in studys.Rows
-                                      where (string)dr["IRBAgency"] == user.agency
-                                      && (string)dr["StudyId"] == user.studyId
+
+                    var countStudy = (from DataRow dr in OutputStudy.fpstudys.data.Rows
+                                      where (string)dr["StudyId"] == studyId
                                       select dr).Count();
-                    if (countEmail == 0 && countStudy != 0)
+
+                    if (countEmail == 0 && countStudy != 0 && user.ROLE.Trim().ToLower() != RC.Trim().ToLower())
                     {
-                        addRow("Deleted member", user.site.USER_EMAIL, user.site.USER_NAME, user.site.ROLE, user.site.USER_SITE_NAME, user.studyId, user.agency);
+                        addRowVelosUser(user, "Deleted member", updatedTeam);
+                    }
+                    else if (user.ROLE.Trim().ToLower() == RC.Trim().ToLower() && countEmail == 0 && countStudy != 0)
+                    {
+                        var delete1 = (from DataRow dr in newTeam.AsEnumerable()
+                                       where (string)dr["Study number"] == user.STUDY_NUMBER
+                                       && (string)dr["Role"] == RC
+                                       select dr).Any();
+
+                        var delete2 = (from us in team
+                                       where us.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
+                                       && us.MORE_IRBSTUDYID.Trim().ToLower() == studyId
+                                       && us.ROLE == RC
+                                       select us).Any();
+
+                        var delete3 = (from DataRow dr in updatedTeam.AsEnumerable()
+                                       where (string)dr["Study number"] == user.STUDY_NUMBER
+                                       && (string)dr["Role"] == RC
+                                       && (string)dr["TYPE"] == "Modified member"
+                                       select dr).Any();
+
+
+                        if (delete1 || delete2 || delete3)
+                        {
+                            addRowVelosUser(user, "Deleted member", updatedTeam);
+                        }
+                        else
+                        {
+                            addRowVelosUser(user, "RC deleted", triggerTeam);
+                        }
                     }
                 }
             }
-        }*/
+        }
 
     }
 

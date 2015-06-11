@@ -16,8 +16,6 @@ namespace IrbAnalyser
         public static DataTable newStudy = new DataTable();
         public static DataTable updatedStudy = new DataTable();
 
-        private static FileParser fpTeam = new FileParser();
-
         private static IEnumerable<Model.LCL_V_STUDYSUMM_PLUSMORE> _studys;
         public static IEnumerable<Model.LCL_V_STUDYSUMM_PLUSMORE> studys
         {
@@ -496,13 +494,7 @@ namespace IrbAnalyser
 
         private static string getRole(string studyId, string role)
         {
-            if (fpTeam.data.Rows.Count == 0)
-            {
-                fpTeam = new FileParser(Tools.filename + "Team.txt", FileParser.type.Team);
-            }
-
-            var studyteam = fpTeam.data.AsEnumerable().Where(x => (string)x["StudyId"] == studyId);
-
+            var studyteam = OutputTeam.fpTeam.data.AsEnumerable().Where(x => (string)x["StudyId"] == studyId);
 
             return Tools.getFullName(studyteam.FirstOrDefault(x => (string)x["Role"] == role && (string)x["Primary"] == "Y"));
         }

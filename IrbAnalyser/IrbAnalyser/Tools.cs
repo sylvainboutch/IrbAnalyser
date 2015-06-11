@@ -33,6 +33,12 @@ namespace IrbAnalyser
             return result;
         }
 
+        public static string getStudyIdentifiers(string studyId)
+        {
+            var strplit = studyId.Split(new string[] { "&&" }, StringSplitOptions.None);
+            return strplit[0];
+        }
+
         public static string parseDate(string date)
         {
             DateTime dateparsed = DateTime.MinValue;

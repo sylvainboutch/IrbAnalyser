@@ -64,6 +64,8 @@ namespace IrbAnalyser
                 Csv.saveCsv(OutputTeam.newTeam, separator, savefilenoext + "_newTeam");
                 Csv.saveCsv(OutputStatus.newStatus, separator, savefilenoext + "_newStatus");
 
+                Csv.saveCsv(OutputTeam.newNonSystemUser, separator, savefilenoext + "_newNonSystemUser");
+
                 /*
                 Csv.saveCsv(OutputStudy.updatedStudy, separator, savefilenoext + "_updatedStudy");
                 Csv.saveCsv(OutputMSD.updatedMSD, separator, savefilenoext + "_updatedMSD");
@@ -93,8 +95,19 @@ namespace IrbAnalyser
 
                 lstxls = new List<ExcelWorksheet>();
 
-                lstxls.Add(new ExcelWorksheet("Team", "List of team members to modify in Velos", OutputTeam.trainingNeededTeam));
+                lstxls.Add(new ExcelWorksheet("Team", "List of team members to modify in Velos", OutputTeam.triggerTeam));
                 exc.WriteDataTableToExcel(savefilenoext + "_triggers.xlsx", lstxls);
+
+
+                lstxls = new List<ExcelWorksheet>();
+
+                lstxls.Add(new ExcelWorksheet("Team", "List of non system user to add in Velos", OutputTeam.newNonSystemUser));
+                exc.WriteDataTableToExcel(savefilenoext + "_newNonSystem.xlsx", lstxls);
+
+                
+
+
+
 
 
                 txtOutput.Text = "Analysis complete.\r\nPlease open the excel file and create/modify studies in Velos accordingly.";

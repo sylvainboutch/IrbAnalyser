@@ -979,11 +979,11 @@
     </Options>
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
-      <Diagram Name="Model1" ZoomLevel="46">
+      <Diagram Name="Model1" ZoomLevel="88">
         <EntityTypeShape EntityType="VelosModel.LCL_V_STUDYSUMM_PLUSMORE" Width="1.5" PointX="0.75" PointY="0.75" Height="19.095113932291667" />
         <EntityTypeShape EntityType="VelosModel.VDA_V_STUDYSITES" Width="1.5" PointX="2.75" PointY="0.75" Height="5.2494108072916674" />
         <EntityTypeShape EntityType="VelosModel.VDA_V_STUDYSTAT" Width="1.5" PointX="4.75" PointY="0.75" Height="5.8463151041666652" />
-        <EntityTypeShape EntityType="VelosModel.VDA_V_STUDYTEAM_MEMBERS" Width="1.5" PointX="6.75" PointY="0.75" Height="4.6725065104166674" />
+        <EntityTypeShape EntityType="VelosModel.VDA_V_STUDYTEAM_MEMBERS" Width="4.375" PointX="6.75" PointY="0.75" Height="5.057109375" />
         <EntityTypeShape EntityType="VelosModel.ER_STUDYAPNDX" Width="1.5" PointX="5.625" PointY="8" Height="4.2879036458333388" />
         <EntityTypeShape EntityType="VelosModel.ER_STUDYVER" Width="1.5" PointX="3.375" PointY="8.125" Height="4.0956022135416674" />
         <AssociationConnector Association="VelosModel.FK_STDYAPNX_STUDY" >
