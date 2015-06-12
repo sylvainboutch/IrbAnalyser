@@ -226,9 +226,7 @@ namespace IrbAnalyser
 
                                     }
                                 }
-
                             }
-
                         }
 
                         if (worksheet.dataTable.Columns.Count > 0)
@@ -244,18 +242,16 @@ namespace IrbAnalyser
                             excelCellrange = excelSheet.Range[excelSheet.Cells[1, 1], excelSheet.Cells[2, worksheet.dataTable.Columns.Count]];
                             FormattingExcelCells(excelCellrange, "#000099", System.Drawing.Color.White, true);
                         }
-
                     }
-
                 }
 
                 foreach (Microsoft.Office.Interop.Excel.Worksheet ws in excelworkBook.Worksheets)
                 {
-                    if (ws.Name.ToLower().Contains("sheet")) ws.Delete();
+                    if (ws.Name.ToLower().Contains("sheet") && excelworkBook.Worksheets.Count > 1) ws.Delete();
                 }
                 //now save the workbook and exit Excel
-
-                excelworkBook.SaveAs(saveAsLocation);
+                if (excelworkBook.Worksheets.Count > 0)
+                    excelworkBook.SaveAs(saveAsLocation);
 
                 excelworkBook.Close();
                 excel.Quit();

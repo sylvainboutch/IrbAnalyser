@@ -19,12 +19,11 @@ namespace IrbAnalyser
             return dr == null ? "" : dr["FirstName"] + " " + dr["LastName"];
         }
 
-        public static string generateStudyIdentifiers(DataTable study, string studyID)
+        public static string generateStudyIdentifiers(string studyID)
         {
             string result = studyID;
-            var stud = (from st in study.AsEnumerable()
-                       where st.Field<string>("IRB Study ID").Trim().ToLower() == studyID.Trim().ToLower()
-                       && st.Field<string>("IRB Agency name").Trim().ToLower() == Agency.agencyStrLwr
+            var stud = (from st in OutputStudy.fpstudys.data.AsEnumerable()
+                        where st.Field<string>("StudyId").Trim().ToLower() == studyID.Trim().ToLower()
                         select (st.Field<string>("SiteName").Replace("(IBC)", "") + "::" + st.Field<string>("StudySiteId"))).ToArray();
             foreach (var stu in stud)
             {

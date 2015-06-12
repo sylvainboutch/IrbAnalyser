@@ -78,10 +78,10 @@ namespace IrbAnalyser
         public static void analyseRow(DataRow studyrow, bool newrecord)
         {
             string irbstudyId = (string)studyrow["StudyId"];
-            string irbno = ((string)studyrow["IRBNumber"]).Replace("(IBC)", "");
+            string irbno = ((string)studyrow["IRBNumber"]);
             string url = ((string)studyrow["DocumentLink"]).ToLower();
 
-            if (!newrecord)
+            if (!newrecord && !((string)studyrow["IRBNumber"]).Contains("(IBC)"))
             {
 
                 if (!String.IsNullOrEmpty(url))
@@ -97,7 +97,7 @@ namespace IrbAnalyser
                     }
                 }
             }
-            else
+            else if (!((string)studyrow["IRBNumber"]).Contains("(IBC)"))
             {
                 if (!String.IsNullOrEmpty(url))
                 {

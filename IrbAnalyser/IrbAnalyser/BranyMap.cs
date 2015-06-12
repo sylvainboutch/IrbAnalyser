@@ -130,8 +130,8 @@ namespace IrbAnalyser
         public static readonly Dictionary<string, string> statusMapBrany = new Dictionary<string, string>()
             {
                 {"",""},
-                { "Approved", "IRB Approved" },
-                { "Approved IRB only", "IRB Approved" },
+                { "Approved", "IRB Initial Approved" },
+                { "Approved IRB only", "IRB Initial Approved" },
                 { "Closed", "Complete " },
                 { "Closed IRB only", "Complete " },
                 { "Closed to Enrollment", "Closed to accrual" },

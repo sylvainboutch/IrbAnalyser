@@ -75,16 +75,18 @@ namespace IrbAnalyser
                 Csv.saveCsv(OutputStatus.updatedStatus, separator, savefilenoext + "_updatedStatus");                
                 */
 
+                
                 List<ExcelWorksheet> lstxls = new List<ExcelWorksheet>();
-
+                /*
                 lstxls.Add(new ExcelWorksheet("Status", "List of status to add in Velos", OutputStatus.newStatus));
                 lstxls.Add(new ExcelWorksheet("Team", "List of team members to add Velos", OutputTeam.newTeam));
                 lstxls.Add(new ExcelWorksheet("Site", "List of organization to add in Velos", OutputSite.newSites));
                 lstxls.Add(new ExcelWorksheet("Attachments", "List of version (attachment) to add in Velos", OutputDocs.newDocs));
                 lstxls.Add(new ExcelWorksheet("Studies", "List of studies to create or modify in Velos", OutputStudy.newStudy));
                 exc.WriteDataTableToExcel(savefilenoext + "_new.xlsx", lstxls);
+                
 
-                lstxls = new List<ExcelWorksheet>();
+                lstxls = new List<ExcelWorksheet>();*/
 
                 lstxls.Add(new ExcelWorksheet("Status", "List of status to modify in Velos", OutputStatus.updatedStatus));
                 lstxls.Add(new ExcelWorksheet("Team", "List of team members to modify in Velos", OutputTeam.updatedTeam));
@@ -98,12 +100,12 @@ namespace IrbAnalyser
                 lstxls.Add(new ExcelWorksheet("Team", "List of team members to modify in Velos", OutputTeam.triggerTeam));
                 exc.WriteDataTableToExcel(savefilenoext + "_triggers.xlsx", lstxls);
 
-
+                /*
                 lstxls = new List<ExcelWorksheet>();
 
                 lstxls.Add(new ExcelWorksheet("Team", "List of non system user to add in Velos", OutputTeam.newNonSystemUser));
                 exc.WriteDataTableToExcel(savefilenoext + "_newNonSystem.xlsx", lstxls);
-
+                */
                 
 
 

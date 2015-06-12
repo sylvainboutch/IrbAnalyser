@@ -125,18 +125,10 @@ namespace IrbAnalyser
         {
             initiate();
             FileParser fpStudy = new FileParser(filepath + "Study.txt", FileParser.type.Study);
-            System.Diagnostics.Stopwatch timer = new System.Diagnostics.Stopwatch();
-            timer.Start();
-
-
             foreach (DataRow study in fpStudy.data.Rows)
             {
                 analyseRow(study);
             }
-
-
-            timer.Stop();
-            Console.Write(timer.ElapsedMilliseconds.ToString() + " ms");
             //OutputSite.analyseDelete(fpStudy.data);
         }
 
@@ -227,20 +219,20 @@ namespace IrbAnalyser
                                 }
                                 else { newcro = ""; }
 
-                                if (Tools.compareStr(stu.STUDY_TITLE, dr["StudyTitle"]))
+                                if (Tools.compareStr(stu.STUDY_TITLE, dr["StudyTitle"]) && !String.IsNullOrWhiteSpace((string)dr["StudyTitle"]))
                                 {
                                     dr["Studytitle"] = "";
                                 }
-                                else
+                                else if (!String.IsNullOrWhiteSpace((string)dr["StudyTitle"]))
                                 {
                                     hasChanged = true;
                                 }
 
-                                if (Tools.compareStr(stu.STUDY_SUMMARY, dr["Studysummary"]))
+                                if (Tools.compareStr(stu.STUDY_SUMMARY, dr["Studysummary"]) && !String.IsNullOrWhiteSpace((string)dr["Studysummary"]))
                                 {
                                     dr["Studysummary"] = "";
                                 }
-                                else
+                                else if (!String.IsNullOrWhiteSpace((string)dr["Studysummary"]))
                                 {
                                     hasChanged = true;
                                 }
@@ -323,11 +315,11 @@ namespace IrbAnalyser
 
                                 //TODO Phase need mapping from IRIS, BRANY doesnt have
                                 //TODO This should also use a map
-                                if (Tools.compareStr(stu.STUDY_SPONSOR, dr["Primarysponsorname"]))
+                                if (Tools.compareStr(stu.STUDY_SPONSOR, dr["Primarysponsorname"]) && !String.IsNullOrWhiteSpace((string)dr["Primarysponsorname"]))
                                 {
                                     dr["Primarysponsorname"] = "";
                                 }
-                                else
+                                else if (!String.IsNullOrWhiteSpace((string)dr["Primarysponsorname"]))
                                 {
                                     hasChanged = true;
                                 }
@@ -335,21 +327,21 @@ namespace IrbAnalyser
                                 string[] strs = {dr["Primarysponsorcontactfirstname"].ToString(),
                     dr["Primarysponsorcontactlastname"].ToString()};
 
-                                if (Tools.containStr(stu.SPONSOR_CONTACT, strs))
+                                if (Tools.containStr(stu.SPONSOR_CONTACT, strs) && !String.IsNullOrWhiteSpace((string)dr["Primarysponsorcontactfirstname"]) && !String.IsNullOrWhiteSpace((string)dr["Primarysponsorcontactlastname"]))
                                 {
                                     dr["Primarysponsorcontactfirstname"] = "";
                                     dr["Primarysponsorcontactlastname"] = "";
                                 }
-                                else
+                                else if (!String.IsNullOrWhiteSpace((string)dr["Primarysponsorcontactfirstname"]) && !String.IsNullOrWhiteSpace((string)dr["Primarysponsorcontactlastname"]))
                                 {
                                     hasChanged = true;
                                 }
 
-                                if (Tools.compareStr(stu.STUDY_SPONSORID, dr["PrimarysponsorstudyID"]))
+                                if (Tools.compareStr(stu.STUDY_SPONSORID, dr["PrimarysponsorstudyID"]) && !String.IsNullOrWhiteSpace((string)dr["PrimarysponsorstudyID"]))
                                 {
                                     dr["PrimarysponsorstudyID"] = "";
                                 }
-                                else
+                                else if (!String.IsNullOrWhiteSpace((string)dr["PrimarysponsorstudyID"]))
                                 {
                                     hasChanged = true;
                                 }
@@ -403,7 +395,7 @@ namespace IrbAnalyser
             dr["IRB Agency name"] = Agency.agencyStrLwr.ToUpper();
             dr["IRB no"] = ((string)row["IRBNumber"]).Replace("(IBC)", "");
             dr["IRB Study ID"] = (string)row["StudyId"];
-            dr["IRB Identifiers"] = Tools.generateStudyIdentifiers(dr.Table, (string)row["StudyId"]);
+            dr["IRB Identifiers"] = Tools.generateStudyIdentifiers((string)row["StudyId"]);
 
             dr["Study number"] = Tools.getStudyNumber((string)row["StudyId"], (string)dr["IRB no"], (string)row["StudyAcronym"]);
 
