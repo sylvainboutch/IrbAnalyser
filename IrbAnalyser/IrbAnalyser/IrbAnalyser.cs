@@ -63,6 +63,7 @@ namespace IrbAnalyser
                 Csv.saveCsv(OutputSite.newSites, separator, savefilenoext + "_newSites");
                 Csv.saveCsv(OutputTeam.newTeam, separator, savefilenoext + "_newTeam");
                 Csv.saveCsv(OutputStatus.newStatus, separator, savefilenoext + "_newStatus");
+                Csv.saveCsv(OutputIRBForm.newIRBForm, separator, savefilenoext + "_newIRBForm");
 
                 Csv.saveCsv(OutputTeam.newNonSystemUser, separator, savefilenoext + "_newNonSystemUser");
 

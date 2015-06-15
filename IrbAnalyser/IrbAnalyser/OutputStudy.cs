@@ -444,11 +444,12 @@ namespace IrbAnalyser
             dr["Sponsor contact"] = row["PrimarySponsorContactFirstName"].ToString() + " " + row["PrimarySponsorContactLastName"].ToString();
             dr["Sponsor Protocol ID"] = row["PrimarySponsorStudyId"].ToString();
 
-            string[] labels = new string[6] { "Study Managed by", "CRO", "IRB agency name", "IRB No.", "OFFICE USE ONLY - DO NOT MODIFY - IRB Identifiers", "Is this a cancer related study ?" };
+            
+            string[] labels = new string[6] { "Study Managed by", "CRO", "IRB agency name", "IRB No.", "Is this a cancer related study ?" };
 
             dr["Cancer"] = row["Cancer"];
 
-            string[] values = new string[6] { Agency.agencyStrLwr.ToUpper(), (string)dr["CRO"], Agency.agencyStrLwr.ToUpper(), (string)dr["IRB no"], (string)dr["IRB Identifiers"], (string)dr["Cancer"] };
+            string[] values = new string[6] { "BRY", (string)dr["CRO"], Agency.agencyStrLwr, (string)dr["IRB no"], (string)dr["Cancer"] };
 
             OutputMSD.initiate();
 
@@ -458,6 +459,7 @@ namespace IrbAnalyser
             }
 
 
+            OutputIRBForm.addIds((string)dr["Study number"], (string)dr["IRB Identifiers"]);
 
             if (newentry)
             { newStudy.Rows.Add(dr); }
@@ -473,7 +475,10 @@ namespace IrbAnalyser
 
         private static string getRC(string studyId)
         {
-            return getRole(studyId, BranyRoleMap.RC);
+            string retstr = getRole(studyId, BranyRoleMap.RC);
+            retstr = String.IsNullOrWhiteSpace(retstr) ? getPI(studyId) : retstr;
+
+            return retstr;
         }
 
 

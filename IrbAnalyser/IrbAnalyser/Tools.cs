@@ -24,17 +24,18 @@ namespace IrbAnalyser
             string result = studyID;
             var stud = (from st in OutputStudy.fpstudys.data.AsEnumerable()
                         where st.Field<string>("StudyId").Trim().ToLower() == studyID.Trim().ToLower()
-                        select (st.Field<string>("SiteName").Replace("(IBC)", "") + "::" + st.Field<string>("StudySiteId"))).ToArray();
+                        select (st.Field<string>("SiteName").Replace("(IBC)", "") + ":" + st.Field<string>("StudySiteId"))).ToArray();
             foreach (var stu in stud)
             {
-                result += "&&" + stu;
+                if (!stu.Contains("(IBC)"))
+                    result += "&" + stu;
             }
             return result;
         }
 
         public static string getStudyIdentifiers(string studyId)
         {
-            var strplit = studyId.Split(new string[] { "&&" }, StringSplitOptions.None);
+            var strplit = studyId.Split(new string[] { "&" }, StringSplitOptions.None);
             return strplit[0];
         }
 
@@ -95,7 +96,7 @@ namespace IrbAnalyser
             //string output = DateTime.Now.Year.ToString().Substring(2, 2);
             //string output = irbnumber.Substring(0, 2);
             string output = irbnumber.Replace("-", "");
-            output += "_" + accronym + "_";
+            output += "-" + accronym + "-";
             output += Agency.AgencyVal == Agency.AgencyList.BRANY ? "B" : "OCT";//OR MSA ? since apperently OCT enters brany CDA
             //output += irbnumber;
             return output;
@@ -148,7 +149,7 @@ namespace IrbAnalyser
             StringBuilder sb = new StringBuilder();
             foreach (char c in input)
             {
-                if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') )
+                if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == ' ')
                 {
                     sb.Append(c);
                 }

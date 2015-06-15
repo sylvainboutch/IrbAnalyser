@@ -313,7 +313,7 @@ namespace IrbAnalyser
 
             if (currentuser != null)
             {
-                if (!issuperuser && currentuser.USER_DEFAULTGRP == enabledGroup && isactiveuser)
+                if (!issuperuser)// && currentuser.USER_DEFAULTGRP == enabledGroup && isactiveuser)
                 {
                     if (Tools.getOldStudy((string)userRow["StudyId"]))
                     {
@@ -323,13 +323,21 @@ namespace IrbAnalyser
                         if (!String.IsNullOrEmpty(email))
                         {
                             var user = from us in team
-                                       where us.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId)
+                                       where us.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
                                       && us.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
                                       && us.USER_EMAIL.ToLower() == email
                                        select us;
                             if (!user.Any())
                             {
                                 addRow(userRow, "New member", newTeam);
+                                if (!isactiveuser)
+                                {
+                                    addRow(userRow, "Inactive User added to study team", triggerTeam);
+                                }
+                                else if (currentuser.USER_DEFAULTGRP != enabledGroup && currentuser.USER_EMAIL == email && isactiveuser && !issuperuser)
+                                {
+                                    addRow(userRow, "User needs training", triggerTeam);
+                                }
                             }
                             else
                             {
@@ -353,7 +361,10 @@ namespace IrbAnalyser
                                 }
                                 else { userRow["SiteName"] = ""; }
                                 //todo map sites and check
-                                if (changed) { addRow(userRow, "Modified member", updatedTeam); }
+                                if (changed) 
+                                { 
+                                    addRow(userRow, "Modified member", updatedTeam); 
+                                }
                             }
                         }
                         //}
@@ -361,16 +372,15 @@ namespace IrbAnalyser
                     else
                     {
                         addRow(userRow, "New study", newTeam);
+                        if (!isactiveuser)
+                        {
+                            addRow(userRow, "Inactive User added to study team", triggerTeam);
+                        }
+                        else if (currentuser.USER_DEFAULTGRP != enabledGroup && currentuser.USER_EMAIL == email && isactiveuser && !issuperuser)
+                        {
+                            addRow(userRow, "User needs training", triggerTeam);
+                        }
                     }
-                }
-                else if (currentuser.USER_DEFAULTGRP != enabledGroup && currentuser.USER_EMAIL == email && isactiveuser && !issuperuser)
-                {
-                    addRow(userRow, "User needs training", triggerTeam);
-                }
-                else if (!isactiveuser)
-                {
-                    addRow(userRow, "Inactive User", triggerTeam);
-                    addRow(userRow, "Add inactive user to study", newTeam);
                 }
             }
             else

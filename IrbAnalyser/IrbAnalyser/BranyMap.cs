@@ -151,7 +151,7 @@ namespace IrbAnalyser
                 { "Pending closure IRB only", "Undefined IRB Event" },
                 { "Pending Review", "IRB INITIAL Submitted" },
                 { "Pending Review IRB only", "IRB INITIAL Submitted" },
-                { "PENDING VETTING", "IRB INITIAL Submitted Draft" },
+                { "PENDING VETTING", "DRAFT" },
                 { "Submission pending", "Draft" },
                 { "Submission pending IRB only", "Draft" },
                 { "Suspended by entity other than IRB", "Temporarily Closed to Accrual and Intervention" },
@@ -168,7 +168,8 @@ namespace IrbAnalyser
                 { "Approved IBC Only", "Undefined IRB Event" },
                 { "Pending Review (IBC)", "Undefined IRB Event" },
                 { "Closed to Enrollment (IBC)", "Closed to accrual" },
-                { "Dropped by Investigator", "Undefined IRB Event" }
+                { "Dropped by Investigator", "Undefined IRB Event" },
+                { "Administrative - Translation", "Undefined IRB Event" }
             };
 
         public static string getStatus(string key)
@@ -224,7 +225,8 @@ namespace IrbAnalyser
                 { "Approved (IBC)", "Pre Activation" },
                 { "Pending Review (IBC)", "Pre Activation" },
                 { "Dropped by Investigator", "Pre Activation" },
-                { "Closed to Enrollment (IBC)", "Study Status" }
+                { "Closed to Enrollment (IBC)", "Study Status" },
+                { "Administrative - Translation", "Pre Activation" }
             };
 
         public static string getType(string key)

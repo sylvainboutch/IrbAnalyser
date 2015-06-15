@@ -105,18 +105,18 @@ namespace IrbAnalyser
                                     && sit.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
                                     && sit.SITE_NAME == site
                                  select sit);
-                    if (sites2.Count() == 0)
+                    if (sites2.Count() == 0 && !site.Contains("(IBC)"))
                     {
                         addRow("New Site", site, size, irbstudyId, ((string)studyrow["IRBNumber"]).Replace("(IBC)", ""), true);
                     }
-                    else if (sites2.FirstOrDefault().STUDYSITE_LSAMPLESIZE != size && !String.IsNullOrEmpty(size))
+                    else if (sites2.FirstOrDefault().STUDYSITE_LSAMPLESIZE != size && !String.IsNullOrEmpty(size) && !site.Contains("(IBC)"))
                     {
                         addRow("Modified site", site, size, irbstudyId, ((string)studyrow["IRBNumber"]).Replace("(IBC)", ""), false);
                     }
                 }
 
             }
-            else
+            else if (!site.Contains("(IBC)"))
             {
                 addRow("New study", site, size, irbstudyId, ((string)studyrow["IRBNumber"]).Replace("(IBC)", ""), true);
             }
