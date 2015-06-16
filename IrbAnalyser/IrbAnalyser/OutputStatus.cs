@@ -27,7 +27,7 @@ namespace IrbAnalyser
 
                         var query = (from st in db.VDA_V_STUDYSTAT
                                      where st.MORE_IRBAGENCY.ToLower().Trim() == Agency.agencyStrLwr
-                                     && st.MORE_IRBSTUDYID != null
+                                     && st.IRBIDENTIFIERS != null
                                      select st);
                         _allstatus = query.ToList<Model.VDA_V_STUDYSTAT>();
                     }
@@ -126,7 +126,7 @@ namespace IrbAnalyser
 
 
                 var statuses = from stat in allstatus
-                               where stat.MORE_IRBSTUDYID == irbstudyId
+                               where stat.IRBIDENTIFIERS.Contains(irbstudyId)
                                && stat.SSTAT_STUDY_STATUS != null
                                && stat.SSTAT_NOTES != null
                                && stat.SSTAT_VALID_FROM != null
@@ -134,7 +134,7 @@ namespace IrbAnalyser
                                select stat;
 
                 var statusesDB = from stat in statuses
-                                 where stat.MORE_IRBSTUDYID == irbstudyId
+                                 where stat.IRBIDENTIFIERS.Contains(irbstudyId)
                                  && stat.SSTAT_STUDY_STATUS.Trim().ToLower() == status1.Trim().ToLower()
                                  && stat.SSTAT_NOTES.Trim().ToLower() == ((string)statusRow["Status"]).Trim().ToLower()
                                  && stat.SSTAT_VALID_FROM.Value.Year == start.Year
@@ -173,8 +173,8 @@ namespace IrbAnalyser
                 sitename = BranySiteMap.getSite(((string)eventRow["Sitename"]).Replace("(IBC)", ""));
             }
 
-            string status1 = "IRB AMENDMENT Submitted**";
-            string status2 = "IRB Initial Approved";
+            string status1 = "IRB Amendment Submitted**";
+            string status2 = "IRB Amendment Approved";
 
             DateTime start = DateTime.Now;
             DateTime.TryParse((string)eventRow["EventCreationDate"], out start);
@@ -191,7 +191,7 @@ namespace IrbAnalyser
                 if (status == status1)
                 {
                     var statusesDB1 = from stat in allstatus
-                                      where stat.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
+                                      where stat.IRBIDENTIFIERS.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
                                    && stat.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
                                       && stat.SSTAT_STUDY_STATUS == status1
                                       && stat.SSTAT_NOTES == (string)eventRow["Event"]
@@ -210,7 +210,7 @@ namespace IrbAnalyser
                     if (end != DateTime.MinValue)
                     {
                         var statusesDB2 = from stat in allstatus
-                                          where stat.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
+                                          where stat.IRBIDENTIFIERS.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
                                        && stat.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
                                           && stat.SSTAT_STUDY_STATUS == status2
                                           && stat.SSTAT_NOTES == (string)eventRow["Event"]
@@ -229,7 +229,7 @@ namespace IrbAnalyser
                 else
                 {
                     var statuses = from stat in allstatus
-                                   where stat.MORE_IRBSTUDYID == irbstudyId
+                                   where stat.IRBIDENTIFIERS.Contains(irbstudyId)
                                    && stat.SSTAT_STUDY_STATUS != null
                                    && stat.SSTAT_NOTES != null
                                    && stat.SSTAT_VALID_FROM != null
@@ -237,7 +237,7 @@ namespace IrbAnalyser
                                    select stat;
 
                     var statusesDB3 = from stat in statuses
-                                      where stat.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
+                                      where stat.IRBIDENTIFIERS.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
                                       && stat.SSTAT_STUDY_STATUS.ToString().ToLower() == status.ToString().ToLower()
                                       && stat.SSTAT_NOTES.Trim().ToLower() == ((string)eventRow["Event"]).Trim().ToLower()
                                       && stat.SSTAT_VALID_FROM.Value.Year == start.Year
@@ -257,7 +257,7 @@ namespace IrbAnalyser
             {
                 if (status == status1)
                 {
-                    addRowEvent(eventRow, "IRB AMENDMENT Submitted**", "New study", true);
+                    addRowEvent(eventRow, "IRB Amendment Submitted**", "New study", true);
                     if (end != DateTime.MinValue)
                     {
                         addRowEvent(eventRow, "IRB Amendment Approved", "New study", true);
@@ -321,7 +321,7 @@ namespace IrbAnalyser
 
 
                 var statusesDB = !(from stat in allstatus
-                                   where stat.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
+                                   where stat.IRBIDENTIFIERS.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
                               && stat.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
                                  && stat.SSTAT_STUDY_STATUS == "irb initial approved"
                                  && stat.SSTAT_VALID_FROM.Value.Year == initial.Year
@@ -343,7 +343,7 @@ namespace IrbAnalyser
 
 
                 statusesDB = !(from stat in allstatus
-                               where stat.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
+                               where stat.IRBIDENTIFIERS.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
                           && stat.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
                              && stat.SSTAT_STUDY_STATUS == "irb renewal approved"
                              && stat.SSTAT_VALID_FROM.Value.Year == renew.Year
@@ -420,6 +420,7 @@ namespace IrbAnalyser
                      && st.Field<string>("Status Valid From").Trim().ToLower() == ((string)dr["Status Valid From"]).Trim().ToLower()
                      && st.Field<string>("Comment").Trim().ToLower() == ((string)dr["Comment"]).Trim().ToLower()
                      select st).Any();
+
                 if (dtStatus) newStatus.Rows.Add(dr);
             }
             else
@@ -480,7 +481,18 @@ namespace IrbAnalyser
                 dr["Status Valid Until"] = Tools.parseDate((string)end.Date.ToString("o"));
             }
 
-            if (newrecord)
+            if (status.Trim().ToLower() == "undefined irb event")
+            {
+                string undefinedEvent = "Organization : " + dr["Organization"] + " - Event : " + dr["Comment"] + " - Date : " + dr["Status Valid From"];
+                bool alreadyAdded = (from events in OutputIRBForm.newIRBForm.AsEnumerable()
+                                     where events.Field<string>("IRB_Event").Contains(undefinedEvent)
+                                     select events).Any();
+                if (!alreadyAdded)
+                {
+                    OutputIRBForm.addEvents((string)dr["Study number"], undefinedEvent);
+                }
+            }
+            else if (newrecord)
             {
                 bool dtStatus = !(from st in OutputStatus.newStatus.AsEnumerable()
                                   where st.Field<string>("IRB Study ID").Trim().ToLower() == ((string)eventRow["StudyId"]).Trim().ToLower()

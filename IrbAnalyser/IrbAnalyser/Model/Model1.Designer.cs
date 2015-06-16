@@ -2030,24 +2030,24 @@ namespace IrbAnalyser.Model
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_IRBSTUDYID
+        public global::System.String IRBIDENTIFIERS
         {
             get
             {
-                return _MORE_IRBSTUDYID;
+                return _IRBIDENTIFIERS;
             }
             set
             {
-                OnMORE_IRBSTUDYIDChanging(value);
-                ReportPropertyChanging("MORE_IRBSTUDYID");
-                _MORE_IRBSTUDYID = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_IRBSTUDYID");
-                OnMORE_IRBSTUDYIDChanged();
+                OnIRBIDENTIFIERSChanging(value);
+                ReportPropertyChanging("IRBIDENTIFIERS");
+                _IRBIDENTIFIERS = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("IRBIDENTIFIERS");
+                OnIRBIDENTIFIERSChanged();
             }
         }
-        private global::System.String _MORE_IRBSTUDYID;
-        partial void OnMORE_IRBSTUDYIDChanging(global::System.String value);
-        partial void OnMORE_IRBSTUDYIDChanged();
+        private global::System.String _IRBIDENTIFIERS;
+        partial void OnIRBIDENTIFIERSChanging(global::System.String value);
+        partial void OnIRBIDENTIFIERSChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -2615,24 +2615,24 @@ namespace IrbAnalyser.Model
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_IRBSTUDYID
+        public global::System.String IRBIDENTIFIERS
         {
             get
             {
-                return _MORE_IRBSTUDYID;
+                return _IRBIDENTIFIERS;
             }
             set
             {
-                OnMORE_IRBSTUDYIDChanging(value);
-                ReportPropertyChanging("MORE_IRBSTUDYID");
-                _MORE_IRBSTUDYID = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_IRBSTUDYID");
-                OnMORE_IRBSTUDYIDChanged();
+                OnIRBIDENTIFIERSChanging(value);
+                ReportPropertyChanging("IRBIDENTIFIERS");
+                _IRBIDENTIFIERS = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("IRBIDENTIFIERS");
+                OnIRBIDENTIFIERSChanged();
             }
         }
-        private global::System.String _MORE_IRBSTUDYID;
-        partial void OnMORE_IRBSTUDYIDChanging(global::System.String value);
-        partial void OnMORE_IRBSTUDYIDChanged();
+        private global::System.String _IRBIDENTIFIERS;
+        partial void OnIRBIDENTIFIERSChanging(global::System.String value);
+        partial void OnIRBIDENTIFIERSChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -3953,24 +3953,24 @@ namespace IrbAnalyser.Model
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_IRBSTUDYID
+        public global::System.String IRBIDENTIFIERS
         {
             get
             {
-                return _MORE_IRBSTUDYID;
+                return _IRBIDENTIFIERS;
             }
             set
             {
-                OnMORE_IRBSTUDYIDChanging(value);
-                ReportPropertyChanging("MORE_IRBSTUDYID");
-                _MORE_IRBSTUDYID = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_IRBSTUDYID");
-                OnMORE_IRBSTUDYIDChanged();
+                OnIRBIDENTIFIERSChanging(value);
+                ReportPropertyChanging("IRBIDENTIFIERS");
+                _IRBIDENTIFIERS = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("IRBIDENTIFIERS");
+                OnIRBIDENTIFIERSChanged();
             }
         }
-        private global::System.String _MORE_IRBSTUDYID;
-        partial void OnMORE_IRBSTUDYIDChanging(global::System.String value);
-        partial void OnMORE_IRBSTUDYIDChanged();
+        private global::System.String _IRBIDENTIFIERS;
+        partial void OnIRBIDENTIFIERSChanging(global::System.String value);
+        partial void OnIRBIDENTIFIERSChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -4586,24 +4586,24 @@ namespace IrbAnalyser.Model
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_IRBSTUDYID
+        public global::System.String IRBIDENTIFIERS
         {
             get
             {
-                return _MORE_IRBSTUDYID;
+                return _IRBIDENTIFIERS;
             }
             set
             {
-                OnMORE_IRBSTUDYIDChanging(value);
-                ReportPropertyChanging("MORE_IRBSTUDYID");
-                _MORE_IRBSTUDYID = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_IRBSTUDYID");
-                OnMORE_IRBSTUDYIDChanged();
+                OnIRBIDENTIFIERSChanging(value);
+                ReportPropertyChanging("IRBIDENTIFIERS");
+                _IRBIDENTIFIERS = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("IRBIDENTIFIERS");
+                OnIRBIDENTIFIERSChanged();
             }
         }
-        private global::System.String _MORE_IRBSTUDYID;
-        partial void OnMORE_IRBSTUDYIDChanging(global::System.String value);
-        partial void OnMORE_IRBSTUDYIDChanged();
+        private global::System.String _IRBIDENTIFIERS;
+        partial void OnIRBIDENTIFIERSChanging(global::System.String value);
+        partial void OnIRBIDENTIFIERSChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -5123,24 +5123,24 @@ namespace IrbAnalyser.Model
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_IRBSTUDYID
+        public global::System.String IRBIDENTIFIERS
         {
             get
             {
-                return _MORE_IRBSTUDYID;
+                return _IRBIDENTIFIERS;
             }
             set
             {
-                OnMORE_IRBSTUDYIDChanging(value);
-                ReportPropertyChanging("MORE_IRBSTUDYID");
-                _MORE_IRBSTUDYID = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_IRBSTUDYID");
-                OnMORE_IRBSTUDYIDChanged();
+                OnIRBIDENTIFIERSChanging(value);
+                ReportPropertyChanging("IRBIDENTIFIERS");
+                _IRBIDENTIFIERS = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("IRBIDENTIFIERS");
+                OnIRBIDENTIFIERSChanged();
             }
         }
-        private global::System.String _MORE_IRBSTUDYID;
-        partial void OnMORE_IRBSTUDYIDChanging(global::System.String value);
-        partial void OnMORE_IRBSTUDYIDChanged();
+        private global::System.String _IRBIDENTIFIERS;
+        partial void OnIRBIDENTIFIERSChanging(global::System.String value);
+        partial void OnIRBIDENTIFIERSChanged();
     
         /// <summary>
         /// No Metadata Documentation available.

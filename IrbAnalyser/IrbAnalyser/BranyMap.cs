@@ -255,7 +255,7 @@ namespace IrbAnalyser
                 {"Administrative (Translation)","NA"},
                 {"Administrative Review","Undefined IRB Event"},
                 {"Advertisements","Undefined IRB Event"},
-                {"Amendment","IRB AMENDMENT Submitted**"},
+                {"Amendment","IRB Amendment Submitted**"},
                 {"Continuing Review","Undefined IRB Event"},
                 {"Expedited Continuing Review","Undefined IRB Event"},
                 {"Expedited Initial Review","Undefined IRB Event"},

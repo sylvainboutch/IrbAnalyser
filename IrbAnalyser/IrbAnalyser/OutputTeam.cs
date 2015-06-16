@@ -34,7 +34,7 @@ namespace IrbAnalyser
 
                         var query = (from st in db.VDA_V_STUDYTEAM_MEMBERS
                                      where st.MORE_IRBAGENCY != null
-                                     && st.MORE_IRBSTUDYID != null
+                                     && st.IRBIDENTIFIERS != null
                                      && st.USER_EMAIL != null
                                      select st);
                         _team = query.ToList<Model.VDA_V_STUDYTEAM_MEMBERS>();
@@ -323,7 +323,7 @@ namespace IrbAnalyser
                         if (!String.IsNullOrEmpty(email))
                         {
                             var user = from us in team
-                                       where us.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
+                                       where us.IRBIDENTIFIERS.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
                                       && us.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
                                       && us.USER_EMAIL.ToLower() == email
                                        select us;
@@ -402,7 +402,7 @@ namespace IrbAnalyser
                 {
                     var agency = user.MORE_IRBAGENCY;
 
-                    var studyId = Tools.getStudyIdentifiers(user.MORE_IRBSTUDYID);
+                    var studyId = Tools.getStudyIdentifiers(user.IRBIDENTIFIERS);
 
                     var countEmail = (from DataRow dr in fpTeam.data.Rows
                                       where (string)dr["StudyId"] == studyId
@@ -426,7 +426,7 @@ namespace IrbAnalyser
 
                         var delete2 = (from us in team
                                        where us.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
-                                       && us.MORE_IRBSTUDYID.Trim().ToLower() == studyId
+                                       && us.IRBIDENTIFIERS.Trim().ToLower() == studyId
                                        && us.ROLE == RC
                                        select us).Any();
 

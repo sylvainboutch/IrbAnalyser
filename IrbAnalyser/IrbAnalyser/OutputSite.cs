@@ -23,7 +23,7 @@ namespace IrbAnalyser
 
                         var query = (from st in db.VDA_V_STUDYSITES
                                      where st.MORE_IRBAGENCY != null
-                                     && st.MORE_IRBSTUDYID != null
+                                     && st.IRBIDENTIFIERS != null
                                      select st);
                         _sites = query.ToList<Model.VDA_V_STUDYSITES>();
                     }
@@ -101,7 +101,7 @@ namespace IrbAnalyser
                 if (!String.IsNullOrEmpty(site))
                 {
                     var sites2 = (from sit in sites
-                                  where sit.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
+                                  where sit.IRBIDENTIFIERS.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
                                     && sit.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
                                     && sit.SITE_NAME == site
                                  select sit);

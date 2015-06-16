@@ -23,7 +23,7 @@ namespace IrbAnalyser
 
                         var query = (from st in db.LCL_V_STUDYVER_APNDX
                                      where st.MORE_IRBAGENCY != null
-                                     && st.MORE_IRBSTUDYID != null
+                                     && st.IRBIDENTIFIERS != null
                                      && st.STUDYAPNDX_URI != null
                                      select st);
                         _versions = query.ToList<Model.LCL_V_STUDYVER_APNDX>();
@@ -87,7 +87,7 @@ namespace IrbAnalyser
                 if (!String.IsNullOrEmpty(url))
                 {
                     var docs = (from ver in versions
-                                where ver.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
+                                where ver.IRBIDENTIFIERS.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
                                    && ver.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
                                    && ver.STUDYAPNDX_URI.ToLower() == url
                                 select ver).Count();

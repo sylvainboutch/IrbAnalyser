@@ -28,7 +28,7 @@ namespace IrbAnalyser
 
                         var query = (from st in db.LCL_V_STUDYSUMM_PLUSMORE
                                      where st.MORE_IRBAGENCY != null
-                                     && st.MORE_IRBSTUDYID != null
+                                     && st.IRBIDENTIFIERS != null
                                  select st);
                         _studys = query.ToList<Model.LCL_V_STUDYSUMM_PLUSMORE>();
                     }
@@ -148,7 +148,7 @@ namespace IrbAnalyser
                 //{
 
                     var study = from st in studys
-                                where st.MORE_IRBSTUDYID.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
+                                where st.IRBIDENTIFIERS.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
                                 && st.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
                                 select st;
 
@@ -445,11 +445,11 @@ namespace IrbAnalyser
             dr["Sponsor Protocol ID"] = row["PrimarySponsorStudyId"].ToString();
 
             
-            string[] labels = new string[6] { "Study Managed by", "CRO", "IRB agency name", "IRB No.", "Is this a cancer related study ?" };
+            string[] labels = new string[5] { "Study Managed by", "CRO", "IRB agency name", "IRB No.", "Is this a cancer related study ?" };
 
             dr["Cancer"] = row["Cancer"];
 
-            string[] values = new string[6] { "BRY", (string)dr["CRO"], Agency.agencyStrLwr, (string)dr["IRB no"], (string)dr["Cancer"] };
+            string[] values = new string[5] { "BRY", (string)dr["CRO"], Agency.agencyStrLwr, (string)dr["IRB no"], (string)dr["Cancer"] };
 
             OutputMSD.initiate();
 

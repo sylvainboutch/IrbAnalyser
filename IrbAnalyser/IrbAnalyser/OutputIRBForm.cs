@@ -41,6 +41,7 @@ namespace IrbAnalyser
             {
                 DataRow dr = newIRBForm.NewRow();
                 dr["IRB_Event"] = dr["IRB_Event"] + eventData + "&#13;&#10;";
+                dr["Date"] = DateTime.Now.Date.ToString("MM/dd/yyyy");
                 dr["Study_number"] = studyNumber;
                 newIRBForm.Rows.Add(dr);
             }
@@ -65,6 +66,7 @@ namespace IrbAnalyser
             {
                 DataRow dr = newIRBForm.NewRow();
                 dr["IRB_Identifier"] = IRBIds;
+                dr["Date"] = DateTime.Now.Date.ToString("MM/dd/yyyy");
                 dr["Study_number"] = studyNumber;
                 newIRBForm.Rows.Add(dr);
             }
