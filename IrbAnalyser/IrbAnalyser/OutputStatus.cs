@@ -101,6 +101,12 @@ namespace IrbAnalyser
             }
         }
 
+        public static void parseClinTrialXML()
+        { 
+        
+        
+        }
+
         /// <summary>
         /// Analyse the status row from the import file
         /// </summary>

@@ -7,7 +7,7 @@ namespace IrbAnalyser
 {
     class Agency
     {
-        public enum AgencyList { BRANY };
+        public enum AgencyList { BRANY, IRIS, CLINICALTRIALdotGOV };
 
         private static AgencyList agency;
 

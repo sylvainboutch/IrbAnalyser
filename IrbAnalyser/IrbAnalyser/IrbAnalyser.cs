@@ -130,6 +130,7 @@ namespace IrbAnalyser
         /// </summary>
         private void Analyse()
         {
+            
             string dir = Zip.UnZip(ofdStudy.FileName);
             Agency.AgencyList agency = Agency.AgencyList.BRANY;
             Enum.TryParse<Agency.AgencyList>(cboSource.SelectedValue.ToString(), out agency);
@@ -137,11 +138,19 @@ namespace IrbAnalyser
 
             Tools.filename = dir;
 
-            OutputTeam.analyse(dir + "Team.txt");
-            OutputStatus.analyse(dir);
-            OutputStudy.analyse(dir);
+            if (Agency.AgencyVal == Agency.AgencyList.BRANY || Agency.AgencyVal == Agency.AgencyList.IRIS)
+            {
+                OutputTeam.analyse(dir + "Team.txt");
+                OutputStatus.analyse(dir);
+                OutputStudy.analyse(dir);
 
-            OutputIRBForm.finalizeEventIrbForm();
+                OutputIRBForm.finalizeEventIrbForm();
+            }
+            else if (Agency.AgencyVal == Agency.AgencyList.IRIS)
+            { 
+                
+            }
+                
             Zip.CleanUpFile(dir);
 
         }
