@@ -151,7 +151,7 @@ namespace IrbAnalyser
                 { "Pending closure IRB only", "Undefined IRB Event" },
                 { "Pending Review", "IRB INITIAL Submitted" },
                 { "Pending Review IRB only", "IRB INITIAL Submitted" },
-                { "PENDING VETTING", "DRAFT" },
+                { "PENDING VETTING", "Draft" },
                 { "Submission pending", "Draft" },
                 { "Submission pending IRB only", "Draft" },
                 { "Suspended by entity other than IRB", "Temporarily Closed to Accrual and Intervention" },
@@ -250,9 +250,10 @@ namespace IrbAnalyser
     {
         public static readonly Dictionary<string, string> eventsMapBrany = new Dictionary<string, string>()
             {
-                {"1572 Modification","NA"},
+                {"1572 Modification","Undefined IRB Event"},
                 {"Additional PI","Undefined IRB Event"},
-                {"Administrative (Translation)","NA"},
+                {"Administrative (Translation)","Undefined IRB Event"},
+                {"Administrative - Translation","Undefined IRB Event"},
                 {"Administrative Review","Undefined IRB Event"},
                 {"Advertisements","Undefined IRB Event"},
                 {"Amendment","IRB Amendment Submitted**"},
@@ -312,6 +313,7 @@ namespace IrbAnalyser
                 {"1572 Modification","Pre Activation"},
                 {"Additional PI","Pre Activation"},
                 {"Administrative (Translation)","Pre Activation"},
+                {"Administrative - Translation","Pre Activation"},
                 {"Administrative Review","Pre Activation"},
                 {"Advertisements","Pre Activation"},
                 {"Amendment","Pre Activation"},

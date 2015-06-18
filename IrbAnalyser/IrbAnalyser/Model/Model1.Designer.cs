@@ -68,6 +68,22 @@ namespace IrbAnalyser.Model
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
+        public ObjectSet<LCL_V_IRBFORM> LCL_V_IRBFORM
+        {
+            get
+            {
+                if ((_LCL_V_IRBFORM == null))
+                {
+                    _LCL_V_IRBFORM = base.CreateObjectSet<LCL_V_IRBFORM>("LCL_V_IRBFORM");
+                }
+                return _LCL_V_IRBFORM;
+            }
+        }
+        private ObjectSet<LCL_V_IRBFORM> _LCL_V_IRBFORM;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
         public ObjectSet<LCL_V_STUDYSUMM_PLUSMORE> LCL_V_STUDYSUMM_PLUSMORE
         {
             get
@@ -166,6 +182,14 @@ namespace IrbAnalyser.Model
         #region AddTo Methods
     
         /// <summary>
+        /// Deprecated Method for adding a new object to the LCL_V_IRBFORM EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToLCL_V_IRBFORM(LCL_V_IRBFORM lCL_V_IRBFORM)
+        {
+            base.AddObject("LCL_V_IRBFORM", lCL_V_IRBFORM);
+        }
+    
+        /// <summary>
         /// Deprecated Method for adding a new object to the LCL_V_STUDYSUMM_PLUSMORE EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
         public void AddToLCL_V_STUDYSUMM_PLUSMORE(LCL_V_STUDYSUMM_PLUSMORE lCL_V_STUDYSUMM_PLUSMORE)
@@ -220,6 +244,159 @@ namespace IrbAnalyser.Model
     #endregion
 
     #region Entities
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="VelosModel", Name="LCL_V_IRBFORM")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class LCL_V_IRBFORM : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new LCL_V_IRBFORM object.
+        /// </summary>
+        /// <param name="fK_STUDY">Initial value of the FK_STUDY property.</param>
+        public static LCL_V_IRBFORM CreateLCL_V_IRBFORM(global::System.Decimal fK_STUDY)
+        {
+            LCL_V_IRBFORM lCL_V_IRBFORM = new LCL_V_IRBFORM();
+            lCL_V_IRBFORM.FK_STUDY = fK_STUDY;
+            return lCL_V_IRBFORM;
+        }
+
+        #endregion
+
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Decimal FK_STUDY
+        {
+            get
+            {
+                return _FK_STUDY;
+            }
+            set
+            {
+                if (_FK_STUDY != value)
+                {
+                    OnFK_STUDYChanging(value);
+                    ReportPropertyChanging("FK_STUDY");
+                    _FK_STUDY = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("FK_STUDY");
+                    OnFK_STUDYChanged();
+                }
+            }
+        }
+        private global::System.Decimal _FK_STUDY;
+        partial void OnFK_STUDYChanging(global::System.Decimal value);
+        partial void OnFK_STUDYChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> FILLDATE
+        {
+            get
+            {
+                return _FILLDATE;
+            }
+            set
+            {
+                OnFILLDATEChanging(value);
+                ReportPropertyChanging("FILLDATE");
+                _FILLDATE = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("FILLDATE");
+                OnFILLDATEChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _FILLDATE;
+        partial void OnFILLDATEChanging(Nullable<global::System.DateTime> value);
+        partial void OnFILLDATEChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String FORMDATE
+        {
+            get
+            {
+                return _FORMDATE;
+            }
+            set
+            {
+                OnFORMDATEChanging(value);
+                ReportPropertyChanging("FORMDATE");
+                _FORMDATE = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("FORMDATE");
+                OnFORMDATEChanged();
+            }
+        }
+        private global::System.String _FORMDATE;
+        partial void OnFORMDATEChanging(global::System.String value);
+        partial void OnFORMDATEChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String IRBIDENTIFIERS
+        {
+            get
+            {
+                return _IRBIDENTIFIERS;
+            }
+            set
+            {
+                OnIRBIDENTIFIERSChanging(value);
+                ReportPropertyChanging("IRBIDENTIFIERS");
+                _IRBIDENTIFIERS = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("IRBIDENTIFIERS");
+                OnIRBIDENTIFIERSChanged();
+            }
+        }
+        private global::System.String _IRBIDENTIFIERS;
+        partial void OnIRBIDENTIFIERSChanging(global::System.String value);
+        partial void OnIRBIDENTIFIERSChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String IRBEVENTS
+        {
+            get
+            {
+                return _IRBEVENTS;
+            }
+            set
+            {
+                OnIRBEVENTSChanging(value);
+                ReportPropertyChanging("IRBEVENTS");
+                _IRBEVENTS = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("IRBEVENTS");
+                OnIRBEVENTSChanged();
+            }
+        }
+        private global::System.String _IRBEVENTS;
+        partial void OnIRBEVENTSChanging(global::System.String value);
+        partial void OnIRBEVENTSChanged();
+
+        #endregion
+
+    
+    }
     
     /// <summary>
     /// No Metadata Documentation available.

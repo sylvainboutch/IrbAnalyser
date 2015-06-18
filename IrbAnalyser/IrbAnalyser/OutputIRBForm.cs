@@ -71,5 +71,34 @@ namespace IrbAnalyser
                 newIRBForm.Rows.Add(dr);
             }
         }
+
+        public static void finalizeEventIrbForm()
+        {
+
+            IEnumerable<Model.LCL_V_IRBFORM> irbforms;
+            using (Model.VelosDb db = new Model.VelosDb())
+            {
+
+                var queryrslt = from forms in db.LCL_V_IRBFORM
+                               select forms;
+                irbforms = queryrslt.ToList<Model.LCL_V_IRBFORM>();
+            }
+
+
+            foreach (DataRow dr in OutputIRBForm.newIRBForm.Rows)
+            { 
+                var delete = (from irbform in irbforms
+                             where irbform.IRBEVENTS == dr["IRB_Event"]
+                             && irbform.IRBIDENTIFIERS == dr["IRB_Identifier"]
+                                  select irbform).Any();
+                if (delete)
+                {
+                    OutputIRBForm.newIRBForm.Rows.Remove(dr);
+                }
+            }
+        
+        }
+
+
     }
 }

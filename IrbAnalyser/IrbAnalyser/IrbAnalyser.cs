@@ -141,6 +141,7 @@ namespace IrbAnalyser
             OutputStatus.analyse(dir);
             OutputStudy.analyse(dir);
 
+            OutputIRBForm.finalizeEventIrbForm();
             Zip.CleanUpFile(dir);
 
         }
