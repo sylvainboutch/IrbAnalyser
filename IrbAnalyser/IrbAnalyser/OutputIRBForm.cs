@@ -88,8 +88,8 @@ namespace IrbAnalyser
             foreach (DataRow dr in OutputIRBForm.newIRBForm.Rows)
             { 
                 var delete = (from irbform in irbforms
-                             where irbform.IRBEVENTS == dr["IRB_Event"]
-                             && irbform.IRBIDENTIFIERS == dr["IRB_Identifier"]
+                              where irbform.IRBEVENTS == (string)dr["IRB_Event"]
+                             && irbform.IRBIDENTIFIERS == (string)dr["IRB_Identifier"]
                                   select irbform).Any();
                 if (delete)
                 {

@@ -275,7 +275,7 @@ namespace IrbAnalyser
             DateTime.TryParse((string)studyrow["InitialApprovalDate"], out initial);
 
             DateTime renew = DateTime.MinValue;
-            DateTime.TryParse((string)studyrow["MostRecentApprovalDate"], out initial);
+            DateTime.TryParse((string)studyrow["MostRecentApprovalDate"], out renew);
 
             if (newrecord)
             {
@@ -306,29 +306,29 @@ namespace IrbAnalyser
             {
 
 
-                var statusesDB = !(from stat in allstatus
+                var isNotStatusDb = !(from stat in allstatus
                                    where stat.IRBIDENTIFIERS.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
                               && stat.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
-                                 && stat.SSTAT_STUDY_STATUS == "irb initial approved"
+                                 && stat.SSTAT_STUDY_STATUS.Trim().ToLower() == "irb initial approved"
                                  && stat.SSTAT_VALID_FROM.Value.Year == initial.Year
                                  && stat.SSTAT_VALID_FROM.Value.Month == initial.Month
                                  && stat.SSTAT_VALID_FROM.Value.Day == initial.Day
                                  && stat.SSTAT_SITE_NAME == sitename
                                    select stat).Any();
 
-                bool dtStatus = !(from st in OutputStatus.newStatus.AsEnumerable()
+                bool isNotStatusDt = !(from st in OutputStatus.newStatus.AsEnumerable()
                                   where st.Field<string>("IRB Study ID").Trim().ToLower() == irbstudyId.Trim().ToLower()
                                   && st.Field<string>("Study status").Trim().ToLower() == "irb initial approved"
                                   && st.Field<string>("Status Valid From").Trim().ToLower() == ((string)studyrow["InitialApprovalDate"]).Trim().ToLower()
                                   select st).Any();
 
-                if (initial != DateTime.MinValue && dtStatus)
+                if (initial != DateTime.MinValue && isNotStatusDt && isNotStatusDb)
                 {
-                    addRowStudy(studyrow, "Irb Initial Approved", "New status", true, ((string)studyrow["InitialApprovalDate"]).Trim().ToLower());
+                    addRowStudy(studyrow, "IRB Initial Approved", "New status", true, ((string)studyrow["InitialApprovalDate"]).Trim().ToLower());
                 }
 
 
-                statusesDB = !(from stat in allstatus
+                isNotStatusDb = !(from stat in allstatus
                                where stat.IRBIDENTIFIERS.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
                           && stat.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
                              && stat.SSTAT_STUDY_STATUS == "irb renewal approved"
@@ -338,13 +338,13 @@ namespace IrbAnalyser
                              && stat.SSTAT_SITE_NAME == sitename
                                select stat).Any();
 
-                dtStatus = !(from st in OutputStatus.newStatus.AsEnumerable()
+                isNotStatusDt = !(from st in OutputStatus.newStatus.AsEnumerable()
                              where st.Field<string>("IRB Study ID").Trim().ToLower() == irbstudyId.Trim().ToLower()
                              && st.Field<string>("Study status").Trim().ToLower() == "irb renewal approved"
                              && st.Field<string>("Status Valid From").Trim().ToLower() == ((string)studyrow["MostRecentApprovalDate"]).Trim().ToLower()
                              select st).Any();
 
-                if (renew != DateTime.MinValue && dtStatus)
+                if (renew != DateTime.MinValue && isNotStatusDt && isNotStatusDb)
                 {
                     addRowStudy(studyrow, "irb renewal approved", "New status", true, ((string)studyrow["MostRecentApprovalDate"]).Trim().ToLower());
                 }
