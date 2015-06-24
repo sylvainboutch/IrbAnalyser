@@ -288,6 +288,32 @@ namespace IrbAnalyser
                                 }
                                 */
 
+
+                                if (Agency.AgencyVal == Agency.AgencyList.IRIS)
+                                {
+                                    string newdep = IRISMap.Department.getDepartment((string)dr["Department"]);
+                                    if (Tools.compareStr(newdep, stu.STUDY_DIVISION) && !string.IsNullOrWhiteSpace((string)dr["Department"]))
+                                    {
+                                        dr["Department"] = "";
+                                    }
+                                    else if (!string.IsNullOrWhiteSpace((string)dr["Department"]))
+                                    {
+                                        hasChanged = true;
+                                    }
+
+                                    string newDiv = IRISMap.Department.getDivision((string)dr["Department"]);
+                                    if (Tools.compareStr(newDiv, stu.STUDY_TAREA) && !string.IsNullOrWhiteSpace((string)dr["Department"]))
+                                    {
+                                        dr["Department"] = "";
+                                    }
+                                    else if (!string.IsNullOrWhiteSpace((string)dr["Department"]))
+                                    {
+                                        hasChanged = true;
+                                    }
+                                }
+
+
+
                                 int samplesize = 0;
                                 Int32.TryParse((string)dr["Studysamplesize"], out samplesize);
 
@@ -313,8 +339,21 @@ namespace IrbAnalyser
                                     hasChanged = true;
                                 }
 
-                                //TODO Phase need mapping from IRIS, BRANY doesnt have
-                                //TODO This should also use a map
+                                if (Agency.AgencyVal == Agency.AgencyList.IRIS)
+                                {
+                                    string newphase = IRISMap.Phase.getPhase((string)dr["Phase"]);
+                                    if (Tools.compareStr(newphase,stu.STUDY_PHASE) && !string.IsNullOrWhiteSpace((string)dr["Phase"]))
+                                    {
+                                        dr["Phase"] = "";
+                                    }
+                                    else if ( !string.IsNullOrWhiteSpace((string)dr["Phase"]))
+                                    {
+                                        hasChanged = true;
+                                    }
+                                }
+
+
+
                                 if (Tools.compareStr(stu.STUDY_SPONSOR, dr["Primarysponsorname"]) && !String.IsNullOrWhiteSpace((string)dr["Primarysponsorname"]))
                                 {
                                     dr["Primarysponsorname"] = "";
@@ -428,10 +467,31 @@ namespace IrbAnalyser
 
             dr["Official title"] = (string)row["StudyTitle"];
             dr["Study summary"] = row["Studysummary"].ToString();
-            dr["Department"] = String.IsNullOrEmpty((string)row["Department"]) && newentry ? "Please specify" : (string)row["Department"];
-            dr["Division/Therapeutic area"] = String.IsNullOrEmpty((string)row["Division"]) && newentry ? "N/A" : (string)row["Division"];
+
+
+            if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+            {
+                dr["Department"] = String.IsNullOrEmpty((string)row["Department"]) && newentry ? "Please specify" : (string)row["Department"];
+                dr["Division/Therapeutic area"] = String.IsNullOrEmpty((string)row["Division"]) && newentry ? "N/A" : (string)row["Division"];
+            }
+            else if (Agency.AgencyVal == Agency.AgencyList.IRIS)
+            {
+                dr["Department"] = IRISMap.Department.getDepartment((string)row["Department"]);
+                dr["Division/Therapeutic area"] = IRISMap.Department.getDivision((string)row["Department"]);
+            }
+
+
             dr["Entire study sample size"] = row["Studysamplesize"].ToString();
-            dr["Phase"] = String.IsNullOrEmpty((string)row["Phase"]) && newentry ? "Please Specify" : (string)row["Phase"];
+
+            if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+            {
+                dr["Phase"] = String.IsNullOrEmpty((string)row["Phase"]) && newentry ? "Please Specify" : (string)row["Phase"];
+            }
+            else if (Agency.AgencyVal == Agency.AgencyList.IRIS)
+            {
+                dr["Phase"] = IRISMap.Phase.getPhase((string)row["Phase"]);
+            }
+
 
             if (Tools.compareStr(row["Multicenter"].ToString(), "TRUE"))
                 dr["Study scope"] = "Multi Center Study";
@@ -443,6 +503,7 @@ namespace IrbAnalyser
             dr["Primary funding sponsor, if other :"] = row["Primarysponsorname"].ToString();
             dr["Sponsor contact"] = row["PrimarySponsorContactFirstName"].ToString() + " " + row["PrimarySponsorContactLastName"].ToString();
             dr["Sponsor Protocol ID"] = row["PrimarySponsorStudyId"].ToString();
+
 
             
             string[] labels = new string[5] { "Study Managed by", "CRO", "IRB agency name", "IRB No.", "Is this a cancer related study ?" };
@@ -470,12 +531,29 @@ namespace IrbAnalyser
 
         private static string getPI(string studyId)
         {
-            return getRole(studyId, BranyRoleMap.PI);
+            if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+            {
+                return getRole(studyId, BranyRoleMap.PI);
+            }
+            else
+            {
+                return getRole(studyId, IRISMap.RoleMap.PI);
+            }
         }
 
         private static string getRC(string studyId)
         {
-            string retstr = getRole(studyId, BranyRoleMap.RC);
+
+            string retstr = "";
+            if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+            {
+                retstr = getRole(studyId, BranyRoleMap.RC);
+            }
+            else
+            {
+                retstr = getRole(studyId, IRISMap.RoleMap.RC);
+            }
+
             retstr = String.IsNullOrWhiteSpace(retstr) ? getPI(studyId) : retstr;
 
             return retstr;
@@ -484,7 +562,14 @@ namespace IrbAnalyser
 
         private static string getCRO(string studyId)
         {
-            return getRole(studyId, BranyRoleMap.CRO);
+            if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+            {
+                return getRole(studyId, BranyRoleMap.CRO);
+            }
+            else
+            {
+                return "";
+            }
         }
 
 

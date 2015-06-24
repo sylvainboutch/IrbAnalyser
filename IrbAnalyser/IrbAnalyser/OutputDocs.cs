@@ -128,7 +128,14 @@ namespace IrbAnalyser
             dr["Version number"] = Agency.agencyStrLwr.ToUpper() + " " + section;
             dr["Category"] = "External Site Docs";
             dr["URL"] = url;
-            dr["Short description"] = newrecord ? "BRANY IRB Documents" : "";
+            if (url.ToLower().Contains("iris"))
+            {
+                dr["Short description"] = newrecord ? "Einstein IRB Documents" : "";
+            }
+            else
+            {
+                dr["Short description"] = newrecord ? "BRANY IRB Documents" : "";
+            }
             dr["Version status"] = "Approved";
 
             if (newrecord)
@@ -139,5 +146,6 @@ namespace IrbAnalyser
             else
             { updatedDocs.Rows.Add(dr); }
         }
+
     }
 }

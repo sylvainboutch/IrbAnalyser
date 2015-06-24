@@ -125,6 +125,7 @@
     <Compile Include="IrbAnalyser.Designer.cs">
       <DependentUpon>IrbAnalyser.cs</DependentUpon>
     </Compile>
+    <Compile Include="IrisMap.cs" />
     <Compile Include="Model\Model1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

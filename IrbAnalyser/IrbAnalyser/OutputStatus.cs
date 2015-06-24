@@ -119,12 +119,17 @@ namespace IrbAnalyser
             {
                 sitename = BranySiteMap.getSite(((string)statusRow["Sitename"]).Replace("(IBC)", ""));
             }
+            else if (Agency.AgencyVal == Agency.AgencyList.IRIS)
+            {
+                sitename = IRISMap.SiteMap.getSite((string)statusRow["Sitename"]);
+            }
 
             DateTime start = DateTime.Now;
             DateTime.TryParse((string)statusRow["ValidOn"], out start);
             start = start == DateTime.MinValue ? DateTime.Now : start;
             string status1 = "";
             if (Agency.AgencyVal == Agency.AgencyList.BRANY) status1 = BranyStatusMap.getStatus((string)statusRow["Status"]);
+            else if (Agency.AgencyVal == Agency.AgencyList.IRIS) status1 = IRISMap.StatusMap.getStatus((string)statusRow["Status"]);
             // todo einstein status map
 
             if (Tools.getOldStudy(irbstudyId) && !String.IsNullOrEmpty(irbstudyId) && !String.IsNullOrEmpty(sitename) && status1 != "NA")
@@ -177,6 +182,13 @@ namespace IrbAnalyser
                 status = BranyEventsMap.getStatus((string)eventRow["Event"]);
                 type = BranyEventsMap.getType((string)eventRow["Event"]);
                 sitename = BranySiteMap.getSite(((string)eventRow["Sitename"]).Replace("(IBC)", ""));
+            }
+
+            else if (Agency.AgencyVal == Agency.AgencyList.IRIS)
+            {
+                status = IRISMap.EventsMap.getStatus((string)eventRow["Event"]);
+                type = IRISMap.EventsMap.getType((string)eventRow["Event"]);
+                sitename = IRISMap.SiteMap.getSite(((string)eventRow["Sitename"]).Replace("(IBC)", ""));
             }
 
             string status1 = "IRB Amendment Submitted**";
@@ -269,6 +281,10 @@ namespace IrbAnalyser
             if (Agency.AgencyVal == Agency.AgencyList.BRANY)
             {
                 sitename = BranySiteMap.getSite(((string)studyrow["Sitename"]).Replace("(IBC)", ""));
+            }
+            if (Agency.AgencyVal == Agency.AgencyList.IRIS)
+            {
+                sitename = IRISMap.SiteMap.getSite((string)studyrow["Sitename"]);
             }
 
             DateTime initial = DateTime.MinValue;
@@ -392,6 +408,13 @@ namespace IrbAnalyser
                 dr["Study status"] = BranyStatusMap.getStatus((string)statusRow["Status"]);
                 dr["status type"] = BranyStatusMap.getType((string)statusRow["Status"]);
             }
+
+            else if (Agency.AgencyVal == Agency.AgencyList.IRIS)
+            {
+                dr["Organization"] = IRISMap.SiteMap.getSite((string)statusRow["Sitename"]);
+                dr["Study status"] = IRISMap.StatusMap.getStatus((string)statusRow["Status"]);
+                dr["status type"] = IRISMap.StatusMap.getType((string)statusRow["Status"]);
+            }
             //TODO MAP the IRIS status
             dr["Comment"] = (string)statusRow["Status"];
 
@@ -443,6 +466,11 @@ namespace IrbAnalyser
             if (Agency.AgencyVal == Agency.AgencyList.BRANY)
             {
                 dr["Organization"] = BranySiteMap.getSite(((string)eventRow["Sitename"]).Replace("(IBC)", ""));
+            }
+
+            else if (Agency.AgencyVal == Agency.AgencyList.IRIS)
+            {
+                dr["Organization"] = IRISMap.SiteMap.getSite((string)eventRow["Sitename"]);
             }
 
             dr["Study status"] = status;
@@ -518,6 +546,10 @@ namespace IrbAnalyser
             if (Agency.AgencyVal == Agency.AgencyList.BRANY)
             {
                 dr["Organization"] = BranySiteMap.getSite(((string)studyRow["Sitename"]).Replace("(IBC)", ""));
+            }
+            if (Agency.AgencyVal == Agency.AgencyList.IRIS)
+            {
+                dr["Organization"] = IRISMap.SiteMap.getSite((string)studyRow["Sitename"]);
             }
 
             dr["Study status"] = status;

@@ -191,6 +191,13 @@ namespace IrbAnalyser
                 site = BranySiteMap.getSite(((string)row["SiteName"]).Replace("(IBC)", ""));
             }
 
+            else if (Agency.AgencyVal == Agency.AgencyList.IRIS)
+            {
+                role = IRISMap.RoleMap.getRole((string)row["Role"], primary);
+                //group = BranyRoleMap.getGroup((string)row["Role"]);
+                site = IRISMap.SiteMap.getSite((string)row["SiteName"]);
+            }
+
             if (role != "NA")
             {
                 initiate();
@@ -349,17 +356,38 @@ namespace IrbAnalyser
                                 {
                                     changed = true;
                                 }
-                                if (user.First().ROLE != BranyRoleMap.getRole((string)userRow["Role"], primary)
-                                    && BranyRoleMap.getRole((string)userRow["Role"], primary) != "NA")
+
+                                if (Agency.AgencyVal == Agency.AgencyList.BRANY)
                                 {
-                                    changed = true;
+                                    if (user.First().ROLE != BranyRoleMap.getRole((string)userRow["Role"], primary)
+                                        && BranyRoleMap.getRole((string)userRow["Role"], primary) != "NA")
+                                    {
+                                        changed = true;
+                                    }
+                                    else { userRow["Role"] = ""; }
+                                    if (user.First().USER_SITE_NAME != BranySiteMap.getSite((string)userRow["SiteName"]).Replace("(IBC)", ""))
+                                    {
+                                        changed = true;
+                                    }
+                                    else { userRow["SiteName"] = ""; }
                                 }
-                                else { userRow["Role"] = ""; }
-                                if (user.First().USER_SITE_NAME != BranySiteMap.getSite((string)userRow["SiteName"]).Replace("(IBC)", ""))
+
+                                if (Agency.AgencyVal == Agency.AgencyList.IRIS)
                                 {
-                                    changed = true;
+                                    if (user.First().ROLE != IRISMap.RoleMap.getRole((string)userRow["Role"], primary)
+                                        && IRISMap.RoleMap.getRole((string)userRow["Role"], primary) != "NA")
+                                    {
+                                        changed = true;
+                                    }
+                                    else { userRow["Role"] = ""; }
+                                    if (user.First().USER_SITE_NAME != IRISMap.SiteMap.getSite((string)userRow["SiteName"]).Replace("(IBC)", ""))
+                                    {
+                                        changed = true;
+                                    }
+                                    else { userRow["SiteName"] = ""; }
                                 }
-                                else { userRow["SiteName"] = ""; }
+
+
                                 //todo map sites and check
                                 if (changed) 
                                 { 

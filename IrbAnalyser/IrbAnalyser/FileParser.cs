@@ -104,6 +104,13 @@ namespace IrbAnalyser
 
                 lines.RemoveAt(0);
 
+                foreach (var column in columns)
+                {
+                    if (!data.Columns.Contains(column))
+                        data.Columns.Add(column);
+                }
+
+
                 foreach (string line in lines)
                 {
                     string[] linesplt = line.Split((char)9);
@@ -112,7 +119,7 @@ namespace IrbAnalyser
                     {
                         dr[dc.ColumnName] = "";
                     }
-                    for (int i=0;i<columns.Count();i++)
+                    for (int i = 0; i < columns.Count(); i++)
                     {
                         if (!String.IsNullOrEmpty(columns[i]))
                             dr[columns[i]] = Tools.parse((linesplt[i]));
