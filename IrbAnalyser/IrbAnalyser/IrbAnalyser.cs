@@ -78,7 +78,7 @@ namespace IrbAnalyser
 
                 
                 List<ExcelWorksheet> lstxls = new List<ExcelWorksheet>();
-                /*
+                
                 lstxls.Add(new ExcelWorksheet("Status", "List of status to add in Velos", OutputStatus.newStatus));
                 lstxls.Add(new ExcelWorksheet("Team", "List of team members to add Velos", OutputTeam.newTeam));
                 lstxls.Add(new ExcelWorksheet("Site", "List of organization to add in Velos", OutputSite.newSites));
@@ -87,7 +87,7 @@ namespace IrbAnalyser
                 exc.WriteDataTableToExcel(savefilenoext + "_new.xlsx", lstxls);
                 
 
-                lstxls = new List<ExcelWorksheet>();*/
+                lstxls = new List<ExcelWorksheet>();
 
                 lstxls.Add(new ExcelWorksheet("Status", "List of status to modify in Velos", OutputStatus.updatedStatus));
                 lstxls.Add(new ExcelWorksheet("Team", "List of team members to modify in Velos", OutputTeam.updatedTeam));

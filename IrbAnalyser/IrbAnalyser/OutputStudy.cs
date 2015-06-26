@@ -577,8 +577,14 @@ namespace IrbAnalyser
         private static string getRole(string studyId, string role)
         {
             var studyteam = OutputTeam.fpTeam.data.AsEnumerable().Where(x => (string)x["StudyId"] == studyId);
-
-            return Tools.getFullName(studyteam.FirstOrDefault(x => (string)x["Role"] == role && (string)x["Primary"] == "Y"));
+            if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+            {
+                return Tools.getFullName(studyteam.FirstOrDefault(x => (string)x["Role"] == role && (string)x["Primary"] == "Y"));
+            }
+            else
+            {
+                return Tools.getFullName(studyteam.FirstOrDefault(x => (string)x["Role"] == role ));
+            }
         }
 
 

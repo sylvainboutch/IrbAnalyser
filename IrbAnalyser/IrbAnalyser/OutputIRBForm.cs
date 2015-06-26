@@ -80,17 +80,50 @@ namespace IrbAnalyser
             {
 
                 var queryrslt = from forms in db.LCL_V_IRBFORM
+                                where forms.IRBIDENTIFIERS != null
                                select forms;
                 irbforms = queryrslt.ToList<Model.LCL_V_IRBFORM>();
             }
 
 
+            IEnumerable<Model.LCL_V_IRBFORM> irbformsNoNull;
+            using (Model.VelosDb db = new Model.VelosDb())
+            {
+
+                var queryrslt = from forms in db.LCL_V_IRBFORM
+                                where forms.IRBIDENTIFIERS != null
+                                && forms.IRBEVENTS != null
+                                select forms;
+                irbformsNoNull = queryrslt.ToList<Model.LCL_V_IRBFORM>();
+            }
+
+
+
             foreach (DataRow dr in OutputIRBForm.newIRBForm.Rows)
-            { 
-                var delete = (from irbform in irbforms
+            {
+                bool delete = false;
+                if (string.IsNullOrWhiteSpace((string)dr["IRB_Identifier"]))
+                {
+                    delete = (from irbform in irbforms
+                              where irbform.IRBEVENTS == null
+                            && irbform.IRBIDENTIFIERS == (string)dr["IRB_Identifier"]
+                              select irbform).Any();
+
+                    if (!delete)
+                    {
+                        delete = (from irbform in irbformsNoNull
+                                  where irbform.IRBEVENTS == (string)dr["IRB_Event"]
+                                 && irbform.IRBIDENTIFIERS == (string)dr["IRB_Identifier"]
+                                  select irbform).Any();
+                    }
+                }
+                else
+                {
+                    delete = (from irbform in irbformsNoNull
                               where irbform.IRBEVENTS == (string)dr["IRB_Event"]
                              && irbform.IRBIDENTIFIERS == (string)dr["IRB_Identifier"]
-                                  select irbform).Any();
+                              select irbform).Any();
+                }
                 if (delete)
                 {
                     OutputIRBForm.newIRBForm.Rows.Remove(dr);

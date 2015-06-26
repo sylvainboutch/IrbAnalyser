@@ -96,8 +96,8 @@ namespace IrbAnalyser
             //string output = DateTime.Now.Year.ToString().Substring(2, 2);
             //string output = irbnumber.Substring(0, 2);
             string output = irbnumber.Replace("-", "");
-            output += "-" + accronym + "-";
-            output += Agency.AgencyVal == Agency.AgencyList.BRANY ? "B" : "OCT";//OR MSA ? since apperently OCT enters brany CDA
+            output += "-" + accronym; //+ "-";
+            //output += Agency.AgencyVal == Agency.AgencyList.BRANY ? "B" : "OCT";//OR MSA ? since apperently OCT enters brany CDA
             //output += irbnumber;
             return output;
         }
