@@ -551,7 +551,9 @@ namespace IrbAnalyser
             }
             else
             {
-                retstr = getRole(studyId, IRISMap.RoleMap.RC);
+                retstr = getRole(studyId, IRISMap.RoleMap.RC1);
+                if (String.IsNullOrWhiteSpace(retstr))
+                    retstr = getRole(studyId, IRISMap.RoleMap.RC2);
             }
 
             retstr = String.IsNullOrWhiteSpace(retstr) ? getPI(studyId) : retstr;

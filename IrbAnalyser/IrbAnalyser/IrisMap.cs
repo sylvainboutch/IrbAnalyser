@@ -33,13 +33,16 @@ namespace IrbAnalyser.IRISMap
     public static class RoleMap
     {
         public static string PI = "Principal Investigator";
-        public static string RC = "Study Contact";
-
+        public static string RC1 = "Faculty Advisor";
+        public static string RC2 = "Study Contact";
+        
+        
 
         public static readonly Dictionary<string, string> roleMap = new Dictionary<string, string>()
             {
                 { PI, OutputTeam.RC },
-                { RC, OutputTeam.PI },
+                { RC1, OutputTeam.PI },
+                { RC2,"No privilege"},
                 {"Additional Research service Coordinator","No privilege"},
                 {"Administrative Assistant","No privilege"},
                 {"Biostatistician","No privilege"},
@@ -47,7 +50,6 @@ namespace IrbAnalyser.IRISMap
                 {"Co-Investigator","No privilege"},
                 {"Co-Principal Investigator ","No privilege"},
                 {"Department Administrator","No privilege"},
-                {"Faculty Advisor","No privilege"},
                 {"Nurse","No privilege"},
                 {"Other Faculty Collaborator ","No privilege"},
                 {"Participating Clinician","No privilege"},
@@ -57,6 +59,8 @@ namespace IrbAnalyser.IRISMap
                 {"Research Pharmacist","No privilege"},
                 {"Student Researcher","No privilege"},
                 {"Study Coordinator","No privilege"},
+                {"Study Author","No privilege"},
+                {"Other Faculty Collaborator","No privilege"},  
                 {"UNKNOWN ROLE - Migrated KP 1","No privilege"},
                 {"UNKNOWN ROLE - Migrated KP 2","No privilege"}
 
@@ -74,34 +78,7 @@ namespace IrbAnalyser.IRISMap
             }
         }
 
-        public static readonly Dictionary<string, string> groupMap = new Dictionary<string, string>()
-            {
-                {"",""},
-                { "CRO", "NA" },
-                { "Sponsor", "Study team" },
-                { "Auditor", "Study team" },
-                { "CC Recipient", "Study team" },
-                { "Co-Investigator", "Study team" },
-                { "Consultant", "NA" },
-                { "Coordinator", "Study team" },
-                { "Faculty Advisor", "Study team" },
-                { "PI", "Study team" },
-                { "Research Assistant", "Study team" },
-                { "Investigator", "Study team" }
-            };
 
-
-        public static string getGroup(string key)
-        {
-            try
-            {
-                return groupMap[key.Trim()];
-            }
-            catch (Exception ex)
-            {
-                return key + "  (NEW !!!)";
-            }
-        }
     }
 
     /// <summary>
