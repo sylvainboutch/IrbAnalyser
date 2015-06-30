@@ -148,7 +148,7 @@ namespace IrbAnalyser
                 //{
 
                     var study = from st in studys
-                                where st.IRBIDENTIFIERS.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
+                                where st.IRBIDENTIFIERS.Trim().ToLower().Split('&')[0] == (irbstudyId.Trim().ToLower())
                                 && st.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
                                 select st;
 

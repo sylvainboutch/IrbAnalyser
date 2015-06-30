@@ -72,7 +72,7 @@ namespace IrbAnalyser
             }*/
 
             number = (from stud in OutputStudy.studys
-                      where stud.IRBIDENTIFIERS.Trim().ToLower().Contains(IRBstudyId.Trim().ToLower())
+                      where stud.IRBIDENTIFIERS.Trim().ToLower().Split('&')[0] == (IRBstudyId.Trim().ToLower())
                    && stud.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
                       select stud.STUDY_NUMBER).FirstOrDefault();
 
@@ -107,7 +107,7 @@ namespace IrbAnalyser
                        select stud.STUDY_NUMBER).Any();
             }*/
 
-            ret = OutputStudy.studys.Any(x => x.IRBIDENTIFIERS.Trim().ToLower().Contains(IRBstudyId.Trim().ToLower())
+            ret = OutputStudy.studys.Any(x => x.IRBIDENTIFIERS.Trim().ToLower().Split('&')[0] == (IRBstudyId.Trim().ToLower())
                 && x.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr);
 
             /*ret = (from stud in OutputStudy.studys

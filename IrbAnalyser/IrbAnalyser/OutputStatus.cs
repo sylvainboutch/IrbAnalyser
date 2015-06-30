@@ -172,7 +172,7 @@ namespace IrbAnalyser
 
 
                 var statuses = from stat in allstatus
-                               where stat.IRBIDENTIFIERS.Contains(irbstudyId)
+                               where stat.IRBIDENTIFIERS.Trim().ToLower().Split('&')[0] == (irbstudyId.Trim().ToLower())
                                && stat.SSTAT_STUDY_STATUS != null
                                && stat.SSTAT_NOTES != null
                                && stat.SSTAT_VALID_FROM != null
@@ -180,7 +180,7 @@ namespace IrbAnalyser
                                select stat;
 
                 var statusesDB = from stat in statuses
-                                 where stat.IRBIDENTIFIERS.Contains(irbstudyId)
+                                 where stat.IRBIDENTIFIERS.Trim().ToLower().Split('&')[0] == (irbstudyId.Trim().ToLower())
                                  && stat.SSTAT_STUDY_STATUS.Trim().ToLower() == status1.Trim().ToLower()
                                  && stat.SSTAT_NOTES.Trim().ToLower() == ((string)statusRow["Status"]).Trim().ToLower()
                                  && stat.SSTAT_VALID_FROM.Value.Year == start.Year
@@ -244,7 +244,7 @@ namespace IrbAnalyser
                 if (status == status1)
                 {
                     var statusesDB1 = from stat in allstatus
-                                      where stat.IRBIDENTIFIERS.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
+                                      where stat.IRBIDENTIFIERS.Trim().ToLower().Split('&')[0] == (irbstudyId.Trim().ToLower())
                                    && stat.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
                                       && stat.SSTAT_STUDY_STATUS == status1
                                       && stat.SSTAT_NOTES == (string)eventRow["Event"]
@@ -263,7 +263,7 @@ namespace IrbAnalyser
                     if (end != DateTime.MinValue)
                     {
                         var statusesDB2 = from stat in allstatus
-                                          where stat.IRBIDENTIFIERS.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
+                                          where stat.IRBIDENTIFIERS.Trim().ToLower().Split('&')[0] == (irbstudyId.Trim().ToLower())
                                        && stat.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
                                           && stat.SSTAT_STUDY_STATUS == status2
                                           && stat.SSTAT_NOTES == (string)eventRow["Event"]
@@ -358,7 +358,7 @@ namespace IrbAnalyser
 
 
                 var isNotStatusDb = !(from stat in allstatus
-                                   where stat.IRBIDENTIFIERS.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
+                                      where stat.IRBIDENTIFIERS.Trim().ToLower().Split('&')[0] == (irbstudyId.Trim().ToLower())
                               && stat.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
                                  && stat.SSTAT_STUDY_STATUS.Trim().ToLower() == "irb initial approved"
                                  && stat.SSTAT_VALID_FROM.Value.Year == initial.Year
@@ -380,7 +380,7 @@ namespace IrbAnalyser
 
 
                 isNotStatusDb = !(from stat in allstatus
-                               where stat.IRBIDENTIFIERS.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
+                                  where stat.IRBIDENTIFIERS.Trim().ToLower().Split('&')[0] == (irbstudyId.Trim().ToLower())
                           && stat.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
                              && stat.SSTAT_STUDY_STATUS == "irb renewal approved"
                              && stat.SSTAT_VALID_FROM.Value.Year == renew.Year

@@ -362,7 +362,7 @@ namespace IrbAnalyser
                             if (!String.IsNullOrEmpty(email))
                             {
                                 var user = from us in team
-                                           where us.IRBIDENTIFIERS.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
+                                           where us.IRBIDENTIFIERS.Trim().ToLower().Split('&')[0] == (irbstudyId.Trim().ToLower())
                                           && us.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
                                           && us.USER_EMAIL.ToLower() == email
                                            select us;

@@ -84,7 +84,7 @@ namespace IrbAnalyser
                 if (!String.IsNullOrEmpty(site))
                 {
                     var sites2 = (from sit in sites
-                                  where sit.IRBIDENTIFIERS.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
+                                  where sit.IRBIDENTIFIERS.Trim().ToLower().Split('&')[0] == (irbstudyId.Trim().ToLower())
                                     && sit.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
                                     && sit.SITE_NAME == site
                                  select sit);
