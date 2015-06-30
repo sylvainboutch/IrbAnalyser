@@ -111,7 +111,7 @@ namespace IrbAnalyser
                 newTeam.Columns.Add("AdditionnalEmails", typeof(string));
                 newTeam.Columns.Add("First name", typeof(string));
                 newTeam.Columns.Add("Last name", typeof(string));
-                newTeam.Columns.Add("Full name", typeof(string));
+                newTeam.Columns.Add("User name", typeof(string));
                 newTeam.Columns.Add("Role", typeof(string));
                 //newTeam.Columns.Add("Group", typeof(string));
                 newTeam.Columns.Add("Organization", typeof(string));
@@ -127,7 +127,7 @@ namespace IrbAnalyser
                 updatedTeam.Columns.Add("AdditionnalEmails", typeof(string));
                 updatedTeam.Columns.Add("First name", typeof(string));
                 updatedTeam.Columns.Add("Last name", typeof(string));
-                updatedTeam.Columns.Add("Full name", typeof(string));
+                updatedTeam.Columns.Add("User name", typeof(string));
                 updatedTeam.Columns.Add("Role", typeof(string));
                 //updatedTeam.Columns.Add("Group", typeof(string));
                 updatedTeam.Columns.Add("Organization", typeof(string));
@@ -143,7 +143,7 @@ namespace IrbAnalyser
                 triggerTeam.Columns.Add("AdditionnalEmails", typeof(string));
                 triggerTeam.Columns.Add("First name", typeof(string));
                 triggerTeam.Columns.Add("Last name", typeof(string));
-                triggerTeam.Columns.Add("Full name", typeof(string));
+                triggerTeam.Columns.Add("User name", typeof(string));
                 triggerTeam.Columns.Add("Role", typeof(string));
                 //newTeam.Columns.Add("Group", typeof(string));
                 triggerTeam.Columns.Add("Organization", typeof(string));
@@ -159,7 +159,7 @@ namespace IrbAnalyser
                 newNonSystemUser.Columns.Add("AdditionnalEmails", typeof(string));
                 newNonSystemUser.Columns.Add("First name", typeof(string));
                 newNonSystemUser.Columns.Add("Last name", typeof(string));
-                newNonSystemUser.Columns.Add("Full name", typeof(string));
+                newNonSystemUser.Columns.Add("User name", typeof(string));
                 newNonSystemUser.Columns.Add("Role", typeof(string));
                 //newTeam.Columns.Add("Group", typeof(string));
                 newNonSystemUser.Columns.Add("Organization", typeof(string));
@@ -216,7 +216,8 @@ namespace IrbAnalyser
                     dr["AdditionnalEmails"] = row["OtherEmailAdresses"].ToString();
                     dr["First name"] = row["FirstName"].ToString();
                     dr["Last name"] = row["LastName"].ToString();
-                    dr["Full name"] = row["FirstName"].ToString() + " " + row["LastName"].ToString();
+                    dr["User Name"] = (string)row["UserName"];
+                    //dr["Full name"] = row["FirstName"].ToString() + " " + row["LastName"].ToString();
                     dr["Role"] = role;
                     //dr["Group"] = group;
                     dr["Organization"] = site;
@@ -333,9 +334,11 @@ namespace IrbAnalyser
                                     && us.USER_STATUS == "Active"
                                     select us).Any();
 
-                var currentuser = ((from us in accounts
+                var currentusers = (from us in accounts
                                     where us.USER_EMAIL.ToLower() == email
-                                    select us).FirstOrDefault());
+                                    select us);
+
+                var currentuser = currentusers.FirstOrDefault();
 
                 if (currentuser == null)
                 {
@@ -352,6 +355,18 @@ namespace IrbAnalyser
 
                 if (currentuser != null)
                 {
+                    if (currentusers.Count() > 1)
+                    {
+                        var activeuser = (from us in currentusers
+                                          where us.USER_STATUS == "Active"
+                                          select us).FirstOrDefault();
+                        userRow["UserName"] = activeuser == null ? currentuser.USER_NAME : activeuser.USER_NAME;
+                    }
+                    else
+                    {
+                        userRow["UserName"] = currentuser.USER_NAME;
+                    }
+
                     if (!issuperuser)// && currentuser.USER_DEFAULTGRP == enabledGroup && isactiveuser)
                     {
                         if (Tools.getOldStudy((string)userRow["StudyId"]))
