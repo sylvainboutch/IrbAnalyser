@@ -10,6 +10,7 @@ namespace IrbAnalyser
     public class FileParser
     {
         public DataTable data;
+        public int initColumnCount = 0;
 
         public FileParser(string file, type typ)
         {
@@ -53,6 +54,7 @@ namespace IrbAnalyser
                     data.Columns.Add("MostRecentApprovalDate");
                     data.Columns.Add("ExpirationDate");
                     data.Columns.Add("Cancer");
+                    initColumnCount = data.Columns.Count;
                     break;
                 case type.Status:
                     data.Columns.Add("StudyId");
@@ -61,6 +63,7 @@ namespace IrbAnalyser
                     data.Columns.Add("SiteName");
                     data.Columns.Add("Status");
                     data.Columns.Add("ValidOn");
+                    initColumnCount = data.Columns.Count;
                     break;
                 case type.Team:
                     data.Columns.Add("StudyId");
@@ -74,6 +77,7 @@ namespace IrbAnalyser
                     data.Columns.Add("FirstName");
                     data.Columns.Add("LastName");
                     data.Columns.Add("Role");
+                    initColumnCount = data.Columns.Count;
                     break;
                 case type.Event:
                     data.Columns.Add("StudyId");
@@ -86,6 +90,7 @@ namespace IrbAnalyser
                     data.Columns.Add("EventOutcome");
                     data.Columns.Add("TaskCompletionDate");
                     data.Columns.Add("EventCompletionDate");
+                    initColumnCount = data.Columns.Count;
                     break;
             }
 

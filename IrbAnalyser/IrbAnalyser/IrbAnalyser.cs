@@ -29,7 +29,7 @@ namespace IrbAnalyser
             InitializeComponent();
 
             cboSource.DataSource = Enum.GetValues(typeof(Agency.AgencyList));
-            cboSource.SelectedIndex = 0;
+            cboSource.SelectedIndex = -1;
         }
         private static bool btnclicked = false;
         private void btnOk_Click(object sender, EventArgs e)
@@ -49,6 +49,8 @@ namespace IrbAnalyser
 
                 Analyse();
 
+                
+
                 ExcelUtility exc = new ExcelUtility();
                 sfdCsv.Filter = "Excel Files|*.xlsx";
                 DialogResult dr = sfdCsv.ShowDialog();
@@ -56,6 +58,8 @@ namespace IrbAnalyser
 
                 string savefilenoext = savefilename.Remove(savefilename.Length - 5, 5);
                 string separator = "~";
+
+                NewValueOuput.saveFile(savefilenoext);
 
                 Csv.saveCsv(OutputStudy.newStudy, separator, savefilenoext + "_newStudy");
                 Csv.saveCsv(OutputMSD.newMSD, separator, savefilenoext + "_newMSD");

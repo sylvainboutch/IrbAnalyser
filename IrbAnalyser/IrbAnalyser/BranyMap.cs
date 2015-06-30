@@ -12,16 +12,17 @@ namespace IrbAnalyser
     /// </summary>
     public static class BranySiteMap
     {
+        private static string velosEM = "Einstein Montefiore (non-treating site)";
         public static readonly Dictionary<string, string> siteMapBrany = new Dictionary<string, string>()
             {
                 {"",""},
-                { "Montefiore Medical Center", "Einstein Montefiore" },
-                { "Albert Einstein Col. of Med. of Yeshiva University", "Einstein Montefiore" },
-                { "Westchester Cardiology", "Einstein Montefiore" },
-                { "Montefiore (Weiler Division)", "Einstein Montefiore" },
-                { "Montefiore (Moses Division)", "Einstein Montefiore" },
-                { "Montefiore (Children's Hosp)", "Einstein Montefiore" },
-                { "Montefiore (Einstein Liver Center)", "Einstein Montefiore" }
+                { "Montefiore Medical Center", velosEM },
+                { "Albert Einstein Col. of Med. of Yeshiva University", velosEM },
+                { "Westchester Cardiology", velosEM },
+                { "Montefiore (Weiler Division)", velosEM },
+                { "Montefiore (Moses Division)", velosEM },
+                { "Montefiore (Children's Hosp)", velosEM },
+                { "Montefiore (Einstein Liver Center)", velosEM }
             };
 
         public static string getSite(string key)
@@ -32,6 +33,7 @@ namespace IrbAnalyser
             }
             catch (Exception ex)
             {
+                NewValueOuput.appendString("New site", key);
                 return key + "  (NEW !!!)";
             }
         }
@@ -88,35 +90,7 @@ namespace IrbAnalyser
             }
             catch (Exception ex)
             {
-                return key + "  (NEW !!!)";
-            }
-        }
-
-        public static readonly Dictionary<string, string> groupMapBrany = new Dictionary<string, string>()
-            {
-                {"",""},
-                { "CRO", "NA" },
-                { "Sponsor", "Study team" },
-                { "Auditor", "Study team" },
-                { "CC Recipient", "Study team" },
-                { "Co-Investigator", "Study team" },
-                { "Consultant", "NA" },
-                { "Coordinator", "Study team" },
-                { "Faculty Advisor", "Study team" },
-                { "PI", "Study team" },
-                { "Research Assistant", "Study team" },
-                { "Investigator", "Study team" }
-            };
-
-
-        public static string getGroup(string key)
-        {
-            try
-            {
-                return groupMapBrany[key.Trim()];
-            }
-            catch (Exception ex)
-            {
+                NewValueOuput.appendString("New role", key);
                 return key + "  (NEW !!!)";
             }
         }
@@ -180,6 +154,7 @@ namespace IrbAnalyser
             }
             catch (Exception ex)
             {
+                NewValueOuput.appendString("New status", key);
                 return key + "  (NEW !!!)";
             }
         }
@@ -237,6 +212,7 @@ namespace IrbAnalyser
             }
             catch (Exception ex)
             {
+                NewValueOuput.appendString("New status (from status type mapping)", key);
                 return key + "  (NEW !!!)";
             }
         }
@@ -304,6 +280,7 @@ namespace IrbAnalyser
             }
             catch (Exception ex)
             {
+                NewValueOuput.appendString("New status (from events)", key);
                 return key + "  (NEW !!!)";
             }
         }
@@ -363,6 +340,7 @@ namespace IrbAnalyser
             }
             catch (Exception ex)
             {
+                NewValueOuput.appendString("New status (from events status type map)", key);
                 return key + "  (NEW !!!)";
             }
         }

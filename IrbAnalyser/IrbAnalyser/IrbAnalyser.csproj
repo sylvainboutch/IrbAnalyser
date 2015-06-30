@@ -131,6 +131,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
+    <Compile Include="NewValueOuput.cs" />
     <Compile Include="OutputIRBForm.cs" />
     <Compile Include="OutputMSD.cs" />
     <Compile Include="OutputDocs.cs" />

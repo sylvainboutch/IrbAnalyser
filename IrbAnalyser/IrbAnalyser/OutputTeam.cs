@@ -60,6 +60,7 @@ namespace IrbAnalyser
 
                         var query = (from st in db.LCL_V_USER
                                      where st.USER_EMAIL != null
+                                     & st.USER_USRNAME != null
                                      select st);
                         _accounts = query.ToList<Model.LCL_V_USER>();
                     }
@@ -179,73 +180,88 @@ namespace IrbAnalyser
         /// <param name="row"></param>
         private static void addRow(DataRow row, string type, DataTable records)
         {
-            string role = "";
-            //string group = "";
-            string site = "";
-            bool primary = Tools.compareStr(row["Primary"], "Y");
-
-            if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+            if (!string.IsNullOrWhiteSpace((string)row["PrimaryEMailAddress"]))
             {
-                role = BranyRoleMap.getRole((string)row["Role"], primary);
-                //group = BranyRoleMap.getGroup((string)row["Role"]);
-                site = BranySiteMap.getSite(((string)row["SiteName"]).Replace("(IBC)", ""));
-            }
+                string role = "";
+                //string group = "";
+                string site = "";
+                bool primary = Tools.compareStr(row["Primary"], "Y");
 
-            else if (Agency.AgencyVal == Agency.AgencyList.IRIS)
-            {
-                role = IRISMap.RoleMap.getRole((string)row["Role"], primary);
-                //group = BranyRoleMap.getGroup((string)row["Role"]);
-                site = IRISMap.SiteMap.getSite((string)row["SiteName"]);
-            }
-
-            if (role != "NA")
-            {
-                initiate();
-                DataRow dr;
-
-                dr = records.NewRow();
-
-                dr["TYPE"] = type;
-
-                dr["Study number"] = Tools.getStudyNumber((string)row["StudyId"], ((string)row["IRBNumber"]).Replace("(IBC)", ""));
-
-                dr["Email"] = row["PrimaryEMailAddress"].ToString();
-                dr["AdditionnalEmails"] = row["OtherEmailAdresses"].ToString();
-                dr["First name"] = row["FirstName"].ToString();
-                dr["Last name"] = row["LastName"].ToString();
-                dr["Full name"] = row["FirstName"].ToString() + " " + row["LastName"].ToString();
-                dr["Role"] = role;
-                //dr["Group"] = group;
-                dr["Organization"] = site;
-
-                if (type == "New non system user")
+                if (Agency.AgencyVal == Agency.AgencyList.BRANY)
                 {
-                    dr["TimeZone"] = "GMT-5";
-                    dr["Group"] = "NO_PRIVILEGE";
-                    dr["Login"] = ((string)row["PrimaryEMailAddress"]).Split('@')[0];
+                    role = BranyRoleMap.getRole((string)row["Role"], primary);
+                    //group = BranyRoleMap.getGroup((string)row["Role"]);
+                    site = BranySiteMap.getSite(((string)row["SiteName"]).Replace("(IBC)", ""));
                 }
 
-                var dtUser = from user in records.AsEnumerable()
-                             where user.Field<string>("Email").Trim().ToLower() == ((string)row["PrimaryEMailAddress"]).Trim().ToLower()
-                             && user.Field<string>("Study number").Trim().ToLower() == ((string)dr["Study number"]).Trim().ToLower()
-                             select user;
-                if (dtUser.Count() > 0)
+                else if (Agency.AgencyVal == Agency.AgencyList.IRIS)
                 {
-                    foreach (DataRow rw in dtUser)
+                    role = IRISMap.RoleMap.getRole((string)row["Role"], primary);
+                    //group = BranyRoleMap.getGroup((string)row["Role"]);
+                    site = IRISMap.SiteMap.getSite((string)row["SiteName"]);
+                }
+
+                if (role != "NA")
+                {
+                    initiate();
+                    DataRow dr;
+
+                    dr = records.NewRow();
+
+                    dr["TYPE"] = type;
+
+                    dr["Study number"] = Tools.getStudyNumber((string)row["StudyId"], ((string)row["IRBNumber"]).Replace("(IBC)", ""));
+
+                    dr["Email"] = row["PrimaryEMailAddress"].ToString();
+                    dr["AdditionnalEmails"] = row["OtherEmailAdresses"].ToString();
+                    dr["First name"] = row["FirstName"].ToString();
+                    dr["Last name"] = row["LastName"].ToString();
+                    dr["Full name"] = row["FirstName"].ToString() + " " + row["LastName"].ToString();
+                    dr["Role"] = role;
+                    //dr["Group"] = group;
+                    dr["Organization"] = site;
+
+                    if (type == "New non system user")
                     {
-                        if (rw.Field<string>("Role") != role && role == RC)
+                        dr["TimeZone"] = "GMT-5";
+                        dr["Group"] = "NO_PRIVILEGE";
+                        dr["Login"] = ((string)row["PrimaryEMailAddress"]).Split('@')[0];
+                    }
+
+                    if (fpTeam.initColumnCount < row.Table.Columns.Count)
+                    {
+                        for (int i = fpTeam.initColumnCount; i < row.Table.Columns.Count; i++)
                         {
-                            rw["Role"] = role;
-                        }
-                        else if (rw.Field<string>("Role") != role && role == PI && rw.Field<string>("Role") != RC)
-                        {
-                            rw["Role"] = role;
+                            if (!dr.Table.Columns.Contains(row.Table.Columns[i].ColumnName))
+                            {
+                                dr.Table.Columns.Add(row.Table.Columns[i].ColumnName);
+                            }
+                            dr[row.Table.Columns[i].ColumnName] = row[i];
                         }
                     }
-                }
-                else
-                {
-                    records.Rows.Add(dr);
+
+                    var dtUser = from user in records.AsEnumerable()
+                                 where user.Field<string>("Email").Trim().ToLower() == ((string)row["PrimaryEMailAddress"]).Trim().ToLower()
+                                 && user.Field<string>("Study number").Trim().ToLower() == ((string)dr["Study number"]).Trim().ToLower()
+                                 select user;
+                    if (dtUser.Count() > 0)
+                    {
+                        foreach (DataRow rw in dtUser)
+                        {
+                            if (rw.Field<string>("Role") != role && role == RC)
+                            {
+                                rw["Role"] = role;
+                            }
+                            else if (rw.Field<string>("Role") != role && role == PI && rw.Field<string>("Role") != RC)
+                            {
+                                rw["Role"] = role;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        records.Rows.Add(dr);
+                    }
                 }
             }
         }
@@ -301,120 +317,137 @@ namespace IrbAnalyser
         {
             string irbstudyId = userRow["StudyId"].ToString();
 
-            string email = ((string)userRow["PrimaryEMailAddress"]).ToLower();
+            string email = ((string)userRow["PrimaryEMailAddress"]).ToLower().Trim();
 
-            var issuperuser = (from us in accounts
-                               where us.USER_EMAIL.ToLower() == email
-                               && us.GRP_SUPUSR_FLAG == 1
-                               && us.USER_STATUS == "Active"
-                               select us).Any();
-
-            var isactiveuser = (from us in accounts
-                                where us.USER_EMAIL.ToLower() == email
-                                && us.USER_STATUS == "Active"
-                                select us).Any();
-
-            var currentuser = ((from us in accounts
-                                where us.USER_EMAIL.ToLower() == email
-                                select us).FirstOrDefault());
-
-            if (currentuser != null)
+            if (!string.IsNullOrWhiteSpace(email))
             {
-                if (!issuperuser)// && currentuser.USER_DEFAULTGRP == enabledGroup && isactiveuser)
+
+                var issuperuser = (from us in accounts
+                                   where us.USER_EMAIL.ToLower() == email
+                                   && us.GRP_SUPUSR_FLAG == 1
+                                   && us.USER_STATUS == "Active"
+                                   select us).Any();
+
+                var isactiveuser = (from us in accounts
+                                    where us.USER_EMAIL.ToLower() == email
+                                    && us.USER_STATUS == "Active"
+                                    select us).Any();
+
+                var currentuser = ((from us in accounts
+                                    where us.USER_EMAIL.ToLower() == email
+                                    select us).FirstOrDefault());
+
+                if (currentuser == null)
                 {
-                    if (Tools.getOldStudy((string)userRow["StudyId"]))
-                    {
-                        //using (Model.VelosDb db = new Model.VelosDb())
-                        //{
+                    string login = ((string)userRow["PrimaryEMailAddress"]).Split('@')[0].ToLower().Trim();
 
-                        if (!String.IsNullOrEmpty(email))
+                    currentuser = ((from us in accounts
+                                        where us.USER_USRNAME.ToLower() == login
+                                        select us).FirstOrDefault());
+                    if (currentuser != null)
+                    {
+                        userRow["PrimaryEMailAddress"] = currentuser.USER_EMAIL;
+                    }                
+                }
+
+                if (currentuser != null)
+                {
+                    if (!issuperuser)// && currentuser.USER_DEFAULTGRP == enabledGroup && isactiveuser)
+                    {
+                        if (Tools.getOldStudy((string)userRow["StudyId"]))
                         {
-                            var user = from us in team
-                                       where us.IRBIDENTIFIERS.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
-                                      && us.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
-                                      && us.USER_EMAIL.ToLower() == email
-                                       select us;
-                            if (!user.Any())
+                            //using (Model.VelosDb db = new Model.VelosDb())
+                            //{
+
+                            if (!String.IsNullOrEmpty(email))
                             {
-                                addRow(userRow, "New member", newTeam);
-                                if (!isactiveuser)
+                                var user = from us in team
+                                           where us.IRBIDENTIFIERS.Trim().ToLower().Contains(irbstudyId.Trim().ToLower())
+                                          && us.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
+                                          && us.USER_EMAIL.ToLower() == email
+                                           select us;
+                                if (!user.Any())
                                 {
-                                    addRow(userRow, "Inactive User added to study team", triggerTeam);
+                                    addRow(userRow, "New member", newTeam);
+                                    if (!isactiveuser)
+                                    {
+                                        addRow(userRow, "Inactive User added to study team", triggerTeam);
+                                    }
+                                    else if (currentuser.USER_DEFAULTGRP != enabledGroup && currentuser.USER_EMAIL == email && isactiveuser && !issuperuser)
+                                    {
+                                        addRow(userRow, "User needs training", triggerTeam);
+                                    }
                                 }
-                                else if (currentuser.USER_DEFAULTGRP != enabledGroup && currentuser.USER_EMAIL == email && isactiveuser && !issuperuser)
+                                else
                                 {
-                                    addRow(userRow, "User needs training", triggerTeam);
+                                    var changed = false;
+
+                                    bool primary = Tools.compareStr(userRow["Primary"], "true");
+
+                                    if (user.First().USER_NAME != (string)userRow["FirstName"] + " " + (string)userRow["LastName"])
+                                    {
+                                        changed = true;
+                                    }
+
+                                    if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+                                    {
+                                        if (user.First().ROLE != BranyRoleMap.getRole((string)userRow["Role"], primary)
+                                            && BranyRoleMap.getRole((string)userRow["Role"], primary) != "NA")
+                                        {
+                                            changed = true;
+                                        }
+                                        else { userRow["Role"] = ""; }
+                                        if (user.First().USER_SITE_NAME != BranySiteMap.getSite((string)userRow["SiteName"]).Replace("(IBC)", ""))
+                                        {
+                                            changed = true;
+                                        }
+                                        else { userRow["SiteName"] = ""; }
+                                    }
+
+                                    if (Agency.AgencyVal == Agency.AgencyList.IRIS)
+                                    {
+                                        if (user.First().ROLE != IRISMap.RoleMap.getRole((string)userRow["Role"], primary)
+                                            && IRISMap.RoleMap.getRole((string)userRow["Role"], primary) != "NA")
+                                        {
+                                            changed = true;
+                                        }
+                                        else { userRow["Role"] = ""; }
+                                        if (user.First().USER_SITE_NAME != IRISMap.SiteMap.getSite((string)userRow["SiteName"]).Replace("(IBC)", ""))
+                                        {
+                                            changed = true;
+                                        }
+                                        else { userRow["SiteName"] = ""; }
+                                    }
+
+
+                                    //todo map sites and check
+                                    if (changed)
+                                    {
+                                        addRow(userRow, "Modified member", updatedTeam);
+                                    }
                                 }
                             }
-                            else
+                            //}
+                        }
+                        else
+                        {
+                            addRow(userRow, "New study", newTeam);
+                            if (!isactiveuser)
                             {
-                                var changed = false;
-
-                                bool primary = Tools.compareStr(userRow["Primary"], "true");
-
-                                if (user.First().USER_NAME != (string)userRow["FirstName"] + " " + (string)userRow["LastName"])
-                                {
-                                    changed = true;
-                                }
-
-                                if (Agency.AgencyVal == Agency.AgencyList.BRANY)
-                                {
-                                    if (user.First().ROLE != BranyRoleMap.getRole((string)userRow["Role"], primary)
-                                        && BranyRoleMap.getRole((string)userRow["Role"], primary) != "NA")
-                                    {
-                                        changed = true;
-                                    }
-                                    else { userRow["Role"] = ""; }
-                                    if (user.First().USER_SITE_NAME != BranySiteMap.getSite((string)userRow["SiteName"]).Replace("(IBC)", ""))
-                                    {
-                                        changed = true;
-                                    }
-                                    else { userRow["SiteName"] = ""; }
-                                }
-
-                                if (Agency.AgencyVal == Agency.AgencyList.IRIS)
-                                {
-                                    if (user.First().ROLE != IRISMap.RoleMap.getRole((string)userRow["Role"], primary)
-                                        && IRISMap.RoleMap.getRole((string)userRow["Role"], primary) != "NA")
-                                    {
-                                        changed = true;
-                                    }
-                                    else { userRow["Role"] = ""; }
-                                    if (user.First().USER_SITE_NAME != IRISMap.SiteMap.getSite((string)userRow["SiteName"]).Replace("(IBC)", ""))
-                                    {
-                                        changed = true;
-                                    }
-                                    else { userRow["SiteName"] = ""; }
-                                }
-
-
-                                //todo map sites and check
-                                if (changed) 
-                                { 
-                                    addRow(userRow, "Modified member", updatedTeam); 
-                                }
+                                addRow(userRow, "Inactive User added to study team", triggerTeam);
                             }
-                        }
-                        //}
-                    }
-                    else
-                    {
-                        addRow(userRow, "New study", newTeam);
-                        if (!isactiveuser)
-                        {
-                            addRow(userRow, "Inactive User added to study team", triggerTeam);
-                        }
-                        else if (currentuser.USER_DEFAULTGRP != enabledGroup && currentuser.USER_EMAIL == email && isactiveuser && !issuperuser)
-                        {
-                            addRow(userRow, "User needs training", triggerTeam);
+                            else if (currentuser.USER_DEFAULTGRP != enabledGroup && currentuser.USER_EMAIL == email && isactiveuser && !issuperuser)
+                            {
+                                addRow(userRow, "User needs training", triggerTeam);
+                            }
                         }
                     }
                 }
-            }
-            else
-            {
-                addRow(userRow, "User needs access", triggerTeam);
-                addRow(userRow, "New non system user", newNonSystemUser);
+                else
+                {
+                    addRow(userRow, "User needs access", triggerTeam);
+                    addRow(userRow, "New non system user", newNonSystemUser);
+                }
             }
         }
 

@@ -14,7 +14,6 @@ namespace IrbAnalyser
         public static DataTable newStatus = new DataTable();
         public static DataTable updatedStatus = new DataTable();
 
-
         private static IEnumerable<Model.VDA_V_STUDYSTAT> _allstatus;
         public static IEnumerable<Model.VDA_V_STUDYSTAT> allstatus
         {
@@ -37,6 +36,49 @@ namespace IrbAnalyser
             set
             {
                 _allstatus = value;
+            }
+        }
+
+        private static FileParser _fpstatus;
+        public static FileParser fpstatus
+        {
+            get
+            {
+                if (_fpstatus == null || _fpstatus.data == null || _fpstatus.data.Rows.Count == 0)
+                {
+                    using (Model.VelosDb db = new Model.VelosDb())
+                    {
+
+                        _fpstatus = new FileParser(Tools.filename + "Status.txt", FileParser.type.Status);
+                    }
+                }
+                return _fpstatus;
+            }
+            set
+            {
+                _fpstatus = value;
+            }
+        }
+
+
+        private static FileParser _fpevent;
+        public static FileParser fpevent
+        {
+            get
+            {
+                if (_fpevent == null || _fpevent.data == null || _fpevent.data.Rows.Count == 0)
+                {
+                    using (Model.VelosDb db = new Model.VelosDb())
+                    {
+
+                        _fpevent = new FileParser(Tools.filename + "Event.txt", FileParser.type.Event);
+                    }
+                }
+                return _fpevent;
+            }
+            set
+            {
+                _fpevent = value;
             }
         }
 
@@ -88,23 +130,16 @@ namespace IrbAnalyser
         public static void analyse(string dir)
         {
             initiate();
-            FileParser fpStatus = new FileParser(dir + "Status.txt", FileParser.type.Status);
-            FileParser fpEvent = new FileParser(dir + "Event.txt", FileParser.type.Event);
-            foreach (DataRow dr in fpStatus.data.Rows)
+
+            foreach (DataRow dr in fpstatus.data.Rows)
             {
                 analyseRowStatus(dr);
             }
 
-            foreach (DataRow dr in fpEvent.data.Rows)
+            foreach (DataRow dr in fpevent.data.Rows)
             {
                 analyseRowEvent(dr);
             }
-        }
-
-        public static void parseClinTrialXML()
-        { 
-        
-        
         }
 
         /// <summary>
@@ -421,6 +456,19 @@ namespace IrbAnalyser
             dr["Documented by"] = "IRB interface";
             dr["Status Valid From"] = Tools.parseDate((string)statusRow["ValidOn"]);
 
+
+            if (fpstatus.initColumnCount < statusRow.Table.Columns.Count)
+            {
+                for (int i = fpstatus.initColumnCount; i < statusRow.Table.Columns.Count; i++)
+                {
+                    if (!dr.Table.Columns.Contains(statusRow.Table.Columns[i].ColumnName))
+                    {
+                        dr.Table.Columns.Add(statusRow.Table.Columns[i].ColumnName);
+                    }
+                    dr[statusRow.Table.Columns[i].ColumnName] = statusRow[i];
+                }
+            }
+
             if (newrecord)
             {
                 bool dtStatus = !(from st in OutputStatus.newStatus.AsEnumerable()
@@ -495,6 +543,18 @@ namespace IrbAnalyser
                 dr["Status Valid Until"] = Tools.parseDate((string)end.Date.ToString("o"));
             }
 
+            if (fpevent.initColumnCount < eventRow.Table.Columns.Count)
+            {
+                for (int i = fpevent.initColumnCount; i < eventRow.Table.Columns.Count; i++)
+                {
+                    if (!dr.Table.Columns.Contains(eventRow.Table.Columns[i].ColumnName))
+                    {
+                        dr.Table.Columns.Add(eventRow.Table.Columns[i].ColumnName);
+                    }
+                    dr[eventRow.Table.Columns[i].ColumnName] = eventRow[i];
+                }
+            }
+
             if (status.Trim().ToLower() == "undefined irb event")
             {
                 string undefinedEvent = "Organization : " + dr["Organization"] + " - Event : " + dr["Comment"] + " - Date : " + dr["Status Valid From"];
@@ -506,6 +566,7 @@ namespace IrbAnalyser
                     OutputIRBForm.addEvents((string)dr["Study number"], undefinedEvent);
                 }
             }
+
             else if (newrecord)
             {
                 bool dtStatus = !(from st in OutputStatus.newStatus.AsEnumerable()

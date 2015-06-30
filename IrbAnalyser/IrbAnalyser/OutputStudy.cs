@@ -506,7 +506,7 @@ namespace IrbAnalyser
 
 
             
-            string[] labels = new string[5] { "Study Managed by", "CRO", "IRB agency name", "IRB No.", "Is this a cancer related study ?" };
+            string[] labels = new string[5] { "Study Managed by*", "CRO, if any*", "IRB agency name", "IRB No.", "Is this a cancer related study ?" };
 
             dr["Cancer"] = row["Cancer"];
 
@@ -521,6 +521,19 @@ namespace IrbAnalyser
 
 
             OutputIRBForm.addIds((string)dr["Study number"], (string)dr["IRB Identifiers"]);
+
+            if (fpstudys.initColumnCount < row.Table.Columns.Count)
+            {
+                for (int i = fpstudys.initColumnCount; i < row.Table.Columns.Count; i++)
+                {
+                    if (!dr.Table.Columns.Contains(row.Table.Columns[i].ColumnName))
+                    {
+                        dr.Table.Columns.Add(row.Table.Columns[i].ColumnName);
+                    }
+                    dr[row.Table.Columns[i].ColumnName] = row[i];
+                }
+            }
+            
 
             if (newentry)
             { newStudy.Rows.Add(dr); }

@@ -12,8 +12,6 @@ namespace IrbAnalyser
     {
         public static string filename = "";
 
-        private static FileParser fpStudy = new FileParser();
-
         public static string getFullName(DataRow dr)
         {
             return dr == null ? "" : dr["FirstName"] + " " + dr["LastName"];
@@ -48,11 +46,6 @@ namespace IrbAnalyser
 
         public static string getStudyNumber(string IRBstudyId, string IRBnumber)
         {
-            if (fpStudy.data.Rows.Count == 0)
-            { 
-                fpStudy = new FileParser(filename + "Study.txt",FileParser.type.Study);
-            }
-
             /*var stud = (from st in fpStudy.data.AsEnumerable()
                         where st.Field<string>("StudyId").Trim().ToLower() == IRBstudyId.Trim().ToLower()
                         select (st.Field<string>("StudyAcronym"))).ToArray();*/
@@ -96,7 +89,7 @@ namespace IrbAnalyser
             //string output = DateTime.Now.Year.ToString().Substring(2, 2);
             //string output = irbnumber.Substring(0, 2);
             string output = irbnumber.Replace("-", "");
-            output += "-" + accronym; //+ "-";
+            output += "-" + accronym.Substring(0, accronym.Length > 20 ? 20:accronym.Length); //+ "-";
             //output += Agency.AgencyVal == Agency.AgencyList.BRANY ? "B" : "OCT";//OR MSA ? since apperently OCT enters brany CDA
             //output += irbnumber;
             return output;
@@ -132,7 +125,8 @@ namespace IrbAnalyser
             StringBuilder sb = new StringBuilder();
             foreach (char c in input)
             {
-                if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '.' || c == '_' || c == ' ' || c == '/' || c == '(' || c == ')')
+                if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '.' || c == '_' || c == ' ' || c == '/' || c == '(' || c == ')' || c == '-'
+                    || c == '.' || c == '?' || c == '!' || c == '@' || c == ',')
                 {
                     sb.Append(c);
                 }
