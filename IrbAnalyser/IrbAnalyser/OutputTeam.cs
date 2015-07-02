@@ -7,21 +7,30 @@ using System.Collections.Specialized;
 
 namespace IrbAnalyser
 {
+    /// <summary>
+    /// Handles the team data
+    /// </summary>
     class OutputTeam
     {
+        //Hols the velos role name
         public static string PI = "PI-View Access";
         public static string RC = "Regulatory Coordinator Full";
+        public static string RSC = "SC_REG Coordinator (OCT Managed)";
         public static string SC = "Study Coordinator";
         public static string defaultDisabledRole = "No Privilege";
         public static string enabledGroup = "Study Member";
         public static string disabledGroup = "NO_PRIVILEGE";
 
-        //List of team members
+        //List of new team members
         public static DataTable newTeam = new DataTable();
+        //List of updated team members
         public static DataTable updatedTeam = new DataTable();
+        //List of trigger from the team workflow
         public static DataTable triggerTeam = new DataTable();
+        //List of new member to create in Velos
         public static DataTable newNonSystemUser = new DataTable();
 
+        //Holds the team information from Velos DB
         private static IEnumerable<Model.VDA_V_STUDYTEAM_MEMBERS> _team;
         public static IEnumerable<Model.VDA_V_STUDYTEAM_MEMBERS> team
         {
@@ -33,7 +42,7 @@ namespace IrbAnalyser
                     {
 
                         var query = (from st in db.VDA_V_STUDYTEAM_MEMBERS
-                                     where st.MORE_IRBAGENCY != null
+                                     where st.MORE_IRBAGENCY == Agency.agencyStrLwr
                                      && st.IRBIDENTIFIERS != null
                                      && st.USER_EMAIL != null
                                      select st);
@@ -187,16 +196,17 @@ namespace IrbAnalyser
                 string site = "";
                 bool primary = Tools.compareStr(row["Primary"], "Y");
 
+                
                 if (Agency.AgencyVal == Agency.AgencyList.BRANY)
                 {
-                    role = BranyRoleMap.getRole((string)row["Role"], primary);
+                    role = (string)row["Role"] == RSC ? (string)row["Role"] : BranyRoleMap.getRole((string)row["Role"], primary);
                     //group = BranyRoleMap.getGroup((string)row["Role"]);
                     site = BranySiteMap.getSite(((string)row["SiteName"]).Replace("(IBC)", ""));
                 }
 
-                else if (Agency.AgencyVal == Agency.AgencyList.IRIS)
+                else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
                 {
-                    role = IRISMap.RoleMap.getRole((string)row["Role"], primary);
+                    role = (string)row["Role"] == RSC ? (string)row["Role"] : IRISMap.RoleMap.getRole((string)row["Role"], primary);
                     //group = BranyRoleMap.getGroup((string)row["Role"]);
                     site = IRISMap.SiteMap.getSite((string)row["SiteName"]);
                 }
@@ -345,12 +355,12 @@ namespace IrbAnalyser
                     string login = ((string)userRow["PrimaryEMailAddress"]).Split('@')[0].ToLower().Trim();
 
                     currentuser = ((from us in accounts
-                                        where us.USER_USRNAME.ToLower() == login
-                                        select us).FirstOrDefault());
+                                    where us.USER_USRNAME.ToLower() == login
+                                    select us).FirstOrDefault());
                     if (currentuser != null)
                     {
                         userRow["PrimaryEMailAddress"] = currentuser.USER_EMAIL;
-                    }                
+                    }
                 }
 
                 if (currentuser != null)
@@ -378,7 +388,6 @@ namespace IrbAnalyser
                             {
                                 var user = from us in team
                                            where us.IRBIDENTIFIERS.Trim().ToLower().Split('&')[0] == (irbstudyId.Trim().ToLower())
-                                          && us.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
                                           && us.USER_EMAIL.ToLower() == email
                                            select us;
                                 if (!user.Any())
@@ -399,43 +408,37 @@ namespace IrbAnalyser
 
                                     bool primary = Tools.compareStr(userRow["Primary"], "true");
 
-                                    if (user.First().USER_NAME != (string)userRow["FirstName"] + " " + (string)userRow["LastName"])
+                                    //Out of specs
+                                    /*if (user.First().USER_NAME != (string)userRow["FirstName"] + " " + (string)userRow["LastName"])
+                                    {
+                                        changed = true;
+                                    }*/
+
+                                    string newRole = "";
+                                    if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+                                    {
+                                        newRole = BranyRoleMap.getRole((string)userRow["Role"], primary);
+                                    }
+
+                                    if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
+                                    {
+                                        newRole = IRISMap.RoleMap.getRole((string)userRow["Role"], primary);
+                                    }
+
+                                    if (newRole == PI && user.First().ROLE != RC)
                                     {
                                         changed = true;
                                     }
-
-                                    if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+                                    else if (newRole == RC && user.First().ROLE == defaultDisabledRole)
                                     {
-                                        if (user.First().ROLE != BranyRoleMap.getRole((string)userRow["Role"], primary)
-                                            && BranyRoleMap.getRole((string)userRow["Role"], primary) != "NA")
-                                        {
-                                            changed = true;
-                                        }
-                                        else { userRow["Role"] = ""; }
-                                        if (user.First().USER_SITE_NAME != BranySiteMap.getSite((string)userRow["SiteName"]).Replace("(IBC)", ""))
-                                        {
-                                            changed = true;
-                                        }
-                                        else { userRow["SiteName"] = ""; }
+                                        changed = true;
+                                    }
+                                    else if (newRole == RC && user.First().ROLE == SC)
+                                    {
+                                        changed = true;
+                                        userRow["Role"] = RSC;
                                     }
 
-                                    if (Agency.AgencyVal == Agency.AgencyList.IRIS)
-                                    {
-                                        if (user.First().ROLE != IRISMap.RoleMap.getRole((string)userRow["Role"], primary)
-                                            && IRISMap.RoleMap.getRole((string)userRow["Role"], primary) != "NA")
-                                        {
-                                            changed = true;
-                                        }
-                                        else { userRow["Role"] = ""; }
-                                        if (user.First().USER_SITE_NAME != IRISMap.SiteMap.getSite((string)userRow["SiteName"]).Replace("(IBC)", ""))
-                                        {
-                                            changed = true;
-                                        }
-                                        else { userRow["SiteName"] = ""; }
-                                    }
-
-
-                                    //todo map sites and check
                                     if (changed)
                                     {
                                         addRow(userRow, "Modified member", updatedTeam);
@@ -474,52 +477,61 @@ namespace IrbAnalyser
         {
             foreach (var user in team)
             {
-                if (user.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr)
+                var studyId = Tools.getStudyIdentifiers(user.IRBIDENTIFIERS);
+
+                if (user.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr && OutputStudy.isStudyInDataSource(studyId))
                 {
-                    var agency = user.MORE_IRBAGENCY;
+                    var userAccount = (from account in accounts
+                                       where account.USER_EMAIL == user.USER_EMAIL
+                                       & account.USER_NAME == user.USER_NAME
+                                       select account).First();
 
-                    var studyId = Tools.getStudyIdentifiers(user.IRBIDENTIFIERS);
-
-                    var countEmail = (from DataRow dr in fpTeam.data.Rows
-                                      where (string)dr["StudyId"] == studyId
-                                      && ((string)dr["PrimaryEMailAddress"]).ToLower().Trim() == user.USER_EMAIL.ToLower().Trim()
-                                      select dr).Count();
-
-                    var countStudy = (from DataRow dr in OutputStudy.fpstudys.data.Rows
-                                      where (string)dr["StudyId"] == studyId
-                                      select dr).Count();
-
-                    if (countEmail == 0 && countStudy != 0 && user.ROLE.Trim().ToLower() != RC.Trim().ToLower())
+                    if (userAccount.USER_TYPE != "Non-System User")
                     {
-                        addRowVelosUser(user, "Deleted member", updatedTeam);
-                    }
-                    else if (user.ROLE.Trim().ToLower() == RC.Trim().ToLower() && countEmail == 0 && countStudy != 0)
-                    {
-                        var delete1 = (from DataRow dr in newTeam.AsEnumerable()
-                                       where (string)dr["Study number"] == user.STUDY_NUMBER
-                                       && (string)dr["Role"] == RC
-                                       select dr).Any();
+                        var agency = user.MORE_IRBAGENCY;
 
-                        var delete2 = (from us in team
-                                       where us.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
-                                       && us.IRBIDENTIFIERS.Trim().ToLower() == studyId
-                                       && us.ROLE == RC
-                                       select us).Any();
+                        var countEmail = (from DataRow dr in fpTeam.data.Rows
+                                          where (string)dr["StudyId"] == studyId
+                                          && ((string)dr["PrimaryEMailAddress"]).ToLower().Trim() == user.USER_EMAIL.ToLower().Trim()
+                                          select dr).Count();
 
-                        var delete3 = (from DataRow dr in updatedTeam.AsEnumerable()
-                                       where (string)dr["Study number"] == user.STUDY_NUMBER
-                                       && (string)dr["Role"] == RC
-                                       && (string)dr["TYPE"] == "Modified member"
-                                       select dr).Any();
+                        var countStudy = (from DataRow dr in OutputStudy.fpstudys.data.Rows
+                                          where (string)dr["StudyId"] == studyId
+                                          select dr).Count();
 
-
-                        if (delete1 || delete2 || delete3)
+                        if (countEmail == 0 && countStudy != 0 && user.ROLE.Trim().ToLower() != RC.Trim().ToLower())
                         {
                             addRowVelosUser(user, "Deleted member", updatedTeam);
+                            addRowVelosUser(user, "Deleted member", triggerTeam);
                         }
-                        else
+                        else if (user.ROLE.Trim().ToLower() == RC.Trim().ToLower() && countEmail == 0 && countStudy != 0)
                         {
-                            addRowVelosUser(user, "RC deleted", triggerTeam);
+                            var delete1 = (from DataRow dr in newTeam.AsEnumerable()
+                                           where (string)dr["Study number"] == user.STUDY_NUMBER
+                                           && (string)dr["Role"] == RC
+                                           select dr).Any();
+
+                            var delete2 = (from us in team
+                                           where us.IRBIDENTIFIERS.Trim().ToLower() == studyId
+                                           && us.ROLE == RC
+                                           select us).Any();
+
+                            var delete3 = (from DataRow dr in updatedTeam.AsEnumerable()
+                                           where (string)dr["Study number"] == user.STUDY_NUMBER
+                                           && (string)dr["Role"] == RC
+                                           && (string)dr["TYPE"] == "Modified member"
+                                           select dr).Any();
+
+
+                            if (delete1 || delete2 || delete3)
+                            {
+                                addRowVelosUser(user, "Deleted member", updatedTeam);
+                                addRowVelosUser(user, "Deleted member", triggerTeam);
+                            }
+                            else
+                            {
+                                addRowVelosUser(user, "RC deleted", triggerTeam);
+                            }
                         }
                     }
                 }

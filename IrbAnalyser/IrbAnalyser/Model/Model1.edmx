@@ -252,6 +252,7 @@
           <Property Name="FORMDATE" Type="varchar2" />
           <Property Name="IRBIDENTIFIERS" Type="varchar2" />
           <Property Name="IRBEVENTS" Type="varchar2" />
+          <Property Name="IRBSTATUS" Type="varchar2" />
         </EntityType>
         <EntityType Name="LCL_V_USER">
           <Key>
@@ -516,6 +517,7 @@
           <Property Type="String" Name="FORMDATE" MaxLength="4000" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="IRBIDENTIFIERS" MaxLength="4000" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="IRBEVENTS" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="IRBSTATUS" MaxLength="4000" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="LCL_V_USER">
           <Key>
@@ -754,6 +756,7 @@
           <EntitySetMapping Name="LCL_V_IRBFORM">
             <EntityTypeMapping TypeName="VelosModel.LCL_V_IRBFORM">
               <MappingFragment StoreEntitySet="LCL_V_IRBFORM">
+                <ScalarProperty Name="IRBSTATUS" ColumnName="IRBSTATUS" />
                 <ScalarProperty Name="IRBEVENTS" ColumnName="IRBEVENTS" />
                 <ScalarProperty Name="IRBIDENTIFIERS" ColumnName="IRBIDENTIFIERS" />
                 <ScalarProperty Name="FORMDATE" ColumnName="FORMDATE" />
@@ -1016,7 +1019,7 @@
     </Options>
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
-      <Diagram Name="Model1" ZoomLevel="74">
+      <Diagram Name="Model1" ZoomLevel="44">
         <EntityTypeShape EntityType="VelosModel.LCL_V_STUDYSUMM_PLUSMORE" Width="1.5" PointX="0.75" PointY="0.75" Height="19.095113932291667" />
         <EntityTypeShape EntityType="VelosModel.VDA_V_STUDYSITES" Width="1.5" PointX="2.75" PointY="0.75" Height="5.2494108072916674" />
         <EntityTypeShape EntityType="VelosModel.VDA_V_STUDYSTAT" Width="1.5" PointX="4.75" PointY="0.75" Height="5.8463151041666652" />

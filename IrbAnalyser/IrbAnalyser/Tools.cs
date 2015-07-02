@@ -4,19 +4,33 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Data;
+using System.Text.RegularExpressions;
 
 namespace IrbAnalyser
 {
-
+    /// <summary>
+    /// Class containing various tools used by the application
+    /// </summary>
     static class Tools
     {
+        //Saves the local temporary path to extracted files
         public static string filename = "";
 
+        /// <summary>
+        /// Get full name from the first name and last name of a datarow
+        /// </summary>
+        /// <param name="dr"></param>
+        /// <returns></returns>
         public static string getFullName(DataRow dr)
         {
             return dr == null ? "" : dr["FirstName"] + " " + dr["LastName"];
         }
 
+        /// <summary>
+        /// Generate the study identifier string to be stored in the IRB Form
+        /// </summary>
+        /// <param name="studyID"></param>
+        /// <returns></returns>
         public static string generateStudyIdentifiers(string studyID)
         {
             string result = studyID;
@@ -31,12 +45,22 @@ namespace IrbAnalyser
             return result;
         }
 
+        /// <summary>
+        /// Gets the studyId from the study identifiers IRB Form field
+        /// </summary>
+        /// <param name="studyId"></param>
+        /// <returns></returns>
         public static string getStudyIdentifiers(string studyId)
         {
             var strplit = studyId.Split(new string[] { "&" }, StringSplitOptions.None);
             return strplit[0];
         }
 
+        /// <summary>
+        /// Parse a date using DateTime.TryParse (no format or local) and returns a string of format "MM/dd/yyyy"
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns></returns>
         public static string parseDate(string date)
         {
             DateTime dateparsed = DateTime.MinValue;
@@ -44,12 +68,17 @@ namespace IrbAnalyser
             return dateparsed == DateTime.MinValue ? "" : dateparsed.Date.ToString("MM/dd/yyyy");
         }
 
+
+        /// <summary>
+        /// Gets the study number for that study, looks for the study in the database, in previously added new study.
+        /// If no study is found, creates the study number.
+        /// The acronym is read from the datasource
+        /// </summary>
+        /// <param name="IRBstudyId"></param>
+        /// <param name="IRBnumber"></param>
+        /// <returns></returns>
         public static string getStudyNumber(string IRBstudyId, string IRBnumber)
         {
-            /*var stud = (from st in fpStudy.data.AsEnumerable()
-                        where st.Field<string>("StudyId").Trim().ToLower() == IRBstudyId.Trim().ToLower()
-                        select (st.Field<string>("StudyAcronym"))).ToArray();*/
-
             var stud = (from st in OutputStudy.fpstudys.data.AsEnumerable()
                         where st.Field<string>("StudyId").Trim().ToLower() == IRBstudyId.Trim().ToLower()
                         select (st.Field<string>("StudyAcronym"))).ToArray();
@@ -60,16 +89,18 @@ namespace IrbAnalyser
             return getStudyNumber(IRBstudyId, IRBnumber, accronym);
         }
 
+        /// <summary>
+        /// Gets the study number for that study, looks for the study in the database, in previously added new study.
+        /// If no study is found, creates the study number.
+        /// The acronym is provided
+        /// </summary>
+        /// <param name="IRBstudyId"></param>
+        /// <param name="IRBnumber"></param>
+        /// <param name="accronym"></param>
+        /// <returns></returns>
         public static string getStudyNumber(string IRBstudyId, string IRBnumber, string accronym)
         {
             string number = "";
-            /*using (Model.VelosDb db = new Model.VelosDb())
-            {
-                number = (from stud in db.LCL_V_STUDYSUMM_PLUSMORE
-                          where stud.MORE_IRBSTUDYID.Trim().ToLower().Contains(IRBstudyId.Trim().ToLower())
-                       && stud.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
-                          select stud.STUDY_NUMBER).FirstOrDefault();
-            }*/
 
             number = (from stud in OutputStudy.studys
                       where stud.IRBIDENTIFIERS.Trim().ToLower().Split('&')[0] == (IRBstudyId.Trim().ToLower())
@@ -84,40 +115,39 @@ namespace IrbAnalyser
             return number;
         }
 
+        /// <summary>
+        /// Generate the study number
+        /// </summary>
+        /// <param name="irbnumber"></param>
+        /// <param name="accronym"></param>
+        /// <returns></returns>
         private static string generateStudyNumber(string irbnumber, string accronym)
         {
-            //string output = DateTime.Now.Year.ToString().Substring(2, 2);
-            //string output = irbnumber.Substring(0, 2);
             string output = irbnumber.Replace("-", "");
-            output += "-" + accronym.Substring(0, accronym.Length > 20 ? 20:accronym.Length); //+ "-";
-            //output += Agency.AgencyVal == Agency.AgencyList.BRANY ? "B" : "OCT";//OR MSA ? since apperently OCT enters brany CDA
-            //output += irbnumber;
+            output += "-" + accronym.Substring(0, accronym.Length > 20 ? 20:accronym.Length);
             return output;
         }
 
-
+        /// <summary>
+        /// Check if a study exist in velos for that study id
+        /// </summary>
+        /// <param name="IRBstudyId"></param>
+        /// <returns></returns>
         public static bool getOldStudy(string IRBstudyId)
         {
             bool ret;
-            /*using (Model.VelosDb db = new Model.VelosDb())
-            {
-                ret = (from stud in db.LCL_V_STUDYSUMM_PLUSMORE
-                       where stud.MORE_IRBSTUDYID.Trim().ToLower().Contains(IRBstudyId.Trim().ToLower())
-                    && stud.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
-                       select stud.STUDY_NUMBER).Any();
-            }*/
 
             ret = OutputStudy.studys.Any(x => x.IRBIDENTIFIERS.Trim().ToLower().Split('&')[0] == (IRBstudyId.Trim().ToLower())
                 && x.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr);
 
-            /*ret = (from stud in OutputStudy.studys
-                   where stud.MORE_IRBSTUDYID.Trim().ToLower().Contains(IRBstudyId.Trim().ToLower())
-                && stud.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
-                   select stud.STUDY_NUMBER).Any();*/
-
             return ret;
         }
 
+        /// <summary>
+        /// Clean a string of many special characters
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public static string cleanMap(string input)
         {
             input = input.Trim();       
@@ -136,6 +166,23 @@ namespace IrbAnalyser
             return output;
         }
 
+        /// <summary>
+        /// Remove all HTML tag and multiple spaces from a string
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public static string removeHtml(string input)
+        {
+            input = Regex.Replace(input, @"<[^>]+>|&nbsp;", "").Trim();
+            input = Regex.Replace(input, @"\s{2,}", " ");
+            return input;
+        }
+
+        /// <summary>
+        /// Remove all non alphanumeric character from a string
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public static string cleanTitle(string input)
         {
             input = input.Trim();
@@ -154,6 +201,11 @@ namespace IrbAnalyser
         }
 
         
+        /// <summary>
+        /// Remove all non alphanumeric character from a string except . and _
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public static string cleanStr(string input)
         {
             input = input.ToLowerInvariant();
@@ -170,6 +222,12 @@ namespace IrbAnalyser
             return sb.ToString();
         }
 
+
+        /// <summary>
+        /// Trims double quotes from a string and change the string "NULL" to an empty string
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public static string parse(string input)
         {
             input = input.Trim('"');
@@ -178,11 +236,21 @@ namespace IrbAnalyser
             return input;
         }
 
+        /// <summary>
+        /// Trims double quotes from a string
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public static string removeQuote(string input)
         {
             return input.Trim('"');
         }
 
+        /// <summary>
+        /// Trims quote for all element of a string array
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public static string[] removeQuote(string[] input)
         {
             for (int i = 0; i < input.Length; i++)
@@ -219,6 +287,12 @@ namespace IrbAnalyser
             }
         }
 
+        /// <summary>
+        /// Verify if str1 contains any string from the array str2
+        /// </summary>
+        /// <param name="str1"></param>
+        /// <param name="str2"></param>
+        /// <returns></returns>
         public static bool containStr(object str1, string[] str2)
         {
             bool contain = false;

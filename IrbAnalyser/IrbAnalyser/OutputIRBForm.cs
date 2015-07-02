@@ -12,6 +12,7 @@ namespace IrbAnalyser
 
         //All IRB Event will be reinserted, new line use  &#13;&#10;
 
+
         public static void initiate()
         {
             if (newIRBForm.Columns.Count == 0)
@@ -20,6 +21,7 @@ namespace IrbAnalyser
                 newIRBForm.Columns.Add("Date", typeof(string));
                 newIRBForm.Columns.Add("IRB_Identifier", typeof(string));
                 newIRBForm.Columns.Add("IRB_Event", typeof(string));
+                newIRBForm.Columns.Add("IRB_Status", typeof(string));
             }
         }
 
@@ -34,13 +36,48 @@ namespace IrbAnalyser
                 DataRow dr = (from form in OutputIRBForm.newIRBForm.AsEnumerable()
                               where form.Field<string>("Study_number") == studyNumber
                               select form).First();
-
-                dr["IRB_Event"] = dr["IRB_Event"] + eventData + "&#13;&#10;";
+                if (!string.IsNullOrWhiteSpace(eventData))
+                {
+                    dr["IRB_Event"] = dr["IRB_Event"] + eventData + "&#13;&#10;";
+                }
             }
             else
             {
                 DataRow dr = newIRBForm.NewRow();
-                dr["IRB_Event"] = dr["IRB_Event"] + eventData + "&#13;&#10;";
+                if (!string.IsNullOrWhiteSpace(eventData))
+                {
+                    dr["IRB_Event"] = dr["IRB_Event"] + eventData + "&#13;&#10;";
+                }
+                dr["Date"] = DateTime.Now.Date.ToString("MM/dd/yyyy");
+                dr["Study_number"] = studyNumber;
+                newIRBForm.Rows.Add(dr);
+            }
+        }
+
+
+        public static void addStatus(string studyNumber, string statusdata)
+        {
+            initiate();
+
+            if ((from form in OutputIRBForm.newIRBForm.AsEnumerable()
+                 where form.Field<string>("Study_number") == studyNumber
+                 select form).Any())
+            {
+                DataRow dr = (from form in OutputIRBForm.newIRBForm.AsEnumerable()
+                              where form.Field<string>("Study_number") == studyNumber
+                              select form).First();
+                if (!string.IsNullOrWhiteSpace(statusdata))
+                {
+                    dr["IRB_Status"] = dr["IRB_Status"] + statusdata + "&#13;&#10;";
+                }
+            }
+            else
+            {
+                DataRow dr = newIRBForm.NewRow();
+                if (!string.IsNullOrWhiteSpace(statusdata))
+                {
+                    dr["IRB_Status"] = dr["IRB_Status"] + statusdata + "&#13;&#10;";
+                }
                 dr["Date"] = DateTime.Now.Date.ToString("MM/dd/yyyy");
                 dr["Study_number"] = studyNumber;
                 newIRBForm.Rows.Add(dr);
@@ -113,6 +150,7 @@ namespace IrbAnalyser
                     {
                         delete = (from irbform in irbformsNoNull
                                   where irbform.IRBEVENTS == (string)dr["IRB_Event"]
+                                  && irbform.IRBSTATUS == (string)dr["IRB_Status"]
                                  && irbform.IRBIDENTIFIERS == (string)dr["IRB_Identifier"]
                                   select irbform).Any();
                     }
@@ -121,6 +159,7 @@ namespace IrbAnalyser
                 {
                     delete = (from irbform in irbformsNoNull
                               where irbform.IRBEVENTS == (string)dr["IRB_Event"]
+                              && irbform.IRBSTATUS == (string)dr["IRB_Status"]
                              && irbform.IRBIDENTIFIERS == (string)dr["IRB_Identifier"]
                               select irbform).Any();
                 }

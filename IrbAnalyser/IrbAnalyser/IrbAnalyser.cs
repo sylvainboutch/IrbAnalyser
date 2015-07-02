@@ -142,7 +142,7 @@ namespace IrbAnalyser
 
             Tools.filename = dir;
 
-            if (Agency.AgencyVal == Agency.AgencyList.BRANY || Agency.AgencyVal == Agency.AgencyList.IRIS)
+            if (Agency.AgencyVal == Agency.AgencyList.BRANY || Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
             {
                 OutputTeam.analyse(dir + "Team.txt");
                 OutputStatus.analyse(dir);
@@ -150,7 +150,7 @@ namespace IrbAnalyser
 
                 OutputIRBForm.finalizeEventIrbForm();
             }
-            else if (Agency.AgencyVal == Agency.AgencyList.IRIS)
+            else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
             { 
                 
             }

@@ -73,7 +73,7 @@ namespace IrbAnalyser
             {
                 site = BranySiteMap.getSite(((string)studyrow["Sitename"]).Replace("(IBC)", ""));
             }
-            else if (Agency.AgencyVal == Agency.AgencyList.IRIS)
+            else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
             {
                 site = IRISMap.SiteMap.getSite((string)studyrow["Sitename"]);
             }

@@ -392,6 +392,30 @@ namespace IrbAnalyser.Model
         private global::System.String _IRBEVENTS;
         partial void OnIRBEVENTSChanging(global::System.String value);
         partial void OnIRBEVENTSChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String IRBSTATUS
+        {
+            get
+            {
+                return _IRBSTATUS;
+            }
+            set
+            {
+                OnIRBSTATUSChanging(value);
+                ReportPropertyChanging("IRBSTATUS");
+                _IRBSTATUS = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("IRBSTATUS");
+                OnIRBSTATUSChanged();
+            }
+        }
+        private global::System.String _IRBSTATUS;
+        partial void OnIRBSTATUSChanging(global::System.String value);
+        partial void OnIRBSTATUSChanged();
 
         #endregion
 
