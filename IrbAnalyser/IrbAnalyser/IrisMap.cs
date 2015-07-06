@@ -145,7 +145,6 @@ namespace IrbAnalyser.IRISMap
                 {"Undergoing Review by Legal","IRB INITIAL Submitted"},
                 {"Withdrawn by PI","Complete"},
                 {"",""}
-
             };
 
         public static string getStatus(string key)

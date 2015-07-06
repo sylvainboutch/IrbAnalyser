@@ -265,8 +265,8 @@ namespace IrbAnalyser
                                 hasChanged = true;
                             }
 
-                            bool cmp = (stu.STUDY_SCOPE == "Multi Center Study" && dr["Multicenter"].ToString().ToLower() == "true") ||
-                                (stu.STUDY_SCOPE == "Single Center Study" && dr["Multicenter"].ToString().ToLower() == "false") ||
+                            bool cmp = (stu.STUDY_SCOPE == "Multi Center Study" && dr["Multicenter"].ToString().ToLower() == "yes") ||
+                                (stu.STUDY_SCOPE == "Single Center Study" && dr["Multicenter"].ToString().ToLower() == "no") ||
                                 (stu.STUDY_SCOPE == null && dr["Multicenter"].ToString().ToLower() == "");
 
                             if (cmp)

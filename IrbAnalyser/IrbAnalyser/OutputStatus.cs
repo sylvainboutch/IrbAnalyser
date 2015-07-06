@@ -456,12 +456,13 @@ namespace IrbAnalyser
             {
                 string undefinedEvent = "Organization : " + statusRow["Sitename"] + " - Status : " + statusRow["Status"] + " - Date : " + statusRow["ValidOn"];
                 bool alreadyAdded = (from events in OutputIRBForm.newIRBForm.AsEnumerable()
-                                     where events.Field<string>("IRB_Event").Contains(undefinedEvent)
+                                     where events.Field<string>("IRB_Status").Contains(undefinedEvent)
                                      & events.Field<string>("Study_number").ToLower().Trim().Contains(((string)statusRow["StudyId"]).Trim().ToLower())
                                      select events).Any();
                 if (!alreadyAdded)
                 {
-                    OutputIRBForm.addStatus((string)statusRow["Study number"], undefinedEvent);
+
+                    OutputIRBForm.addStatus(Tools.getStudyNumber((string)statusRow["StudyId"], ((string)statusRow["IRBNumber"]).Replace("(IBC)", "")), undefinedEvent);
                 }
             }
             else
