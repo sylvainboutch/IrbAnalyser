@@ -114,7 +114,7 @@ namespace IrbAnalyser
             {
                 newTeam.Columns.Add("TYPE", typeof(string));
 
-                newTeam.Columns.Add("Study number", typeof(string));
+                newTeam.Columns.Add("Study_number", typeof(string));
 
                 newTeam.Columns.Add("Email", typeof(string));
                 newTeam.Columns.Add("AdditionnalEmails", typeof(string));
@@ -130,7 +130,7 @@ namespace IrbAnalyser
             {
                 updatedTeam.Columns.Add("TYPE", typeof(string));
 
-                updatedTeam.Columns.Add("Study number", typeof(string));
+                updatedTeam.Columns.Add("Study_number", typeof(string));
 
                 updatedTeam.Columns.Add("Email", typeof(string));
                 updatedTeam.Columns.Add("AdditionnalEmails", typeof(string));
@@ -146,7 +146,7 @@ namespace IrbAnalyser
             {
                 triggerTeam.Columns.Add("TYPE", typeof(string));
 
-                triggerTeam.Columns.Add("Study number", typeof(string));
+                triggerTeam.Columns.Add("Study_number", typeof(string));
 
                 triggerTeam.Columns.Add("Email", typeof(string));
                 triggerTeam.Columns.Add("AdditionnalEmails", typeof(string));
@@ -162,7 +162,7 @@ namespace IrbAnalyser
             {
                 newNonSystemUser.Columns.Add("TYPE", typeof(string));
 
-                newNonSystemUser.Columns.Add("Study number", typeof(string));
+                newNonSystemUser.Columns.Add("Study_number", typeof(string));
 
                 newNonSystemUser.Columns.Add("Email", typeof(string));
                 newNonSystemUser.Columns.Add("AdditionnalEmails", typeof(string));
@@ -216,11 +216,23 @@ namespace IrbAnalyser
                     initiate();
                     DataRow dr;
 
+                    string piName = OutputStudy.getPI((string)row["StudyId"]);
+                    if ((string)row["UserName"] == piName)
+                    {
+                        role = PI;
+                    }
+                    
+                    string rcName = OutputStudy.getRC((string)row["StudyId"]);
+                    if ((string)row["UserName"] == rcName)
+                    {
+                        role = RC;
+                    }
+
                     dr = records.NewRow();
 
                     dr["TYPE"] = type;
 
-                    dr["Study number"] = Tools.getStudyNumber((string)row["StudyId"], ((string)row["IRBNumber"]).Replace("(IBC)", ""));
+                    dr["Study_number"] = Tools.getStudyNumber((string)row["StudyId"], ((string)row["IRBNumber"]).Replace("(IBC)", ""));
 
                     dr["Email"] = row["PrimaryEMailAddress"].ToString();
                     dr["AdditionnalEmails"] = row["OtherEmailAdresses"].ToString();
@@ -253,12 +265,16 @@ namespace IrbAnalyser
 
                     var dtUser = from user in records.AsEnumerable()
                                  where user.Field<string>("Email").Trim().ToLower() == ((string)row["PrimaryEMailAddress"]).Trim().ToLower()
-                                 && user.Field<string>("Study number").Trim().ToLower() == ((string)dr["Study number"]).Trim().ToLower()
+                                 && user.Field<string>("Study_number").Trim().ToLower() == ((string)dr["Study_number"]).Trim().ToLower()
                                  select user;
                     if (dtUser.Count() > 0)
                     {
                         foreach (DataRow rw in dtUser)
                         {
+                            if (!rw.Field<string>("TYPE").Contains(type))
+                            {
+                                rw["TYPE"] += "  --  " + type;
+                            }
                             if (rw.Field<string>("Role") != role && role == RC)
                             {
                                 rw["Role"] = role;
@@ -269,7 +285,7 @@ namespace IrbAnalyser
                             }
                         }
                     }
-                    else
+                    else if (!((role == RC || role == PI) && type == "New study")) 
                     {
                         records.Rows.Add(dr);
                     }
@@ -290,12 +306,12 @@ namespace IrbAnalyser
 
             dr["TYPE"] = type;
 
-            dr["Study number"] = row.STUDY_NUMBER;
+            dr["Study_number"] = row.STUDY_NUMBER;
 
             dr["Email"] = row.USER_EMAIL;
             dr["First name"] = row.USER_NAME.Split(' ')[0];
             dr["Last name"] = row.USER_NAME.Split(' ')[1];
-            dr["Full name"] = row.USER_NAME;
+            dr["User name"] = row.USER_NAME;
             dr["Role"] = row.ROLE;
             //dr["Group"] = group;
             dr["Organization"] = row.USER_SITE_NAME;
@@ -507,7 +523,7 @@ namespace IrbAnalyser
                         else if (user.ROLE.Trim().ToLower() == RC.Trim().ToLower() && countEmail == 0 && countStudy != 0)
                         {
                             var delete1 = (from DataRow dr in newTeam.AsEnumerable()
-                                           where (string)dr["Study number"] == user.STUDY_NUMBER
+                                           where (string)dr["Study_number"] == user.STUDY_NUMBER
                                            && (string)dr["Role"] == RC
                                            select dr).Any();
 
@@ -517,7 +533,7 @@ namespace IrbAnalyser
                                            select us).Any();
 
                             var delete3 = (from DataRow dr in updatedTeam.AsEnumerable()
-                                           where (string)dr["Study number"] == user.STUDY_NUMBER
+                                           where (string)dr["Study_number"] == user.STUDY_NUMBER
                                            && (string)dr["Role"] == RC
                                            && (string)dr["TYPE"] == "Modified member"
                                            select dr).Any();

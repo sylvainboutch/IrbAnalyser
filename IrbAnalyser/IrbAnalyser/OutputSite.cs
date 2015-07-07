@@ -43,7 +43,7 @@ namespace IrbAnalyser
             {
                 newSites.Columns.Add("TYPE", typeof(string));
 
-                newSites.Columns.Add("Study number", typeof(string));
+                newSites.Columns.Add("Study_number", typeof(string));
 
                 newSites.Columns.Add("Organization", typeof(string));
                 newSites.Columns.Add("Local sample size", typeof(string));
@@ -53,7 +53,7 @@ namespace IrbAnalyser
             {
                 updatedSites.Columns.Add("TYPE", typeof(string));
 
-                updatedSites.Columns.Add("Study number", typeof(string));
+                updatedSites.Columns.Add("Study_number", typeof(string));
 
                 updatedSites.Columns.Add("Organization", typeof(string));
                 updatedSites.Columns.Add("Local sample size", typeof(string));
@@ -116,7 +116,7 @@ namespace IrbAnalyser
             { dr = updatedSites.NewRow(); }
             dr["Type"] = type;
 
-            dr["Study number"] = Tools.getStudyNumber(studyid,IRBno);
+            dr["Study_number"] = Tools.getStudyNumber(studyid,IRBno);
 
             dr["Organization"] = site;
             dr["Local sample size"] = size;

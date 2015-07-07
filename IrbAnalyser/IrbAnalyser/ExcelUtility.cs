@@ -46,7 +46,7 @@ namespace IrbAnalyser
             }*/
             if (dt.Rows.Count > 0)
             {
-                dataTable = dt.AsEnumerable().OrderBy(x => x.Field<string>("Study number"))
+                dataTable = dt.AsEnumerable().OrderBy(x => x.Field<string>("Study_number"))
                     .CopyToDataTable();
             }
 

@@ -125,7 +125,7 @@ namespace IrbAnalyser
         {
             string output = irbnumber.Replace("-", "");
             output += "-" + accronym.Substring(0, accronym.Length > 20 ? 20:accronym.Length);
-            return output;
+            return output.Trim();
         }
 
         /// <summary>

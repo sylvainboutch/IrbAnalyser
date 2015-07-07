@@ -28,12 +28,12 @@ namespace IrbAnalyser
                 }
                 else
                 {
-                    dt = dt.AsEnumerable().OrderBy(x => x.Field<string>("Study number"))
+                    dt = dt.AsEnumerable().OrderBy(x => x.Field<string>("Study_number"))
                         .CopyToDataTable();
                 }*/
-                if (dt.Columns.Contains("Study number"))
+                if (dt.Columns.Contains("Study_number"))
                 {
-                    dt = dt.AsEnumerable().OrderBy(x => x.Field<string>("Study number"))
+                    dt = dt.AsEnumerable().OrderBy(x => x.Field<string>("Study_number"))
                         .CopyToDataTable();
                 }
 

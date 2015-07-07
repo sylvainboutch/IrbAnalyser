@@ -78,8 +78,8 @@ namespace IrbAnalyser
                 newStudy.Columns.Add("IRB no", typeof(string));
                 newStudy.Columns.Add("IRB Study ID", typeof(string));
                 newStudy.Columns.Add("IRB Identifiers", typeof(string));
-                newStudy.Columns.Add("Study number", typeof(string));
-                newStudy.Columns.Add("Study coordinator", typeof(string));
+                newStudy.Columns.Add("Study_number", typeof(string));
+                newStudy.Columns.Add("Study_coordinator", typeof(string));
                 newStudy.Columns.Add("Principal Investigator", typeof(string));
                 newStudy.Columns.Add("Official title", typeof(string));
                 newStudy.Columns.Add("Study Summary", typeof(string));
@@ -101,8 +101,8 @@ namespace IrbAnalyser
                 updatedStudy.Columns.Add("IRB no", typeof(string));
                 updatedStudy.Columns.Add("IRB Study ID", typeof(string));
                 updatedStudy.Columns.Add("IRB Identifiers", typeof(string));
-                updatedStudy.Columns.Add("Study number", typeof(string));
-                updatedStudy.Columns.Add("Study coordinator", typeof(string));
+                updatedStudy.Columns.Add("Study_number", typeof(string));
+                updatedStudy.Columns.Add("Study_coordinator", typeof(string));
                 updatedStudy.Columns.Add("Principal Investigator", typeof(string));
                 updatedStudy.Columns.Add("Official title", typeof(string));
                 updatedStudy.Columns.Add("Study summary", typeof(string));
@@ -380,7 +380,7 @@ namespace IrbAnalyser
             dr["IRB Study ID"] = (string)row["StudyId"];
             dr["IRB Identifiers"] = Tools.generateStudyIdentifiers((string)row["StudyId"]);
 
-            dr["Study number"] = Tools.getStudyNumber((string)row["StudyId"], (string)dr["IRB no"], (string)row["StudyAcronym"]);
+            dr["Study_number"] = Tools.getStudyNumber((string)row["StudyId"], (string)dr["IRB no"], (string)row["StudyAcronym"]);
 
             if (newpi == null)
             {
@@ -393,11 +393,11 @@ namespace IrbAnalyser
 
             if (newrc == null)
             {
-                dr["Study coordinator"] = getRC((string)row["StudyId"]);
+                dr["Study_coordinator"] = getRC((string)row["StudyId"]);
             }
             else
             {
-                dr["Study coordinator"] = newrc;
+                dr["Study_coordinator"] = newrc;
             }
 
             if (newcro == null)
@@ -475,7 +475,7 @@ namespace IrbAnalyser
             }
 
 
-            OutputIRBForm.addIds((string)dr["Study number"], (string)dr["IRB Identifiers"]);
+            OutputIRBForm.addIds((string)dr["Study_number"], (string)dr["IRB Identifiers"]);
 
             if (fpstudys.initColumnCount < row.Table.Columns.Count)
             {
@@ -502,7 +502,7 @@ namespace IrbAnalyser
         /// </summary>
         /// <param name="studyId"></param>
         /// <returns></returns>
-        private static string getPI(string studyId)
+        public static string getPI(string studyId)
         {
             if (Agency.AgencyVal == Agency.AgencyList.BRANY)
             {
@@ -520,7 +520,7 @@ namespace IrbAnalyser
         /// </summary>
         /// <param name="studyId"></param>
         /// <returns></returns>
-        private static string getRC(string studyId)
+        public static string getRC(string studyId)
         {
 
             string retstr = "";

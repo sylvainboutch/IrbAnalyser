@@ -91,7 +91,7 @@ namespace IrbAnalyser
             if (newStatus.Columns.Count == 0)
             {
                 newStatus.Columns.Add("TYPE", typeof(string));
-                newStatus.Columns.Add("Study number", typeof(string));
+                newStatus.Columns.Add("Study_number", typeof(string));
                 newStatus.Columns.Add("IRB Study ID", typeof(string));
 
                 newStatus.Columns.Add("Organization", typeof(string));
@@ -108,7 +108,7 @@ namespace IrbAnalyser
             if (updatedStatus.Columns.Count == 0)
             {
                 updatedStatus.Columns.Add("TYPE", typeof(string));
-                updatedStatus.Columns.Add("Study number", typeof(string));
+                updatedStatus.Columns.Add("Study_number", typeof(string));
                 updatedStatus.Columns.Add("IRB Study ID", typeof(string));
 
                 updatedStatus.Columns.Add("Organization", typeof(string));
@@ -478,7 +478,7 @@ namespace IrbAnalyser
 
                 dr["TYPE"] = type;
 
-                dr["Study number"] = Tools.getStudyNumber((string)statusRow["StudyId"], ((string)statusRow["IRBNumber"]).Replace("(IBC)", ""));
+                dr["Study_number"] = Tools.getStudyNumber((string)statusRow["StudyId"], ((string)statusRow["IRBNumber"]).Replace("(IBC)", ""));
 
                 dr["IRB Study ID"] = (string)statusRow["StudyId"];
 
@@ -553,7 +553,7 @@ namespace IrbAnalyser
 
             dr["TYPE"] = type;
 
-            dr["Study number"] = Tools.getStudyNumber((string)eventRow["StudyId"], ((string)eventRow["IRBNumber"]).Replace("(IBC)", ""));
+            dr["Study_number"] = Tools.getStudyNumber((string)eventRow["StudyId"], ((string)eventRow["IRBNumber"]).Replace("(IBC)", ""));
 
             dr["IRB Study ID"] = (string)eventRow["StudyId"];
 
@@ -619,7 +619,7 @@ namespace IrbAnalyser
                                      select events).Any();
                 if (!alreadyAdded)
                 {
-                    OutputIRBForm.addEvents((string)dr["Study number"], undefinedEvent);
+                    OutputIRBForm.addEvents((string)dr["Study_number"], undefinedEvent);
                 }
             }
 
@@ -656,7 +656,7 @@ namespace IrbAnalyser
             { dr = updatedStatus.NewRow(); }
             dr["TYPE"] = type;
             dr["Comment"] = ((string)studyRow["IRBNumber"]).Contains("(IBC)") ? "Status from IBC" : "";
-            dr["Study number"] = Tools.getStudyNumber((string)studyRow["StudyId"], ((string)studyRow["IRBNumber"]).Replace("(IBC)", ""));
+            dr["Study_number"] = Tools.getStudyNumber((string)studyRow["StudyId"], ((string)studyRow["IRBNumber"]).Replace("(IBC)", ""));
 
             dr["IRB Study ID"] = (string)studyRow["StudyId"];
 

@@ -44,7 +44,7 @@ namespace IrbAnalyser
             {
                 newDocs.Columns.Add("TYPE", typeof(string));
 
-                newDocs.Columns.Add("Study number", typeof(string));
+                newDocs.Columns.Add("Study_number", typeof(string));
 
                 newDocs.Columns.Add("Version date", typeof(string));
                 newDocs.Columns.Add("Version number", typeof(string));
@@ -58,7 +58,7 @@ namespace IrbAnalyser
             {
                 updatedDocs.Columns.Add("TYPE", typeof(string));
 
-                updatedDocs.Columns.Add("Study number", typeof(string));
+                updatedDocs.Columns.Add("Study_number", typeof(string));
 
                 updatedDocs.Columns.Add("Version date", typeof(string));
                 updatedDocs.Columns.Add("Version number", typeof(string));
@@ -122,7 +122,7 @@ namespace IrbAnalyser
 
             dr["TYPE"] = type;
 
-            dr["Study number"] = Tools.getStudyNumber(studyid, irbno);
+            dr["Study_number"] = Tools.getStudyNumber(studyid, irbno);
 
             dr["Version date"] = Tools.parseDate((string)DateTime.Now.ToShortDateString());
             dr["Version number"] = Agency.agencyStrLwr.ToUpper() + " " + section;

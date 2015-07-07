@@ -17,6 +17,7 @@ namespace IrbAnalyser.IRISMap
                 {"Einstein_CRC West","Einstein Montefiore (non-treating site)"},
                 {"Montefiore_North Division","Einstein Montefiore (non-treating site)"},
                 {"Montefiore_Radiation Oncology @ St. Barnabas","Einstein Montefiore (non-treating site)"},
+                {"Montefiore_Off-site clinics","Einstein Montefiore (non-treating site)"},
                 {"Einstein_DOSA","Einstein Montefiore (non-treating site)"},
                 {"Einstein_CRC East","Einstein Montefiore (non-treating site)"},
                 {"NBHN_Jacobi Medical Center","Einstein Montefiore (non-treating site)"},
@@ -54,8 +55,8 @@ namespace IrbAnalyser.IRISMap
 
         public static readonly Dictionary<string, string> roleMap = new Dictionary<string, string>()
             {
-                { PI, OutputTeam.RC },
-                { RC1, OutputTeam.PI },
+                { PI, OutputTeam.PI },
+                { RC1, OutputTeam.RC },
                 { RC2,"No privilege"},
                 {"Additional Research service Coordinator","No privilege"},
                 {"Administrative Assistant","No privilege"},

@@ -15,14 +15,14 @@ namespace IrbAnalyser
         {
             if (newMSD.Columns.Count == 0)
             {               
-                newMSD.Columns.Add("Study number", typeof(string));
+                newMSD.Columns.Add("Study_number", typeof(string));
                 newMSD.Columns.Add("Label", typeof(string));
                 newMSD.Columns.Add("Value", typeof(string));
             }
 
             if (updatedMSD.Columns.Count == 0)
             {
-                updatedMSD.Columns.Add("Study number", typeof(string));
+                updatedMSD.Columns.Add("Study_number", typeof(string));
                 updatedMSD.Columns.Add("Label", typeof(string));
                 updatedMSD.Columns.Add("Value", typeof(string));                
             }
@@ -38,7 +38,7 @@ namespace IrbAnalyser
             { dr = updatedMSD.NewRow(); }
             dr["Label"] = label;
 
-            dr["Study number"] = Tools.getStudyNumber(studyid, IRBno, accronym);
+            dr["Study_number"] = Tools.getStudyNumber(studyid, IRBno, accronym);
 
             dr["Value"] = value;
             if (newrecord)
