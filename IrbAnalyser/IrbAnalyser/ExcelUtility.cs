@@ -44,10 +44,14 @@ namespace IrbAnalyser
             {
                 dataTable = dt.Copy();
             }*/
-            if (dt.Rows.Count > 0)
+            if (dt.Rows.Count > 0 & dt.Columns.Contains("Study_number"))
             {
                 dataTable = dt.AsEnumerable().OrderBy(x => x.Field<string>("Study_number"))
                     .CopyToDataTable();
+            }
+            else if (dt.Rows.Count > 0)
+            {
+                dataTable = dt.AsEnumerable().CopyToDataTable();
             }
 
         }

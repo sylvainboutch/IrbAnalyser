@@ -112,15 +112,21 @@ namespace IrbAnalyser
                 exc.WriteDataTableToExcel(savefilenoext + "_newNonSystem.xlsx", lstxls);
                 */
                 
+                
 
+                lstxls = new List<ExcelWorksheet>();
 
-
+                lstxls.Add(new ExcelWorksheet("StudyPersonnels", "List of study and Personnels", Study_Personnel_list.studyDT));
+                lstxls.Add(new ExcelWorksheet("StudyPersonnelsShort", "List of study and Personnels short version", Study_Personnel_list.studyShort));
+                exc.WriteDataTableToExcel(savefilenoext + "_study_personnels.xlsx", lstxls);
 
 
                 txtOutput.Text = "Analysis complete.\r\nPlease open the excel file and create/modify studies in Velos accordingly.";
                 btnclicked = true;
                 btnOk.Text = "Close";
                 btnOk.Enabled = true;
+
+
             }
             //}
             //catch (Exception ex)
@@ -154,6 +160,8 @@ namespace IrbAnalyser
             { 
                 
             }
+
+            Study_Personnel_list.generateData();
                 
             Zip.CleanUpFile(dir);
 

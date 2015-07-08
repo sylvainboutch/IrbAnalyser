@@ -141,6 +141,7 @@
     <Compile Include="OutputTeam.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Study_Personnel_list.cs" />
     <Compile Include="Tools.cs" />
     <Compile Include="Zip.cs" />
     <EmbeddedResource Include="IrbAnalyser.resx">

@@ -514,6 +514,25 @@ namespace IrbAnalyser
             }
         }
 
+        /// <summary>
+        /// returns the PI email
+        /// </summary>
+        /// <param name="studyId"></param>
+        /// <returns></returns>
+        public static string getPIeMail(string studyId)
+        {
+            var studyteam = OutputTeam.fpTeam.data.AsEnumerable().Where(x => (string)x["StudyId"] == studyId);
+            if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+            {
+                return (string)studyteam.FirstOrDefault(x => (string)x["Role"] == BranyRoleMap.PI && (string)x["Primary"] == "Y")["PrimaryEMailAddress"];
+            }
+            else
+            {
+                return (string)studyteam.FirstOrDefault(x => (string)x["Role"] == IRISMap.RoleMap.PI)["PrimaryEMailAddress"];
+            }
+        
+        }
+
 
         /// <summary>
         /// Returns the RC for that study
