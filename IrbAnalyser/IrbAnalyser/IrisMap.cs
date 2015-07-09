@@ -10,21 +10,21 @@ namespace IrbAnalyser.IRISMap
         public static readonly Dictionary<string, string> siteMap = new Dictionary<string, string>()
             {
                 {"",""},
-                { "Einstein Montefiore", "Einstein Montefiore (non-treating site)" },
-                {"Montefiore_Moses Division","Einstein Montefiore (non-treating site)"},
-                {"Einstein_Laboratory/Office","Einstein Montefiore (non-treating site)"},
-                {"Montefiore_Weiler Division","Einstein Montefiore (non-treating site)"},
-                {"Einstein_CRC West","Einstein Montefiore (non-treating site)"},
-                {"Montefiore_North Division","Einstein Montefiore (non-treating site)"},
-                {"Montefiore_Radiation Oncology @ St. Barnabas","Einstein Montefiore (non-treating site)"},
-                {"Montefiore_Off-site clinics","Einstein Montefiore (non-treating site)"},
-                {"Einstein_DOSA","Einstein Montefiore (non-treating site)"},
-                {"Einstein_CRC East","Einstein Montefiore (non-treating site)"},
-                {"NBHN_Jacobi Medical Center","Einstein Montefiore (non-treating site)"},
-                {"NBHN_North Central Bronx Hospital","Einstein Montefiore (non-treating site)"},
-                {"Einstein_MRRC","Einstein Montefiore (non-treating site)"},
-                {"Yeshiva University_Azrieli School of Education","Einstein Montefiore (non-treating site)"},
-                {"Yeshiva University_Ferkauf Graduate School of Psychology","Einstein Montefiore (non-treating site)"}
+                { "Einstein Montefiore", OutputSite.EMmainsite },
+                {"Montefiore_Moses Division", "Montefiore Medical Center-Moses Campus"},
+                {"Einstein_Laboratory/Office", "Montefiore Medical Center-Einstein Campus"},
+                {"Montefiore_Weiler Division",OutputSite.EMmainsite},
+                {"Einstein_CRC West",OutputSite.EMmainsite},
+                {"Montefiore_North Division",OutputSite.EMmainsite},
+                {"Montefiore_Radiation Oncology @ St. Barnabas",OutputSite.EMmainsite},
+                {"Montefiore_Off-site clinics",OutputSite.EMmainsite},
+                {"Einstein_DOSA",OutputSite.EMmainsite},
+                {"Einstein_CRC East",OutputSite.EMmainsite},
+                {"NBHN_Jacobi Medical Center", "Jacobi Hospital"},
+                {"NBHN_North Central Bronx Hospital",OutputSite.EMmainsite},
+                {"Einstein_MRRC",OutputSite.EMmainsite},
+                {"Yeshiva University_Azrieli School of Education",OutputSite.EMmainsite},
+                {"Yeshiva University_Ferkauf Graduate School of Psychology",OutputSite.EMmainsite}
             };
 
         public static string getSite(string key)
@@ -39,6 +39,19 @@ namespace IrbAnalyser.IRISMap
                 return key + "  (NEW !!!)";
             }
         }
+
+        public static string getSiteType(string key)
+        {
+            try
+            {
+                return siteMap[key.Trim()] == OutputSite.EMmainsite ? OutputSite.siteTypePrimary : OutputSite.siteTypeTreating;
+            }
+            catch (Exception ex)
+            {
+                NewValueOuput.appendString("New site", key);
+                return key + "  (NEW !!!)";
+            }
+        }
     }
 
 
@@ -50,6 +63,7 @@ namespace IrbAnalyser.IRISMap
         public static string PI = "Principal Investigator";
         public static string RC1 = "Faculty Advisor";
         public static string RC2 = "Study Contact";
+        public static string SC = "Study Coordinator";
         
         
 
@@ -73,7 +87,7 @@ namespace IrbAnalyser.IRISMap
                 {"Research Associate","No privilege"},
                 {"Research Pharmacist","No privilege"},
                 {"Student Researcher","No privilege"},
-                {"Study Coordinator","No privilege"},
+                {SC,"No privilege"},
                 {"Study Author","No privilege"},
                 {"UNKNOWN ROLE - Migrated KP 1","No privilege"},
                 {"UNKNOWN ROLE - Migrated KP 2","No privilege"},

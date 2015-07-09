@@ -79,6 +79,7 @@ namespace IrbAnalyser
                 newStudy.Columns.Add("IRB Study ID", typeof(string));
                 newStudy.Columns.Add("IRB Identifiers", typeof(string));
                 newStudy.Columns.Add("Study_number", typeof(string));
+                newStudy.Columns.Add("Regulatory_coordinator", typeof(string));
                 newStudy.Columns.Add("Study_coordinator", typeof(string));
                 newStudy.Columns.Add("Principal Investigator", typeof(string));
                 newStudy.Columns.Add("Official title", typeof(string));
@@ -102,6 +103,7 @@ namespace IrbAnalyser
                 updatedStudy.Columns.Add("IRB Study ID", typeof(string));
                 updatedStudy.Columns.Add("IRB Identifiers", typeof(string));
                 updatedStudy.Columns.Add("Study_number", typeof(string));
+                updatedStudy.Columns.Add("Regulatory_coordinator", typeof(string));
                 updatedStudy.Columns.Add("Study_coordinator", typeof(string));
                 updatedStudy.Columns.Add("Principal Investigator", typeof(string));
                 updatedStudy.Columns.Add("Official title", typeof(string));
@@ -183,6 +185,7 @@ namespace IrbAnalyser
                         bool hasChanged = false;
                         string newpi = "";
                         string newrc = "";
+                        string newsc = "";
                         string newcro = "";
 
                         foreach (var stu in study)
@@ -202,6 +205,12 @@ namespace IrbAnalyser
                                 hasChanged = true;
                             }
                             else { newrc = ""; }
+
+                            if (stu.STUDY_COORDINATOR != newsc && !String.IsNullOrEmpty(newsc))
+                            {
+                                hasChanged = true;
+                            }
+                            else { newsc = ""; }
 
                             if (stu.MORE_CRO != newcro && !String.IsNullOrEmpty(newcro))
                             {
@@ -354,7 +363,7 @@ namespace IrbAnalyser
 
                         if (hasChanged)
                         {
-                            addRowStudy(dr, false, newpi, newrc, newcro);
+                            addRowStudy(dr, false, newpi, newrc, newsc, newcro);
                         }
                     }
                 }
@@ -366,7 +375,7 @@ namespace IrbAnalyser
         /// </summary>
         /// <param name="irbNumber"></param>
         /// <param name="studyNumber"></param>
-        private static void addRowStudy(DataRow row, bool newentry, string newpi = null, string newrc = null, string newcro = null)
+        private static void addRowStudy(DataRow row, bool newentry, string newpi = null, string newrc = null, string newsc = null, string newcro = null)
         {
             initiate();
             DataRow dr;
@@ -393,11 +402,20 @@ namespace IrbAnalyser
 
             if (newrc == null)
             {
-                dr["Study_coordinator"] = getRC((string)row["StudyId"]);
+                dr["Regulatory_coordinator"] = getRC((string)row["StudyId"]);
             }
             else
             {
-                dr["Study_coordinator"] = newrc;
+                dr["Regulatory_coordinator"] = newrc;
+            }
+
+            if (newsc == null)
+            {
+                dr["Study_coordinator"] = getSC((string)row["StudyId"]);
+            }
+            else
+            {
+                dr["Study_coordinator"] = newsc;
             }
 
             if (newcro == null)
@@ -555,6 +573,25 @@ namespace IrbAnalyser
             }
 
             retstr = String.IsNullOrWhiteSpace(retstr) ? getPI(studyId) : retstr;
+
+            return retstr;
+        }
+
+
+
+        /// <summary>
+        /// Returns the SC for that study
+        /// </summary>
+        /// <param name="studyId"></param>
+        /// <returns></returns>
+        public static string getSC(string studyId)
+        {
+
+            string retstr = "";
+            if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
+            {
+                retstr = getRole(studyId, IRISMap.RoleMap.SC);
+            }
 
             return retstr;
         }

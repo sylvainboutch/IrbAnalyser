@@ -12,17 +12,16 @@ namespace IrbAnalyser
     /// </summary>
     public static class BranySiteMap
     {
-        private static string velosEM = "Einstein Montefiore (non-treating site)";
         public static readonly Dictionary<string, string> siteMapBrany = new Dictionary<string, string>()
             {
                 {"",""},
-                { "Montefiore Medical Center", velosEM },
-                { "Albert Einstein Col. of Med. of Yeshiva University", velosEM },
-                { "Westchester Cardiology", velosEM },
-                { "Montefiore (Weiler Division)", velosEM },
-                { "Montefiore (Moses Division)", velosEM },
-                { "Montefiore (Children's Hosp)", velosEM },
-                { "Montefiore (Einstein Liver Center)", velosEM }
+                { "Montefiore Medical Center", OutputSite.EMmainsite },
+                { "Albert Einstein Col. of Med. of Yeshiva University", OutputSite.EMmainsite },
+                { "Westchester Cardiology", OutputSite.EMmainsite },
+                { "Montefiore (Weiler Division)", OutputSite.EMmainsite },
+                { "Montefiore (Moses Division)", OutputSite.EMmainsite },
+                { "Montefiore (Children's Hosp)", OutputSite.EMmainsite },
+                { "Montefiore (Einstein Liver Center)", OutputSite.EMmainsite }
             };
 
         public static string getSite(string key)
@@ -37,6 +36,20 @@ namespace IrbAnalyser
                 return key + "  (NEW !!!)";
             }
         }
+
+        public static string getSiteType(string key)
+        {
+            try
+            {
+                return siteMapBrany[key.Trim()] == OutputSite.EMmainsite ? OutputSite.siteTypePrimary : OutputSite.siteTypeTreating;
+            }
+            catch (Exception ex)
+            {
+                NewValueOuput.appendString("New site", key);
+                return key + "  (NEW !!!)";
+            }
+        }
+
     }
 
 

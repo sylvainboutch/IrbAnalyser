@@ -216,17 +216,29 @@ namespace IrbAnalyser
                     initiate();
                     DataRow dr;
 
+                    bool doNotAdd = false;
+
                     string piName = OutputStudy.getPI((string)row["StudyId"]);
                     if ((string)row["UserName"] == piName)
                     {
                         role = PI;
+                        doNotAdd = true;
                     }
                     
                     string rcName = OutputStudy.getRC((string)row["StudyId"]);
                     if ((string)row["UserName"] == rcName)
                     {
                         role = RC;
+                        doNotAdd = true;
                     }
+
+                    string scName = OutputStudy.getSC((string)row["StudyId"]);
+                    if ((string)row["UserName"] == scName)
+                    {
+                        role = SC;
+                        doNotAdd = true;
+                    }
+
 
                     dr = records.NewRow();
 
@@ -285,7 +297,7 @@ namespace IrbAnalyser
                             }
                         }
                     }
-                    else if (!((role == RC || role == PI) && type == "New study")) 
+                    else if (!(doNotAdd && type == "New study")) 
                     {
                         records.Rows.Add(dr);
                     }

@@ -8,6 +8,9 @@ namespace IrbAnalyser
 {
     class OutputSite
     {
+        public static string EMmainsite = "Einstein Montefiore (non-treating site)";
+        public static string siteTypeTreating = "Treating Site"; //Treating Site or treatingSite
+        public static string siteTypePrimary = "Primary/Responsible"; //Primary/Responsible or primary
         public static DataTable newSites = new DataTable();
         public static DataTable updatedSites = new DataTable();
 
@@ -47,6 +50,7 @@ namespace IrbAnalyser
 
                 newSites.Columns.Add("Organization", typeof(string));
                 newSites.Columns.Add("Local sample size", typeof(string));
+                newSites.Columns.Add("Site_Type", typeof(string));
             }
 
             if (updatedSites.Columns.Count == 0)
@@ -57,6 +61,7 @@ namespace IrbAnalyser
 
                 updatedSites.Columns.Add("Organization", typeof(string));
                 updatedSites.Columns.Add("Local sample size", typeof(string));
+                updatedSites.Columns.Add("Site_Type", typeof(string));
             }
         }
 
@@ -68,14 +73,17 @@ namespace IrbAnalyser
         {
 
             string site = "";
+            string siteType = "";
 
             if (Agency.AgencyVal == Agency.AgencyList.BRANY)
             {
                 site = BranySiteMap.getSite(((string)studyrow["Sitename"]).Replace("(IBC)", ""));
+                siteType = BranySiteMap.getSiteType(((string)studyrow["Sitename"]).Replace("(IBC)", ""));
             }
             else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
             {
                 site = IRISMap.SiteMap.getSite((string)studyrow["Sitename"]);
+                siteType = IRISMap.SiteMap.getSiteType((string)studyrow["Sitename"]);
             }
             string irbstudyId = (string)studyrow["StudyId"];
             string size = (string)studyrow["Sitesamplesize"];
@@ -90,23 +98,23 @@ namespace IrbAnalyser
                                  select sit);
                     if (sites2.Count() == 0 && !site.Contains("(IBC)"))
                     {
-                        addRow("New Site", site, size, irbstudyId, ((string)studyrow["IRBNumber"]).Replace("(IBC)", ""), true);
+                        addRow("New Site", site, siteType, size, irbstudyId, ((string)studyrow["IRBNumber"]).Replace("(IBC)", ""), true);
                     }
                     else if (sites2.FirstOrDefault().STUDYSITE_LSAMPLESIZE != size && !String.IsNullOrEmpty(size) && !site.Contains("(IBC)"))
                     {
-                        addRow("Modified site", site, size, irbstudyId, ((string)studyrow["IRBNumber"]).Replace("(IBC)", ""), false);
+                        addRow("Modified site", site, siteType, size, irbstudyId, ((string)studyrow["IRBNumber"]).Replace("(IBC)", ""), false);
                     }
                 }
 
             }
             else if (!site.Contains("(IBC)"))
             {
-                addRow("New study", site, size, irbstudyId, ((string)studyrow["IRBNumber"]).Replace("(IBC)", ""), true);
+                addRow("New study", site, siteType, size, irbstudyId, ((string)studyrow["IRBNumber"]).Replace("(IBC)", ""), true);
             }
 
         }
 
-        public static void addRow(string type, string site, string size, string studyid, string IRBno, bool newrecord)
+        public static void addRow(string type, string site, string siteType, string size, string studyid, string IRBno, bool newrecord)
         {
             initiate();
             DataRow dr;
@@ -120,6 +128,9 @@ namespace IrbAnalyser
 
             dr["Organization"] = site;
             dr["Local sample size"] = size;
+
+            dr["Site_Type"] = siteType;
+
             if (newrecord)
             { newSites.Rows.Add(dr); }
             else

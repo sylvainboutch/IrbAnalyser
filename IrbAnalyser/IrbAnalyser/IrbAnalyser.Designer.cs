@@ -40,25 +40,26 @@
             this.ofdMember = new System.Windows.Forms.OpenFileDialog();
             this.cboSource = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.cboGenerate = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // txtOutput
             // 
-            this.txtOutput.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtOutput.Location = new System.Drawing.Point(0, 139);
+            this.txtOutput.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtOutput.Location = new System.Drawing.Point(0, 193);
             this.txtOutput.Multiline = true;
             this.txtOutput.Name = "txtOutput";
             this.txtOutput.ReadOnly = true;
             this.txtOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtOutput.Size = new System.Drawing.Size(419, 159);
+            this.txtOutput.Size = new System.Drawing.Size(419, 162);
             this.txtOutput.TabIndex = 0;
             // 
             // btnOk
             // 
             this.btnOk.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.btnOk.Location = new System.Drawing.Point(0, 304);
+            this.btnOk.Location = new System.Drawing.Point(0, 361);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(419, 23);
             this.btnOk.TabIndex = 1;
@@ -100,6 +101,7 @@
             this.cboSource.Name = "cboSource";
             this.cboSource.Size = new System.Drawing.Size(121, 21);
             this.cboSource.TabIndex = 11;
+            this.cboSource.SelectedIndexChanged += new System.EventHandler(this.cboSource_SelectedIndexChanged);
             // 
             // label2
             // 
@@ -110,11 +112,24 @@
             this.label2.TabIndex = 12;
             this.label2.Text = "Data source";
             // 
+            // cboGenerate
+            // 
+            this.cboGenerate.AutoSize = true;
+            this.cboGenerate.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.cboGenerate.Location = new System.Drawing.Point(120, 121);
+            this.cboGenerate.Name = "cboGenerate";
+            this.cboGenerate.Size = new System.Drawing.Size(183, 17);
+            this.cboGenerate.TabIndex = 14;
+            this.cboGenerate.Text = "Generate study and personnel list";
+            this.cboGenerate.UseVisualStyleBackColor = false;
+            this.cboGenerate.Visible = false;
+            // 
             // IrbAnalyser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(419, 327);
+            this.ClientSize = new System.Drawing.Size(419, 384);
+            this.Controls.Add(this.cboGenerate);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.cboSource);
             this.Controls.Add(this.label1);
@@ -143,6 +158,7 @@
         private System.Windows.Forms.OpenFileDialog ofdMember;
         private System.Windows.Forms.ComboBox cboSource;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.CheckBox cboGenerate;
     }
 }
 

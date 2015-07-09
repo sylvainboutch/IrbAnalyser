@@ -111,16 +111,16 @@ namespace IrbAnalyser
                 lstxls.Add(new ExcelWorksheet("Team", "List of non system user to add in Velos", OutputTeam.newNonSystemUser));
                 exc.WriteDataTableToExcel(savefilenoext + "_newNonSystem.xlsx", lstxls);
                 */
+
+                if (cboGenerate.Checked && cboGenerate.Visible)
+                {
+                    lstxls = new List<ExcelWorksheet>();
+
+                    lstxls.Add(new ExcelWorksheet("StudyPersonnels", "List of study and Personnels", Study_Personnel_list.studyDT));
+                    lstxls.Add(new ExcelWorksheet("StudyPersonnelsShort", "List of study and Personnels short version", Study_Personnel_list.studyShort));
+                    exc.WriteDataTableToExcel(savefilenoext + "_study_personnels.xlsx", lstxls);
+                }
                 
-                
-
-                lstxls = new List<ExcelWorksheet>();
-
-                lstxls.Add(new ExcelWorksheet("StudyPersonnels", "List of study and Personnels", Study_Personnel_list.studyDT));
-                lstxls.Add(new ExcelWorksheet("StudyPersonnelsShort", "List of study and Personnels short version", Study_Personnel_list.studyShort));
-                exc.WriteDataTableToExcel(savefilenoext + "_study_personnels.xlsx", lstxls);
-
-
                 txtOutput.Text = "Analysis complete.\r\nPlease open the excel file and create/modify studies in Velos accordingly.";
                 btnclicked = true;
                 btnOk.Text = "Close";
@@ -156,12 +156,11 @@ namespace IrbAnalyser
 
                 OutputIRBForm.finalizeEventIrbForm();
             }
-            else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
-            { 
-                
-            }
 
-            Study_Personnel_list.generateData();
+            if (cboGenerate.Checked && cboGenerate.Visible)
+            {
+                Study_Personnel_list.generateData();
+            }
                 
             Zip.CleanUpFile(dir);
 
@@ -173,6 +172,14 @@ namespace IrbAnalyser
             DialogResult dr = ofdStudy.ShowDialog();
             string filename = dr == DialogResult.OK ? ofdStudy.FileName : "";
             txtStudy.Text = Path.GetFileName(filename);
+        }
+
+        private void cboSource_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cboSource.SelectedText.ToLower() == Agency.AgencyList.BRANY.ToString().ToLower())
+            {
+                cboGenerate.Visible = true;
+            }
         }
 
     }

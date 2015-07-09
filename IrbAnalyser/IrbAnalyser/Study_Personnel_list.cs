@@ -50,7 +50,7 @@ namespace IrbAnalyser
                 if (drStudy["StudyId"].ToString() != "")
                 {
                     var drShort = studyShort.NewRow();
-                    drShort["OtherPersonnel"] = "";
+                    drShort["OtherPersonnel"] = "= \"\"";
                     drShort["PI"] = OutputStudy.getPI((string)drStudy["StudyId"]);
                     drShort["PIemail"] = OutputStudy.getPIeMail((string)drStudy["StudyId"]);
                     foreach (DataColumn dc in OutputStudy.fpstudys.data.Columns)
@@ -87,7 +87,9 @@ namespace IrbAnalyser
                             dr["PI"] = drShort["PI"];
                             dr["PIemail"] = drShort["PIemail"];
 
-                            drShort["OtherPersonnel"] += "\"" + drTeam["Role"] + " : " + drTeam["FirstName"] + " " + drTeam["LastName"] + " - " + drTeam["PrimaryEMailAddress"] + "  \" & CHAR(10) ";
+                            string primary = ((string)drTeam["Primary"]).ToLower() == "y" ? " Primary " : "";
+
+                            drShort["OtherPersonnel"] += " & \"" + primary + drTeam["Role"] + " : " + drTeam["FirstName"] + " " + drTeam["LastName"] + " - " + drTeam["PrimaryEMailAddress"] + "  \" & CHAR(10) ";
                             dr["Cancer"] = drShort["Cancer"];
                             foreach (DataColumn dc in OutputStudy.fpstudys.data.Columns)
                             {
@@ -121,7 +123,7 @@ namespace IrbAnalyser
         public static void getLatestStatus()
         {
             DataView dv = OutputStatus.fpstatus.data.DefaultView;
-            dv.Sort = "StudyId desc, ValidOn desc";
+            dv.Sort = "StudyId desc, ValidOn asc";
             OutputStatus.fpstatus.data = dv.ToTable();
 
             latestStatus = OutputStatus.fpstatus.data.Clone();
