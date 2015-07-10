@@ -119,6 +119,7 @@ namespace IrbAnalyser
                 {"",""},
                 { "Approved", "IRB Initial Approved" },
                 { "Approved IRB only", "IRB Initial Approved" },
+                { "Approved -IRB only", "IRB Initial Approved" },
                 { "Closed", "Complete " },
                 { "Closed IRB only", "Complete " },
                 { "Closed to Enrollment", "Closed to accrual" },
@@ -157,6 +158,9 @@ namespace IrbAnalyser
                 { "Closed to Enrollment (IBC)", "Closed to accrual" },
                 { "Dropped by Investigator", "" },
                 { "Administrative - Translation", "" }
+                
+                
+
             };
 
         public static string getStatus(string key)
@@ -177,6 +181,7 @@ namespace IrbAnalyser
                 {"",""},
                 { "Approved", "Pre Activation" },
                 { "Approved IRB only", "Pre Activation" },
+                { "Approved -IRB only", "Pre Activation" },
                 { "Closed", "Study Status" },
                 { "Closed IRB only", "Study Status" },
                 { "Closed to Enrollment", "Study Status" },
@@ -244,6 +249,7 @@ namespace IrbAnalyser
                 {"Administrative (Translation)",""},
                 {"Administrative - Translation",""},
                 {"Administrative Review",""},
+                {"Administrative - Revised Letter",""},
                 {"Advertisements",""},
                 {"Amendment","IRB Amendment Submitted**"},
                 {"Continuing Review",""},
@@ -304,6 +310,7 @@ namespace IrbAnalyser
                 {"Additional PI","Pre Activation"},
                 {"Administrative (Translation)","Pre Activation"},
                 {"Administrative - Translation","Pre Activation"},
+                {"Administrative - Revised Letter","Pre Activation"},
                 {"Administrative Review","Pre Activation"},
                 {"Advertisements","Pre Activation"},
                 {"Amendment","Pre Activation"},

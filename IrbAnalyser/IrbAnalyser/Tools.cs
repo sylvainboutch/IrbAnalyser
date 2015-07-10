@@ -40,7 +40,7 @@ namespace IrbAnalyser
             foreach (var stu in stud)
             {
                 if (!stu.Contains("(IBC)"))
-                    result += "&" + stu;
+                    result += ">" + stu;
             }
             return result;
         }
@@ -52,7 +52,7 @@ namespace IrbAnalyser
         /// <returns></returns>
         public static string getStudyIdentifiers(string studyId)
         {
-            var strplit = studyId.Split(new string[] { "&" }, StringSplitOptions.None);
+            var strplit = studyId.Split(new string[] { ">" }, StringSplitOptions.None);
             return strplit[0];
         }
 
@@ -103,7 +103,7 @@ namespace IrbAnalyser
             string number = "";
 
             number = (from stud in OutputStudy.studys
-                      where stud.IRBIDENTIFIERS.Trim().ToLower().Split('&')[0] == (IRBstudyId.Trim().ToLower())
+                      where stud.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (IRBstudyId.Trim().ToLower())
                    && stud.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
                       select stud.STUDY_NUMBER).FirstOrDefault();
 
@@ -137,7 +137,7 @@ namespace IrbAnalyser
         {
             bool ret;
 
-            ret = OutputStudy.studys.Any(x => x.IRBIDENTIFIERS.Trim().ToLower().Split('&')[0] == (IRBstudyId.Trim().ToLower())
+            ret = OutputStudy.studys.Any(x => x.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (IRBstudyId.Trim().ToLower())
                 && x.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr);
 
             return ret;

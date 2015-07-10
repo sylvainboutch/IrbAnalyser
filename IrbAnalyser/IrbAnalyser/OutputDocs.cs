@@ -87,7 +87,7 @@ namespace IrbAnalyser
                 if (!String.IsNullOrEmpty(url))
                 {
                     var docs = (from ver in versions
-                                where ver.IRBIDENTIFIERS.Trim().ToLower().Split('&')[0] == (irbstudyId.Trim().ToLower())
+                                where ver.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (irbstudyId.Trim().ToLower())
                                    && ver.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
                                    && ver.STUDYAPNDX_URI.ToLower() == url
                                 select ver).Count();

@@ -149,7 +149,7 @@ namespace IrbAnalyser
 
 
                 var study = from st in studys
-                            where st.IRBIDENTIFIERS.Trim().ToLower().Split('&')[0] == (irbstudyId.Trim().ToLower())
+                            where st.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (irbstudyId.Trim().ToLower())
                             select st;
 
 
@@ -160,12 +160,13 @@ namespace IrbAnalyser
                                     where st.Field<string>("IRB Study ID").Trim().ToLower() == irbstudyId.Trim().ToLower()
                                     select st).Any();
 
+                    OutputSite.analyseRow(dr, true);
+
                     OutputStatus.analyseRowStudy(dr, true);
                     if (!dtStudy)
                     {
                         addRowStudy(dr, true);
                         //Add all related values for that study                            
-                        OutputSite.analyseRow(dr, true);
                         OutputDocs.analyseRow(dr, true);
                     }
                 }
@@ -175,11 +176,13 @@ namespace IrbAnalyser
                                     where st.Field<string>("IRB Study ID").Trim().ToLower() == irbstudyId.Trim().ToLower()
                                     select st).Any();
 
+                    OutputSite.analyseRow(dr, false);
+
                     OutputStatus.analyseRowStudy(dr, false);
                     if (!dtStudy)
                     {
 
-                        OutputSite.analyseRow(dr, false);
+
                         OutputDocs.analyseRow(dr, false);
 
                         bool hasChanged = false;
@@ -243,14 +246,16 @@ namespace IrbAnalyser
                                 if (Tools.compareStr(newdep, stu.STUDY_DIVISION) && !string.IsNullOrWhiteSpace((string)dr["Department"]))
                                 {
                                     dr["Department"] = "";
+                                    
                                 }
                                 else if (!string.IsNullOrWhiteSpace((string)dr["Department"]))
                                 {
                                     hasChanged = true;
+                                    newdep = null;
                                 }
 
                                 string newDiv = string.IsNullOrWhiteSpace((string)dr["Department"]) ? "" : IRISMap.Department.getDivision((string)dr["Department"]);
-                                if (Tools.compareStr(newDiv, stu.STUDY_TAREA) && !string.IsNullOrWhiteSpace((string)dr["Department"]))
+                                if (Tools.compareStr(newDiv, stu.STUDY_TAREA) && !string.IsNullOrWhiteSpace((string)dr["Department"]) && newdep!=null)
                                 {
                                     dr["Department"] = "";
                                 }
@@ -442,8 +447,9 @@ namespace IrbAnalyser
                 dr["Division/Therapeutic area"] = String.IsNullOrWhiteSpace((string)row["Department"]) ? "" : IRISMap.Department.getDivision((string)row["Department"]);
             }
 
-
-            dr["Entire study sample size"] = row["Studysamplesize"].ToString();
+            int size = 0;
+            int.TryParse((string)row["Studysamplesize"], out size);
+            dr["Entire study sample size"] = size == 0 ? "" : size.ToString();
 
             if (Agency.AgencyVal == Agency.AgencyList.BRANY)
             {
@@ -455,9 +461,9 @@ namespace IrbAnalyser
             }
 
 
-            if (Tools.compareStr(row["Multicenter"].ToString(), "TRUE"))
+            if (Tools.compareStr(row["Multicenter"].ToString(), "true") || Tools.compareStr(row["Multicenter"].ToString(), "yes") || Tools.compareStr(row["Multicenter"].ToString(), "y"))
                 dr["Study scope"] = "Multi Center Study";
-            else if (Tools.compareStr(row["Multicenter"].ToString(), "FALSE"))
+            else if (Tools.compareStr(row["Multicenter"].ToString(), "false") || Tools.compareStr(row["Multicenter"].ToString(), "no") || Tools.compareStr(row["Multicenter"].ToString(), "n"))
                 dr["Study scope"] = "Single Center Study";
             else
                 dr["Study scope"] = "";
@@ -548,7 +554,7 @@ namespace IrbAnalyser
             {
                 return (string)studyteam.FirstOrDefault(x => (string)x["Role"] == IRISMap.RoleMap.PI)["PrimaryEMailAddress"];
             }
-        
+
         }
 
 
@@ -642,8 +648,8 @@ namespace IrbAnalyser
         public static bool isStudyInDataSource(string studyId)
         {
             return (from st in fpstudys.data.AsEnumerable()
-                            where st.Field<string>("StudyId").Trim().ToLower() == studyId.Trim().ToLower()
-                            select st).Any();
+                    where st.Field<string>("StudyId").Trim().ToLower() == studyId.Trim().ToLower()
+                    select st).Any();
         }
     }
 }

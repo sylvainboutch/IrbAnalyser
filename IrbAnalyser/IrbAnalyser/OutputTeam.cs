@@ -361,19 +361,11 @@ namespace IrbAnalyser
             if (!string.IsNullOrWhiteSpace(email))
             {
 
-                var issuperuser = (from us in accounts
-                                   where us.USER_EMAIL.ToLower() == email
-                                   && us.GRP_SUPUSR_FLAG == 1
-                                   && us.USER_STATUS == "Active"
-                                   select us).Any();
-
-                var isactiveuser = (from us in accounts
-                                    where us.USER_EMAIL.ToLower() == email
-                                    && us.USER_STATUS == "Active"
-                                    select us).Any();
-
                 var currentusers = (from us in accounts
-                                    where us.USER_EMAIL.ToLower() == email
+                                    where (us.USER_EMAIL.ToLower() == email
+                                    || ( us.USER_NAME.ToLower().Contains(((string)userRow["FirstName"]).ToLower().Trim())
+                                    & us.USER_NAME.ToLower().Contains(((string)userRow["LastName"]).ToLower().Trim())
+                                    ))
                                     select us);
 
                 var currentuser = currentusers.FirstOrDefault();
@@ -387,9 +379,28 @@ namespace IrbAnalyser
                                     select us).FirstOrDefault());
                     if (currentuser != null)
                     {
-                        userRow["PrimaryEMailAddress"] = currentuser.USER_EMAIL;
+                        userRow["PrimaryEMailAddress"] = currentuser.USER_EMAIL.Trim().ToLower();
+                        email  = currentuser.USER_EMAIL.Trim().ToLower();
                     }
                 }
+
+                var issuperuser = (from us in accounts
+                                   where
+                                   (us.USER_EMAIL.ToLower() == email
+                                    || (us.USER_NAME.ToLower().Contains(((string)userRow["FirstName"]).ToLower().Trim())
+                                    & us.USER_NAME.ToLower().Contains(((string)userRow["LastName"]).ToLower().Trim())
+                                    ))
+                                   && us.GRP_SUPUSR_FLAG == 1
+                                   && us.USER_STATUS == "Active"
+                                   select us).Any();
+
+                var isactiveuser = (from us in accounts
+                                    where (us.USER_EMAIL.ToLower() == email
+                                    || (us.USER_NAME.ToLower().Contains(((string)userRow["FirstName"]).ToLower().Trim())
+                                    & us.USER_NAME.ToLower().Contains(((string)userRow["LastName"]).ToLower().Trim())
+                                    ))
+                                    && us.USER_STATUS == "Active"
+                                    select us).Any();
 
                 if (currentuser != null)
                 {
@@ -415,8 +426,10 @@ namespace IrbAnalyser
                             if (!String.IsNullOrEmpty(email))
                             {
                                 var user = from us in team
-                                           where us.IRBIDENTIFIERS.Trim().ToLower().Split('&')[0] == (irbstudyId.Trim().ToLower())
-                                          && us.USER_EMAIL.ToLower() == email
+                                           where us.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (irbstudyId.Trim().ToLower())
+                                          && (us.USER_EMAIL.ToLower() == email
+                                    || ( us.USER_NAME.ToLower().Contains(((string)userRow["FirstName"]).ToLower().Trim())
+                                    & us.USER_NAME.ToLower().Contains(((string)userRow["LastName"]).ToLower().Trim())))
                                            select us;
                                 if (!user.Any())
                                 {
@@ -520,7 +533,8 @@ namespace IrbAnalyser
 
                         var countEmail = (from DataRow dr in fpTeam.data.Rows
                                           where (string)dr["StudyId"] == studyId
-                                          && ((string)dr["PrimaryEMailAddress"]).ToLower().Trim() == user.USER_EMAIL.ToLower().Trim()
+                                          && (((string)dr["PrimaryEMailAddress"]).ToLower().Trim() == user.USER_EMAIL.ToLower().Trim()
+                                          || (user.USER_NAME.ToLower().Trim().Contains(((string)dr["LastName"]).ToLower().Trim())))
                                           select dr).Count();
 
                         var countStudy = (from DataRow dr in OutputStudy.fpstudys.data.Rows
