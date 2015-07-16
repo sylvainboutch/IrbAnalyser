@@ -38,7 +38,8 @@
               "LCL_V_USER"."PK_USER" AS "PK_USER",
               "LCL_V_USER"."LAST_MODIFIED_BY_FK" AS "LAST_MODIFIED_BY_FK",
               "LCL_V_USER"."CREATOR_FK" AS "CREATOR_FK",
-              "LCL_V_USER"."GRP_SUPUSR_FLAG" AS "GRP_SUPUSR_FLAG"
+              "LCL_V_USER"."GRP_SUPUSR_FLAG" AS "GRP_SUPUSR_FLAG",
+              "LCL_V_USER"."USER_HIDDEN" AS "USER_HIDDEN"
               FROM "VDA"."LCL_V_USER" "LCL_V_USER"
             </DefiningQuery>
           </EntitySet>
@@ -287,6 +288,8 @@
           <Property Name="LAST_MODIFIED_BY_FK" Type="number" />
           <Property Name="CREATOR_FK" Type="number" />
           <Property Name="GRP_SUPUSR_FLAG" Type="number" />
+          <Property Name="USER_HIDDEN" Type="number" />
+                   
         </EntityType>
         <EntityType Name="LCL_V_STUDYVER_APNDX">
           <Key>
@@ -552,6 +555,7 @@
           <Property Type="Decimal" Name="LAST_MODIFIED_BY_FK" Precision="38" Scale="0" />
           <Property Type="Decimal" Name="CREATOR_FK" Precision="38" Scale="0" />
           <Property Type="Decimal" Name="GRP_SUPUSR_FLAG" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="USER_HIDDEN" Precision="38" Scale="0" />
         </EntityType>
         <EntityType Name="LCL_V_STUDYVER_APNDX">
           <Key>
@@ -797,6 +801,7 @@
                 <ScalarProperty Name="SITE_NAME" ColumnName="SITE_NAME" />
                 <ScalarProperty Name="USER_DEFAULT_GROUP_FK" ColumnName="USER_DEFAULT_GROUP_FK" />
                 <ScalarProperty Name="USER_TYPE" ColumnName="USER_TYPE" />
+                <ScalarProperty Name="USER_HIDDEN" ColumnName="USER_HIDDEN" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

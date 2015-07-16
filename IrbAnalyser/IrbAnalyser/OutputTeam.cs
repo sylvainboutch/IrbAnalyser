@@ -30,6 +30,8 @@ namespace IrbAnalyser
         public static DataTable triggerTeam = new DataTable();
         //List of new member to create in Velos
         public static DataTable newNonSystemUser = new DataTable();
+        //List of new member to create in Velos
+        public static DataTable addedDeletedUser = new DataTable();
 
         //Holds the team information from Velos DB
         private static IEnumerable<Model.VDA_V_STUDYTEAM_MEMBERS> _team;
@@ -70,7 +72,6 @@ namespace IrbAnalyser
 
                         var query = (from st in db.LCL_V_USER
                                      where st.USER_EMAIL != null
-                                     & st.USER_USRNAME != null
                                      select st);
                         _accounts = query.ToList<Model.LCL_V_USER>();
                     }
@@ -181,6 +182,28 @@ namespace IrbAnalyser
                 newNonSystemUser.Columns.Add("Login", typeof(string));
 
             }
+            if (addedDeletedUser.Columns.Count == 0)
+            {
+                addedDeletedUser.Columns.Add("TYPE", typeof(string));
+
+                addedDeletedUser.Columns.Add("Study_number", typeof(string));
+
+                addedDeletedUser.Columns.Add("Email", typeof(string));
+                addedDeletedUser.Columns.Add("AdditionnalEmails", typeof(string));
+                addedDeletedUser.Columns.Add("First name", typeof(string));
+                addedDeletedUser.Columns.Add("Last name", typeof(string));
+                addedDeletedUser.Columns.Add("User name", typeof(string));
+                addedDeletedUser.Columns.Add("Role", typeof(string));
+                //newTeam.Columns.Add("Group", typeof(string));
+                addedDeletedUser.Columns.Add("Organization", typeof(string));
+                addedDeletedUser.Columns.Add("Primary", typeof(string));
+
+
+                addedDeletedUser.Columns.Add("TimeZone", typeof(string));
+                addedDeletedUser.Columns.Add("Group", typeof(string));
+                addedDeletedUser.Columns.Add("Login", typeof(string));
+
+            }
 
         }
 
@@ -197,7 +220,7 @@ namespace IrbAnalyser
                 string site = "";
                 bool primary = Tools.compareStr(row["Primary"], "Y");
 
-                
+
                 if (Agency.AgencyVal == Agency.AgencyList.BRANY)
                 {
                     role = (string)row["Role"] == RSC ? (string)row["Role"] : BranyRoleMap.getRole((string)row["Role"], primary);
@@ -225,7 +248,7 @@ namespace IrbAnalyser
                         role = PI;
                         doNotAdd = true;
                     }
-                    
+
                     string rcName = OutputStudy.getRC((string)row["StudyId"]);
                     if ((string)row["UserName"] == rcName)
                     {
@@ -298,7 +321,7 @@ namespace IrbAnalyser
                             }
                         }
                     }
-                    else if (!(doNotAdd && type == "New study")) 
+                    else if (!(doNotAdd && type == "New study"))
                     {
                         records.Rows.Add(dr);
                     }
@@ -375,8 +398,12 @@ namespace IrbAnalyser
                 {
                     string login = ((string)userRow["PrimaryEMailAddress"]).Split('@')[0].ToLower().Trim();
 
-                    currentuser = ((from us in accounts
-                                    where us.USER_USRNAME.ToLower() == login
+                    var nonull = (from us in accounts
+                                    where us.USER_USRNAME != null
+                                    select us);
+
+                    currentuser = ((from us in nonull
+                                    where us.USER_USRNAME != null & us.USER_USRNAME.ToLower() == login
                                     select us).FirstOrDefault());
                     if (currentuser != null)
                     {
@@ -402,6 +429,24 @@ namespace IrbAnalyser
                                     ))
                                     && us.USER_STATUS == "Active"
                                     select us).Any();
+
+                var isdeleted = (from us in accounts
+                                    where (us.USER_EMAIL.ToLower() == email
+                                    || (us.USER_NAME.ToLower().Contains(((string)userRow["FirstName"]).ToLower().Trim())
+                                    & us.USER_NAME.ToLower().Contains(((string)userRow["LastName"]).ToLower().Trim())
+                                    ))
+                                    select us).All(x => x.USER_HIDDEN == 1);
+                string wtf;
+
+                //For testing only   Michler is a deleted user
+                /*if (currentuser.USER_NAME.Contains("Michler"))
+                {
+                    wtf = "w";
+                    isdeleted = isdeleted;
+
+                }
+
+                wtf = "2";*/
 
                 if (currentuser != null)
                 {
@@ -432,7 +477,7 @@ namespace IrbAnalyser
                                     || ( us.USER_NAME.ToLower().Contains(((string)userRow["FirstName"]).ToLower().Trim())
                                     & us.USER_NAME.ToLower().Contains(((string)userRow["LastName"]).ToLower().Trim())))
                                            select us;
-                                if (!user.Any())
+                                if (!user.Any() && !isdeleted)
                                 {
                                     addRow(userRow, "New member", newTeam);
                                     if (!isactiveuser)
@@ -443,6 +488,10 @@ namespace IrbAnalyser
                                     {
                                         addRow(userRow, "User needs training", triggerTeam);
                                     }
+                                }
+                                else if (isdeleted)
+                                {
+                                    addRow(userRow, "Deleted user added to a study", addedDeletedUser);
                                 }
                                 else
                                 {
@@ -493,14 +542,21 @@ namespace IrbAnalyser
                         }
                         else
                         {
-                            addRow(userRow, "New study", newTeam);
-                            if (!isactiveuser)
+                            if (isdeleted)
                             {
-                                addRow(userRow, "Inactive User added to study team", triggerTeam);
+                                addRow(userRow, "Deleted user added to a study", addedDeletedUser);
                             }
-                            else if (currentuser.USER_DEFAULTGRP != enabledGroup && currentuser.USER_EMAIL == email && isactiveuser && !issuperuser)
+                            else
                             {
-                                addRow(userRow, "User needs training", triggerTeam);
+                                addRow(userRow, "New study", newTeam);
+                                if (!isactiveuser)
+                                {
+                                    addRow(userRow, "Inactive User added to study team", triggerTeam);
+                                }
+                                else if (currentuser.USER_DEFAULTGRP != enabledGroup && currentuser.USER_EMAIL == email && isactiveuser && !issuperuser)
+                                {
+                                    addRow(userRow, "User needs training", triggerTeam);
+                                }
                             }
                         }
                     }
@@ -584,14 +640,14 @@ namespace IrbAnalyser
         }
 
 
-        public static void removeDuplicateNewMembers()
+        private static void removeDuplicate(DataTable Table)
         {
             Hashtable hTable = new Hashtable();
             ArrayList duplicateList = new ArrayList();
             string colName = "Email";
             //Add list of all the unique item value to hashtable, which stores combination of key, value pair.
             //And add duplicate item value in arraylist.
-            foreach (DataRow drow in newNonSystemUser.Rows)
+            foreach (DataRow drow in Table.Rows)
             {
                 if (hTable.Contains(drow[colName]))
                     duplicateList.Add(drow);
@@ -601,9 +657,20 @@ namespace IrbAnalyser
 
             //Removing a list of duplicate items from datatable.
             foreach (DataRow dRow in duplicateList)
-                newNonSystemUser.Rows.Remove(dRow);      
+                Table.Rows.Remove(dRow);
         }
-    
+
+
+        public static void removeDuplicateNewMembers()
+        {
+            removeDuplicate(newNonSystemUser);
+        }
+
+
+        internal static void removeDuplicateDeletedUser()
+        {
+            removeDuplicate(addedDeletedUser);
+        }
     }
 
 }

@@ -3587,6 +3587,30 @@ namespace IrbAnalyser.Model
         private Nullable<global::System.Decimal> _GRP_SUPUSR_FLAG;
         partial void OnGRP_SUPUSR_FLAGChanging(Nullable<global::System.Decimal> value);
         partial void OnGRP_SUPUSR_FLAGChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Decimal> USER_HIDDEN
+        {
+            get
+            {
+                return _USER_HIDDEN;
+            }
+            set
+            {
+                OnUSER_HIDDENChanging(value);
+                ReportPropertyChanging("USER_HIDDEN");
+                _USER_HIDDEN = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("USER_HIDDEN");
+                OnUSER_HIDDENChanged();
+            }
+        }
+        private Nullable<global::System.Decimal> _USER_HIDDEN;
+        partial void OnUSER_HIDDENChanging(Nullable<global::System.Decimal> value);
+        partial void OnUSER_HIDDENChanged();
 
         #endregion
 

@@ -74,6 +74,8 @@ namespace IrbAnalyser
 
                 Csv.saveCsv(OutputTeam.newNonSystemUser, separator, savefilenoext + "_newNonSystemUser");
 
+                Csv.saveCsv(OutputTeam.addedDeletedUser, ",", savefilenoext + "_addedDeletedUser", ".csv");
+
                 /*
                 Csv.saveCsv(OutputStudy.updatedStudy, separator, savefilenoext + "_updatedStudy");
                 Csv.saveCsv(OutputMSD.updatedMSD, separator, savefilenoext + "_updatedMSD");
@@ -159,6 +161,7 @@ namespace IrbAnalyser
 
                 OutputIRBForm.finalizeEventIrbForm();
                 OutputTeam.removeDuplicateNewMembers();
+                OutputTeam.removeDuplicateDeletedUser();
             }
 
             if (cboGenerate.Checked && cboGenerate.Visible)

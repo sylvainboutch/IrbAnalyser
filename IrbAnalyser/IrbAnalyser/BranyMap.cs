@@ -117,6 +117,10 @@ namespace IrbAnalyser
         public static readonly Dictionary<string, string> statusMapBrany = new Dictionary<string, string>()
             {
                 {"",""},
+                {"Closed - IRB only","Complete"},
+                {"Closed to enrollment -IRB only","Closed to accrual"},
+                {"Approved -IBC Only","Temporarily Closed to Accrual and Intervention"},
+                {"Suspended by entity other than IRB - IRB only",""},
                 { "Approved", "IRB Initial Approved" },
                 { "Approved IRB only", "IRB Initial Approved" },
                 { "Approved -IRB only", "IRB Initial Approved" },
@@ -179,6 +183,10 @@ namespace IrbAnalyser
         public static readonly Dictionary<string, string> typeMapBrany = new Dictionary<string, string>()
             {
                 {"",""},
+                {"Closed - IRB only","Study Status"},
+                {"Closed to enrollment -IRB only","Study Status"},
+                {"Approved -IBC Only","Pre Activation"},
+                {"Suspended by entity other than IRB - IRB only","Study Status"},
                 { "Approved", "Pre Activation" },
                 { "Approved IRB only", "Pre Activation" },
                 { "Approved -IRB only", "Pre Activation" },

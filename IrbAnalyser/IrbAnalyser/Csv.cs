@@ -9,7 +9,7 @@ namespace IrbAnalyser
 {
     public static class Csv
     {
-        public static void saveCsv(DataTable dt, string separator, string file)
+        public static void saveCsv(DataTable dt, string separator, string file, string extension = "")
         {
             if (dt.Rows.Count > 0)
             {
@@ -39,7 +39,7 @@ namespace IrbAnalyser
 
             }
 
-            file = file + ".txt";
+            file = extension == "" ? file + ".txt" : file + extension;
 
             StringBuilder sb = new StringBuilder();
 
