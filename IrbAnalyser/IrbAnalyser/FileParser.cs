@@ -137,7 +137,17 @@ namespace IrbAnalyser
                     data.Rows.Add(dr);
                 }
 
+                if (typ == type.Event)
+                {
+                    data.DefaultView.Sort = "StudyId asc, EventCreationDate desc";
+                    data = data.DefaultView.ToTable();
+                }
 
+                if (typ == type.Status)
+                {
+                    data.DefaultView.Sort = "StudyId asc, ValidOn desc";
+                    data = data.DefaultView.ToTable();
+                }
                 /*foreach (var title in column)
                 {
                     data.Columns.Add(title.ToString());

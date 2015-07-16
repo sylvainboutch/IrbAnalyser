@@ -31,17 +31,20 @@ namespace IrbAnalyser
             cboSource.DataSource = Enum.GetValues(typeof(Agency.AgencyList));
             cboSource.SelectedIndex = -1;
         }
+
         private static bool btnclicked = false;
+
+
         private void btnOk_Click(object sender, EventArgs e)
         {
             //try
             //{
-            if (btnclicked)
+            /*if (btnclicked)
             {
                 this.Close();
             }
             else
-            {
+            {*/
                 DbCompare dbc = new DbCompare();
 
                 btnOk.Enabled = false;
@@ -123,11 +126,11 @@ namespace IrbAnalyser
                 
                 txtOutput.Text = "Analysis complete.\r\nPlease open the excel file and create/modify studies in Velos accordingly.";
                 btnclicked = true;
-                btnOk.Text = "Close";
+                btnOk.Text = "Analyse";
                 btnOk.Enabled = true;
 
 
-            }
+            //}
             //}
             //catch (Exception ex)
             //{
@@ -155,6 +158,7 @@ namespace IrbAnalyser
                 OutputStudy.analyse(dir);
 
                 OutputIRBForm.finalizeEventIrbForm();
+                OutputTeam.removeDuplicateNewMembers();
             }
 
             if (cboGenerate.Checked && cboGenerate.Visible)
@@ -176,10 +180,11 @@ namespace IrbAnalyser
 
         private void cboSource_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cboSource.SelectedText.ToLower() == Agency.AgencyList.BRANY.ToString().ToLower())
+            if (cboSource.SelectedValue != null && cboSource.SelectedValue.ToString().ToLower() == Agency.AgencyList.BRANY.ToString().ToLower())
             {
                 cboGenerate.Visible = true;
             }
+            else { cboGenerate.Visible = false; }
         }
 
     }

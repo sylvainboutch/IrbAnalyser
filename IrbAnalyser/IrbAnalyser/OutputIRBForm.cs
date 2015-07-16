@@ -36,9 +36,13 @@ namespace IrbAnalyser
                 DataRow dr = (from form in OutputIRBForm.newIRBForm.AsEnumerable()
                               where form.Field<string>("Study_number") == studyNumber
                               select form).First();
-                if (!string.IsNullOrWhiteSpace(eventData))
+                if (!string.IsNullOrWhiteSpace(eventData) && ((string)dr["IRB_Event"]).Length < 3999)
                 {
                     dr["IRB_Event"] = dr["IRB_Event"] + eventData + "&#13;&#10;";
+                }
+                if (((string)dr["IRB_Event"]).Length > 3999)
+                {
+                    dr["IRB_Event"] = ((string)dr["IRB_Event"]).Substring(0, 3999);
                 }
             }
             else
@@ -68,9 +72,14 @@ namespace IrbAnalyser
                 DataRow dr = (from form in OutputIRBForm.newIRBForm.AsEnumerable()
                               where form.Field<string>("Study_number") == studyNumber
                               select form).First();
-                if (!string.IsNullOrWhiteSpace(statusdata))
+                if (!string.IsNullOrWhiteSpace(statusdata) && ((string)dr["IRB_Status"]).Length < 3999)
                 {
                     dr["IRB_Status"] = dr["IRB_Status"] + statusdata + "&#13;&#10;";
+                }
+
+                if (((string)dr["IRB_Status"]).Length > 3999)
+                {
+                    dr["IRB_Status"] = ((string)dr["IRB_Status"]).Substring(0, 3999);
                 }
             }
             else
@@ -124,57 +133,58 @@ namespace IrbAnalyser
 
                 var queryrslt = from forms in db.LCL_V_IRBFORM
                                 where forms.IRBIDENTIFIERS != null
-                               select forms;
+                                select forms;
                 irbforms = queryrslt.ToList<Model.LCL_V_IRBFORM>();
             }
 
 
-            IEnumerable<Model.LCL_V_IRBFORM> irbformsNoNull;
-            using (Model.VelosDb db = new Model.VelosDb())
-            {
-
-                var queryrslt = from forms in db.LCL_V_IRBFORM
-                                where forms.IRBIDENTIFIERS != null
-                                && forms.IRBEVENTS != null
-                                select forms;
-                irbformsNoNull = queryrslt.ToList<Model.LCL_V_IRBFORM>();
-            }
-
-
-
+            List<DataRow> rowsToDelete = new List<DataRow>();
             foreach (DataRow dr in OutputIRBForm.newIRBForm.Rows)
             {
-                bool delete = false;
-                if (string.IsNullOrWhiteSpace((string)dr["IRB_Identifier"]))
-                {
-                    delete = (from irbform in irbforms
-                              where irbform.IRBEVENTS == null
-                            && irbform.IRBIDENTIFIERS == (string)dr["IRB_Identifier"]
-                              select irbform).Any();
+                bool deleteEvent = false;
+                bool deleteStatus = false;
 
-                    if (!delete)
+                Model.LCL_V_IRBFORM data = (from irbform in irbforms
+                          where irbform.IRBIDENTIFIERS == (string)dr["IRB_Identifier"]
+                          select irbform).FirstOrDefault();
+
+                if (data != null)
+                {
+                    if (data.IRBEVENTS != null && data.IRBEVENTS == (string)dr["IRB_Event"])
                     {
-                        delete = (from irbform in irbformsNoNull
-                                  where irbform.IRBEVENTS == (string)dr["IRB_Event"]
-                                  && irbform.IRBSTATUS == (string)dr["IRB_Status"]
-                                 && irbform.IRBIDENTIFIERS == (string)dr["IRB_Identifier"]
-                                  select irbform).Any();
+                        deleteEvent = true;
+                    }
+                    else if (string.IsNullOrWhiteSpace((string)dr["IRB_Event"]) && (data.IRBEVENTS == null || data.IRBEVENTS == ""))
+                    {
+                        deleteEvent = true;
+                    }
+
+                    if (data.IRBSTATUS != null && data.IRBSTATUS == (string)dr["IRB_Status"])
+                    {
+                        deleteStatus = true;
+                    }
+                    else if (string.IsNullOrWhiteSpace((string)dr["IRB_Status"]) && (data.IRBSTATUS == null || data.IRBSTATUS == ""))
+                    {
+                        deleteStatus = true;
+                    }
+
+                    if (deleteEvent && deleteStatus)
+                    {
+                        rowsToDelete.Add(dr);
+                        //dr.Delete();
+                        //toremove.Add((string)dr["IRB_Identifier"]);
+                        //OutputIRBForm.newIRBForm.Rows.Remove(dr);
                     }
                 }
-                else
-                {
-                    delete = (from irbform in irbformsNoNull
-                              where irbform.IRBEVENTS == (string)dr["IRB_Event"]
-                              && irbform.IRBSTATUS == (string)dr["IRB_Status"]
-                             && irbform.IRBIDENTIFIERS == (string)dr["IRB_Identifier"]
-                              select irbform).Any();
-                }
-                if (delete)
-                {
-                    OutputIRBForm.newIRBForm.Rows.Remove(dr);
-                }
             }
-        
+
+            foreach (DataRow row in rowsToDelete)
+            {
+                OutputIRBForm.newIRBForm.Rows.Remove(row);
+            }
+
+            //OutputIRBForm.newIRBForm.AcceptChanges();
+
         }
 
 

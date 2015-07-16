@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Data;
 using System.Collections.Specialized;
+using System.Collections;
 
 namespace IrbAnalyser
 {
@@ -465,24 +466,26 @@ namespace IrbAnalyser
                                     {
                                         newRole = IRISMap.RoleMap.getRole((string)userRow["Role"], primary);
                                     }
+                                    if (newRole != user.First().ROLE)
+                                    {
+                                        if (newRole == PI && user.First().ROLE != RC)
+                                        {
+                                            changed = true;
+                                        }
+                                        else if (newRole == RC && user.First().ROLE == defaultDisabledRole)
+                                        {
+                                            changed = true;
+                                        }
+                                        else if (newRole == RC && user.First().ROLE == SC)
+                                        {
+                                            changed = true;
+                                            userRow["Role"] = RSC;
+                                        }
 
-                                    if (newRole == PI && user.First().ROLE != RC)
-                                    {
-                                        changed = true;
-                                    }
-                                    else if (newRole == RC && user.First().ROLE == defaultDisabledRole)
-                                    {
-                                        changed = true;
-                                    }
-                                    else if (newRole == RC && user.First().ROLE == SC)
-                                    {
-                                        changed = true;
-                                        userRow["Role"] = RSC;
-                                    }
-
-                                    if (changed)
-                                    {
-                                        addRow(userRow, "Modified member", updatedTeam);
+                                        if (changed)
+                                        {
+                                            addRow(userRow, "Modified member", updatedTeam);
+                                        }
                                     }
                                 }
                             }
@@ -580,6 +583,27 @@ namespace IrbAnalyser
             }
         }
 
+
+        public static void removeDuplicateNewMembers()
+        {
+            Hashtable hTable = new Hashtable();
+            ArrayList duplicateList = new ArrayList();
+            string colName = "Email";
+            //Add list of all the unique item value to hashtable, which stores combination of key, value pair.
+            //And add duplicate item value in arraylist.
+            foreach (DataRow drow in newNonSystemUser.Rows)
+            {
+                if (hTable.Contains(drow[colName]))
+                    duplicateList.Add(drow);
+                else
+                    hTable.Add(drow[colName], string.Empty);
+            }
+
+            //Removing a list of duplicate items from datatable.
+            foreach (DataRow dRow in duplicateList)
+                newNonSystemUser.Rows.Remove(dRow);      
+        }
+    
     }
 
 }

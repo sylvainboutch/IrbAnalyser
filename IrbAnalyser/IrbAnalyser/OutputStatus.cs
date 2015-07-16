@@ -400,7 +400,7 @@ namespace IrbAnalyser
                 isNotStatusDb = !(from stat in allstatus
                                   where stat.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (irbstudyId.Trim().ToLower())
                           && stat.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
-                             && stat.SSTAT_STUDY_STATUS == "irb renewal approved"
+                             && stat.SSTAT_STUDY_STATUS.Trim().ToLower() == "irb renewal approved"
                              && stat.SSTAT_VALID_FROM.Value.Year == renew.Year
                              && stat.SSTAT_VALID_FROM.Value.Month == renew.Month
                              && stat.SSTAT_VALID_FROM.Value.Day == renew.Day
@@ -415,7 +415,7 @@ namespace IrbAnalyser
 
                 if (renew != DateTime.MinValue && isNotStatusDt && isNotStatusDb)
                 {
-                    addRowStudy(studyrow, "irb renewal approved", "New status", true, Tools.parseDate((string)studyrow["MostRecentApprovalDate"]).Trim().ToLower());
+                    addRowStudy(studyrow, "IRB Renewal Approved", "New status", true, Tools.parseDate((string)studyrow["MostRecentApprovalDate"]).Trim().ToLower());
                 }
 
 

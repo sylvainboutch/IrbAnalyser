@@ -38,7 +38,7 @@ namespace IrbAnalyser
             { dr = updatedMSD.NewRow(); }
             dr["Label"] = label;
 
-            dr["Study_number"] = Tools.getStudyNumber(studyid, IRBno, accronym);
+            dr["Study_number"] = Tools.getStudyNumber(studyid, IRBno);
 
             dr["Value"] = value;
             if (newrecord)

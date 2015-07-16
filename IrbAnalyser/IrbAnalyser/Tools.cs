@@ -81,12 +81,12 @@ namespace IrbAnalyser
         {
             var stud = (from st in OutputStudy.fpstudys.data.AsEnumerable()
                         where st.Field<string>("StudyId").Trim().ToLower() == IRBstudyId.Trim().ToLower()
-                        select (st.Field<string>("StudyAcronym"))).ToArray();
+                        select st).ToArray();
 
-            
-            string accronym = stud.Count() > 0 ? stud[0] : "";
+            string accronym = stud.Count() > 0 ? stud[0].Field<string>("StudyAcronym") : "";
+            string title = stud.Count() > 0 ? stud[0].Field<string>("StudyTitle") : "";
 
-            return getStudyNumber(IRBstudyId, IRBnumber, accronym);
+            return getStudyNumber(IRBstudyId, IRBnumber, accronym, title);
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace IrbAnalyser
         /// <param name="IRBnumber"></param>
         /// <param name="accronym"></param>
         /// <returns></returns>
-        public static string getStudyNumber(string IRBstudyId, string IRBnumber, string accronym)
+        public static string getStudyNumber(string IRBstudyId, string IRBnumber, string accronym, string title)
         {
             string number = "";
 
@@ -109,7 +109,7 @@ namespace IrbAnalyser
 
             if (number == null || number.Trim() == "")
             {
-                accronym = string.IsNullOrWhiteSpace(accronym) ? "Please complete" : cleanTitle(accronym);
+                accronym = string.IsNullOrWhiteSpace(accronym) ? cleanTitle(title) : cleanTitle(accronym);
                 number = generateStudyNumber(IRBnumber, accronym);
             }
             return number;

@@ -144,6 +144,11 @@ namespace IrbAnalyser
         {
             string irbstudyId = (string)dr["StudyId"];
 
+            string identifiers = Tools.generateStudyIdentifiers((string)dr["StudyId"]);
+            string number = Tools.getStudyNumber((string)dr["StudyId"], ((string)dr["IRBNumber"]).Replace("(IBC)", ""));
+
+            OutputIRBForm.addIds(number, identifiers);
+
             if (!String.IsNullOrEmpty(irbstudyId) && !((string)dr["StudyId"]).ToLower().Contains("corrupted"))
             {
 
@@ -394,7 +399,8 @@ namespace IrbAnalyser
             dr["IRB Study ID"] = (string)row["StudyId"];
             dr["IRB Identifiers"] = Tools.generateStudyIdentifiers((string)row["StudyId"]);
 
-            dr["Study_number"] = Tools.getStudyNumber((string)row["StudyId"], (string)dr["IRB no"], (string)row["StudyAcronym"]);
+            dr["Study_number"] = Tools.getStudyNumber((string)row["StudyId"], (string)dr["IRB no"], (string)row["StudyAcronym"], (string)row["StudyTitle"]); 
+                //Tools.getStudyNumber((string)row["StudyId"], (string)dr["IRB no"], (string)row["StudyAcronym"]);
 
             if (newpi == null)
             {
