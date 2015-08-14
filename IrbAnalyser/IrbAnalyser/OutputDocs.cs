@@ -79,7 +79,7 @@ namespace IrbAnalyser
         {
             string irbstudyId = (string)studyrow["StudyId"];
             string irbno = ((string)studyrow["IRBNumber"]);
-            string url = ((string)studyrow["DocumentLink"]).ToLower();
+            string url = ((string)studyrow["DocumentLink1"]).ToLower();
 
             if (!newrecord && !((string)studyrow["IRBNumber"]).Contains("(IBC)"))
             {

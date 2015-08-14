@@ -474,7 +474,9 @@ namespace IrbAnalyser
                     dr = newStatus.NewRow();
                 }
                 else
-                { dr = updatedStatus.NewRow(); }
+                { 
+                    dr = updatedStatus.NewRow(); 
+                }
 
                 dr["TYPE"] = type;
 
@@ -697,6 +699,13 @@ namespace IrbAnalyser
                                   select st).Any();
                 if (dtStatus) updatedStatus.Rows.Add(dr);
             }
+        }
+
+
+        static public void removeDuplicateStatus()
+        {
+            newStatus = Tools.removeDuplicate(newStatus);
+            updatedStatus = Tools.removeDuplicate(updatedStatus);
         }
 
     }

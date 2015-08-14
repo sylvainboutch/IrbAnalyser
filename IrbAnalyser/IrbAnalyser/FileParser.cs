@@ -49,7 +49,7 @@ namespace IrbAnalyser
                     data.Columns.Add("PrimarySponsorContactLastName");
                     data.Columns.Add("PrimarySponsorContactEmail");
                     data.Columns.Add("PrimarySponsorStudyId");
-                    data.Columns.Add("DocumentLink");
+                    data.Columns.Add("DocumentLink1");
                     data.Columns.Add("InitialApprovalDate");
                     data.Columns.Add("MostRecentApprovalDate");
                     data.Columns.Add("ExpirationDate");

@@ -128,8 +128,8 @@ namespace IrbAnalyser
                 
                 txtOutput.Text = "Analysis complete.\r\nPlease open the excel file and create/modify studies in Velos accordingly.";
                 btnclicked = true;
-                btnOk.Text = "Analyse";
-                btnOk.Enabled = true;
+               // btnOk.Text = "Analyse";
+                //btnOk.Enabled = true;
 
 
             //}
@@ -159,6 +159,7 @@ namespace IrbAnalyser
                 OutputStatus.analyse(dir);
                 OutputStudy.analyse(dir);
 
+                OutputStatus.removeDuplicateStatus();
                 OutputIRBForm.finalizeEventIrbForm();
                 OutputTeam.removeDuplicateNewMembers();
                 OutputTeam.removeDuplicateDeletedUser();

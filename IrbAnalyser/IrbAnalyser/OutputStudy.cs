@@ -480,6 +480,17 @@ namespace IrbAnalyser
 
             string[] labels = new string[] { };
             string[] values = new string[] { };
+
+            string cancer = "";
+            string[] irbno = ((string)dr["IRB no"]).Split('-');
+            if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+            {
+                cancer = "N";
+                if (irbno.Count() >= 2 && irbno[1].Trim() == "06")
+                    cancer = "Y";
+            }
+            dr["Cancer"] = cancer;
+
             if (Agency.AgencyVal == Agency.AgencyList.BRANY)
             {
                 labels = new string[5] { "Study Managed by*", "CRO, if any*", "IRB agency name", "IRB No.", "Is this a cancer related study ?" };

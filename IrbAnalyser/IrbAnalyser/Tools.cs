@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using System.Data;
 using System.Text.RegularExpressions;
+using System.Collections;
 
 namespace IrbAnalyser
 {
@@ -314,6 +315,58 @@ namespace IrbAnalyser
                 contain = cleanStr(str1.ToString()).Contains(cleanStr(str)) ? true : contain;
             }
             return contain;
+        }
+
+        /// <summary>
+        /// Delete duplicate row based on single column from a data table
+        /// </summary>
+        /// <param name="Table"></param>
+        /// <param name="colName"></param>
+        /// <returns></returns>
+        public static DataTable removeDuplicate(DataTable Table, string colName)
+        {
+            Hashtable hTable = new Hashtable();
+            ArrayList duplicateList = new ArrayList();
+            //Add list of all the unique item value to hashtable, which stores combination of key, value pair.
+            //And add duplicate item value in arraylist.
+            foreach (DataRow drow in Table.Rows)
+            {
+                if (hTable.Contains(drow[colName]))
+                    duplicateList.Add(drow);
+                else
+                    hTable.Add(drow[colName], string.Empty);
+            }
+
+            //Removing a list of duplicate items from datatable.
+            foreach (DataRow dRow in duplicateList)
+                Table.Rows.Remove(dRow);
+
+            return Table;
+        }
+
+        /// <summary>
+        /// Delete duplicate row based on all columns
+        /// </summary>
+        /// <param name="Table"></param>
+        /// <param name="colName"></param>
+        /// <returns></returns>
+        public static DataTable removeDuplicate(DataTable Table)
+        {
+
+            //Returns just 5 unique rows
+            //var UniqueRows = Table.AsEnumerable().Distinct(DataRowComparer.Default);
+            //DataTable dt2 = UniqueRows.CopyToDataTable();
+            //return dt2;
+            DataTable tempTable = Table.Clone();
+
+            IEnumerable<DataRow> unique = Table.AsEnumerable().Distinct(DataRowComparer.Default);
+            foreach (DataRow dr in unique)
+            {
+                tempTable.Rows.Add(dr.ItemArray);
+            }
+            Table.Clear();
+            Table = tempTable.Copy();
+            return Table;
         }
 
     }

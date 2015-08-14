@@ -640,36 +640,15 @@ namespace IrbAnalyser
         }
 
 
-        private static void removeDuplicate(DataTable Table)
-        {
-            Hashtable hTable = new Hashtable();
-            ArrayList duplicateList = new ArrayList();
-            string colName = "Email";
-            //Add list of all the unique item value to hashtable, which stores combination of key, value pair.
-            //And add duplicate item value in arraylist.
-            foreach (DataRow drow in Table.Rows)
-            {
-                if (hTable.Contains(drow[colName]))
-                    duplicateList.Add(drow);
-                else
-                    hTable.Add(drow[colName], string.Empty);
-            }
-
-            //Removing a list of duplicate items from datatable.
-            foreach (DataRow dRow in duplicateList)
-                Table.Rows.Remove(dRow);
-        }
-
-
         public static void removeDuplicateNewMembers()
         {
-            removeDuplicate(newNonSystemUser);
+            newNonSystemUser = Tools.removeDuplicate(newNonSystemUser, "Email");
         }
 
 
-        internal static void removeDuplicateDeletedUser()
+        public static void removeDuplicateDeletedUser()
         {
-            removeDuplicate(addedDeletedUser);
+            addedDeletedUser = Tools.removeDuplicate(addedDeletedUser, "Email");
         }
     }
 

@@ -109,37 +109,8 @@
               "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_SCOPE" AS "STUDY_SCOPE",
               "LCL_V_STUDYSUMM_PLUSMORE"."MORE_CANCER" AS "MORE_CANCER",
               "LCL_V_STUDYSUMM_PLUSMORE"."MORE_CRO" AS "MORE_CRO",
-              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_AT_CTA" AS "MORE_AT_CTA",
-              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_AT_DTA" AS "MORE_AT_DTA",
-              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_AT_II" AS "MORE_AT_II",
-              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_AT_MTA" AS "MORE_AT_MTA",
-              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_AT_MA" AS "MORE_AT_MA",
-              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_AT_SA" AS "MORE_AT_SA",
-              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_ANTICIPATED_ENDDT" AS "MORE_ANTICIPATED_ENDDT",
-              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_CDA" AS "MORE_CDA",
-              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_FUNDSRC1" AS "MORE_FUNDSRC1",
-              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_FUNDSRC2" AS "MORE_FUNDSRC2",
-              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_GRANTNUM" AS "MORE_GRANTNUM",
               "LCL_V_STUDYSUMM_PLUSMORE"."MORE_IRBNUM" AS "MORE_IRBNUM",
               "LCL_V_STUDYSUMM_PLUSMORE"."MORE_IRBAGENCY" AS "MORE_IRBAGENCY",
-              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_IBDT" AS "MORE_IBDT",
-              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_LEADORGTRIALID" AS "MORE_LEADORGTRIALID",
-              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_NUMPROTSRCVD" AS "MORE_NUMPROTSRCVD",
-              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_PONUM" AS "MORE_PONUM",
-              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_PRIMPURPOSE" AS "MORE_PRIMPURPOSE",
-              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_PROGCODE" AS "MORE_PROGCODE",
-              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_PROTLINKED" AS "MORE_PROTLINKED",
-              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_RECCATG" AS "MORE_RECCATG",
-              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_SECPURPOSE" AS "MORE_SECPURPOSE",
-              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_SITENUM" AS "MORE_SITENUM",
-              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_SPONSORNUM" AS "MORE_SPONSORNUM",
-              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_SC_AGENT" AS "MORE_SC_AGENT",
-              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_SC_ANCILLARY" AS "MORE_SC_ANCILLARY",
-              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_SC_CORR" AS "MORE_SC_CORR",
-              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_SC_DEVICE" AS "MORE_SC_DEVICE",
-              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_SC_EPIDEMEOLOGIC" AS "MORE_SC_EPIDEMEOLOGIC",
-              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_SC_OTHER" AS "MORE_SC_OTHER",
-              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_SC_TRIALS" AS "MORE_SC_TRIALS",
               "LCL_V_STUDYSUMM_PLUSMORE"."MORE_MANAGEDBY" AS "MORE_MANAGEDBY",
               "VDA"."LCL_V_IRBFORM"."IRBIDENTIFIERS" AS "IRBIDENTIFIERS"
               FROM "VDA"."LCL_V_STUDYSUMM_PLUSMORE" "LCL_V_STUDYSUMM_PLUSMORE"
@@ -369,38 +340,9 @@
           <Property Name="STUDY_SCOPE" Type="varchar2" />
           <Property Name="MORE_CANCER" Type="varchar2" MaxLength="100" />
           <Property Name="MORE_CRO" Type="varchar2" MaxLength="100" />
-          <Property Name="MORE_AT_CTA" Type="varchar2" MaxLength="100" />
-          <Property Name="MORE_AT_DTA" Type="varchar2" MaxLength="100" />
-          <Property Name="MORE_AT_II" Type="varchar2" MaxLength="100" />
-          <Property Name="MORE_AT_MTA" Type="varchar2" MaxLength="100" />
-          <Property Name="MORE_AT_MA" Type="varchar2" MaxLength="100" />
-          <Property Name="MORE_AT_SA" Type="varchar2" MaxLength="100" />
-          <Property Name="MORE_ANTICIPATED_ENDDT" Type="varchar2" MaxLength="100" />
-          <Property Name="MORE_CDA" Type="varchar2" MaxLength="100" />
-          <Property Name="MORE_FUNDSRC1" Type="varchar2" MaxLength="100" />
-          <Property Name="MORE_FUNDSRC2" Type="varchar2" MaxLength="100" />
-          <Property Name="MORE_GRANTNUM" Type="varchar2" MaxLength="100" />
           <Property Name="MORE_IRBNUM" Type="varchar2" MaxLength="100" />
           <Property Name="IRBIDENTIFIERS" Type="varchar2" MaxLength="4000" />
           <Property Name="MORE_IRBAGENCY" Type="varchar2" MaxLength="100" />
-          <Property Name="MORE_IBDT" Type="varchar2" MaxLength="100" />
-          <Property Name="MORE_LEADORGTRIALID" Type="varchar2" MaxLength="100" />
-          <Property Name="MORE_NUMPROTSRCVD" Type="varchar2" MaxLength="100" />
-          <Property Name="MORE_PONUM" Type="varchar2" MaxLength="100" />
-          <Property Name="MORE_PRIMPURPOSE" Type="varchar2" MaxLength="100" />
-          <Property Name="MORE_PROGCODE" Type="varchar2" MaxLength="100" />
-          <Property Name="MORE_PROTLINKED" Type="varchar2" MaxLength="100" />
-          <Property Name="MORE_RECCATG" Type="varchar2" MaxLength="100" />
-          <Property Name="MORE_SECPURPOSE" Type="varchar2" MaxLength="100" />
-          <Property Name="MORE_SITENUM" Type="varchar2" MaxLength="100" />
-          <Property Name="MORE_SPONSORNUM" Type="varchar2" MaxLength="100" />
-          <Property Name="MORE_SC_AGENT" Type="varchar2" MaxLength="100" />
-          <Property Name="MORE_SC_ANCILLARY" Type="varchar2" MaxLength="100" />
-          <Property Name="MORE_SC_CORR" Type="varchar2" MaxLength="100" />
-          <Property Name="MORE_SC_DEVICE" Type="varchar2" MaxLength="100" />
-          <Property Name="MORE_SC_EPIDEMEOLOGIC" Type="varchar2" MaxLength="100" />
-          <Property Name="MORE_SC_OTHER" Type="varchar2" MaxLength="100" />
-          <Property Name="MORE_SC_TRIALS" Type="varchar2" MaxLength="100" />
           <Property Name="MORE_MANAGEDBY" Type="varchar2" MaxLength="100" />
         </EntityType>
         <!--Errors Found During Generation:
@@ -632,38 +574,9 @@
           <Property Type="String" Name="STUDY_SCOPE" MaxLength="4000" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="MORE_CANCER" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="MORE_CRO" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MORE_AT_CTA" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MORE_AT_DTA" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MORE_AT_II" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MORE_AT_MTA" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MORE_AT_MA" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MORE_AT_SA" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MORE_ANTICIPATED_ENDDT" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MORE_CDA" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MORE_FUNDSRC1" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MORE_FUNDSRC2" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MORE_GRANTNUM" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="MORE_IRBNUM" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="IRBIDENTIFIERS" MaxLength="4000" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="MORE_IRBAGENCY" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MORE_IBDT" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MORE_LEADORGTRIALID" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MORE_NUMPROTSRCVD" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MORE_PONUM" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MORE_PRIMPURPOSE" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MORE_PROGCODE" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MORE_PROTLINKED" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MORE_RECCATG" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MORE_SECPURPOSE" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MORE_SITENUM" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MORE_SPONSORNUM" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MORE_SC_AGENT" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MORE_SC_ANCILLARY" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MORE_SC_CORR" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MORE_SC_DEVICE" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MORE_SC_EPIDEMEOLOGIC" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MORE_SC_OTHER" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MORE_SC_TRIALS" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="MORE_MANAGEDBY" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="VDA_V_STUDYSITES">
@@ -819,38 +732,11 @@
             <EntityTypeMapping TypeName="VelosModel.LCL_V_STUDYSUMM_PLUSMORE">
               <MappingFragment StoreEntitySet="LCL_V_STUDYSUMM_PLUSMORE">
                 <ScalarProperty Name="MORE_MANAGEDBY" ColumnName="MORE_MANAGEDBY" />
-                <ScalarProperty Name="MORE_SC_TRIALS" ColumnName="MORE_SC_TRIALS" />
-                <ScalarProperty Name="MORE_SC_OTHER" ColumnName="MORE_SC_OTHER" />
-                <ScalarProperty Name="MORE_SC_EPIDEMEOLOGIC" ColumnName="MORE_SC_EPIDEMEOLOGIC" />
-                <ScalarProperty Name="MORE_SC_DEVICE" ColumnName="MORE_SC_DEVICE" />
-                <ScalarProperty Name="MORE_SC_CORR" ColumnName="MORE_SC_CORR" />
-                <ScalarProperty Name="MORE_SC_ANCILLARY" ColumnName="MORE_SC_ANCILLARY" />
-                <ScalarProperty Name="MORE_SC_AGENT" ColumnName="MORE_SC_AGENT" />
-                <ScalarProperty Name="MORE_SPONSORNUM" ColumnName="MORE_SPONSORNUM" />
-                <ScalarProperty Name="MORE_SITENUM" ColumnName="MORE_SITENUM" />
-                <ScalarProperty Name="MORE_SECPURPOSE" ColumnName="MORE_SECPURPOSE" />
-                <ScalarProperty Name="MORE_RECCATG" ColumnName="MORE_RECCATG" />
-                <ScalarProperty Name="MORE_PROTLINKED" ColumnName="MORE_PROTLINKED" />
-                <ScalarProperty Name="MORE_PROGCODE" ColumnName="MORE_PROGCODE" />
-                <ScalarProperty Name="MORE_PRIMPURPOSE" ColumnName="MORE_PRIMPURPOSE" />
-                <ScalarProperty Name="MORE_PONUM" ColumnName="MORE_PONUM" />
-                <ScalarProperty Name="MORE_NUMPROTSRCVD" ColumnName="MORE_NUMPROTSRCVD" />
-                <ScalarProperty Name="MORE_LEADORGTRIALID" ColumnName="MORE_LEADORGTRIALID" />
-                <ScalarProperty Name="MORE_IBDT" ColumnName="MORE_IBDT" />
+
                 <ScalarProperty Name="MORE_IRBAGENCY" ColumnName="MORE_IRBAGENCY" />
-                <ScalarProperty Name="IRBIDENTIFIERS" ColumnName="IRBIDENTIFIERS" />
+
                 <ScalarProperty Name="MORE_IRBNUM" ColumnName="MORE_IRBNUM" />
-                <ScalarProperty Name="MORE_GRANTNUM" ColumnName="MORE_GRANTNUM" />
-                <ScalarProperty Name="MORE_FUNDSRC2" ColumnName="MORE_FUNDSRC2" />
-                <ScalarProperty Name="MORE_FUNDSRC1" ColumnName="MORE_FUNDSRC1" />
-                <ScalarProperty Name="MORE_CDA" ColumnName="MORE_CDA" />
-                <ScalarProperty Name="MORE_ANTICIPATED_ENDDT" ColumnName="MORE_ANTICIPATED_ENDDT" />
-                <ScalarProperty Name="MORE_AT_SA" ColumnName="MORE_AT_SA" />
-                <ScalarProperty Name="MORE_AT_MA" ColumnName="MORE_AT_MA" />
-                <ScalarProperty Name="MORE_AT_MTA" ColumnName="MORE_AT_MTA" />
-                <ScalarProperty Name="MORE_AT_II" ColumnName="MORE_AT_II" />
-                <ScalarProperty Name="MORE_AT_DTA" ColumnName="MORE_AT_DTA" />
-                <ScalarProperty Name="MORE_AT_CTA" ColumnName="MORE_AT_CTA" />
+                <ScalarProperty Name="IRBIDENTIFIERS" ColumnName="IRBIDENTIFIERS" />
                 <ScalarProperty Name="MORE_CANCER" ColumnName="MORE_CANCER" />
                 <ScalarProperty Name="MORE_CRO" ColumnName="MORE_CRO" />
                 <ScalarProperty Name="STUDY_SCOPE" ColumnName="STUDY_SCOPE" />
@@ -1024,10 +910,10 @@
     </Options>
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
-      <Diagram Name="Model1" ZoomLevel="44">
+      <Diagram Name="Model1" ZoomLevel="64">
         <EntityTypeShape EntityType="VelosModel.LCL_V_STUDYSUMM_PLUSMORE" Width="1.5" PointX="0.75" PointY="0.75" Height="19.095113932291667" />
-        <EntityTypeShape EntityType="VelosModel.VDA_V_STUDYSITES" Width="1.5" PointX="2.75" PointY="0.75" Height="5.2494108072916674" />
-        <EntityTypeShape EntityType="VelosModel.VDA_V_STUDYSTAT" Width="1.5" PointX="4.75" PointY="0.75" Height="5.8463151041666652" />
+        <EntityTypeShape EntityType="VelosModel.VDA_V_STUDYSITES" Width="1.625" PointX="2.75" PointY="0.75" Height="5.634013671875" />
+        <EntityTypeShape EntityType="VelosModel.VDA_V_STUDYSTAT" Width="1.75" PointX="4.75" PointY="0.75" Height="5.8263151041666656" />
         <EntityTypeShape EntityType="VelosModel.VDA_V_STUDYTEAM_MEMBERS" Width="4.375" PointX="6.75" PointY="0.75" Height="5.057109375" />
         <EntityTypeShape EntityType="VelosModel.ER_STUDYAPNDX" Width="1.5" PointX="5.625" PointY="8" Height="4.2879036458333388" />
         <EntityTypeShape EntityType="VelosModel.ER_STUDYVER" Width="1.5" PointX="3.375" PointY="8.125" Height="4.0956022135416674" />
@@ -1035,6 +921,7 @@
           <ConnectorPoint PointX="4.875" PointY="10.172801106770834" />
           <ConnectorPoint PointX="5.625" PointY="10.172801106770834" />
         </AssociationConnector>
+        <EntityTypeShape EntityType="VelosModel.LCL_V_STUDYVER_APNDX" Width="5.875" PointX="7.375" PointY="6.75" Height="1.7879850260416674" />
       </Diagram>
     </Diagrams>
   </Designer>
