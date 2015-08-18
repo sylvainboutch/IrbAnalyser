@@ -155,9 +155,11 @@ namespace IrbAnalyser
 
             if (Agency.AgencyVal == Agency.AgencyList.BRANY || Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
             {
-                OutputTeam.analyse(dir + "Team.txt");
-                OutputStatus.analyse(dir);
                 OutputStudy.analyse(dir);
+
+                OutputTeam.analyse(dir + "Team.txt");
+
+                OutputStatus.analyse(dir);
 
                 OutputStatus.removeDuplicateStatus();
                 OutputIRBForm.finalizeEventIrbForm();

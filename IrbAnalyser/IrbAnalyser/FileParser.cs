@@ -54,6 +54,8 @@ namespace IrbAnalyser
                     data.Columns.Add("MostRecentApprovalDate");
                     data.Columns.Add("ExpirationDate");
                     data.Columns.Add("Cancer");
+                    data.Columns.Add("ExternalIRB");
+                    data.Columns.Add("ExternalIRBnumber");
                     initColumnCount = data.Columns.Count;
                     break;
                 case type.Status:

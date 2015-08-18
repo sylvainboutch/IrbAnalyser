@@ -227,6 +227,10 @@ namespace IrbAnalyser
                 type = BranyEventsMap.getType((string)eventRow["Event"]);
                 sitename = BranySiteMap.getSite(((string)eventRow["Sitename"]).Replace("(IBC)", ""));
                 notes = (string)eventRow["Event"];
+                if (BranyEventsMap.teamChangedEvents.Contains((string)eventRow["Event"]))
+                {
+                    NewValueOuput.appendString("Study personnel changed - event name : ", (string)eventRow["Event"]);
+                }
             }
 
             else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)

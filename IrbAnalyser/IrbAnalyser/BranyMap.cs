@@ -250,6 +250,13 @@ namespace IrbAnalyser
     /// </summary>
     public static class BranyEventsMap
     {
+        public static List<String> teamChangedEvents = new List<string>() 
+        { 
+            "Personnel Change",
+            "Replacement PI",
+            "Additional PI"
+        };
+
         public static readonly Dictionary<string, string> eventsMapBrany = new Dictionary<string, string>()
             {
                 {"1572 Modification",""},

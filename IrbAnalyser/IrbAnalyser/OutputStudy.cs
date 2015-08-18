@@ -12,6 +12,16 @@ namespace IrbAnalyser
     public static class OutputStudy
     {
 
+        public List<string> closedStatusInVelos = new List<string>()
+        {
+            "Administratively Complete",
+            "Archived",
+            "Complete",
+            "Completely Closed - Site",
+            "Withdrawn"
+
+        };
+
         //List of newly created study, with more study detail
         public static DataTable newStudy = new DataTable();
         //List of updated study, with more study detail
@@ -149,10 +159,10 @@ namespace IrbAnalyser
 
             OutputIRBForm.addIds(number, identifiers);
 
-            if (!String.IsNullOrEmpty(irbstudyId) && !((string)dr["StudyId"]).ToLower().Contains("corrupted"))
+            //external IRB only available in IRIS, we ignore studies with external IRB = BRANY since we have them in the BRANY file. Corrupted studies are in IRIS and shouldnt be pull in, they are a result of their data migration.
+            //empty study ID shouldnt happen but could indicate an empty line in the file.
+            if (!String.IsNullOrEmpty(irbstudyId) && !((string)dr["StudyId"]).ToLower().Contains("corrupted") && !((string)dr["ExternalIRB"]).ToLower().Contains("brany"))
             {
-
-
                 var study = from st in studys
                             where st.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (irbstudyId.Trim().ToLower())
                             select st;
@@ -251,7 +261,7 @@ namespace IrbAnalyser
                                 if (Tools.compareStr(newdep, stu.STUDY_DIVISION) && !string.IsNullOrWhiteSpace((string)dr["Department"]))
                                 {
                                     dr["Department"] = "";
-                                    
+
                                 }
                                 else if (!string.IsNullOrWhiteSpace((string)dr["Department"]))
                                 {
@@ -260,7 +270,7 @@ namespace IrbAnalyser
                                 }
 
                                 string newDiv = string.IsNullOrWhiteSpace((string)dr["Department"]) ? "" : IRISMap.Department.getDivision((string)dr["Department"]);
-                                if (Tools.compareStr(newDiv, stu.STUDY_TAREA) && !string.IsNullOrWhiteSpace((string)dr["Department"]) && newdep!=null)
+                                if (Tools.compareStr(newDiv, stu.STUDY_TAREA) && !string.IsNullOrWhiteSpace((string)dr["Department"]) && newdep != null)
                                 {
                                     dr["Department"] = "";
                                 }
@@ -399,8 +409,8 @@ namespace IrbAnalyser
             dr["IRB Study ID"] = (string)row["StudyId"];
             dr["IRB Identifiers"] = Tools.generateStudyIdentifiers((string)row["StudyId"]);
 
-            dr["Study_number"] = Tools.getStudyNumber((string)row["StudyId"], (string)dr["IRB no"], (string)row["StudyAcronym"], (string)row["StudyTitle"]); 
-                //Tools.getStudyNumber((string)row["StudyId"], (string)dr["IRB no"], (string)row["StudyAcronym"]);
+            dr["Study_number"] = Tools.getStudyNumber((string)row["StudyId"], (string)dr["IRB no"], (string)row["StudyAcronym"], (string)row["StudyTitle"]);
+            //Tools.getStudyNumber((string)row["StudyId"], (string)dr["IRB no"], (string)row["StudyAcronym"]);
 
             if (newpi == null)
             {
@@ -657,7 +667,7 @@ namespace IrbAnalyser
             }
         }
 
-        /// <summary>
+        /*/// <summary>
         /// Verify if a studyId is present in the datasource
         /// </summary>
         /// <param name="studyId"></param>
@@ -667,6 +677,45 @@ namespace IrbAnalyser
             return (from st in fpstudys.data.AsEnumerable()
                     where st.Field<string>("StudyId").Trim().ToLower() == studyId.Trim().ToLower()
                     select st).Any();
+        }*/
+
+
+        /*/// <summary>
+        /// Check if a study was already added in the modified or new study list
+        /// </summary>
+        /// <param name="studyId"></param>
+        /// <returns></returns>
+        public static bool isStudyInOuput(string studyId)
+        {
+            bool ret = false;
+            ret = (from st in newStudy.AsEnumerable()
+                   where st.Field<string>("StudyId").Trim().ToLower() == studyId.Trim().ToLower()
+                       select st).Any()
+                    ||
+                    (from st in updatedStudy.AsEnumerable()
+                   where st.Field<string>("StudyId").Trim().ToLower() == studyId.Trim().ToLower()
+                   select st).Any();
+
+            return ret;
+
+
+            return (from st in newStudy.AsEnumerable()
+                where newStudy.Field<string>("StudyId").Trim().ToLower() == studyId.Trim().ToLower()
+                select st).Any();
+        }*/
+
+
+        public static bool shouldStudyBeAdded(string studyId)
+        {
+            return (from st in fpstudys.data.AsEnumerable()
+                    where st.Field<string>("StudyId").Trim().ToLower() == studyId.Trim().ToLower()
+                    && !st.Field<string>("StudyId").Trim().ToLower().Contains("corrupted")
+                    && !st.Field<string>("ExternalIRB").Trim().ToLower().Contains("brany")
+                    select st).Any();
+
+            
+
         }
+
     }
 }

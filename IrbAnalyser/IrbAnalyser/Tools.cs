@@ -110,6 +110,9 @@ namespace IrbAnalyser
 
             if (number == null || number.Trim() == "")
             {
+                string pattern = @"^(19|20)\d{2}";
+                Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+                IRBnumber = rgx.IsMatch(IRBnumber) ? IRBnumber.Substring(2) : IRBnumber;
                 accronym = string.IsNullOrWhiteSpace(accronym) ? cleanTitle(title) : cleanTitle(accronym);
                 number = generateStudyNumber(IRBnumber, accronym);
             }
