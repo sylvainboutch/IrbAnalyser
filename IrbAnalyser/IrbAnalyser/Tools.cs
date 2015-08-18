@@ -148,6 +148,21 @@ namespace IrbAnalyser
         }
 
         /// <summary>
+        /// Return the latest status of a study in Velos
+        /// </summary>
+        /// <param name="IRBstudyId"></param>
+        /// <returns></returns>
+        public static bool getOldStudy(string IRBstudyId)
+        {
+            bool ret;
+
+            ret = OutputStudy.studys.Any(x => x.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (IRBstudyId.Trim().ToLower())
+                && x.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr);
+
+            return ret;
+        }
+
+        /// <summary>
         /// Clean a string of many special characters
         /// </summary>
         /// <param name="input"></param>

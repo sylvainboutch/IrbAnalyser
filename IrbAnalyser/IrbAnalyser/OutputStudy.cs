@@ -404,8 +404,23 @@ namespace IrbAnalyser
             else
             { dr = updatedStudy.NewRow(); }
 
-            dr["IRB Agency name"] = Agency.agencyStrLwr.ToUpper();
-            dr["IRB no"] = ((string)row["IRBNumber"]).Replace("(IBC)", "");
+            if (!string.IsNullOrWhiteSpace(((string)row["ExternalIRB"])))
+            {
+                dr["IRB no"] = (string)row["ExternalIRBnumber"];
+                if (((string)row["ExternalIRB"]).ToLower().Contains("neuronext"))
+                    dr["IRB Agency name"] = "neuronext";
+                else if (((string)row["ExternalIRB"]).ToLower().Contains("strokenet"))
+                    dr["IRB Agency name"] = "strokenet";
+                else if (((string)row["ExternalIRB"]).ToLower().Contains("nci"))
+                    dr["IRB Agency name"] = "nci";
+                else if (((string)row["ExternalIRB"]).ToLower().Contains("external"))
+                    dr["IRB Agency name"] = "other";
+            }
+            else
+            {
+                dr["IRB Agency name"] = Agency.agencyStrLwr.ToUpper();
+                dr["IRB no"] = ((string)row["IRBNumber"]).Replace("(IBC)", "");
+            }
             dr["IRB Study ID"] = (string)row["StudyId"];
             dr["IRB Identifiers"] = Tools.generateStudyIdentifiers((string)row["StudyId"]);
 
@@ -705,15 +720,152 @@ namespace IrbAnalyser
         }*/
 
 
+        /// <summary>
+        /// Return true if the study should be analysed / added
+        /// </summary>
+        /// <param name="studyId"></param>
+        /// <returns></returns>
         public static bool shouldStudyBeAdded(string studyId)
         {
-            return (from st in fpstudys.data.AsEnumerable()
-                    where st.Field<string>("StudyId").Trim().ToLower() == studyId.Trim().ToLower()
-                    && !st.Field<string>("StudyId").Trim().ToLower().Contains("corrupted")
-                    && !st.Field<string>("ExternalIRB").Trim().ToLower().Contains("brany")
-                    select st).Any();
 
-            
+            var study = (from st in fpstudys.data.AsEnumerable()
+                         where st.Field<string>("StudyId").Trim().ToLower() == studyId.Trim().ToLower()
+                         select st).First();
+            return shouldStudyBeAdded(study);
+
+        }
+
+        /// <summary>
+        /// Return true if the study should be analysed / added
+        /// </summary>
+        /// <param name="studyId"></param>
+        /// <returns></returns>
+        public static bool shouldStudyBeAdded(DataRow dr)
+        {
+            bool check = false;
+
+            if (!((string)dr["ExternalIRB"]).Trim().ToLower().Contains("brany") && !((string)dr["StudyId"]).Trim().ToLower().Contains("corrupted"))
+            {
+                bool cancerfilter = false;
+
+                if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+                {
+                    bool cancer = false;
+                    var irbno = ((string)dr["IRBNumber"]).Split('-');
+                    if (irbno.Count() >= 2 && irbno[1] == "06") { cancer = true; }
+
+                    cancerfilter = ((string)dr["StudyTitle"]).ToLower().Contains("oncol") ||
+                    ((string)dr["StudyTitle"]).ToLower().Contains("cancer") ||
+                    ((string)dr["StudyTitle"]).ToLower().Contains("tumor") ||
+                    ((string)dr["StudyTitle"]).ToLower().Contains("carci") ||
+                    ((string)dr["StudyTitle"]).ToLower().Contains("leukem") ||
+                    ((string)dr["StudyTitle"]).ToLower().Contains("lymphom") ||
+                    ((string)dr["StudyTitle"]).ToLower().Contains("myeloma") ||
+                    ((string)dr["StudyTitle"]).ToLower().Contains("sarcom") ||
+                    ((string)dr["StudyTitle"]).ToLower().Contains("melanom") ||
+                    ((string)dr["StudyTitle"]).ToLower().Contains("metast") ||
+                    ((string)dr["StudyTitle"]).ToLower().Contains("chemoth") ||
+                    ((string)dr["StudyTitle"]).ToLower().Contains("radioth") ||
+                    ((string)dr["StudyTitle"]).ToLower().Contains("neuroblast") ||
+                    ((string)dr["StudyTitle"]).ToLower().Contains("glioma") ||
+                    ((string)dr["StudyTitle"]).ToLower().Contains("carcin") ||
+                    ((string)dr["StudyTitle"]).ToLower().Contains("blastom") ||
+                    ((string)dr["StudyTitle"]).ToLower().Contains("malignan") ||
+                    ((string)dr["StudyTitle"]).ToLower().Contains("myelofibrosis") ||
+
+                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("oncol") ||
+                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("cancer") ||
+                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("tumor") ||
+                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("carci") ||
+                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("leukem") ||
+                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("lymphom") ||
+                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("myeloma") ||
+                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("sarcom") ||
+                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("melanom") ||
+                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("metast") ||
+                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("chemoth") ||
+                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("radioth") ||
+                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("neuroblast") ||
+                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("glioma") ||
+                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("carcin") ||
+                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("blastom") ||
+                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("malignan") ||
+                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("myelofibrosis") ||
+                    cancer;
+                }
+                else
+                {
+                    cancerfilter = ((string)dr["StudyTitle"]).ToLower().Contains("oncol") ||
+                    ((string)dr["StudyTitle"]).ToLower().Contains("cancer") ||
+                    ((string)dr["StudyTitle"]).ToLower().Contains("tumor") ||
+                    ((string)dr["StudyTitle"]).ToLower().Contains("carci") ||
+                    ((string)dr["StudyTitle"]).ToLower().Contains("leukem") ||
+                    ((string)dr["StudyTitle"]).ToLower().Contains("lymphom") ||
+                    ((string)dr["StudyTitle"]).ToLower().Contains("myeloma") ||
+                    ((string)dr["StudyTitle"]).ToLower().Contains("sarcom") ||
+                    ((string)dr["StudyTitle"]).ToLower().Contains("melanom") ||
+                    ((string)dr["StudyTitle"]).ToLower().Contains("metast") ||
+                    ((string)dr["StudyTitle"]).ToLower().Contains("chemoth") ||
+                    ((string)dr["StudyTitle"]).ToLower().Contains("radioth") ||
+                    ((string)dr["StudyTitle"]).ToLower().Contains("neuroblast") ||
+                    ((string)dr["StudyTitle"]).ToLower().Contains("glioma") ||
+                    ((string)dr["StudyTitle"]).ToLower().Contains("carcin") ||
+                    ((string)dr["StudyTitle"]).ToLower().Contains("blastom") ||
+                    ((string)dr["StudyTitle"]).ToLower().Contains("malignan") ||
+                    ((string)dr["StudyTitle"]).ToLower().Contains("myelofibrosis") ||
+
+                    ((string)dr["StudySummary"]).ToLower().Contains("oncol") ||
+                    ((string)dr["StudySummary"]).ToLower().Contains("cancer") ||
+                    ((string)dr["StudySummary"]).ToLower().Contains("tumor") ||
+                    ((string)dr["StudySummary"]).ToLower().Contains("carci") ||
+                    ((string)dr["StudySummary"]).ToLower().Contains("leukem") ||
+                    ((string)dr["StudySummary"]).ToLower().Contains("lymphom") ||
+                    ((string)dr["StudySummary"]).ToLower().Contains("myeloma") ||
+                    ((string)dr["StudySummary"]).ToLower().Contains("sarcom") ||
+                    ((string)dr["StudySummary"]).ToLower().Contains("melanom") ||
+                    ((string)dr["StudySummary"]).ToLower().Contains("metast") ||
+                    ((string)dr["StudySummary"]).ToLower().Contains("chemoth") ||
+                    ((string)dr["StudySummary"]).ToLower().Contains("radioth") ||
+                    ((string)dr["StudySummary"]).ToLower().Contains("neuroblast") ||
+                    ((string)dr["StudySummary"]).ToLower().Contains("glioma") ||
+                    ((string)dr["StudySummary"]).ToLower().Contains("carcin") ||
+                    ((string)dr["StudySummary"]).ToLower().Contains("blastom") ||
+                    ((string)dr["StudySummary"]).ToLower().Contains("malignan") ||
+                    ((string)dr["StudySummary"]).ToLower().Contains("myelofibrosis") ||
+
+                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("oncol") ||
+                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("cancer") ||
+                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("tumor") ||
+                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("carci") ||
+                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("leukem") ||
+                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("lymphom") ||
+                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("myeloma") ||
+                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("sarcom") ||
+                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("melanom") ||
+                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("metast") ||
+                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("chemoth") ||
+                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("radioth") ||
+                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("neuroblast") ||
+                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("glioma") ||
+                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("carcin") ||
+                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("blastom") ||
+                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("malignan") ||
+                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("myelofibrosis") ||
+
+                    ((string)dr["Division"]).ToLower().Contains("oncol") ||
+                    ((string)dr["Department"]).ToLower().Contains("oncol") ||
+
+                    ((string)dr["Cancer"]).ToLower().Contains("yes");
+
+                }
+
+                return check && cancerfilter;
+
+            }
+            else
+            {
+                return false;
+            }
 
         }
 
