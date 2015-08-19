@@ -86,32 +86,50 @@ namespace IrbAnalyser
                 siteType = IRISMap.SiteMap.getSiteType((string)studyrow["Sitename"]);
             }
             string irbstudyId = (string)studyrow["StudyId"];
-            string size = (string)studyrow["Sitesamplesize"];
-            if (!newrecord)
+            if (OutputStudy.shouldStudyBeAdded(irbstudyId))
             {
-                if (!String.IsNullOrEmpty(site))
+                string size = (string)studyrow["Sitesamplesize"];
+                if (!newrecord)
                 {
-                    var sites2 = (from sit in sites
-                                  where sit.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (irbstudyId.Trim().ToLower())
-                                    && sit.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
-                                    && sit.SITE_NAME == site
-                                 select sit);
-                    if (sites2.Count() == 0 && !site.Contains("(IBC)"))
+                    if (!String.IsNullOrEmpty(site))
                     {
-                        addRow("New Site", site, siteType, size, irbstudyId, ((string)studyrow["IRBNumber"]).Replace("(IBC)", ""), true);
+                        IEnumerable<Model.VDA_V_STUDYSITES> sites2;
+                        //BRANY look up agency in MSD
+                        if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+                        {
+                            sites2 = (from sit in sites
+                                      where sit.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (irbstudyId.Trim().ToLower())
+                                        && sit.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
+                                        && sit.SITE_NAME == site
+                                      select sit);
+                        }
+                        //IRIS all other agency in MSD, non IRB studies wont have 
+                        else
+                        {
+                            sites2 = (from sit in sites
+                                      where sit.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (irbstudyId.Trim().ToLower())
+                                        && sit.MORE_IRBAGENCY.ToLower() != Agency.brany
+                                        && sit.SITE_NAME == site
+                                      select sit);
+                        }
+
+
+                        if (sites2.Count() == 0 && !site.Contains("(IBC)"))
+                        {
+                            addRow("New Site", site, siteType, size, irbstudyId, ((string)studyrow["IRBNumber"]).Replace("(IBC)", ""), true);
+                        }
+                        else if (sites2.FirstOrDefault().STUDYSITE_LSAMPLESIZE != size && !String.IsNullOrEmpty(size) && !site.Contains("(IBC)"))
+                        {
+                            addRow("Modified site", site, siteType, size, irbstudyId, ((string)studyrow["IRBNumber"]).Replace("(IBC)", ""), false);
+                        }
                     }
-                    else if (sites2.FirstOrDefault().STUDYSITE_LSAMPLESIZE != size && !String.IsNullOrEmpty(size) && !site.Contains("(IBC)"))
-                    {
-                        addRow("Modified site", site, siteType, size, irbstudyId, ((string)studyrow["IRBNumber"]).Replace("(IBC)", ""), false);
-                    }
+
                 }
-
+                else if (!site.Contains("(IBC)"))
+                {
+                    addRow("New study", site, siteType, size, irbstudyId, ((string)studyrow["IRBNumber"]).Replace("(IBC)", ""), true);
+                }
             }
-            else if (!site.Contains("(IBC)"))
-            {
-                addRow("New study", site, siteType, size, irbstudyId, ((string)studyrow["IRBNumber"]).Replace("(IBC)", ""), true);
-            }
-
         }
 
         public static void addRow(string type, string site, string siteType, string size, string studyid, string IRBno, bool newrecord)
@@ -124,7 +142,7 @@ namespace IrbAnalyser
             { dr = updatedSites.NewRow(); }
             dr["Type"] = type;
 
-            dr["Study_number"] = Tools.getStudyNumber(studyid,IRBno);
+            dr["Study_number"] = Tools.getStudyNumber(studyid, IRBno);
 
             dr["Organization"] = site;
             dr["Local sample size"] = size;

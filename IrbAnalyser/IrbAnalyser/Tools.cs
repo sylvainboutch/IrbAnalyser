@@ -86,8 +86,9 @@ namespace IrbAnalyser
 
             string accronym = stud.Count() > 0 ? stud[0].Field<string>("StudyAcronym") : "";
             string title = stud.Count() > 0 ? stud[0].Field<string>("StudyTitle") : "";
+            string sponsorId = stud.Count() > 0 ? stud[0].Field<string>("PrimarySponsorStudyId") : "";
 
-            return getStudyNumber(IRBstudyId, IRBnumber, accronym, title);
+            return getStudyNumber(IRBstudyId, IRBnumber, accronym, title, sponsorId);
         }
 
         /// <summary>
@@ -99,22 +100,38 @@ namespace IrbAnalyser
         /// <param name="IRBnumber"></param>
         /// <param name="accronym"></param>
         /// <returns></returns>
-        public static string getStudyNumber(string IRBstudyId, string IRBnumber, string accronym, string title)
+        public static string getStudyNumber(string IRBstudyId, string IRBnumber, string accronym, string title, string sponsorId)
         {
             string number = "";
 
-            number = (from stud in OutputStudy.studys
-                      where stud.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (IRBstudyId.Trim().ToLower())
-                   && stud.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
-                      select stud.STUDY_NUMBER).FirstOrDefault();
+
+            //BRANY look up agency in MSD
+            if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+            {
+                number = (from stud in OutputStudy.studys
+                          where stud.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (IRBstudyId.Trim().ToLower())
+                       && stud.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
+                          select stud.STUDY_NUMBER).FirstOrDefault();
+            }
+            //IRIS all other agency in MSD, non IRB studies wont have 
+            else
+            {
+                number = (from stud in OutputStudy.studys
+                          where stud.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (IRBstudyId.Trim().ToLower())
+                       && stud.MORE_IRBAGENCY.ToLower() != Agency.brany
+                          select stud.STUDY_NUMBER).FirstOrDefault();
+            }
+
 
             if (number == null || number.Trim() == "")
             {
-                string pattern = @"^(19|20)\d{2}";
-                Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-                IRBnumber = rgx.IsMatch(IRBnumber) ? IRBnumber.Substring(2) : IRBnumber;
-                accronym = string.IsNullOrWhiteSpace(accronym) ? cleanTitle(title) : cleanTitle(accronym);
-                number = generateStudyNumber(IRBnumber, accronym);
+                string usetitle = accronym;
+                if (string.IsNullOrWhiteSpace(usetitle))
+                {
+                    usetitle = string.IsNullOrWhiteSpace(sponsorId) ? cleanTitle(title) : cleanTitle(sponsorId);
+                }
+
+                number = generateStudyNumber(IRBnumber, usetitle);
             }
             return number;
         }
@@ -127,6 +144,9 @@ namespace IrbAnalyser
         /// <returns></returns>
         private static string generateStudyNumber(string irbnumber, string accronym)
         {
+            string pattern = @"^(19|20)\d{2}";
+            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+            irbnumber = rgx.IsMatch(irbnumber) ? irbnumber.Substring(2) : irbnumber;
             string output = irbnumber.Replace("-", "");
             output += "-" + accronym.Substring(0, accronym.Length > 20 ? 20:accronym.Length);
             return output.Trim();
@@ -141,24 +161,16 @@ namespace IrbAnalyser
         {
             bool ret;
 
-            ret = OutputStudy.studys.Any(x => x.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (IRBstudyId.Trim().ToLower())
-                && x.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr);
-
-            return ret;
-        }
-
-        /// <summary>
-        /// Return the latest status of a study in Velos
-        /// </summary>
-        /// <param name="IRBstudyId"></param>
-        /// <returns></returns>
-        public static bool getOldStudy(string IRBstudyId)
-        {
-            bool ret;
-
-            ret = OutputStudy.studys.Any(x => x.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (IRBstudyId.Trim().ToLower())
-                && x.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr);
-
+            if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+            {
+                ret = OutputStudy.studys.Any(x => x.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (IRBstudyId.Trim().ToLower())
+                    && x.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr);
+            }
+            else
+            {
+                ret = OutputStudy.studys.Any(x => x.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (IRBstudyId.Trim().ToLower())
+                    && x.MORE_IRBAGENCY.ToLower() != Agency.brany);
+            }
             return ret;
         }
 

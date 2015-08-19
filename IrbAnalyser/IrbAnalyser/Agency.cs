@@ -9,6 +9,7 @@ namespace IrbAnalyser
     {
         //public enum AgencyList { BRANY, IRIS, CLINICALTRIALdotGOV };
         public enum AgencyList { BRANY, EINSTEIN };
+        public static string brany = "brany";
         private static AgencyList agency;
 
         public static string agencyStrLwr;

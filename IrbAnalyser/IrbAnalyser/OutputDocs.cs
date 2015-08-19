@@ -86,11 +86,29 @@ namespace IrbAnalyser
 
                 if (!String.IsNullOrEmpty(url))
                 {
-                    var docs = (from ver in versions
+
+                    int docs;
+
+                    //BRANY look up agency in MSD
+                    if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+                    {
+                        docs = (from ver in versions
                                 where ver.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (irbstudyId.Trim().ToLower())
                                    && ver.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
                                    && ver.STUDYAPNDX_URI.ToLower() == url
                                 select ver).Count();
+                    }
+                    //IRIS all other agency in MSD, non IRB studies wont have 
+                    else
+                    {
+                        docs = (from ver in versions
+                                where ver.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (irbstudyId.Trim().ToLower())
+                                   && ver.MORE_IRBAGENCY.ToLower() != Agency.brany
+                                   && ver.STUDYAPNDX_URI.ToLower() == url
+                                select ver).Count();
+                    }
+
+
                     if (docs == 0)
                     {
                         addRow("New URL", url, "documents", irbstudyId, irbno, false);
