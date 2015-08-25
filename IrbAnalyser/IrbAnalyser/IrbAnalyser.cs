@@ -145,12 +145,24 @@ namespace IrbAnalyser
         /// </summary>
         private void Analyse()
         {
-            
-            string dir = Zip.UnZip(ofdStudy.FileName);
             Agency.AgencyList agency = Agency.AgencyList.BRANY;
             Enum.TryParse<Agency.AgencyList>(cboSource.SelectedValue.ToString(), out agency);
             Agency.AgencyVal = agency;
 
+            string zipFile;
+            if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+            {
+                BRANY_API.getZip();
+                string directory = Path.GetTempPath();
+                directory = directory + "IRBreport\\";
+                zipFile = directory + "brany.zip";
+            }
+            else
+            {
+                zipFile = ofdStudy.FileName;
+            }
+
+            string dir = Zip.UnZip(zipFile);
             Tools.filename = dir;
 
             if (Agency.AgencyVal == Agency.AgencyList.BRANY || Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
@@ -189,8 +201,17 @@ namespace IrbAnalyser
             if (cboSource.SelectedValue != null && cboSource.SelectedValue.ToString().ToLower() == Agency.AgencyList.BRANY.ToString().ToLower())
             {
                 cboGenerate.Visible = true;
+                btnStudy.Visible = false;
+                txtStudy.Visible = false;
+                label1.Visible = false;
             }
-            else { cboGenerate.Visible = false; }
+            else 
+            { 
+                cboGenerate.Visible = false;
+                btnStudy.Visible = true;
+                txtStudy.Visible = true;
+                label1.Visible = true;
+            }
         }
 
     }

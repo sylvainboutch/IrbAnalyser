@@ -440,7 +440,7 @@ namespace IrbAnalyser
             dr["IRB Identifiers"] = Tools.generateStudyIdentifiers((string)row["StudyId"]);
 
             dr["Study_number"] = Tools.getStudyNumber((string)row["StudyId"], (string)dr["IRB no"], (string)row["StudyAcronym"], (string)row["StudyTitle"], (string)row["PrimarySponsorStudyId"]);
-           
+
             //dr["Study_number"] = Tools.getStudyNumber((string)row["StudyId"], (string)dr["IRB no"], (string)row["StudyAcronym"], (string)row["StudyTitle"]);
             //Tools.getStudyNumber((string)row["StudyId"], (string)dr["IRB no"], (string)row["StudyAcronym"]);
 
@@ -657,6 +657,10 @@ namespace IrbAnalyser
             {
                 retstr = getRole(studyId, IRISMap.RoleMap.SC);
             }
+            else
+            {
+                retstr = getRole(studyId, BranyRoleMap.RC, true);
+            }
 
             return retstr;
         }
@@ -686,12 +690,27 @@ namespace IrbAnalyser
         /// <param name="studyId"></param>
         /// <param name="role"></param>
         /// <returns></returns>
-        private static string getRole(string studyId, string role)
+        private static string getRole(string studyId, string role, bool getSecond = false)
         {
             var studyteam = OutputTeam.fpTeam.data.AsEnumerable().Where(x => (string)x["StudyId"] == studyId);
-            if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+            if (Agency.AgencyVal == Agency.AgencyList.BRANY && !getSecond)
             {
                 return Tools.getFullName(studyteam.FirstOrDefault(x => (string)x["Role"] == role && (string)x["Primary"] == "Y"));
+            }
+            if (Agency.AgencyVal == Agency.AgencyList.BRANY && getSecond)
+            {
+                return Tools.getFullName(studyteam.FirstOrDefault(x => (string)x["Role"] == role && (string)x["Primary"] == "N"));
+            }
+            else if (getSecond)
+            {
+                string output = "";
+                var studPeop = studyteam.Where(x => (string)x["Role"] == role);
+                if (studPeop.Count() > 1)
+                {
+                    var peop = studPeop.ElementAt(1);
+                    output = Tools.getFullName(peop);
+                }
+                return output;
             }
             else
             {
@@ -746,9 +765,16 @@ namespace IrbAnalyser
         {
 
             var study = (from st in fpstudys.data.AsEnumerable()
-                         where st.Field<string>("StudyId").Trim().ToLower() == studyId.Trim().ToLower()
-                         select st).First();
-            return shouldStudyBeAdded(study);
+                         where studyId.Trim().ToLower().Contains(st.Field<string>("StudyId").Trim().ToLower())
+                         select st).FirstOrDefault();
+            if (study != null && !String.IsNullOrWhiteSpace((string)study["IRBNumber"]))
+            {
+                return shouldStudyBeAdded(study);
+            }
+            else
+            {
+                return false;
+            }
 
         }
 
@@ -762,6 +788,11 @@ namespace IrbAnalyser
             if (!((string)dr["ExternalIRB"]).Trim().ToLower().Contains("brany") && !((string)dr["StudyId"]).Trim().ToLower().Contains("corrupted"))
             {
                 bool cancerfilter = false;
+
+                if (SpecialStudys.ignoredStudys.Any(x => x.IRB == Agency.agencyStrLwr && Tools.compareStr(x.number, (string)dr["IRBNumber"])))
+                {
+                    return false;
+                }
 
                 if (Agency.AgencyVal == Agency.AgencyList.BRANY)
                 {
@@ -878,8 +909,6 @@ namespace IrbAnalyser
                     ((string)dr["Cancer"]).ToLower().Contains("yes");
 
                 }
-
-
 
                 return cancerfilter;
 

@@ -439,6 +439,12 @@ namespace IrbAnalyser
                         addRowStudy(studyrow, "IRB Renewal Approved", "New study", true, Tools.parseDate((string)studyrow["MostRecentApprovalDate"]).Trim().ToLower());
                     }
 
+                    if (SpecialStudys.closedStudys.Any(x => x.IRB == Agency.agencyStrLwr && Tools.compareStr(x.number, (string)studyrow["IRBNumber"])))
+                    {
+                        addRowStudy(studyrow, "Complete", "New study", true, Tools.parseDate(DateTime.Now.ToString()));
+                    }
+
+
                 }
                 else
                 {
@@ -605,7 +611,7 @@ namespace IrbAnalyser
                     dr["status type"] = IRISMap.StatusMap.getType((string)statusRow["Status"]);
                 }
                 //TODO MAP the IRIS status
-                dr["Comment"] = (string)statusRow["Status"];
+                dr["Comment"] = (string)statusRow["Status"] + " " + (string)statusRow["Comments"];
 
                 dr["Documented by"] = "IRB interface";
                 dr["Status Valid From"] = Tools.parseDate((string)statusRow["ValidOn"]);

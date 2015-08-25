@@ -86,7 +86,7 @@ namespace IrbAnalyser
                 siteType = IRISMap.SiteMap.getSiteType((string)studyrow["Sitename"]);
             }
             string irbstudyId = (string)studyrow["StudyId"];
-            if (OutputStudy.shouldStudyBeAdded(irbstudyId))
+            if (OutputStudy.shouldStudyBeAdded(irbstudyId) && site != OutputSite.EMmainsite)
             {
                 string size = (string)studyrow["Sitesamplesize"];
                 if (!newrecord)

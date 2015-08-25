@@ -65,6 +65,7 @@ namespace IrbAnalyser
                     data.Columns.Add("SiteName");
                     data.Columns.Add("Status");
                     data.Columns.Add("ValidOn");
+                    data.Columns.Add("Comments");
                     initColumnCount = data.Columns.Count;
                     break;
                 case type.Team:

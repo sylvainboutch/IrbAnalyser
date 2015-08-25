@@ -114,6 +114,7 @@
   <ItemGroup>
     <Compile Include="Agency.cs" />
     <Compile Include="BranyMap.cs" />
+    <Compile Include="BRANY_API.cs" />
     <Compile Include="Csv.cs" />
     <Compile Include="CsvReader.cs" />
     <Compile Include="DbCompare.cs" />
@@ -131,6 +132,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
+    <Compile Include="SpecialStudys.cs" />
     <Compile Include="NewValueOuput.cs" />
     <Compile Include="OutputIRBForm.cs" />
     <Compile Include="OutputMSD.cs" />
@@ -207,6 +209,9 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="BranyMonteReport.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

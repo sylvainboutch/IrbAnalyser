@@ -43,6 +43,20 @@ namespace IrbAnalyser
             studyShort.Columns.Add("PIemail");
             studyDT.Columns.Add("PIemail");
 
+
+            studyShort.Columns.Add("SC");
+            studyDT.Columns.Add("SC");
+
+            studyShort.Columns.Add("SCemail");
+            studyDT.Columns.Add("SCemail");
+
+
+            studyShort.Columns.Add("RC");
+            studyDT.Columns.Add("RC");
+
+            studyShort.Columns.Add("RCemail");
+            studyDT.Columns.Add("RCemail");
+
             studyShort.Columns.Add("OtherPersonnel");
 
             foreach (DataRow drStudy in OutputStudy.fpstudys.data.Rows)
@@ -53,6 +67,10 @@ namespace IrbAnalyser
                     drShort["OtherPersonnel"] = "= \"\"";
                     drShort["PI"] = OutputStudy.getPI((string)drStudy["StudyId"]);
                     drShort["PIemail"] = OutputStudy.getPIeMail((string)drStudy["StudyId"]);
+
+                    drShort["RC"] = OutputStudy.getRC((string)drStudy["StudyId"]);
+                    drShort["SC"] = OutputStudy.getSC((string)drStudy["StudyId"]);
+
                     foreach (DataColumn dc in OutputStudy.fpstudys.data.Columns)
                     {
                         drShort[dc.ColumnName] = string.IsNullOrWhiteSpace((string)drStudy[dc.ColumnName]) ? drShort[dc.ColumnName] : drStudy[dc.ColumnName];
@@ -85,6 +103,8 @@ namespace IrbAnalyser
                         {
                             var dr = studyDT.NewRow();
                             dr["PI"] = drShort["PI"];
+                            dr["SC"] = drShort["SC"];
+                            dr["RC"] = drShort["RC"];
                             dr["PIemail"] = drShort["PIemail"];
 
                             string primary = ((string)drTeam["Primary"]).ToLower() == "y" ? " Primary " : "";
