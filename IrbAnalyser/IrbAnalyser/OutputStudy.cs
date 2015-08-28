@@ -763,10 +763,19 @@ namespace IrbAnalyser
         /// <returns></returns>
         public static bool shouldStudyBeAdded(string studyId)
         {
+            /*if (studyId.Contains("-37-01"))
+            {
+                int a = 1;
+                a = a + 1;
+            }*/
+
 
             var study = (from st in fpstudys.data.AsEnumerable()
                          where studyId.Trim().ToLower().Contains(st.Field<string>("StudyId").Trim().ToLower())
+                         && !st.Field<string>("IRBNumber").Trim().ToLower().Contains("ibc")
                          select st).FirstOrDefault();
+
+
             if (study != null && !String.IsNullOrWhiteSpace((string)study["IRBNumber"]))
             {
                 return shouldStudyBeAdded(study);
@@ -785,11 +794,23 @@ namespace IrbAnalyser
         /// <returns></returns>
         public static bool shouldStudyBeAdded(DataRow dr)
         {
+            
             if (!((string)dr["ExternalIRB"]).Trim().ToLower().Contains("brany") && !((string)dr["StudyId"]).Trim().ToLower().Contains("corrupted"))
             {
                 bool cancerfilter = false;
 
                 if (SpecialStudys.ignoredStudys.Any(x => x.IRB == Agency.agencyStrLwr && Tools.compareStr(x.number, (string)dr["IRBNumber"])))
+                {
+                    return false;
+                }
+
+
+
+                if (SpecialStudys.studyToInclude.Count >= 1 && SpecialStudys.studyToInclude.Any(x => x.IRB == Agency.agencyStrLwr && Tools.compareStr(x.number, (string)dr["IRBNumber"])))
+                {
+                    return true;
+                }
+                else if (SpecialStudys.studyToInclude.Count >= 1)
                 {
                     return false;
                 }

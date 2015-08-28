@@ -488,6 +488,21 @@ namespace IrbAnalyser
             new irbpair("einstein","2015-4962"),
             new irbpair("einstein","2015-4988")
         };
+
+        public static readonly List<irbpair> studyToInclude = new List<irbpair>()
+        {
+             new irbpair("brany","14-06-415-01"),
+             new irbpair("brany","14-06-523-01"),
+             new irbpair("brany","14-06-465-01"),
+             new irbpair("brany","14-11-536-01"),
+             new irbpair("brany","15-06-56-01"),
+             new irbpair("brany","14-06-361-01"),
+             new irbpair("brany","15-02-62-01"),
+             new irbpair("brany","15-11-37-01"),
+             new irbpair("brany","14-06-510-01"),
+             new irbpair("brany","14-06-464-01")
+        };
+
     }
 
 
