@@ -21,10 +21,10 @@ namespace IrbAnalyser.IRISMap
                 {"Einstein_DOSA",OutputSite.EMmainsite},
                 {"Einstein_CRC East",OutputSite.EMmainsite},
                 {"NBHN_Jacobi Medical Center", "Jacobi Hospital"},
-                {"NBHN_North Central Bronx Hospital",OutputSite.EMmainsite},
+                //{"NBHN_North Central Bronx Hospital",OutputSite.EMmainsite},
                 {"Einstein_MRRC",OutputSite.EMmainsite},
-                {"Yeshiva University_Azrieli School of Education",OutputSite.EMmainsite},
-                {"Yeshiva University_Ferkauf Graduate School of Psychology",OutputSite.EMmainsite}
+                //{"Yeshiva University_Azrieli School of Education",OutputSite.EMmainsite}
+                //{"Yeshiva University_Ferkauf Graduate School of Psychology",OutputSite.EMmainsite}
             };
 
         public static string getSite(string key)
@@ -119,7 +119,7 @@ namespace IrbAnalyser.IRISMap
         public static readonly Dictionary<string, string> statusMap = new Dictionary<string, string>()
             {
                 {"Approved for Protocol Development",""},
-                {"Approved Pending","IRB Disapproved - Returned to study team"},
+                {"Approved Pending","IRB INITIAL Submitted"},//"IRB Disapproved - Returned to study team"},
                 {"Awaiting CRC Approval",""},
                 {"Awaiting Execution of Contract",""},
                 {"Awaiting PRMC Approval",""},

@@ -400,7 +400,11 @@ namespace IrbAnalyser
             if (OutputStudy.shouldStudyBeAdded(irbstudyId))
             {
                 string sitename = "";
-                if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+                if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
+                {
+                    sitename = OutputSite.EMmainsite;
+                }
+                else if (Agency.AgencyVal == Agency.AgencyList.BRANY)
                 {
                     sitename = BranySiteMap.getSite(((string)studyrow["Sitename"]).Replace("(IBC)", ""));
                 }
@@ -417,6 +421,11 @@ namespace IrbAnalyser
 
                 if (newrecord)
                 {
+                    if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
+                    {
+                        addRowStudy(studyrow, (string)studyrow["Status"], "New study", true, Tools.parseDate(DateTime.Now.ToString()));
+                    }
+
                     bool dtStatus = !(from st in OutputStatus.newStatus.AsEnumerable()
                                       where st.Field<string>("IRB Study ID").Trim().ToLower() == irbstudyId.Trim().ToLower()
                                       && st.Field<string>("Study status").Trim().ToLower() == "irb initial approved"

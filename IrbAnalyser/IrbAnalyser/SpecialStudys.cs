@@ -9,7 +9,7 @@ namespace IrbAnalyser
     {
         public static readonly List<irbpair> closedStudys = new List<irbpair>()
         {
-            new irbpair("brany","11-06-234-01"),
+            /*new irbpair("brany","11-06-234-01"),
             new irbpair("brany","11-06-242-01"),
             new irbpair("brany","11-06-262-01"),
             new irbpair("brany","11-06-287-01"),
@@ -187,12 +187,12 @@ namespace IrbAnalyser
             new irbpair("brany","71-43-185"),
             new irbpair("brany","11-11-407X"),
             new irbpair("brany","14-06-258Q"),
-            new irbpair("brany","2014-3490")
+            new irbpair("brany","2014-3490")*/
         };
 
         public static readonly List<irbpair> ignoredStudys = new List<irbpair>()
         {
-            new irbpair("brany","15-06-229-01"),
+            /*new irbpair("brany","15-06-229-01"),
             new irbpair("brany","14-02-06-01"),
             new irbpair("brany","15-02-06-01"),
             new irbpair("einstein","2015-4774"),
@@ -486,12 +486,12 @@ namespace IrbAnalyser
             new irbpair("einstein","2015-4829"),
             new irbpair("einstein","2015-4947"),
             new irbpair("einstein","2015-4962"),
-            new irbpair("einstein","2015-4988")
+            new irbpair("einstein","2015-4988")*/
         };
 
         public static readonly List<irbpair> studyToInclude = new List<irbpair>()
         {
-             new irbpair("brany","14-06-415-01"),
+             /*new irbpair("brany","14-06-415-01"),
              new irbpair("brany","14-06-523-01"),
              new irbpair("brany","14-06-465-01"),
              new irbpair("brany","14-11-536-01"),
@@ -500,7 +500,113 @@ namespace IrbAnalyser
              new irbpair("brany","15-02-62-01"),
              new irbpair("brany","15-11-37-01"),
              new irbpair("brany","14-06-510-01"),
-             new irbpair("brany","14-06-464-01")
+             new irbpair("brany","14-06-464-01")*/
+            /*new irbpair("brany","13-06-315-01"),
+            new irbpair("brany","14-06-352Q-01"),
+            new irbpair("brany","14-06-371-01"),
+            new irbpair("brany","14-06-393-01"),
+            new irbpair("brany","14-06-435Q-01"),
+            new irbpair("brany","14-06-445-01"),
+            new irbpair("brany","14-06-447-01"),
+            new irbpair("brany","14-06-449-01"),
+            new irbpair("brany","14-06-454-01"),
+            new irbpair("brany","14-06-474-01"),
+            new irbpair("brany","14-06-535Q-01"),
+            new irbpair("brany","14-06-539-01"),
+            new irbpair("brany","14-06-553-01")*/
+            //new irbpair("brany","13-09-155"),
+            new irbpair("einstein","11-10-349"),
+            new irbpair("einstein","12-07-245"),
+            new irbpair("einstein","12-08-280"),
+            new irbpair("einstein","12-11-388"),
+            new irbpair("einstein","13-05-113"),
+            new irbpair("einstein","2013-2407"),
+            new irbpair("einstein","13-08-148"),
+            new irbpair("einstein","13-09-155"),
+            new irbpair("einstein","2011-277"),
+            new irbpair("einstein","2012-388"),
+            new irbpair("einstein","2012-407"),
+            new irbpair("einstein","2013-233"),
+            new irbpair("einstein","2013-300"),
+            new irbpair("einstein","2013-376"),
+            new irbpair("brany","13-06-04-01"),
+            new irbpair("brany","13-06-42-01"),
+            new irbpair("brany","14-06-15-01"),
+            new irbpair("brany","14-06-27Q-01"),
+            new irbpair("brany","14-06-67-01"),
+            new irbpair("brany","14-06-78Q-01"),
+            new irbpair("einstein","2013-2997"),
+            new irbpair("einstein","2014-3143"),
+            new irbpair("einstein","2014-3774"),
+            new irbpair("einstein","2014-4039"),
+            new irbpair("einstein","2014-4040"),
+            new irbpair("brany","13-06-176-01"),
+            new irbpair("brany","13-06-190-01"),
+            new irbpair("brany","13-06-229-01"),
+            new irbpair("brany","13-06-296-01"),
+            new irbpair("einstein","2014-3012"),
+            new irbpair("brany","13-06-332Q-01"),
+            new irbpair("brany","13-06-344-01"),
+            new irbpair("brany","14-06-118-01"),
+            new irbpair("brany","14-06-245-01"),
+            new irbpair("brany","14-06-256Q-01"),
+            new irbpair("brany","14-06-280-01"),
+            new irbpair("brany","14-06-307-01"),
+            new irbpair("brany","14-06-322-01"),
+            new irbpair("brany","14-06-328-01"),
+            new irbpair("brany","14-06-334-01"),
+            new irbpair("brany","14-06-345Q-01"),
+            new irbpair("brany","14-06-368-01"),
+            new irbpair("brany","14-06-371-01"),
+            new irbpair("brany","14-06-382-01"),
+            new irbpair("brany","14-06-403-01"),
+            new irbpair("brany","14-06-409-01"),
+            new irbpair("brany","14-06-415-01"),
+            new irbpair("brany","14-06-445-01"),
+            new irbpair("brany","14-06-447-01"),
+            new irbpair("brany","14-06-449-01"),
+            new irbpair("brany","14-06-454-01"),
+            new irbpair("brany","14-06-464-01"),
+            new irbpair("brany","14-06-474-01"),
+            new irbpair("brany","14-06-500-01"),
+            new irbpair("brany","14-06-539-01"),
+            new irbpair("brany","14-06-308-01"),
+            new irbpair("brany","14-06-321-01"),
+            new irbpair("brany","12-06-427-01"),
+            new irbpair("brany","13-06-315-01"),
+            new irbpair("brany","14-06-362-01"),
+            new irbpair("brany","14-06-393-01"),
+            new irbpair("einstein","11-02-068"),
+            new irbpair("einstein","11-04-146"),
+            new irbpair("einstein","09-06-173"),
+            new irbpair("brany","14-06-314-01"),
+            new irbpair("brany","13-06-187Q-01"),
+            new irbpair("brany","14-06-309-01"),
+            new irbpair("brany","14-06-250-01"),
+            new irbpair("brany","14-06-77Q-01")
+            
+        };
+
+        public static readonly List<string> cancerTerms = new List<string>()
+        {
+            /*"oncol",
+            "cancer",
+            "tumor",
+            "carci",
+            "leukem",
+            "lymphom",
+            "myeloma",
+            "sarcom",
+            "melanom",
+            "metast",
+            "chemoth",
+            "radioth",
+            "neuroblast",
+            "glioma",
+            "carcin",
+            "blastom",
+            "malignan",
+            "myelofibrosis"*/
         };
 
     }

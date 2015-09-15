@@ -34,6 +34,11 @@ namespace IrbAnalyser
                     data.Columns.Add("StudyId");
                     data.Columns.Add("StudySiteId");
                     data.Columns.Add("IRBNumber");
+                    data.Columns.Add("IRBAgency");
+                    data.Columns.Add("PI");
+                    data.Columns.Add("RC");
+                    data.Columns.Add("SC");
+                    data.Columns.Add("CRO");
                     data.Columns.Add("SiteName");
                     data.Columns.Add("StudyTitle");
                     data.Columns.Add("StudySummary");
@@ -62,6 +67,7 @@ namespace IrbAnalyser
                     data.Columns.Add("StudyId");
                     data.Columns.Add("StudySiteId");
                     data.Columns.Add("IRBNumber");
+                    data.Columns.Add("IRBAgency");
                     data.Columns.Add("SiteName");
                     data.Columns.Add("Status");
                     data.Columns.Add("ValidOn");
@@ -72,6 +78,7 @@ namespace IrbAnalyser
                     data.Columns.Add("StudyId");
                     data.Columns.Add("StudySiteId");
                     data.Columns.Add("IRBNumber");
+                    data.Columns.Add("IRBAgency");
                     data.Columns.Add("SiteName");
                     data.Columns.Add("TeamMemberID");
                     data.Columns.Add("Primary");
@@ -87,6 +94,7 @@ namespace IrbAnalyser
                     data.Columns.Add("StudyId");
                     data.Columns.Add("StudySiteId");
                     data.Columns.Add("IRBNumber");
+                    data.Columns.Add("IRBAgency");
                     data.Columns.Add("SiteName");
                     data.Columns.Add("EventId");
                     data.Columns.Add("Event");
@@ -105,58 +113,61 @@ namespace IrbAnalyser
                     dr[dc.ColumnName] = "";
                 }
             }*/
-
-            var lines = File.ReadAllLines(file, Encoding.UTF8).ToList();
-            if (lines.Count > 0)
+            if (File.Exists(file))
             {
-                var columns = Tools.removeQuote(lines[0].Split((char)9));
-
-                lines.RemoveAt(0);
-
-                foreach (var column in columns)
+                var lines = File.ReadAllLines(file, Encoding.UTF8).ToList();
+                if (lines.Count > 0)
                 {
-                    if (!data.Columns.Contains(column))
-                        data.Columns.Add(column);
-                }
+                    var columns = Tools.removeQuote(lines[0].Split((char)9));
 
+                    lines.RemoveAt(0);
 
-                foreach (string line in lines)
-                {
-                    string[] linesplt = line.Split((char)9);
-                    DataRow dr = data.NewRow();
-                    foreach (DataColumn dc in data.Columns)
+                    foreach (var column in columns)
                     {
-                        dr[dc.ColumnName] = "";
+                        if (!data.Columns.Contains(column))
+                            data.Columns.Add(column);
                     }
-                    for (int i = 0; i < columns.Count(); i++)
+
+
+                    foreach (string line in lines)
                     {
-                        if (!String.IsNullOrEmpty(columns[i]))
-                            dr[columns[i]] = Tools.parse((linesplt[i]));
-                        if (linesplt[i].Contains("�"))
+                        string[] linesplt = line.Split((char)9);
+                        DataRow dr = data.NewRow();
+                        foreach (DataColumn dc in data.Columns)
                         {
-                            dr[columns[i]] = linesplt[i].Replace("�", "-");
+                            dr[dc.ColumnName] = "";
                         }
+                        for (int i = 0; i < columns.Count(); i++)
+                        {
+                            if (!String.IsNullOrEmpty(columns[i]))
+                                dr[columns[i]] = Tools.parse((linesplt[i]));
+                            if (linesplt[i].Contains("�"))
+                            {
+                                dr[columns[i]] = Tools.parse(linesplt[i].Replace("�", "-"));
+                            }
+                        }
+
+                        data.Rows.Add(dr);
                     }
-                    data.Rows.Add(dr);
-                }
 
-                if (typ == type.Event)
-                {
-                    data.DefaultView.Sort = "StudyId asc, EventCreationDate desc";
-                    data = data.DefaultView.ToTable();
-                }
+                    if (typ == type.Event)
+                    {
+                        data.DefaultView.Sort = "StudyId asc, EventCreationDate desc";
+                        data = data.DefaultView.ToTable();
+                    }
 
-                if (typ == type.Status)
-                {
-                    data.DefaultView.Sort = "StudyId asc, ValidOn desc";
-                    data = data.DefaultView.ToTable();
+                    if (typ == type.Status)
+                    {
+                        data.DefaultView.Sort = "StudyId asc, ValidOn desc";
+                        data = data.DefaultView.ToTable();
+                    }
+                    /*foreach (var title in column)
+                    {
+                        data.Columns.Add(title.ToString());
+                    }*/
+                    //lines.RemoveAt(0);
+                    //lines.ForEach(line => data.Rows.Add(Tools.removeQuote(line.Split((char)9))));
                 }
-                /*foreach (var title in column)
-                {
-                    data.Columns.Add(title.ToString());
-                }*/
-                //lines.RemoveAt(0);
-                //lines.ForEach(line => data.Rows.Add(Tools.removeQuote(line.Split((char)9))));
             }
         }
     }

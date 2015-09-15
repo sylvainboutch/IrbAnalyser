@@ -47,10 +47,17 @@ namespace IrbAnalyser
                                      select st);
                         }
                         //IRIS all other agency in MSD, non IRB studies wont have 
-                        else
+                        else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
                         {
                             query = (from st in db.LCL_V_STUDYSUMM_PLUSMORE
                                      where st.MORE_IRBAGENCY != Agency.brany
+                                     && st.IRBIDENTIFIERS != null
+                                     select st);
+                        }
+                        else
+                        {
+                            query = (from st in db.LCL_V_STUDYSUMM_PLUSMORE
+                                     where st.MORE_IRBAGENCY != null
                                      && st.IRBIDENTIFIERS != null
                                      select st);
                         }
@@ -166,6 +173,16 @@ namespace IrbAnalyser
         private static void analyseRow(DataRow dr)
         {
             string irbstudyId = (string)dr["StudyId"];
+
+            if (!String.IsNullOrEmpty((string)dr["IRBAgency"]))
+            {
+                if (((string)dr["IRBAgency"]).ToLower() == "brany")
+                    Agency.AgencyVal = Agency.AgencyList.BRANY;
+                else if (((string)dr["IRBAgency"]).ToLower() == "einstein")
+                    Agency.AgencyVal = Agency.AgencyList.EINSTEIN;
+                else Agency.AgencyVal = Agency.AgencySetupVal;
+            }
+
             if (shouldStudyBeAdded(irbstudyId))
             {
                 string identifiers = Tools.generateStudyIdentifiers((string)dr["StudyId"]);
@@ -188,7 +205,6 @@ namespace IrbAnalyser
                         bool dtStudy = (from st in OutputStudy.newStudy.AsEnumerable()
                                         where st.Field<string>("IRB Study ID").Trim().ToLower() == irbstudyId.Trim().ToLower()
                                         select st).Any();
-
                         OutputSite.analyseRow(dr, true);
 
                         OutputStatus.analyseRowStudy(dr, true);
@@ -204,8 +220,8 @@ namespace IrbAnalyser
                         bool dtStudy = (from st in OutputStudy.updatedStudy.AsEnumerable()
                                         where st.Field<string>("IRB Study ID").Trim().ToLower() == irbstudyId.Trim().ToLower()
                                         select st).Any();
-
-                        OutputSite.analyseRow(dr, false);
+                        if (Agency.AgencySetupVal != Agency.AgencyList.NONE)
+                            OutputSite.analyseRow(dr, false);
 
                         OutputStatus.analyseRowStudy(dr, false);
                         if (!dtStudy)
@@ -419,6 +435,10 @@ namespace IrbAnalyser
             else
             { dr = updatedStudy.NewRow(); }
 
+            if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
+            {
+                dr["IRB Agency name"] = (string)row["IRBAgency"];
+            }
             if (!string.IsNullOrWhiteSpace(((string)row["ExternalIRB"])))
             {
                 dr["IRB no"] = (string)row["ExternalIRBnumber"];
@@ -483,8 +503,12 @@ namespace IrbAnalyser
             dr["Official title"] = (string)row["StudyTitle"];
             dr["Study summary"] = Tools.removeHtml((string)row["Studysummary"]);
 
-
-            if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+            if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
+            {
+                dr["Department"] = String.IsNullOrEmpty((string)row["Department"]) && newentry ? "Please specify" : (string)row["Department"];
+                dr["Division/Therapeutic area"] = String.IsNullOrEmpty((string)row["Division"]) && newentry ? "N/A" : (string)row["Division"];
+            }
+            else if (Agency.AgencyVal == Agency.AgencyList.BRANY)
             {
                 dr["Department"] = String.IsNullOrEmpty((string)row["Department"]) && newentry ? "Please specify" : (string)row["Department"];
                 dr["Division/Therapeutic area"] = String.IsNullOrEmpty((string)row["Division"]) && newentry ? "N/A" : (string)row["Division"];
@@ -495,11 +519,25 @@ namespace IrbAnalyser
                 dr["Division/Therapeutic area"] = String.IsNullOrWhiteSpace((string)row["Department"]) ? "" : IRISMap.Department.getDivision((string)row["Department"]);
             }
 
+            if (fpstudys.initColumnCount < fpstudys.data.Columns.Count)
+            {
+                for (int i = fpstudys.initColumnCount; i <= fpstudys.data.Columns.Count; i++)
+                {
+                    string colname = fpstudys.data.Columns[i - 1].ColumnName;
+                    if (!dr.Table.Columns.Contains(colname)) dr.Table.Columns.Add(colname);
+                    dr[colname] = row[colname];
+                }
+            }
+
             int size = 0;
             int.TryParse((string)row["Studysamplesize"], out size);
             dr["Entire study sample size"] = size == 0 ? "" : size.ToString();
 
-            if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+            if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
+            {
+                dr["Phase"] = String.IsNullOrEmpty((string)row["Phase"]) && newentry ? "Please Specify" : (string)row["Phase"];
+            }
+            else if (Agency.AgencyVal == Agency.AgencyList.BRANY)
             {
                 dr["Phase"] = String.IsNullOrEmpty((string)row["Phase"]) && newentry ? "Please Specify" : (string)row["Phase"];
             }
@@ -509,9 +547,9 @@ namespace IrbAnalyser
             }
 
 
-            if (Tools.compareStr(row["Multicenter"].ToString(), "true") || Tools.compareStr(row["Multicenter"].ToString(), "yes") || Tools.compareStr(row["Multicenter"].ToString(), "y"))
+            if (Tools.compareStr(row["Multicenter"].ToString(), "true") || Tools.compareStr(row["Multicenter"].ToString(), "yes") || Tools.compareStr(row["Multicenter"].ToString(), "y") || ((string)row["Multicenter"]).ToLower().Contains("multi"))
                 dr["Study scope"] = "Multi Center Study";
-            else if (Tools.compareStr(row["Multicenter"].ToString(), "false") || Tools.compareStr(row["Multicenter"].ToString(), "no") || Tools.compareStr(row["Multicenter"].ToString(), "n"))
+            else if (Tools.compareStr(row["Multicenter"].ToString(), "false") || Tools.compareStr(row["Multicenter"].ToString(), "no") || Tools.compareStr(row["Multicenter"].ToString(), "n") || ((string)row["Multicenter"]).ToLower().Contains("single"))
                 dr["Study scope"] = "Single Center Study";
             else
                 dr["Study scope"] = "";
@@ -520,11 +558,17 @@ namespace IrbAnalyser
             dr["Sponsor contact"] = row["PrimarySponsorContactFirstName"].ToString() + " " + row["PrimarySponsorContactLastName"].ToString();
             dr["Sponsor Protocol ID"] = row["PrimarySponsorStudyId"].ToString();
 
+            dr["Cancer"] = row["Cancer"];
+
             string[] labels = new string[] { };
             string[] values = new string[] { };
 
             string cancer = "";
             string[] irbno = ((string)dr["IRB no"]).Split('-');
+            if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
+            {
+                cancer = "Y";
+            }
             if (Agency.AgencyVal == Agency.AgencyList.BRANY)
             {
                 cancer = "N";
@@ -533,19 +577,57 @@ namespace IrbAnalyser
             }
             dr["Cancer"] = cancer;
 
-            if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+            if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
+            {
+                labels = new string[17] { 
+                    "Study Managed by*", 
+                    "CRO, if any*", 
+                    "IRB agency name", 
+                    "IRB No.", 
+                    "Is this a cancer related study ?", 
+                    "PI Program Code (Cancer Center Studies Only)*", 
+                    "Primary Purpose*", 
+                    "&nbsp;&nbsp;&nbsp;Agent", 
+                    "&nbsp;&nbsp;&nbsp;Ancillary", 
+                    "&nbsp;&nbsp;&nbsp;Correlative (Laboratary based specimen studies &nbsp;&nbsp;&nbsp;to access risks)",
+                    "&nbsp;&nbsp;&nbsp;Device",
+                    "&nbsp;&nbsp;&nbsp;Epidemiologic",
+                    "&nbsp;&nbsp;&nbsp;In Vitro",
+                    "&nbsp;&nbsp;&nbsp;Other Observational Studies",
+                    "&nbsp;&nbsp;&nbsp;Retrospective chart review",
+                    "&nbsp;&nbsp;&nbsp;Tissue Banking",
+                    "&nbsp;&nbsp;&nbsp;Trials Involving Interventions"              
+                };
+
+                values = new string[17] { 
+                    (string)dr["STUDY_MANAGED_BY"],
+                    (string)dr["CRO"], 
+                    (string)dr["IRB Agency name"], 
+                    (string)dr["IRB no"], 
+                    (string)dr["Cancer"],
+                    (string)dr["PROGRAM_CODE"],
+                    (string)dr["PRIMARY_PURPOSE"],
+                    (string)dr["AGENT"],
+                    (string)dr["ANCILLARY"],
+                    (string)dr["CORRELATIVE"],
+                    (string)dr["DEVICE"],
+                    (string)dr["EPIDEMIOLOGIC"],
+                    (string)dr["IN_VITRO"],
+                    (string)dr["OTHER_Observational_STUDIES"],
+                    (string)dr["RETROSPECTIVE_CHART_REVIEW"],
+                    (string)dr["TISSUE BANKING"],
+                    (string)dr["TRIALS_Involving_INTERVENTIONS"]
+                };
+            }
+            else if (Agency.AgencyVal == Agency.AgencyList.BRANY)
             {
                 labels = new string[5] { "Study Managed by*", "CRO, if any*", "IRB agency name", "IRB No.", "Is this a cancer related study ?" };
-
-                dr["Cancer"] = row["Cancer"];
 
                 values = new string[5] { "BRY", (string)dr["CRO"], Agency.agencyStrLwr, (string)dr["IRB no"], (string)dr["Cancer"] };
             }
             else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
             {
                 labels = new string[3] { "IRB agency name", "IRB No.", "Is this a cancer related study ?" };
-
-                dr["Cancer"] = row["Cancer"];
 
                 values = new string[3] { (string)dr["IRB Agency name"], (string)dr["IRB no"], (string)dr["Cancer"] };
             }
@@ -587,6 +669,11 @@ namespace IrbAnalyser
         /// <returns></returns>
         public static string getPI(string studyId)
         {
+            if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
+            {                
+                var value =  fpstudys.data.AsEnumerable().Where(x => (string)x["StudyId"] == studyId).FirstOrDefault();
+                return (string)value["PI"];
+            }
             if (Agency.AgencyVal == Agency.AgencyList.BRANY)
             {
                 return getRole(studyId, BranyRoleMap.PI);
@@ -604,6 +691,10 @@ namespace IrbAnalyser
         /// <returns></returns>
         public static string getPIeMail(string studyId)
         {
+            if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
+            {
+                return "";
+            }
             var studyteam = OutputTeam.fpTeam.data.AsEnumerable().Where(x => (string)x["StudyId"] == studyId);
             if (Agency.AgencyVal == Agency.AgencyList.BRANY)
             {
@@ -624,7 +715,11 @@ namespace IrbAnalyser
         /// <returns></returns>
         public static string getRC(string studyId)
         {
-
+            if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
+            {
+                var value = fpstudys.data.AsEnumerable().Where(x => (string)x["StudyId"] == studyId).FirstOrDefault();
+                return (string)value["RC"];
+            }
             string retstr = "";
             if (Agency.AgencyVal == Agency.AgencyList.BRANY)
             {
@@ -651,7 +746,11 @@ namespace IrbAnalyser
         /// <returns></returns>
         public static string getSC(string studyId)
         {
-
+            if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
+            {
+                var value = fpstudys.data.AsEnumerable().Where(x => (string)x["StudyId"] == studyId).FirstOrDefault();
+                return (string)value["SC"];
+            }
             string retstr = "";
             if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
             {
@@ -673,6 +772,11 @@ namespace IrbAnalyser
         /// <returns></returns>
         private static string getCRO(string studyId)
         {
+            if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
+            {
+                var value = fpstudys.data.AsEnumerable().Where(x => (string)x["StudyId"] == studyId).FirstOrDefault();
+                return (string)value["CRO"];
+            }
             if (Agency.AgencyVal == Agency.AgencyList.BRANY)
             {
                 return getRole(studyId, BranyRoleMap.CRO);
@@ -763,7 +867,7 @@ namespace IrbAnalyser
         /// <returns></returns>
         public static bool shouldStudyBeAdded(string studyId)
         {
-            /*if (studyId.Contains("-37-01"))
+            /*if (studyId.Contains("6885e452-44ed-4306-8d6a-27e67f31f4aa"))
             {
                 int a = 1;
                 a = a + 1;
@@ -794,10 +898,27 @@ namespace IrbAnalyser
         /// <returns></returns>
         public static bool shouldStudyBeAdded(DataRow dr)
         {
-            
+            /*if (((string)dr["IRBNumber"]).Contains("-188-01"))
+            {
+                int a = 1;
+                a = a + 1;
+            }*/
+
+            if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
+            {
+                if (SpecialStudys.studyToInclude.Count >= 1 && SpecialStudys.studyToInclude.Any(x => Tools.compareStr(x.number, (string)dr["IRBNumber"])))
+                {
+                    return true;
+                }
+                else if (SpecialStudys.studyToInclude.Count >= 1)
+                {
+                    return false;
+                }
+                else return true;
+            }
+
             if (!((string)dr["ExternalIRB"]).Trim().ToLower().Contains("brany") && !((string)dr["StudyId"]).Trim().ToLower().Contains("corrupted"))
             {
-                bool cancerfilter = false;
 
                 if (SpecialStudys.ignoredStudys.Any(x => x.IRB == Agency.agencyStrLwr && Tools.compareStr(x.number, (string)dr["IRBNumber"])))
                 {
@@ -822,116 +943,60 @@ namespace IrbAnalyser
                         return false;
                     }
 
-                    bool cancer = false;
                     var irbno = ((string)dr["IRBNumber"]).Split('-');
-                    if (irbno.Count() >= 2 && irbno[1] == "06") { cancer = true; }
+                    if (irbno.Count() >= 2 && irbno[1] == "06") { return true; }
 
-                    cancerfilter = ((string)dr["StudyTitle"]).ToLower().Contains("oncol") ||
-                    ((string)dr["StudyTitle"]).ToLower().Contains("cancer") ||
-                    ((string)dr["StudyTitle"]).ToLower().Contains("tumor") ||
-                    ((string)dr["StudyTitle"]).ToLower().Contains("carci") ||
-                    ((string)dr["StudyTitle"]).ToLower().Contains("leukem") ||
-                    ((string)dr["StudyTitle"]).ToLower().Contains("lymphom") ||
-                    ((string)dr["StudyTitle"]).ToLower().Contains("myeloma") ||
-                    ((string)dr["StudyTitle"]).ToLower().Contains("sarcom") ||
-                    ((string)dr["StudyTitle"]).ToLower().Contains("melanom") ||
-                    ((string)dr["StudyTitle"]).ToLower().Contains("metast") ||
-                    ((string)dr["StudyTitle"]).ToLower().Contains("chemoth") ||
-                    ((string)dr["StudyTitle"]).ToLower().Contains("radioth") ||
-                    ((string)dr["StudyTitle"]).ToLower().Contains("neuroblast") ||
-                    ((string)dr["StudyTitle"]).ToLower().Contains("glioma") ||
-                    ((string)dr["StudyTitle"]).ToLower().Contains("carcin") ||
-                    ((string)dr["StudyTitle"]).ToLower().Contains("blastom") ||
-                    ((string)dr["StudyTitle"]).ToLower().Contains("malignan") ||
-                    ((string)dr["StudyTitle"]).ToLower().Contains("myelofibrosis") ||
 
-                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("oncol") ||
-                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("cancer") ||
-                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("tumor") ||
-                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("carci") ||
-                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("leukem") ||
-                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("lymphom") ||
-                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("myeloma") ||
-                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("sarcom") ||
-                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("melanom") ||
-                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("metast") ||
-                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("chemoth") ||
-                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("radioth") ||
-                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("neuroblast") ||
-                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("glioma") ||
-                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("carcin") ||
-                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("blastom") ||
-                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("malignan") ||
-                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("myelofibrosis") ||
-                    cancer;
+                    if (SpecialStudys.cancerTerms.Count >= 1)
+                    {
+                        foreach (var str in SpecialStudys.cancerTerms)
+                        {
+                            if (((string)dr["StudyTitle"]).ToLower().Contains(str) ||
+                                ((string)dr["PrimarySponsorName"]).ToLower().Contains(str) ||
+                                ((string)dr["StudySummary"]).ToLower().Contains(str))
+                            {
+                                return true;
+                            }
+                            /*cancerfilter = ((string)dr["StudyTitle"]).ToLower().Contains(str) || cancerfilter;
+                            cancerfilter = ((string)dr["PrimarySponsorName"]).ToLower().Contains(str) || cancerfilter;*/
+                        }
+                        return false;
+                    }
+                    else
+                    {
+                        //cancerfilter = true;
+                        return true;
+                    }
                 }
                 else
                 {
-                    cancerfilter = ((string)dr["StudyTitle"]).ToLower().Contains("oncol") ||
-                    ((string)dr["StudyTitle"]).ToLower().Contains("cancer") ||
-                    ((string)dr["StudyTitle"]).ToLower().Contains("tumor") ||
-                    ((string)dr["StudyTitle"]).ToLower().Contains("carci") ||
-                    ((string)dr["StudyTitle"]).ToLower().Contains("leukem") ||
-                    ((string)dr["StudyTitle"]).ToLower().Contains("lymphom") ||
-                    ((string)dr["StudyTitle"]).ToLower().Contains("myeloma") ||
-                    ((string)dr["StudyTitle"]).ToLower().Contains("sarcom") ||
-                    ((string)dr["StudyTitle"]).ToLower().Contains("melanom") ||
-                    ((string)dr["StudyTitle"]).ToLower().Contains("metast") ||
-                    ((string)dr["StudyTitle"]).ToLower().Contains("chemoth") ||
-                    ((string)dr["StudyTitle"]).ToLower().Contains("radioth") ||
-                    ((string)dr["StudyTitle"]).ToLower().Contains("neuroblast") ||
-                    ((string)dr["StudyTitle"]).ToLower().Contains("glioma") ||
-                    ((string)dr["StudyTitle"]).ToLower().Contains("carcin") ||
-                    ((string)dr["StudyTitle"]).ToLower().Contains("blastom") ||
-                    ((string)dr["StudyTitle"]).ToLower().Contains("malignan") ||
-                    ((string)dr["StudyTitle"]).ToLower().Contains("myelofibrosis") ||
-
-                    ((string)dr["StudySummary"]).ToLower().Contains("oncol") ||
-                    ((string)dr["StudySummary"]).ToLower().Contains("cancer") ||
-                    ((string)dr["StudySummary"]).ToLower().Contains("tumor") ||
-                    ((string)dr["StudySummary"]).ToLower().Contains("carci") ||
-                    ((string)dr["StudySummary"]).ToLower().Contains("leukem") ||
-                    ((string)dr["StudySummary"]).ToLower().Contains("lymphom") ||
-                    ((string)dr["StudySummary"]).ToLower().Contains("myeloma") ||
-                    ((string)dr["StudySummary"]).ToLower().Contains("sarcom") ||
-                    ((string)dr["StudySummary"]).ToLower().Contains("melanom") ||
-                    ((string)dr["StudySummary"]).ToLower().Contains("metast") ||
-                    ((string)dr["StudySummary"]).ToLower().Contains("chemoth") ||
-                    ((string)dr["StudySummary"]).ToLower().Contains("radioth") ||
-                    ((string)dr["StudySummary"]).ToLower().Contains("neuroblast") ||
-                    ((string)dr["StudySummary"]).ToLower().Contains("glioma") ||
-                    ((string)dr["StudySummary"]).ToLower().Contains("carcin") ||
-                    ((string)dr["StudySummary"]).ToLower().Contains("blastom") ||
-                    ((string)dr["StudySummary"]).ToLower().Contains("malignan") ||
-                    ((string)dr["StudySummary"]).ToLower().Contains("myelofibrosis") ||
-
-                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("oncol") ||
-                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("cancer") ||
-                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("tumor") ||
-                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("carci") ||
-                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("leukem") ||
-                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("lymphom") ||
-                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("myeloma") ||
-                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("sarcom") ||
-                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("melanom") ||
-                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("metast") ||
-                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("chemoth") ||
-                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("radioth") ||
-                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("neuroblast") ||
-                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("glioma") ||
-                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("carcin") ||
-                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("blastom") ||
-                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("malignan") ||
-                    ((string)dr["PrimarySponsorName"]).ToLower().Contains("myelofibrosis") ||
-
-                    ((string)dr["Division"]).ToLower().Contains("oncol") ||
-                    ((string)dr["Department"]).ToLower().Contains("oncol") ||
-
-                    ((string)dr["Cancer"]).ToLower().Contains("yes");
+                    if (((string)dr["Division"]).ToLower().Contains("oncol") ||
+                        ((string)dr["Department"]).ToLower().Contains("oncol") ||
+                        ((string)dr["Cancer"]).ToLower().Contains("yes"))
+                    {
+                        return true;
+                    }
+                    if (SpecialStudys.cancerTerms.Count >= 1)
+                    {
+                        foreach (var str in SpecialStudys.cancerTerms)
+                        {
+                            if (((string)dr["StudyTitle"]).ToLower().Contains(str) || ((string)dr["PrimarySponsorName"]).ToLower().Contains(str))
+                            {
+                                return true;
+                            }
+                            /*cancerfilter = ((string)dr["StudyTitle"]).ToLower().Contains(str) || cancerfilter;
+                            cancerfilter = ((string)dr["PrimarySponsorName"]).ToLower().Contains(str) || cancerfilter;*/
+                        }
+                        return false;
+                    }
+                    else
+                    {
+                        //cancerfilter = true;
+                        return true;
+                    }
 
                 }
 
-                return cancerfilter;
 
             }
             else

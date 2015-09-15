@@ -114,11 +114,17 @@ namespace IrbAnalyser
                           select stud.STUDY_NUMBER).FirstOrDefault();
             }
             //IRIS all other agency in MSD, non IRB studies wont have 
-            else
+            else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
             {
                 number = (from stud in OutputStudy.studys
                           where stud.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (IRBstudyId.Trim().ToLower())
                        && stud.MORE_IRBAGENCY.ToLower() != Agency.brany
+                          select stud.STUDY_NUMBER).FirstOrDefault();
+            }
+            else
+            {
+                number = (from stud in OutputStudy.studys
+                          where stud.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (IRBstudyId.Trim().ToLower())
                           select stud.STUDY_NUMBER).FirstOrDefault();
             }
 
@@ -166,10 +172,14 @@ namespace IrbAnalyser
                 ret = OutputStudy.studys.Any(x => x.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (IRBstudyId.Trim().ToLower())
                     && x.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr);
             }
-            else
+            else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
             {
                 ret = OutputStudy.studys.Any(x => x.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (IRBstudyId.Trim().ToLower())
                     && x.MORE_IRBAGENCY.ToLower() != Agency.brany);
+            }
+            else
+            {
+                ret = OutputStudy.studys.Any(x => x.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (IRBstudyId.Trim().ToLower()));
             }
             return ret;
         }
@@ -263,7 +273,7 @@ namespace IrbAnalyser
         {
             input = input.Trim('"');
             input = input == "NULL" ? "" : input;
-
+            input = input.Length >= 3999 ? input.Substring(0, 3998) : input;
             return input;
         }
 

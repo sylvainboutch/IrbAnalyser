@@ -83,8 +83,10 @@ namespace IrbAnalyser
 
             if (string.IsNullOrWhiteSpace(url))
             {
-                url = Agency.AgencyVal == Agency.AgencyList.EINSTEIN ? "https://iris.einstein.yu.edu/" : "https://brany.my.irbmanager.com/projects/" + ((string)studyrow["StudySiteId"]);
-            
+                if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
+                    url = "https://iris.einstein.yu.edu/";
+                else if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+                    url = "https://brany.my.irbmanager.com/projects/" + ((string)studyrow["StudySiteId"]);
             }
 
             if (!newrecord && !((string)studyrow["IRBNumber"]).Contains("(IBC)"))

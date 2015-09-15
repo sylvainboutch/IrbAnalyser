@@ -74,8 +74,18 @@ namespace IrbAnalyser
 
             string site = "";
             string siteType = "";
+            string irbstudyId = (string)studyrow["StudyId"];
 
-            if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+            if (Agency.AgencySetupVal == Agency.AgencyList.NONE && newrecord)
+            {
+                var siteslist = ((string)studyrow["Sitename"]).Split(',');
+                foreach (var sit in siteslist)
+                {
+                    addRow("New Site", sit, OutputSite.siteTypeTreating, "", irbstudyId, ((string)studyrow["IRBNumber"]).Replace("(IBC)", ""), true);
+                }
+                site = OutputSite.EMmainsite;
+            }
+            else if (Agency.AgencyVal == Agency.AgencyList.BRANY)
             {
                 site = BranySiteMap.getSite(((string)studyrow["Sitename"]).Replace("(IBC)", ""));
                 siteType = BranySiteMap.getSiteType(((string)studyrow["Sitename"]).Replace("(IBC)", ""));
@@ -85,7 +95,7 @@ namespace IrbAnalyser
                 site = IRISMap.SiteMap.getSite((string)studyrow["Sitename"]);
                 siteType = IRISMap.SiteMap.getSiteType((string)studyrow["Sitename"]);
             }
-            string irbstudyId = (string)studyrow["StudyId"];
+            
             if (OutputStudy.shouldStudyBeAdded(irbstudyId) && site != OutputSite.EMmainsite)
             {
                 string size = (string)studyrow["Sitesamplesize"];

@@ -148,6 +148,7 @@ namespace IrbAnalyser
             Agency.AgencyList agency = Agency.AgencyList.BRANY;
             Enum.TryParse<Agency.AgencyList>(cboSource.SelectedValue.ToString(), out agency);
             Agency.AgencyVal = agency;
+            Agency.AgencySetupVal = agency;
 
             string zipFile;
             if (Agency.AgencyVal == Agency.AgencyList.BRANY)
@@ -172,6 +173,15 @@ namespace IrbAnalyser
                 OutputTeam.analyse(dir + "Team.txt");
 
                 OutputStatus.analyse(dir);
+
+                OutputStatus.removeDuplicateStatus();
+                OutputIRBForm.finalizeEventIrbForm();
+                OutputTeam.removeDuplicateNewMembers();
+                OutputTeam.removeDuplicateDeletedUser();
+            }
+            else if (Agency.AgencyVal == Agency.AgencyList.NONE)
+            {
+                OutputStudy.analyse(dir);
 
                 OutputStatus.removeDuplicateStatus();
                 OutputIRBForm.finalizeEventIrbForm();
