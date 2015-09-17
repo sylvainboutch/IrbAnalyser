@@ -207,8 +207,8 @@ namespace IrbAnalyser
 
 
                     var study2 = from st in studys
-                                where st.IRBIDENTIFIERS.Contains(irbstudyId)
-                                select st;
+                                 where st.IRBIDENTIFIERS.Contains(irbstudyId)
+                                 select st;
 
                     if (!study.Any())
                     {
@@ -685,9 +685,10 @@ namespace IrbAnalyser
         public static string getPI(string studyId)
         {
             if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
-            {                
-                var value =  fpstudys.data.AsEnumerable().Where(x => (string)x["StudyId"] == studyId).FirstOrDefault();
-                return (string)value["PI"];
+            {
+                var value = fpstudys.data.AsEnumerable().Where(x => (string)x["StudyId"] == studyId).FirstOrDefault();
+                if (value != null)
+                    return (string)value["PI"];
             }
             if (Agency.AgencyVal == Agency.AgencyList.BRANY)
             {
@@ -733,7 +734,8 @@ namespace IrbAnalyser
             if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
             {
                 var value = fpstudys.data.AsEnumerable().Where(x => (string)x["StudyId"] == studyId).FirstOrDefault();
-                return (string)value["RC"];
+                if (value != null)
+                    return (string)value["RC"];
             }
             string retstr = "";
             if (Agency.AgencyVal == Agency.AgencyList.BRANY)
@@ -764,7 +766,8 @@ namespace IrbAnalyser
             if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
             {
                 var value = fpstudys.data.AsEnumerable().Where(x => (string)x["StudyId"] == studyId).FirstOrDefault();
-                return (string)value["SC"];
+                if (value != null)
+                    return (string)value["SC"];
             }
             string retstr = "";
             if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
