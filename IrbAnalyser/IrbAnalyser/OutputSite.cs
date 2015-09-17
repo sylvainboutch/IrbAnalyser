@@ -85,6 +85,10 @@ namespace IrbAnalyser
                 }
                 site = OutputSite.EMmainsite;
             }
+            else if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
+            {
+                site = OutputSite.EMmainsite;
+            }
             else if (Agency.AgencyVal == Agency.AgencyList.BRANY)
             {
                 site = BranySiteMap.getSite(((string)studyrow["Sitename"]).Replace("(IBC)", ""));

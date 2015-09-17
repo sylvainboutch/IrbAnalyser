@@ -273,7 +273,7 @@ namespace IrbAnalyser
         {
             input = input.Trim('"');
             input = input == "NULL" ? "" : input;
-            input = input.Length >= 3999 ? input.Substring(0, 3998) : input;
+            input = input.Length >= 1999 ? input.Substring(0, 1998) : input;
             return input;
         }
 

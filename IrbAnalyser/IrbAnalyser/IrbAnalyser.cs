@@ -183,6 +183,10 @@ namespace IrbAnalyser
             {
                 OutputStudy.analyse(dir);
 
+                OutputTeam.analyse(dir + "Team.txt");
+
+                OutputStatus.analyse(dir);
+
                 OutputStatus.removeDuplicateStatus();
                 OutputIRBForm.finalizeEventIrbForm();
                 OutputTeam.removeDuplicateNewMembers();

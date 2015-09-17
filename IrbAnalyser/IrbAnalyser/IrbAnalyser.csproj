@@ -127,6 +127,11 @@
       <DependentUpon>IrbAnalyser.cs</DependentUpon>
     </Compile>
     <Compile Include="IrisMap.cs" />
+    <Compile Include="Model\IRIS.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IRIS.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Model\Model1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -166,6 +171,10 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="IrbAnalyser_TemporaryKey.pfx" />
+    <EntityDeploy Include="Model\IRIS.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>IRIS.Designer.cs</LastGenOutput>
+    </EntityDeploy>
     <None Include="Properties\DataSources\IrbAnalyser.Model.VelosDb.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

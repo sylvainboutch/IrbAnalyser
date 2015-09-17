@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="MED_PROD_903Model.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="MED_PROD_903ModelStoreContainer">
+          <EntitySet Name="A_GEN_STUDY_INITIAL_REVIEW" EntityType="MED_PROD_903Model.Store.A_GEN_STUDY_INITIAL_REVIEW" store:Type="Tables" Schema="MED" />
+        </EntityContainer>
+        <EntityType Name="A_GEN_STUDY_INITIAL_REVIEW">
+          <Key>
+            <PropertyRef Name="X_PK_INDEX" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="X_PK_INDEX" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="X_ACTION" Type="varchar" Nullable="false" MaxLength="1" />
+          <Property Name="X_ID_MODIFIED" Type="int" Nullable="false" />
+          <Property Name="X_DATE_MODIFIED" Type="datetime" Nullable="false" />
+          <Property Name="DATE_TODAY" Type="datetime" />
+          <Property Name="SYS_STUDY_TITLE" Type="ntext" />
+          <Property Name="INIT_STUDY_NUMBER" Type="varchar" MaxLength="64" />
+          <Property Name="SYS_PRINCIPAL_INVESTIGATOR" Type="varchar" MaxLength="128" />
+          <Property Name="LAY_SUMMARY" Type="ntext" />
+          <Property Name="ONGOING_SUBMISSION_SCREEN" Type="varchar" MaxLength="23" />
+          <Property Name="SIGNATURE_UNDERSTAND" Type="varchar" MaxLength="1" />
+          <Property Name="SUBMISSION_REFERENCE_NUMBER" Type="varchar" MaxLength="40" />
+        </EntityType>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MED_PROD_903Model" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="MED_PROD_903Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="A_GEN_STUDY_INITIAL_REVIEW" EntityType="MED_PROD_903Model.A_GEN_STUDY_INITIAL_REVIEW" />
+        </EntityContainer>
+        <EntityType Name="A_GEN_STUDY_INITIAL_REVIEW">
+          <Key>
+            <PropertyRef Name="X_PK_INDEX" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="X_PK_INDEX" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="X_ACTION" Type="String" Nullable="false" MaxLength="1" Unicode="false" FixedLength="false" />
+          <Property Name="X_ID_MODIFIED" Type="Int32" Nullable="false" />
+          <Property Name="X_DATE_MODIFIED" Type="DateTime" Nullable="false" />
+          <Property Name="DATE_TODAY" Type="DateTime" />
+          <Property Name="SYS_STUDY_TITLE" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="INIT_STUDY_NUMBER" Type="String" MaxLength="64" Unicode="false" FixedLength="false" />
+          <Property Name="SYS_PRINCIPAL_INVESTIGATOR" Type="String" MaxLength="128" Unicode="false" FixedLength="false" />
+          <Property Name="LAY_SUMMARY" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="ONGOING_SUBMISSION_SCREEN" Type="String" MaxLength="23" Unicode="false" FixedLength="false" />
+          <Property Name="SIGNATURE_UNDERSTAND" Type="String" MaxLength="1" Unicode="false" FixedLength="false" />
+          <Property Name="SUBMISSION_REFERENCE_NUMBER" Type="String" MaxLength="40" Unicode="false" FixedLength="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MED_PROD_903ModelStoreContainer" CdmEntityContainer="MED_PROD_903Entities">
+          <EntitySetMapping Name="A_GEN_STUDY_INITIAL_REVIEW">
+            <EntityTypeMapping TypeName="MED_PROD_903Model.A_GEN_STUDY_INITIAL_REVIEW">
+              <MappingFragment StoreEntitySet="A_GEN_STUDY_INITIAL_REVIEW">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="X_PK_INDEX" ColumnName="X_PK_INDEX" />
+                <ScalarProperty Name="X_ACTION" ColumnName="X_ACTION" />
+                <ScalarProperty Name="X_ID_MODIFIED" ColumnName="X_ID_MODIFIED" />
+                <ScalarProperty Name="X_DATE_MODIFIED" ColumnName="X_DATE_MODIFIED" />
+                <ScalarProperty Name="DATE_TODAY" ColumnName="DATE_TODAY" />
+                <ScalarProperty Name="SYS_STUDY_TITLE" ColumnName="SYS_STUDY_TITLE" />
+                <ScalarProperty Name="INIT_STUDY_NUMBER" ColumnName="INIT_STUDY_NUMBER" />
+                <ScalarProperty Name="SYS_PRINCIPAL_INVESTIGATOR" ColumnName="SYS_PRINCIPAL_INVESTIGATOR" />
+                <ScalarProperty Name="LAY_SUMMARY" ColumnName="LAY_SUMMARY" />
+                <ScalarProperty Name="ONGOING_SUBMISSION_SCREEN" ColumnName="ONGOING_SUBMISSION_SCREEN" />
+                <ScalarProperty Name="SIGNATURE_UNDERSTAND" ColumnName="SIGNATURE_UNDERSTAND" />
+                <ScalarProperty Name="SUBMISSION_REFERENCE_NUMBER" ColumnName="SUBMISSION_REFERENCE_NUMBER" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="IRIS" ZoomLevel="97">
+        <EntityTypeShape EntityType="MED_PROD_903Model.A_GEN_STUDY_INITIAL_REVIEW" Width="1.5" PointX="0.75" PointY="0.75" Height="3.5186979166666665" IsExpanded="true" />
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

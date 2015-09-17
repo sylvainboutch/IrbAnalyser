@@ -39,7 +39,14 @@ namespace IrbAnalyser
                     {
                         IQueryable<Model.LCL_V_STUDYSUMM_PLUSMORE> query;
                         //BRANY look up agency in MSD
-                        if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+                        if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
+                        {
+                            query = (from st in db.LCL_V_STUDYSUMM_PLUSMORE
+                                     where st.MORE_IRBAGENCY != null
+                                     && st.IRBIDENTIFIERS != null
+                                     select st);
+                        }
+                        else if (Agency.AgencyVal == Agency.AgencyList.BRANY)
                         {
                             query = (from st in db.LCL_V_STUDYSUMM_PLUSMORE
                                      where st.MORE_IRBAGENCY == Agency.agencyStrLwr
@@ -199,6 +206,9 @@ namespace IrbAnalyser
                                 select st;
 
 
+                    var study2 = from st in studys
+                                where st.IRBIDENTIFIERS.Contains(irbstudyId)
+                                select st;
 
                     if (!study.Any())
                     {
@@ -210,6 +220,7 @@ namespace IrbAnalyser
                         OutputStatus.analyseRowStudy(dr, true);
                         if (!dtStudy)
                         {
+                            study2 = study2;
                             addRowStudy(dr, true);
                             //Add all related values for that study                            
                             OutputDocs.analyseRow(dr, true);
@@ -220,8 +231,8 @@ namespace IrbAnalyser
                         bool dtStudy = (from st in OutputStudy.updatedStudy.AsEnumerable()
                                         where st.Field<string>("IRB Study ID").Trim().ToLower() == irbstudyId.Trim().ToLower()
                                         select st).Any();
-                        if (Agency.AgencySetupVal != Agency.AgencyList.NONE)
-                            OutputSite.analyseRow(dr, false);
+
+                        OutputSite.analyseRow(dr, false);
 
                         OutputStatus.analyseRowStudy(dr, false);
                         if (!dtStudy)
@@ -453,7 +464,7 @@ namespace IrbAnalyser
             }
             else
             {
-                dr["IRB Agency name"] = Agency.agencyStrLwr.ToUpper();
+                dr["IRB Agency name"] = Agency.agencyStrLwr;
                 dr["IRB no"] = ((string)row["IRBNumber"]).Replace("(IBC)", "");
             }
             dr["IRB Study ID"] = (string)row["StudyId"];
@@ -579,9 +590,9 @@ namespace IrbAnalyser
 
             if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
             {
-                labels = new string[17] { 
+                labels = new string[16] { 
                     "Study Managed by*", 
-                    "CRO, if any*", 
+                    //"CRO, if any*", 
                     "IRB agency name", 
                     "IRB No.", 
                     "Is this a cancer related study ?", 
@@ -599,9 +610,9 @@ namespace IrbAnalyser
                     "&nbsp;&nbsp;&nbsp;Trials Involving Interventions"              
                 };
 
-                values = new string[17] { 
+                values = new string[16] { 
                     (string)dr["STUDY_MANAGED_BY"],
-                    (string)dr["CRO"], 
+                    //(string)dr["CRO"], 
                     (string)dr["IRB Agency name"], 
                     (string)dr["IRB no"], 
                     (string)dr["Cancer"],
@@ -621,9 +632,13 @@ namespace IrbAnalyser
             }
             else if (Agency.AgencyVal == Agency.AgencyList.BRANY)
             {
-                labels = new string[5] { "Study Managed by*", "CRO, if any*", "IRB agency name", "IRB No.", "Is this a cancer related study ?" };
+                labels = new string[4] { "Study Managed by*", 
+                    //"CRO, if any*", 
+                    "IRB agency name", "IRB No.", "Is this a cancer related study ?" };
 
-                values = new string[5] { "BRY", (string)dr["CRO"], Agency.agencyStrLwr, (string)dr["IRB no"], (string)dr["Cancer"] };
+                values = new string[4] { "BRY", 
+                    //(string)dr["CRO"], 
+                    Agency.agencyStrLwr, (string)dr["IRB no"], (string)dr["Cancer"] };
             }
             else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
             {

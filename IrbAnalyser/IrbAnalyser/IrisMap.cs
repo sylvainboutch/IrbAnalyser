@@ -118,6 +118,7 @@ namespace IrbAnalyser.IRISMap
     {
         public static readonly Dictionary<string, string> statusMap = new Dictionary<string, string>()
             {
+                {"Migration Incomplete","Draft"},
                 {"Approved for Protocol Development",""},
                 {"Approved Pending","IRB INITIAL Submitted"},//"IRB Disapproved - Returned to study team"},
                 {"Awaiting CRC Approval",""},
@@ -127,12 +128,12 @@ namespace IrbAnalyser.IRISMap
                 {"COI review. Questions? coi@einstein.yu.edu","IRB INITIAL Submitted"},
                 {"CORRUPTED",""},
                 {"Deferred","IRB Deferred"},
-                {"Disapproved","IRB Disapproved - Returned to study team"},
+                {"Disapproved","IRB Initial Disapproved"},
                 {"Draft","Draft"},
                 {"Education Validation Failed","IRB Disapproved - Returned to study team"},
                 {"Emergency Use",""},
                 {"Exempt","IRB Exempt"},
-                {"Expired Approval","IRB Disapproved"},
+                {"Expired Approval","IRB Initial Disapproved"},
                 {"Inactive - Administratively Closed","Administratively Complete"},
                 {"Migrated",""},
                 {"Migrated with amendment (no MCF)",""},
@@ -140,7 +141,7 @@ namespace IrbAnalyser.IRISMap
                 {"Open (45CFR46.118)",""},
                 {"Open, No Enrollment",""},
                 {"Open/No Active Subjects",""},
-                {"Pending","IRB INITIAL Submitted"},
+                {"Pending","IRB Initial Submitted**"},
                 {"Pending - Submitted for Initial Review","IRB INITIAL Submitted"},
                 {"Pending Acceptance to Participate",""},
                 {"Preparing for Full Board Review","IRB INITIAL Submitted"},
@@ -177,6 +178,7 @@ namespace IrbAnalyser.IRISMap
 
         public static readonly Dictionary<string, string> typeMap = new Dictionary<string, string>()
             {
+                {"Migration Incomplete","Pre Activation"},
                 {"Approved for Protocol Development","Pre Activation"},
                 {"Approved Pending","Pre Activation"},
                 {"Awaiting CRC Approval","Pre Activation"},

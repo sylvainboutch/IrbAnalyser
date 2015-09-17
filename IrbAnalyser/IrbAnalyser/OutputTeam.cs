@@ -43,9 +43,19 @@ namespace IrbAnalyser
                 {
                     using (Model.VelosDb db = new Model.VelosDb())
                     {
+
+
                         IQueryable<Model.VDA_V_STUDYTEAM_MEMBERS> query;
+                        if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
+                        {
+                            query = (from st in db.VDA_V_STUDYTEAM_MEMBERS
+                                     where st.MORE_IRBAGENCY != null
+                                     && st.IRBIDENTIFIERS != null
+                                     && st.USER_EMAIL != null
+                                     select st);
+                        }
                         //BRANY look up agency in MSD
-                        if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+                        else if (Agency.AgencyVal == Agency.AgencyList.BRANY)
                         {
                             query = (from st in db.VDA_V_STUDYTEAM_MEMBERS
                                      where st.MORE_IRBAGENCY == Agency.agencyStrLwr
@@ -393,6 +403,16 @@ namespace IrbAnalyser
         private static void analyseRow(DataRow userRow)
         {
             string irbstudyId = userRow["StudyId"].ToString();
+
+            if (!String.IsNullOrEmpty((string)userRow["IRBAgency"]))
+            {
+                if (((string)userRow["IRBAgency"]).ToLower() == "brany")
+                    Agency.AgencyVal = Agency.AgencyList.BRANY;
+                else if (((string)userRow["IRBAgency"]).ToLower() == "einstein" || ((string)userRow["IRBAgency"]).ToLower() == "IRIS" )
+                    Agency.AgencyVal = Agency.AgencyList.EINSTEIN;
+                else Agency.AgencyVal = Agency.AgencySetupVal;
+            }
+
             if (OutputStudy.shouldStudyBeAdded(irbstudyId))
             {
                 string email = ((string)userRow["PrimaryEMailAddress"]).ToLower().Trim();
@@ -451,7 +471,6 @@ namespace IrbAnalyser
                                      & us.USER_NAME.ToLower().Contains(((string)userRow["LastName"]).ToLower().Trim())
                                      ))
                                      select us).All(x => x.USER_HIDDEN == 1);
-                    string wtf;
 
                     //For testing only   Michler is a deleted user
                     /*if (currentuser.USER_NAME.Contains("Michler"))
@@ -530,6 +549,14 @@ namespace IrbAnalyser
                                         {
                                             newRole = IRISMap.RoleMap.getRole((string)userRow["Role"], primary);
                                         }
+                                        
+                                        //For debugging only
+                                        /*if (String.IsNullOrWhiteSpace(newRole))
+                                        {
+                                            int bla = 1;
+                                            bla = bla + 1;
+                                        }*/
+
                                         if (newRole != user.First().ROLE)
                                         {
                                             if (newRole == PI && user.First().ROLE != RC)
@@ -622,7 +649,7 @@ namespace IrbAnalyser
                                 addRowVelosUser(user, "Deleted member", updatedTeam);
                                 addRowVelosUser(user, "Deleted member", triggerTeam);
                             }
-                            else if (user.ROLE.Trim().ToLower() == RC.Trim().ToLower() && countEmail == 0 && countStudy != 0)
+                            else if (user.ROLE != null && user.ROLE.Trim().ToLower() == RC.Trim().ToLower() && countEmail == 0 && countStudy != 0)
                             {
                                 var delete1 = (from DataRow dr in newTeam.AsEnumerable()
                                                where (string)dr["Study_number"] == user.STUDY_NUMBER

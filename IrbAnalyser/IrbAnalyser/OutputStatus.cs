@@ -26,7 +26,14 @@ namespace IrbAnalyser
 
                         IQueryable<Model.VDA_V_STUDYSTAT> query;
                         //BRANY look up agency in MSD
-                        if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+                        if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
+                        {
+                            query = (from st in db.VDA_V_STUDYSTAT
+                                     where st.MORE_IRBAGENCY != null
+                                     && st.IRBIDENTIFIERS != null
+                                     select st);
+                        }
+                        else if (Agency.AgencyVal == Agency.AgencyList.BRANY)
                         {
                             query = (from st in db.VDA_V_STUDYSTAT
                                      where st.MORE_IRBAGENCY.ToLower().Trim() == Agency.agencyStrLwr
@@ -163,11 +170,23 @@ namespace IrbAnalyser
         /// <param name="userRow"></param>
         private static void analyseRowStatus(DataRow statusRow)
         {
+
             string irbstudyId = (string)statusRow["StudyId"];
+            int abc = 0;
+            bool isIRIS = Int32.TryParse(irbstudyId, out abc);
+            if (irbstudyId.Contains("-"))
+                    Agency.AgencyVal = Agency.AgencyList.BRANY;
+            else if (isIRIS && abc != 0)
+                    Agency.AgencyVal = Agency.AgencyList.EINSTEIN;
+            else Agency.AgencyVal = Agency.AgencySetupVal;
+
+
             if (OutputStudy.shouldStudyBeAdded(irbstudyId))
             {
                 string sitename = "";
-                if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+                if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
+                    sitename = OutputSite.EMmainsite;
+                else if (Agency.AgencyVal == Agency.AgencyList.BRANY)
                 {
                     sitename = BranySiteMap.getSite(((string)statusRow["Sitename"]).Replace("(IBC)", ""));
                 }
@@ -233,6 +252,15 @@ namespace IrbAnalyser
         private static void analyseRowEvent(DataRow eventRow)
         {
             string irbstudyId = eventRow["StudyId"].ToString();
+            int abc = 0;
+            bool isIRIS = Int32.TryParse(irbstudyId, out abc);
+            if (irbstudyId.Contains("-"))
+                Agency.AgencyVal = Agency.AgencyList.BRANY;
+            else if (isIRIS && abc != 0)
+                Agency.AgencyVal = Agency.AgencyList.EINSTEIN;
+            else Agency.AgencyVal = Agency.AgencySetupVal;
+
+
             if (OutputStudy.shouldStudyBeAdded(irbstudyId))
             {
                 string status = "";
@@ -244,7 +272,10 @@ namespace IrbAnalyser
                 {
                     status = BranyEventsMap.getStatus((string)eventRow["Event"]);
                     type = BranyEventsMap.getType((string)eventRow["Event"]);
-                    sitename = BranySiteMap.getSite(((string)eventRow["Sitename"]).Replace("(IBC)", ""));
+                    if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
+                        sitename = OutputSite.EMmainsite;
+                    else
+                        sitename = BranySiteMap.getSite(((string)eventRow["Sitename"]).Replace("(IBC)", ""));
                     notes = (string)eventRow["Event"];
                     if (BranyEventsMap.teamChangedEvents.Contains((string)eventRow["Event"]))
                     {
@@ -254,21 +285,24 @@ namespace IrbAnalyser
 
                 else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
                 {
+                    if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
+                        sitename = OutputSite.EMmainsite;
+                    else
+                        sitename = IRISMap.SiteMap.getSite(((string)eventRow["Sitename"]).Replace("(IBC)", ""));
                     status = IRISMap.EventsMap.getStatus((string)eventRow["Event"]);
-                    type = IRISMap.EventsMap.getType((string)eventRow["Event"]);
-                    sitename = IRISMap.SiteMap.getSite(((string)eventRow["Sitename"]).Replace("(IBC)", ""));
+                    type = IRISMap.EventsMap.getType((string)eventRow["Event"]);                    
                     notes = Tools.removeHtml((string)eventRow["Amendment"]);
                 }
 
                 if (string.IsNullOrEmpty(status))
                 {
-                    addRowEvent(eventRow, "", "New status", true);
+                    addRowEvent(eventRow, "", "New status", true, (string)eventRow["EventCreationDate"]);
                 }
                 else
                 {
 
                     string status1 = "IRB Amendment Submitted**";
-                    string status2 = "IRB Amendment Approved";
+                    string status2 = "IRB Amendment Approved**";
 
                     DateTime start = DateTime.Now;
                     DateTime.TryParse((string)eventRow["EventCreationDate"], out start);
@@ -318,7 +352,7 @@ namespace IrbAnalyser
 
                             if (!statusesDB1.Any())
                             {
-                                addRowEvent(eventRow, status1, "New status", true);
+                                addRowEvent(eventRow, status1, "New status", true, start.ToString());
                             }
 
                             if (end != DateTime.MinValue)
@@ -360,13 +394,13 @@ namespace IrbAnalyser
 
                                 if (!statusesDB2.Any())
                                 {
-                                    addRowEvent(eventRow, "IRB Amendment Approved", "New status", true);
+                                    addRowEvent(eventRow, "IRB Amendment Approved**", "New status", true, end.ToString());
                                 }
                             }
                         }
                         else
                         {
-                            addRowEvent(eventRow, "", "New status", true);
+                            addRowEvent(eventRow, "", "New status", true, (string)eventRow["EventCreationDate"]);
                         }
 
                     }
@@ -374,15 +408,15 @@ namespace IrbAnalyser
                     {
                         if (status == status1)
                         {
-                            addRowEvent(eventRow, "IRB Amendment Submitted**", "New study", true);
+                            addRowEvent(eventRow, "IRB Amendment Submitted**", "New study", true, (string)eventRow["EventCreationDate"]);
                             if (end != DateTime.MinValue)
                             {
-                                addRowEvent(eventRow, "IRB Amendment Approved", "New study", true);
+                                addRowEvent(eventRow, "IRB Amendment Approved**", "New study", true, end.ToString());
                             }
                         }
                         else
                         {
-                            addRowEvent(eventRow, status, "New study", true);
+                            addRowEvent(eventRow, status, "New study", true, (string)eventRow["EventCreationDate"]);
                         }
 
                     }
@@ -408,7 +442,7 @@ namespace IrbAnalyser
                 {
                     sitename = BranySiteMap.getSite(((string)studyrow["Sitename"]).Replace("(IBC)", ""));
                 }
-                if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
+                else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
                 {
                     sitename = IRISMap.SiteMap.getSite((string)studyrow["Sitename"]);
                 }
@@ -443,9 +477,9 @@ namespace IrbAnalyser
                                  && st.Field<string>("Status Valid From").Trim().ToLower() == Tools.parseDate((string)studyrow["MostRecentApprovalDate"]).Trim().ToLower()
                                  select st).Any();
 
-                    if (dtStatus && renew != DateTime.MinValue)
+                    if (dtStatus && renew != DateTime.MinValue && renew.Date != initial.Date)
                     {
-                        addRowStudy(studyrow, "IRB Renewal Approved", "New study", true, Tools.parseDate((string)studyrow["MostRecentApprovalDate"]).Trim().ToLower());
+                        addRowStudy(studyrow, "IRB Renewal Approved**", "New study", true, Tools.parseDate((string)studyrow["MostRecentApprovalDate"]).Trim().ToLower());
                     }
 
                     if (SpecialStudys.closedStudys.Any(x => x.IRB == Agency.agencyStrLwr && Tools.compareStr(x.number, (string)studyrow["IRBNumber"])))
@@ -536,7 +570,7 @@ namespace IrbAnalyser
 
                     if (renew != DateTime.MinValue && isNotStatusDt && isNotStatusDb)
                     {
-                        addRowStudy(studyrow, "IRB Renewal Approved", "New status", true, Tools.parseDate((string)studyrow["MostRecentApprovalDate"]).Trim().ToLower());
+                        addRowStudy(studyrow, "IRB Renewal Approved**", "New status", true, Tools.parseDate((string)studyrow["MostRecentApprovalDate"]).Trim().ToLower());
                     }
 
 
@@ -605,8 +639,23 @@ namespace IrbAnalyser
                 dr["Study_number"] = Tools.getStudyNumber((string)statusRow["StudyId"], ((string)statusRow["IRBNumber"]).Replace("(IBC)", ""));
 
                 dr["IRB Study ID"] = (string)statusRow["StudyId"];
+                if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
+                {
+                    if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+                    {
+                        dr["Organization"] = OutputSite.EMmainsite;
+                        dr["Study status"] = BranyStatusMap.getStatus((string)statusRow["Status"]);
+                        dr["status type"] = BranyStatusMap.getType((string)statusRow["Status"]);
+                    }
 
-                if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+                    else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
+                    {
+                        dr["Organization"] = OutputSite.EMmainsite;
+                        dr["Study status"] = IRISMap.StatusMap.getStatus((string)statusRow["Status"]);
+                        dr["status type"] = IRISMap.StatusMap.getType((string)statusRow["Status"]);
+                    }
+                }
+                else if (Agency.AgencyVal == Agency.AgencyList.BRANY)
                 {
                     dr["Organization"] = BranySiteMap.getSite(((string)statusRow["Sitename"]).Replace("(IBC)", ""));
                     dr["Study status"] = BranyStatusMap.getStatus((string)statusRow["Status"]);
@@ -667,7 +716,7 @@ namespace IrbAnalyser
         /// Add new status from event report
         /// </summary>
         /// <param name="statusRow"></param>
-        private static void addRowEvent(DataRow eventRow, string status, string type, bool newrecord)
+        private static void addRowEvent(DataRow eventRow, string status, string type, bool newrecord, string date)
         {
             DataRow dr;
             if (newrecord)
@@ -681,7 +730,11 @@ namespace IrbAnalyser
 
             dr["IRB Study ID"] = (string)eventRow["StudyId"];
 
-            if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+            if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
+            {
+                dr["Organization"] = OutputSite.EMmainsite;
+            }
+            else if (Agency.AgencyVal == Agency.AgencyList.BRANY)
             {
                 dr["Organization"] = BranySiteMap.getSite(((string)eventRow["Sitename"]).Replace("(IBC)", ""));
             }
@@ -694,7 +747,7 @@ namespace IrbAnalyser
             dr["Study status"] = status;
             dr["status type"] = "Pre Activation";
             dr["Documented by"] = "IRB interface";
-            dr["Status Valid From"] = Tools.parseDate((string)eventRow["EventCreationDate"]);
+            dr["Status Valid From"] = Tools.parseDate(date);
 
 
             if (Agency.AgencyVal == Agency.AgencyList.BRANY)
@@ -713,14 +766,15 @@ namespace IrbAnalyser
                 && string.IsNullOrEmpty((string)eventRow["TaskCompletionDate"])
                 ? "Disapproved" : dr["Outcome"];*/
 
-            DateTime end = DateTime.MinValue;
+            /*We don't want to have this anymore
+             * DateTime end = DateTime.MinValue;
             DateTime.TryParse((string)eventRow["TaskCompletionDate"], out end);
             if (end == DateTime.MinValue)
                 DateTime.TryParse((string)eventRow["EventCompletionDate"], out end);
             if (end != DateTime.MinValue)
             {
                 dr["Status Valid Until"] = Tools.parseDate((string)end.Date.ToString("o"));
-            }
+            }*/
 
             if (fpevent.initColumnCount < eventRow.Table.Columns.Count)
             {
@@ -784,11 +838,15 @@ namespace IrbAnalyser
 
             dr["IRB Study ID"] = (string)studyRow["StudyId"];
 
-            if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+            if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
+            {
+                dr["Organization"] = OutputSite.EMmainsite;
+            }
+            else if (Agency.AgencyVal == Agency.AgencyList.BRANY)
             {
                 dr["Organization"] = BranySiteMap.getSite(((string)studyRow["Sitename"]).Replace("(IBC)", ""));
             }
-            if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
+            else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
             {
                 dr["Organization"] = IRISMap.SiteMap.getSite((string)studyRow["Sitename"]);
             }
@@ -799,7 +857,8 @@ namespace IrbAnalyser
             dr["Status Valid From"] = startdate;
             /*dr["Status Valid From"] = Tools.parseDate((string)studyRow["MostRecentApprovalDate"]);
             dr["Status Valid From"] = (string)dr["Status Valid From"] == "" ? Tools.parseDate((string)studyRow["InitialApprovalDate"]) : "";*/
-            dr["Status Valid Until"] = Tools.parseDate((string)studyRow["Expirationdate"]);
+            if (Agency.AgencySetupVal != Agency.AgencyList.NONE && !(status.Contains("Approved") && status.Contains("IRB")))
+                dr["Status Valid Until"] = Tools.parseDate((string)studyRow["Expirationdate"]);
 
             if (newrecord)
             {
