@@ -1919,30 +1919,6 @@ namespace IrbAnalyser.Model
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_CRO
-        {
-            get
-            {
-                return _MORE_CRO;
-            }
-            set
-            {
-                OnMORE_CROChanging(value);
-                ReportPropertyChanging("MORE_CRO");
-                _MORE_CRO = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_CRO");
-                OnMORE_CROChanged();
-            }
-        }
-        private global::System.String _MORE_CRO;
-        partial void OnMORE_CROChanging(global::System.String value);
-        partial void OnMORE_CROChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
         public global::System.String MORE_IRBNUM
         {
             get

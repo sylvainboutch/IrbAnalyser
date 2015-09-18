@@ -272,6 +272,8 @@ namespace IrbAnalyser
         public static string parse(string input)
         {
             input = input.Trim('"');
+            input = input.Replace('}', ')');
+            input = input.Replace('{', '(');
             input = input == "NULL" ? "" : input;
             input = input.Length >= 1999 ? input.Substring(0, 1998) : input;
             return input;

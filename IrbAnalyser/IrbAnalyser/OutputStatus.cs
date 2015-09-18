@@ -457,13 +457,53 @@ namespace IrbAnalyser
                 {
                     if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
                     {
-                        addRowStudy(studyrow, (string)studyrow["Status"], "New study", true, Tools.parseDate(DateTime.Now.ToString()));
+
+                        var status = (from st in fpstatus.data.AsEnumerable()
+                                      where irbstudyId.Trim().ToLower() == st.Field<string>("StudyId").Trim().ToLower()
+                                     && !st.Field<string>("IRBNumber").Trim().ToLower().Contains("ibc")
+                                     select st);
+
+                        //status.Columns.Add("parsedDate", typeof(DateTime));
+                        if (status.Any())
+                        {
+                            string latestStatus = (string)status.First().Field<string>("Status");
+                            DateTime date1 = DateTime.MinValue;
+                            DateTime date2 = DateTime.MinValue;
+                            foreach (var row in status)
+                            {
+                                DateTime.TryParse((string)row.Field<string>("ValidOn"), out date2);
+                                if (date2 > date1)
+                                {
+                                    latestStatus = (string)row.Field<string>("Status");
+                                    date1 = date2;
+                                }
+                            }
+
+                            if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+                            {
+                                latestStatus = BranyStatusMap.getStatus(latestStatus);
+                            }
+                            else
+                            {
+                                latestStatus = IRISMap.StatusMap.getStatus(latestStatus);
+                            }
+
+                            if (latestStatus != (string)studyrow["Status"])
+                            {
+                                addRowStudy(studyrow, (string)studyrow["Status"], "New study", true, Tools.parseDate(DateTime.Now.ToString()));
+                            }
+                        }
+                        else
+                        {
+                            addRowStudy(studyrow, (string)studyrow["Status"], "New study", true, Tools.parseDate(DateTime.Now.ToString()));
+                        }
+
                     }
 
                     bool dtStatus = !(from st in OutputStatus.newStatus.AsEnumerable()
                                       where st.Field<string>("IRB Study ID").Trim().ToLower() == irbstudyId.Trim().ToLower()
                                       && st.Field<string>("Study status").Trim().ToLower() == "irb initial approved"
-                                      && st.Field<string>("Status Valid From").Trim().ToLower() == Tools.parseDate(((string)studyrow["InitialApprovalDate"])).Trim().ToLower()
+                                      //&& st.Field<string>("Status Valid From").Trim().ToLower() == Tools.parseDate(((string)studyrow["InitialApprovalDate"])).Trim().ToLower()
                                       select st).Any();
 
                     if (dtStatus && initial != DateTime.MinValue)

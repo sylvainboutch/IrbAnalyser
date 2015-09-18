@@ -60,7 +60,7 @@ namespace IrbAnalyser
                 string savefilename = dr == DialogResult.OK ? sfdCsv.FileName : "";
 
                 string savefilenoext = savefilename.Remove(savefilename.Length - 5, 5);
-                string separator = "~";
+                string separator = "}";
 
                 NewValueOuput.saveFile(savefilenoext);
 

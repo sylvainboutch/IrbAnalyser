@@ -187,7 +187,12 @@ namespace IrbAnalyser
                     Agency.AgencyVal = Agency.AgencyList.BRANY;
                 else if (((string)dr["IRBAgency"]).ToLower() == "einstein")
                     Agency.AgencyVal = Agency.AgencyList.EINSTEIN;
-                else Agency.AgencyVal = Agency.AgencySetupVal;
+                else
+                {
+                    Agency.AgencyVal = Agency.AgencySetupVal;
+                    dr["ExternalIRB"] = dr["IRBAgency"];
+                    dr["ExternalIRBnumber"] = dr["IRBNumber"];
+                }
             }
 
             if (shouldStudyBeAdded(irbstudyId))
@@ -205,11 +210,6 @@ namespace IrbAnalyser
                                 where st.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (irbstudyId.Trim().ToLower())
                                 select st;
 
-
-                    var study2 = from st in studys
-                                 where st.IRBIDENTIFIERS.Contains(irbstudyId)
-                                 select st;
-
                     if (!study.Any())
                     {
                         bool dtStudy = (from st in OutputStudy.newStudy.AsEnumerable()
@@ -220,7 +220,6 @@ namespace IrbAnalyser
                         OutputStatus.analyseRowStudy(dr, true);
                         if (!dtStudy)
                         {
-                            study2 = study2;
                             addRowStudy(dr, true);
                             //Add all related values for that study                            
                             OutputDocs.analyseRow(dr, true);
@@ -271,12 +270,7 @@ namespace IrbAnalyser
                                 }
                                 else { newsc = ""; }
 
-                                if (stu.MORE_CRO != newcro && !String.IsNullOrEmpty(newcro))
-                                {
-                                    hasChanged = true;
-                                }
-                                else { newcro = ""; }
-
+                                
                                 if (Tools.compareStr(stu.STUDY_TITLE, dr["StudyTitle"]) && !String.IsNullOrWhiteSpace((string)dr["StudyTitle"]))
                                 {
                                     dr["Studytitle"] = "";
@@ -457,9 +451,9 @@ namespace IrbAnalyser
                     dr["IRB Agency name"] = "neuronext";
                 else if (((string)row["ExternalIRB"]).ToLower().Contains("strokenet"))
                     dr["IRB Agency name"] = "strokenet";
-                else if (((string)row["ExternalIRB"]).ToLower().Contains("nci"))
+                else if (((string)row["ExternalIRB"]).ToLower().Contains("nci") || ((string)row["ExternalIRB"]).ToLower().Contains("cirb"))
                     dr["IRB Agency name"] = "nci";
-                else if (((string)row["ExternalIRB"]).ToLower().Contains("external"))
+                else// if (((string)row["ExternalIRB"]).ToLower().Contains("external"))
                     dr["IRB Agency name"] = "other";
             }
             else
@@ -616,7 +610,7 @@ namespace IrbAnalyser
                     (string)dr["IRB Agency name"], 
                     (string)dr["IRB no"], 
                     (string)dr["Cancer"],
-                    (string)dr["PROGRAM_CODE"],
+                    (string)dr["Program_Code_Mapped"],
                     (string)dr["PRIMARY_PURPOSE"],
                     (string)dr["AGENT"],
                     (string)dr["ANCILLARY"],
@@ -891,12 +885,16 @@ namespace IrbAnalyser
                 a = a + 1;
             }*/
 
+            if (String.IsNullOrWhiteSpace(studyId) && Agency.AgencySetupVal == Agency.AgencyList.NONE)
+            {
+                return true;
+            }
 
             var study = (from st in fpstudys.data.AsEnumerable()
-                         where studyId.Trim().ToLower().Contains(st.Field<string>("StudyId").Trim().ToLower())
+                         where studyId.Trim().ToLower() == st.Field<string>("StudyId").Trim().ToLower()
                          && !st.Field<string>("IRBNumber").Trim().ToLower().Contains("ibc")
                          select st).FirstOrDefault();
-
+    
 
             if (study != null && !String.IsNullOrWhiteSpace((string)study["IRBNumber"]))
             {
@@ -916,7 +914,7 @@ namespace IrbAnalyser
         /// <returns></returns>
         public static bool shouldStudyBeAdded(DataRow dr)
         {
-            /*if (((string)dr["IRBNumber"]).Contains("-188-01"))
+            /*if (((string)dr["IRBNumber"]).Contains("12-06-130-01"))
             {
                 int a = 1;
                 a = a + 1;
