@@ -258,6 +258,11 @@ namespace IrbAnalyser
                     //group = BranyRoleMap.getGroup((string)row["Role"]);
                     site = IRISMap.SiteMap.getSite((string)row["SiteName"]);
                 }
+                else
+                {
+                    role = OutputTeam.defaultDisabledRole;
+                    site = OutputSite.EMmainsite;
+                }
 
                 if (role != "NA")
                 {
@@ -544,10 +549,13 @@ namespace IrbAnalyser
                                         {
                                             newRole = BranyRoleMap.getRole((string)userRow["Role"], primary);
                                         }
-
-                                        if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
+                                        else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
                                         {
                                             newRole = IRISMap.RoleMap.getRole((string)userRow["Role"], primary);
+                                        }
+                                        else
+                                        {
+                                            newRole = OutputTeam.defaultDisabledRole;
                                         }
                                         
                                         //For debugging only

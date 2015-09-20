@@ -117,8 +117,10 @@ namespace IrbAnalyser
         public static readonly Dictionary<string, string> statusMapBrany = new Dictionary<string, string>()
             {
                 {"",""},
+                {"Pending Review - IRB only","IRB Initial Submitted**"},
+                {"Submission pending - IRB only","Draft"},
                 {"Closed - IRB only","Complete"},
-                {"Closed to enrollment -IRB only","Closed to accrual"},
+                {"Closed to enrollment -IRB only","Closed to Accrual"},
                 {"Approved -IBC Only","Temporarily Closed to Accrual and Intervention"},
                 {"Suspended by entity other than IRB - IRB only",""},
                 { "Approved", "IRB Initial Approved" },
@@ -126,8 +128,8 @@ namespace IrbAnalyser
                 { "Approved -IRB only", "IRB Initial Approved" },
                 { "Closed", "Complete " },
                 { "Closed IRB only", "Complete " },
-                { "Closed to Enrollment", "Closed to accrual" },
-                { "Closed to enrollment IRB only", "Closed to accrual" },
+                { "Closed to Enrollment", "Closed to Accrual" },
+                { "Closed to enrollment IRB only", "Closed to Accrual" },
                 { "Deferred", "IRB Initial Deferred" },
                 { "Deferred IRB only", "IRB Initial Deferred" },
                 { "Disapproved", "IRB Initial Disapproved " },
@@ -159,7 +161,7 @@ namespace IrbAnalyser
                 { "Approved (IBC)", "" },
                 { "Approved IBC Only", "" },
                 { "Pending Review (IBC)", "" },
-                { "Closed to Enrollment (IBC)", "Closed to accrual" },
+                { "Closed to Enrollment (IBC)", "Closed to Accrual" },
                 { "Dropped by Investigator", "" },
                 { "Administrative - Translation", "" }
                 
@@ -183,6 +185,8 @@ namespace IrbAnalyser
         public static readonly Dictionary<string, string> typeMapBrany = new Dictionary<string, string>()
             {
                 { "",""},
+                {"Pending Review - IRB only","Pre Activation"},
+                {"Submission pending - IRB only","Pre Activation"},
                 { "Closed - IRB only","Study Status"},
                 { "Closed to enrollment -IRB only","Study Status"},
                 { "Approved -IBC Only","Pre Activation"},

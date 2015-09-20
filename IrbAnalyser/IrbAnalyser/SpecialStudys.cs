@@ -658,7 +658,7 @@ namespace IrbAnalyser
             new irbpair("einstein","2013-316"),
             new irbpair("einstein","2013-322")*/
             //BATCH 3
-            new irbpair("einstein","2015-4957"),
+            /*new irbpair("einstein","2015-4957"),
             new irbpair("einstein","08-03-060"),
             new irbpair("einstein","10-02-037"),
             new irbpair("einstein","2014-3779"),
@@ -799,7 +799,7 @@ namespace IrbAnalyser
             new irbpair("einstein","2015-4763"),
             new irbpair("einstein","2015-5290"),
             new irbpair("einstein","2014-3145"),
-
+            */
         };
 
         public static readonly List<string> cancerTerms = new List<string>()
