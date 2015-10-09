@@ -275,7 +275,7 @@ namespace IrbAnalyser
             input = input.Replace('}', ')');
             input = input.Replace('{', '(');
             input = input == "NULL" ? "" : input;
-            input = input.Length >= 1999 ? input.Substring(0, 1998) : input;
+            input = input.Length >= 1990 ? input.Substring(0, 1990) : input;
             return input;
         }
 

@@ -126,7 +126,8 @@ namespace IrbAnalyser
                 newStudy.Columns.Add("Entire study sample size", typeof(string));
                 newStudy.Columns.Add("Phase", typeof(string));
                 newStudy.Columns.Add("Study scope", typeof(string));
-                newStudy.Columns.Add("Primary funding sponsor, if other :", typeof(string));
+                newStudy.Columns.Add("Primary funding sponsor", typeof(string));
+                newStudy.Columns.Add("Sponsor information other", typeof(string));
                 newStudy.Columns.Add("Sponsor contact", typeof(string));
                 newStudy.Columns.Add("Sponsor Protocol ID", typeof(string));
                 newStudy.Columns.Add("CRO", typeof(string));
@@ -150,7 +151,8 @@ namespace IrbAnalyser
                 updatedStudy.Columns.Add("Entire study sample size", typeof(string));
                 updatedStudy.Columns.Add("Phase", typeof(string));
                 updatedStudy.Columns.Add("Study scope", typeof(string));
-                updatedStudy.Columns.Add("Primary funding sponsor, if other :", typeof(string));
+                updatedStudy.Columns.Add("Primary funding sponsor", typeof(string));
+                updatedStudy.Columns.Add("Sponsor information other", typeof(string));
                 updatedStudy.Columns.Add("Sponsor contact", typeof(string));
                 updatedStudy.Columns.Add("Sponsor Protocol ID", typeof(string));
                 updatedStudy.Columns.Add("CRO", typeof(string));
@@ -559,7 +561,25 @@ namespace IrbAnalyser
             else
                 dr["Study scope"] = "";
 
-            dr["Primary funding sponsor, if other :"] = row["Primarysponsorname"].ToString();
+            //dr["Primary funding sponsor, if other :"] = row["Primarysponsorname"].ToString();
+
+            if (Agency.AgencyVal == Agency.AgencyList.BRANY && Agency.AgencySetupVal == Agency.AgencyList.BRANY)
+            {
+                string sponsor = BranySponsorMap.getSponsor((string)row["Primarysponsorname"]);
+                if (String.IsNullOrWhiteSpace(sponsor))
+                {
+                    dr["Sponsor information other"] = "Per BRANY System: " + (string)row["Primarysponsorname"];
+                }
+                else
+                {
+                    dr["Primary funding sponsor"] = sponsor;
+                }
+            }
+            else if (!String.IsNullOrWhiteSpace((string)row["Primarysponsorname"]))
+            {
+                dr["Sponsor information other"] = "Per IRB System: " + (string)row["Primarysponsorname"];
+            }
+
             dr["Sponsor contact"] = row["PrimarySponsorContactFirstName"].ToString() + " " + row["PrimarySponsorContactLastName"].ToString();
             dr["Sponsor Protocol ID"] = row["PrimarySponsorStudyId"].ToString();
 
@@ -919,6 +939,24 @@ namespace IrbAnalyser
                 int a = 1;
                 a = a + 1;
             }*/
+
+            if (SpecialStudys.checkConsentAgentAndDevice && dr.Table.Columns.Contains("Consent") && dr.Table.Columns.Contains("PhaseDrugDevice"))
+            {
+                if ((string)dr["Consent"] == "N" || (string)dr["PhaseDrugDevice"] == "N")
+                {
+                    return false;
+                }
+            }
+
+            if (SpecialStudys.ignoredIrbNumbers.Count >= 1 && SpecialStudys.ignoredIrbNumbers.Contains((string)dr["IRBNumber"]))
+            {
+                return false;
+            }
+
+            bool ignoreLatestStatus = (SpecialStudys.ignoredStatus.Count >= 1 && SpecialStudys.ignoredStatus.Any(x => Tools.compareStr(x, OutputStatus.getLatestStatusFP((string)dr["StudyId"]))));
+
+            if (ignoreLatestStatus)
+                return false;
 
             if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
             {

@@ -652,7 +652,7 @@ namespace IrbAnalyser
                                               where (string)dr["StudyId"] == studyId
                                               select dr).Count();
 
-                            if (countEmail == 0 && countStudy != 0 && user.ROLE.Trim().ToLower() != RC.Trim().ToLower())
+                            if (countEmail == 0 && countStudy != 0 && user.ROLE != null && user.ROLE.Trim().ToLower() != RC.Trim().ToLower())
                             {
                                 addRowVelosUser(user, "Deleted member", updatedTeam);
                                 addRowVelosUser(user, "Deleted member", triggerTeam);

@@ -21,7 +21,7 @@ namespace IrbAnalyser
             studyShort = OutputStudy.fpstudys.data.Clone();
 
             foreach (DataColumn dc in OutputTeam.fpTeam.data.Columns)
-            { 
+            {
                 if (!studyDT.Columns.Contains(dc.ColumnName))
                 {
                     studyDT.Columns.Add(dc.ColumnName);
@@ -37,33 +37,80 @@ namespace IrbAnalyser
                 }
             }
 
-            studyShort.Columns.Add("PI");
-            studyDT.Columns.Add("PI");
+            studyShort.Columns.Add("StudyType");
+
+            //studyShort.Columns.Add("PI");
+            //studyDT.Columns.Add("PI");
 
             studyShort.Columns.Add("PIemail");
             studyDT.Columns.Add("PIemail");
 
 
-            studyShort.Columns.Add("SC");
-            studyDT.Columns.Add("SC");
+            //studyShort.Columns.Add("SC");
+            //studyDT.Columns.Add("SC");
 
             studyShort.Columns.Add("SCemail");
             studyDT.Columns.Add("SCemail");
 
 
-            studyShort.Columns.Add("RC");
-            studyDT.Columns.Add("RC");
+            //studyShort.Columns.Add("RC");
+            //studyDT.Columns.Add("RC");
 
             studyShort.Columns.Add("RCemail");
             studyDT.Columns.Add("RCemail");
 
             studyShort.Columns.Add("OtherPersonnel");
 
+            foreach (DataColumn dc in OutputStudy.newStudy.Columns)
+            {
+                if (!studyShort.Columns.Contains(dc.ColumnName))
+                {
+                    studyShort.Columns.Add(dc.ColumnName);
+                }
+            }
+
+            foreach (DataColumn dc in OutputStudy.updatedStudy.Columns)
+            {
+                if (!studyShort.Columns.Contains(dc.ColumnName))
+                {
+                    studyShort.Columns.Add(dc.ColumnName);
+                }
+            }
+
+
             foreach (DataRow drStudy in OutputStudy.fpstudys.data.Rows)
             {
                 if (drStudy["StudyId"].ToString() != "")
                 {
                     var drShort = studyShort.NewRow();
+
+                    var newStudy = OutputStudy.newStudy.AsEnumerable().Where(x => (string)x["IRB Study ID"] == (string)drStudy["StudyId"]).FirstOrDefault();
+                    var updatedStudy = OutputStudy.updatedStudy.AsEnumerable().Where(x => (string)x["IRB Study ID"] == (string)drStudy["StudyId"]).FirstOrDefault();
+                    bool ignored = !OutputStudy.shouldStudyBeAdded((string)drStudy["StudyId"]);
+
+                    if (newStudy != null && !String.IsNullOrWhiteSpace(newStudy.Field<string>("IRB Study ID")))
+                    {
+                        drShort["StudyType"] = "New";
+                        foreach (DataColumn dc in newStudy.Table.Columns)
+                        {
+                            drShort[dc.ColumnName] = newStudy.Field<string>(dc.ColumnName);
+                        }
+                    }
+
+                    else if (updatedStudy != null && !String.IsNullOrWhiteSpace(updatedStudy.Field<string>("IRB Study ID")))
+                    {
+                        drShort["StudyType"] = "Updated";
+                        foreach (DataColumn dc in updatedStudy.Table.Columns)
+                        {
+                            drShort[dc.ColumnName] = updatedStudy.Field<string>(dc.ColumnName);
+                        }
+                    }
+
+                    else if (ignored) drShort["StudyType"] = "Ignored";
+                    else drShort["StudyType"] = "Old";
+
+
+
                     drShort["OtherPersonnel"] = "= \"\"";
                     drShort["PI"] = OutputStudy.getPI((string)drStudy["StudyId"]);
                     drShort["PIemail"] = OutputStudy.getPIeMail((string)drStudy["StudyId"]);
@@ -148,7 +195,7 @@ namespace IrbAnalyser
 
             latestStatus = OutputStatus.fpstatus.data.Clone();
 
-            for (int i = 0; i < OutputStatus.fpstatus.data.Rows.Count-1; i++) 
+            for (int i = 0; i < OutputStatus.fpstatus.data.Rows.Count - 1; i++)
             {
                 if ((string)OutputStatus.fpstatus.data.Rows[i]["StudyId"] != (string)OutputStatus.fpstatus.data.Rows[i + 1]["StudyId"])
                 {
@@ -158,15 +205,15 @@ namespace IrbAnalyser
 
             if (OutputStatus.fpstatus.data.Rows.Count >= 2)
             {
-                if (OutputStatus.fpstatus.data.Rows[OutputStatus.fpstatus.data.Rows.Count-1]["StudyId"] != OutputStatus.fpstatus.data.Rows[OutputStatus.fpstatus.data.Rows.Count - 2]["StudyId"])
+                if (OutputStatus.fpstatus.data.Rows[OutputStatus.fpstatus.data.Rows.Count - 1]["StudyId"] != OutputStatus.fpstatus.data.Rows[OutputStatus.fpstatus.data.Rows.Count - 2]["StudyId"])
                 {
-                    latestStatus.Rows.Add(OutputStatus.fpstatus.data.Rows[OutputStatus.fpstatus.data.Rows.Count-1].ItemArray);
+                    latestStatus.Rows.Add(OutputStatus.fpstatus.data.Rows[OutputStatus.fpstatus.data.Rows.Count - 1].ItemArray);
                 }
             }
 
             if (OutputStatus.fpstatus.data.Rows.Count == 1)
             {
-               latestStatus.Rows.Add(OutputStatus.fpstatus.data.Rows[1].ItemArray);
+                latestStatus.Rows.Add(OutputStatus.fpstatus.data.Rows[1].ItemArray);
             }
         }
 

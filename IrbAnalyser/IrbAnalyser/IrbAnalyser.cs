@@ -27,7 +27,7 @@ namespace IrbAnalyser
         public IrbAnalyser()
         {
             InitializeComponent();
-
+            cboGenerate.Visible = true;
             cboSource.DataSource = Enum.GetValues(typeof(Agency.AgencyList));
             cboSource.SelectedIndex = -1;
         }
@@ -214,14 +214,14 @@ namespace IrbAnalyser
         {
             if (cboSource.SelectedValue != null && cboSource.SelectedValue.ToString().ToLower() == Agency.AgencyList.BRANY.ToString().ToLower())
             {
-                cboGenerate.Visible = true;
+                //cboGenerate.Visible = true;
                 btnStudy.Visible = false;
                 txtStudy.Visible = false;
                 label1.Visible = false;
             }
             else 
             { 
-                cboGenerate.Visible = false;
+                //cboGenerate.Visible = false;
                 btnStudy.Visible = true;
                 txtStudy.Visible = true;
                 label1.Visible = true;

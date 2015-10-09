@@ -152,13 +152,18 @@ namespace IrbAnalyser
 
                     if (typ == type.Event)
                     {
-                        data.DefaultView.Sort = "StudyId asc, EventCreationDate desc";
+                        data.DefaultView.Sort = "StudyId desc, EventCreationDate asc";
                         data = data.DefaultView.ToTable();
                     }
 
                     if (typ == type.Status)
                     {
-                        data.DefaultView.Sort = "StudyId asc, ValidOn desc";
+                        data.DefaultView.Sort = "StudyId desc, ValidOn asc";
+                        data = data.DefaultView.ToTable();
+                    }
+                    if (typ == type.Team)
+                    {
+                        data.DefaultView.Sort = "StudyId desc, FirstName desc";
                         data = data.DefaultView.ToTable();
                     }
                     /*foreach (var title in column)
