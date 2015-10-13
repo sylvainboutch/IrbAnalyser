@@ -605,7 +605,7 @@ namespace IrbAnalyser
             if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
             {
                 labels = new string[16] { 
-                    "Study Managed by*", 
+                    "Study Financials Managed By**", 
                     //"CRO, if any*", 
                     "IRB agency name", 
                     "IRB No.", 
@@ -646,7 +646,7 @@ namespace IrbAnalyser
             }
             else if (Agency.AgencyVal == Agency.AgencyList.BRANY)
             {
-                labels = new string[4] { "Study Managed by*", 
+                labels = new string[4] { "Study Financials Managed By*", 
                     //"CRO, if any*", 
                     "IRB agency name", "IRB No.", "Is this a cancer related study ?" };
 
