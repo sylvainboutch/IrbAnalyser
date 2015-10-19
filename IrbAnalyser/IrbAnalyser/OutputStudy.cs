@@ -579,6 +579,10 @@ namespace IrbAnalyser
                     dr["Primary funding sponsor"] = sponsor;
                 }
             }
+            else if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
+            {
+                dr["Primary funding sponsor"] = (string)row["Primarysponsorname"];
+            }
             else if (!String.IsNullOrWhiteSpace((string)row["Primarysponsorname"]))
             {
                 dr["Sponsor information other"] = "Per IRB System: " + (string)row["Primarysponsorname"];
@@ -630,7 +634,7 @@ namespace IrbAnalyser
                 };
 
                 values = new string[17] { 
-                    (string)dr["STUDY_MANAGED_BY"],
+                    (string)dr["STUDY_MANAGED_BY_IMPORT"],
                     //(string)dr["CRO"], 
                     (string)dr["IRB Agency name"], 
                     (string)dr["IRB no"], 
