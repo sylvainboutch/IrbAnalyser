@@ -225,6 +225,8 @@ namespace IrbAnalyser
                             addRowStudy(dr, true);
                             //Add all related values for that study                            
                             OutputDocs.analyseRow(dr, true);
+                            if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
+                                OutputTeam.addRowMigration(dr, number);
                         }
                     }
                     else
@@ -445,6 +447,8 @@ namespace IrbAnalyser
             if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
             {
                 dr["IRB Agency name"] = (string)row["IRBAgency"];
+                dr["IRB no"] = (string)row["IRBNUMBER"];
+                dr["Cancer"] = (string)row["MSDCANCER_RELATED_STUDY"];
             }
             if (!string.IsNullOrWhiteSpace(((string)row["ExternalIRB"])))
             {
@@ -604,7 +608,7 @@ namespace IrbAnalyser
 
             if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
             {
-                labels = new string[16] { 
+                labels = new string[17] { 
                     "Study Financials Managed By**", 
                     //"CRO, if any*", 
                     "IRB agency name", 
@@ -621,10 +625,11 @@ namespace IrbAnalyser
                     "&nbsp;&nbsp;&nbsp;Other Observational Studies",
                     "&nbsp;&nbsp;&nbsp;Retrospective chart review",
                     "&nbsp;&nbsp;&nbsp;Tissue Banking",
-                    "&nbsp;&nbsp;&nbsp;Trials Involving Interventions"              
+                    "&nbsp;&nbsp;&nbsp;Trials Involving Interventions",
+                    "Responsible Party*"  
                 };
 
-                values = new string[16] { 
+                values = new string[17] { 
                     (string)dr["STUDY_MANAGED_BY"],
                     //(string)dr["CRO"], 
                     (string)dr["IRB Agency name"], 
@@ -641,7 +646,10 @@ namespace IrbAnalyser
                     (string)dr["OTHER_Observational_STUDIES"],
                     (string)dr["RETROSPECTIVE_CHART_REVIEW"],
                     (string)dr["TISSUE BANKING"],
-                    (string)dr["TRIALS_Involving_INTERVENTIONS"]
+                    (string)dr["TRIALS_Involving_INTERVENTIONS"],
+                    (string)dr["RESPONSIBLE_PARTY"]
+                    
+
                 };
             }
             else if (Agency.AgencyVal == Agency.AgencyList.BRANY)

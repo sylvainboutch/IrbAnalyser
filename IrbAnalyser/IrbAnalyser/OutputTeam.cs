@@ -413,7 +413,7 @@ namespace IrbAnalyser
             {
                 if (((string)userRow["IRBAgency"]).ToLower() == "brany")
                     Agency.AgencyVal = Agency.AgencyList.BRANY;
-                else if (((string)userRow["IRBAgency"]).ToLower() == "einstein" || ((string)userRow["IRBAgency"]).ToLower() == "IRIS" )
+                else if (((string)userRow["IRBAgency"]).ToLower() == "einstein" || ((string)userRow["IRBAgency"]).ToLower() == "IRIS")
                     Agency.AgencyVal = Agency.AgencyList.EINSTEIN;
                 else Agency.AgencyVal = Agency.AgencySetupVal;
             }
@@ -557,7 +557,7 @@ namespace IrbAnalyser
                                         {
                                             newRole = OutputTeam.defaultDisabledRole;
                                         }
-                                        
+
                                         //For debugging only
                                         /*if (String.IsNullOrWhiteSpace(newRole))
                                         {
@@ -690,6 +690,46 @@ namespace IrbAnalyser
                     }
                 }
             }
+        }
+
+        public static void addRowMigration(DataRow dr, string studynumber)
+        {
+            for (int i = 1; i < 10; i++)
+            {
+                string role = SC;
+                string name = (string)dr["SC" + i];
+                var splitted = name.Split(':');
+                if (splitted.Count() > 1)
+                {
+                    name = splitted[1].Trim();
+                    role = splitted[0].Trim();
+                }
+                if (!String.IsNullOrWhiteSpace(name))
+                {
+                    addRowMigration(studynumber, name, role);
+                }
+            }
+        }
+
+        public static void addRowMigration(string studynumber, string fullname, string role)
+        {
+            initiate();
+            DataRow dr = newTeam.NewRow();
+            dr["Study_number"] = studynumber;
+            var namesplit = fullname.Split(' ');
+            var lastname = "";
+            for (int i = 1; i < namesplit.Count(); i++)
+            {
+                lastname += namesplit[i].Trim();
+                if (i + 1 < namesplit.Count())
+                    lastname += " ";
+            }
+            dr["First name"] = namesplit[0].Trim();
+            dr["Last name"] = lastname;
+            dr["User Name"] = fullname;
+            dr["Role"] = role;
+            dr["Organization"] = OutputSite.EMmainsite;
+            newTeam.Rows.Add(dr);
         }
 
 
