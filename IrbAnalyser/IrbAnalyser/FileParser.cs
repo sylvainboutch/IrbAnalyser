@@ -131,23 +131,26 @@ namespace IrbAnalyser
 
                     foreach (string line in lines)
                     {
-                        string[] linesplt = line.Split((char)9);
-                        DataRow dr = data.NewRow();
-                        foreach (DataColumn dc in data.Columns)
+                        if (!string.IsNullOrWhiteSpace(line))
                         {
-                            dr[dc.ColumnName] = "";
-                        }
-                        for (int i = 0; i < columns.Count(); i++)
-                        {
-                            if (!String.IsNullOrEmpty(columns[i]))
-                                dr[columns[i]] = Tools.parse((linesplt[i]));
-                            if (linesplt[i].Contains("�"))
+                            string[] linesplt = line.Split((char)9);
+                            DataRow dr = data.NewRow();
+                            foreach (DataColumn dc in data.Columns)
                             {
-                                dr[columns[i]] = Tools.parse(linesplt[i].Replace("�", "-"));
+                                dr[dc.ColumnName] = "";
                             }
-                        }
+                            for (int i = 0; i < columns.Count(); i++)
+                            {
+                                if (!String.IsNullOrEmpty(columns[i]))
+                                    dr[columns[i]] = Tools.parse((linesplt[i]));
+                                if (linesplt[i].Contains("�"))
+                                {
+                                    dr[columns[i]] = Tools.parse(linesplt[i].Replace("�", "-"));
+                                }
+                            }
 
-                        data.Rows.Add(dr);
+                            data.Rows.Add(dr);
+                        }
                     }
 
                     if (typ == type.Event)

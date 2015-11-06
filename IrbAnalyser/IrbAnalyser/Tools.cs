@@ -215,7 +215,10 @@ namespace IrbAnalyser
         public static string removeHtml(string input)
         {
             input = Regex.Replace(input, @"<[^>]+>|&nbsp;", "").Trim();
+            input = Regex.Replace(input, @"<[^>]+|&nbsp;", "").Trim();
+            input = Regex.Replace(input, "\"", "").Trim();
             input = Regex.Replace(input, @"\s{2,}", " ");
+            input = cleanMap(input);
             return input;
         }
 

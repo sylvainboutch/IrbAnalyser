@@ -614,7 +614,9 @@ namespace IrbAnalyser
                     {"Celator Pharmaceutical","Celator Pharmaceuticals"},
                     {"Onyx Pharmaceuticals Inc","Onyx Pharmaceuticals Inc"},
                     {"Kyowa Hakko Kirin Pharma, Inc.","Kyowa Hakko Kirin Pharma, Inc."},
-                    {"Astellas Pharma US, Inc.","Astellas Pharma US Inc"}
+                    {"Astellas Pharma US, Inc.","Astellas Pharma US Inc"},
+                    {"Dendreon Pharmaceuticals, Inc.","Dendreon Corporation"},
+                    {"Pharmacyclics LLC","Pharmacyclics Inc"}
 
             };
 

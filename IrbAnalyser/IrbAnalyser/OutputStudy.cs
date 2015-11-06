@@ -256,26 +256,29 @@ namespace IrbAnalyser
                                 newrc = getRC((string)dr["StudyId"]);
                                 newcro = getCRO((string)dr["StudyId"]);
 
-                                if (stu.STUDY_PI != newpi && !String.IsNullOrEmpty(newpi))
+                                RCSCPI rcscpi = new RCSCPI();
+                                rcscpi = SpecialStudys.getRCSCPI((string)dr["StudyId"]);
+
+                                if (stu.STUDY_PI != newpi && !String.IsNullOrEmpty(newpi) && newpi != rcscpi.PI)
                                 {
                                     hasChanged = true;
                                 }
                                 else { newpi = ""; }
 
-                                if (stu.STUDY_ENTERED_BY != newrc && !String.IsNullOrEmpty(newrc))
+                                if (stu.STUDY_ENTERED_BY != newrc && !String.IsNullOrEmpty(newrc) && newrc != rcscpi.RC)
                                 {
                                     hasChanged = true;
                                 }
                                 else { newrc = ""; }
 
-                                if (stu.STUDY_COORDINATOR != newsc && !String.IsNullOrEmpty(newsc))
+                                if (stu.STUDY_COORDINATOR != newsc && !String.IsNullOrEmpty(newsc) && newsc != rcscpi.SC)
                                 {
                                     hasChanged = true;
                                 }
                                 else { newsc = ""; }
 
                                 
-                                if (Tools.compareStr(stu.STUDY_TITLE, dr["StudyTitle"]) && !String.IsNullOrWhiteSpace((string)dr["StudyTitle"]))
+                                if (Tools.compareStr(stu.STUDY_TITLE, Tools.removeHtml((string)dr["StudyTitle"])) && !String.IsNullOrWhiteSpace(Tools.removeHtml((string)dr["StudyTitle"])))
                                 {
                                     dr["Studytitle"] = "";
                                 }
@@ -359,19 +362,37 @@ namespace IrbAnalyser
                                     }
                                 }
 
+                                string newSponsor = "";
+                                if (Agency.AgencyVal == Agency.AgencyList.BRANY || Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
+                                {
+                                    newSponsor = BranySponsorMap.getSponsor((string)dr["Primarysponsorname"]);
+                                }
 
-
-                                if (Tools.compareStr(stu.STUDY_SPONSOR, dr["Primarysponsorname"]) && !String.IsNullOrWhiteSpace((string)dr["Primarysponsorname"]))
+                                if (Tools.compareStr(stu.SPONSOR_DD, newSponsor) && !String.IsNullOrWhiteSpace(newSponsor))
                                 {
                                     dr["Primarysponsorname"] = "";
                                 }
-                                else if (!String.IsNullOrWhiteSpace((string)dr["Primarysponsorname"]))
+                                else if (!String.IsNullOrWhiteSpace(newSponsor))
                                 {
                                     hasChanged = true;
                                 }
+                                else if (String.IsNullOrWhiteSpace(newSponsor))
+                                {
+                                    string otherSponsor = "Per BRANY System: " + (string)dr["Primarysponsorname"];
+                                    if (Tools.compareStr(stu.STUDY_INFO, otherSponsor) && !String.IsNullOrWhiteSpace(otherSponsor))
+                                    {
+                                        dr["Primarysponsorname"] = "";
+                                    }
+                                    else if (!String.IsNullOrWhiteSpace(otherSponsor))
+                                    {
+                                        hasChanged = true;
+                                    }
+
+                                }
+
 
                                 string[] strs = {dr["Primarysponsorcontactfirstname"].ToString(),
-                    dr["Primarysponsorcontactlastname"].ToString()};
+                                dr["Primarysponsorcontactlastname"].ToString()};
 
                                 if (Tools.containStr(stu.SPONSOR_CONTACT, strs) && !String.IsNullOrWhiteSpace((string)dr["Primarysponsorcontactfirstname"]) && !String.IsNullOrWhiteSpace((string)dr["Primarysponsorcontactlastname"]))
                                 {
@@ -511,7 +532,7 @@ namespace IrbAnalyser
                 dr["CRO"] = newcro;
             }
 
-            dr["Official title"] = (string)row["StudyTitle"];
+            dr["Official title"] = Tools.removeHtml((string)row["StudyTitle"]);
             dr["Study summary"] = Tools.removeHtml((string)row["Studysummary"]);
 
             if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
@@ -567,14 +588,14 @@ namespace IrbAnalyser
 
             //dr["Primary funding sponsor, if other :"] = row["Primarysponsorname"].ToString();
 
-            if (Agency.AgencyVal == Agency.AgencyList.BRANY && Agency.AgencySetupVal == Agency.AgencyList.BRANY)
+            if ((Agency.AgencyVal == Agency.AgencyList.BRANY && Agency.AgencySetupVal == Agency.AgencyList.BRANY) || (Agency.AgencyVal == Agency.AgencyList.EINSTEIN && Agency.AgencySetupVal == Agency.AgencyList.EINSTEIN))
             {
                 string sponsor = BranySponsorMap.getSponsor((string)row["Primarysponsorname"]);
-                if (String.IsNullOrWhiteSpace(sponsor))
+                if (String.IsNullOrWhiteSpace(sponsor) && !string.IsNullOrWhiteSpace((string)row["Primarysponsorname"]))
                 {
                     dr["Sponsor information other"] = "Per BRANY System: " + (string)row["Primarysponsorname"];
                 }
-                else
+                else if (!String.IsNullOrWhiteSpace(sponsor))
                 {
                     dr["Primary funding sponsor"] = sponsor;
                 }
@@ -641,7 +662,7 @@ namespace IrbAnalyser
                     (string)dr["Cancer"],
                     (string)dr["Program_Code_Mapped"],
                     (string)dr["PRIMARY_PURPOSE"],
-                    (string)dr["AGENT"],
+                    (string)dr["MSD_AGENT"],
                     (string)dr["ANCILLARY"],
                     (string)dr["CORRELATIVE"],
                     (string)dr["DEVICE"],

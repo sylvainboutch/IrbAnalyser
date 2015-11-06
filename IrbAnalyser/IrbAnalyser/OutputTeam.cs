@@ -634,8 +634,8 @@ namespace IrbAnalyser
                     if (OutputStudy.isStudyInDataSource(studyId))
                     {
                         var userAccount = (from account in accounts
-                                           where account.USER_EMAIL == user.USER_EMAIL
-                                           & account.USER_NAME == user.USER_NAME
+                                           where account.USER_EMAIL.Trim().ToLower() == user.USER_EMAIL.Trim().ToLower()
+                                           & account.USER_NAME.Trim().ToLower() == user.USER_NAME.Trim().ToLower()
                                            select account).First();
 
                         if (userAccount.USER_TYPE != "Non-System User")
@@ -706,7 +706,15 @@ namespace IrbAnalyser
                 }
                 if (!String.IsNullOrWhiteSpace(name))
                 {
-                    addRowMigration(studynumber, name, role);
+                    var issuperuser = (from us in accounts
+                                       where
+                                       ((us.USER_NAME.Trim().ToLower()==name.Trim().ToLower())
+                                        )
+                                       && us.GRP_SUPUSR_FLAG == 1
+                                       && us.USER_STATUS == "Active"
+                                       select us).Any();
+                    if (!issuperuser)
+                        addRowMigration(studynumber, name, role);
                 }
             }
         }
@@ -727,9 +735,27 @@ namespace IrbAnalyser
             dr["First name"] = namesplit[0].Trim();
             dr["Last name"] = lastname;
             dr["User Name"] = fullname;
-            dr["Role"] = role;
+            dr["Role"] = migrationRoleMap(role);
             dr["Organization"] = OutputSite.EMmainsite;
             newTeam.Rows.Add(dr);
+        }
+
+        public static string migrationRoleMap(string role)
+        {
+            role = role.Trim();
+            if (role == "STU RES") return "No Privilege";
+            if (role == "CO-PI") return "Limited Investigator";
+            if (role == "SUB-PI") return "Limited Investigator";
+            if (role == "NP") return "No Privilege";
+            if (role == "NURSE") return "Nurse";
+            if (role == "Research Assistant") return "Study Assistant";
+            if (role == "ResAsso") return "No Privilege";
+            if (role == "Collabo") return "No Privilege";
+            if (role == "BIOSTAT") return "No Privilege";
+            if (role == "MD") return "Limited Investigator";
+            if (role == "ADMIN") return "No Privilege";
+            if (role == "PA") return "No Privilege";
+            else return role;
         }
 
 
