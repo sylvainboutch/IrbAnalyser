@@ -259,6 +259,20 @@ namespace IrbAnalyser
                                 RCSCPI rcscpi = new RCSCPI();
                                 rcscpi = SpecialStudys.getRCSCPI((string)dr["StudyId"]);
 
+                                string cancer = isStudyCancer(dr) ? "Y" : "";
+
+                                if (stu.MORE_CANCER == "Y" && cancer == "")
+                                {
+                                    hasChanged = true;
+                                    dr["Cancer"] = "N";
+                                }
+
+                                if ((stu.MORE_CANCER == "N" || stu.MORE_CANCER == null) && cancer == "Y")
+                                {
+                                    hasChanged = true;
+                                    dr["Cancer"] = "Y";
+                                }
+
                                 if (stu.STUDY_PI != newpi && !String.IsNullOrEmpty(newpi) && newpi != rcscpi.PI)
                                 {
                                     hasChanged = true;
@@ -277,7 +291,7 @@ namespace IrbAnalyser
                                 }
                                 else { newsc = ""; }
 
-                                
+
                                 if (Tools.compareStr(stu.STUDY_TITLE, Tools.removeHtml((string)dr["StudyTitle"])) && !String.IsNullOrWhiteSpace(Tools.removeHtml((string)dr["StudyTitle"])))
                                 {
                                     dr["Studytitle"] = "";
@@ -376,9 +390,9 @@ namespace IrbAnalyser
                                 {
                                     hasChanged = true;
                                 }
-                                else if (String.IsNullOrWhiteSpace(newSponsor))
+                                else if (String.IsNullOrWhiteSpace(newSponsor) && !String.IsNullOrWhiteSpace((string)dr["Primarysponsorname"]))
                                 {
-                                    string otherSponsor = "Per BRANY System: " + (string)dr["Primarysponsorname"];
+                                    string otherSponsor = "Per IRB System: " + (string)dr["Primarysponsorname"];
                                     if (Tools.compareStr(stu.STUDY_INFO, otherSponsor) && !String.IsNullOrWhiteSpace(otherSponsor))
                                     {
                                         dr["Primarysponsorname"] = "";
@@ -413,31 +427,9 @@ namespace IrbAnalyser
                                     hasChanged = true;
                                 }
 
-                                string[] irbno = ((string)dr["IRBNumber"]).Replace("(IBC)", "").Split('-');
+                                
+                                
 
-                                string cancer;
-                                if (Agency.AgencyVal == Agency.AgencyList.BRANY)
-                                {
-                                    cancer = "N";
-                                    if (irbno.Count() >= 2 && irbno[1] == "06")
-                                        cancer = "Y";
-                                }
-                                else
-                                {
-                                    cancer = (string)dr["Cancer"];
-                                }
-
-                                if (stu.MORE_CANCER == "Y" && cancer == "N")
-                                {
-                                    hasChanged = true;
-                                    dr["Cancer"] = "N";
-                                }
-
-                                if ((stu.MORE_CANCER == "N" || stu.MORE_CANCER == null) && cancer == "Y")
-                                {
-                                    hasChanged = true;
-                                    dr["Cancer"] = "Y";
-                                }
 
                             }
 
@@ -612,24 +604,17 @@ namespace IrbAnalyser
             dr["Sponsor contact"] = row["PrimarySponsorContactFirstName"].ToString() + " " + row["PrimarySponsorContactLastName"].ToString();
             dr["Sponsor Protocol ID"] = row["PrimarySponsorStudyId"].ToString();
 
-            dr["Cancer"] = row["Cancer"];
+            if (newentry)
+            {
+                dr["Cancer"] = isStudyCancer(row) ? "Y" : "";
+            }
+            else
+            {
+                dr["Cancer"] = row["Cancer"];
+            }
 
             string[] labels = new string[] { };
             string[] values = new string[] { };
-
-            string cancer = "";
-            string[] irbno = ((string)dr["IRB no"]).Split('-');
-            if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
-            {
-                cancer = "Y";
-            }
-            if (Agency.AgencyVal == Agency.AgencyList.BRANY)
-            {
-                cancer = "N";
-                if (irbno.Count() >= 2 && irbno[1].Trim() == "06")
-                    cancer = "Y";
-            }
-            dr["Cancer"] = cancer;
 
             if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
             {
@@ -947,7 +932,7 @@ namespace IrbAnalyser
                          where studyId.Trim().ToLower() == st.Field<string>("StudyId").Trim().ToLower()
                          && !st.Field<string>("IRBNumber").Trim().ToLower().Contains("ibc")
                          select st).FirstOrDefault();
-    
+
 
             if (study != null && !String.IsNullOrWhiteSpace((string)study["IRBNumber"]))
             {
@@ -1091,6 +1076,43 @@ namespace IrbAnalyser
                 return false;
             }
 
+        }
+
+        /// <summary>
+        /// Return 'Y' if it is cancer related (cancer term search and 06 in BRANY IRB no), N else
+        /// </summary>
+        /// <param name="dr"></param>
+        /// <returns></returns>
+        public static bool isStudyCancer(DataRow dr)
+        {
+            if (SpecialStudys.cancerTerms.Count >= 1)
+            {
+                foreach (var str in SpecialStudys.cancerTerms)
+                {
+                    if (((string)dr["StudyTitle"]).ToLower().Contains(str) ||
+                        ((string)dr["PrimarySponsorName"]).ToLower().Contains(str) ||
+                        ((string)dr["StudySummary"]).ToLower().Contains(str))
+                    {
+                        return true;
+                    }
+                    /*cancerfilter = ((string)dr["StudyTitle"]).ToLower().Contains(str) || cancerfilter;
+                    cancerfilter = ((string)dr["PrimarySponsorName"]).ToLower().Contains(str) || cancerfilter;*/
+                }
+            }
+
+            string cancer = (string)dr["Cancer"];            
+            if (Agency.AgencySetupVal == Agency.AgencyList.NONE || Agency.AgencySetupVal == Agency.AgencyList.BOTH)
+            {
+                return true;
+            }
+            if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+            {
+                string[] irbno = ((string)dr["IRBNumber"]).Split('-');
+                if (irbno.Count() >= 2 && irbno[1].Trim() == "06")
+                    return true;
+            }
+
+            return false;
         }
 
     }
