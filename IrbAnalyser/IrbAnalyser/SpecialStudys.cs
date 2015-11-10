@@ -894,13 +894,13 @@ namespace IrbAnalyser
 
         public static readonly List<irbpair> ignoredStudys = new List<irbpair>()
         {
-           
+
         };
 
         public static readonly List<irbpair> studyToInclude = new List<irbpair>()
         {
-            
-          
+
+
         };
 
         public static readonly List<string> cancerTerms = new List<string>()
@@ -944,13 +944,11 @@ namespace IrbAnalyser
 {"42f28a55-7f67-4eb3-b2f3-597e1ebc750c", new RCSCPI("Cristina Garcia-Miller","","")},
 {"e14e8bac-c232-4520-985c-4912448c1293", new RCSCPI("Cristina Garcia-Miller","","")},
 {"2b95af21-596f-4a85-8683-186c7dc22984", new RCSCPI("Cristina Garcia-Miller","","")},
-
 {"ad1ecf6d-ad04-4ac3-a490-24fe60417b7b", new RCSCPI("Randall Teeter","","Mark Einstein")},
 {"b48a71c5-9472-43e8-8acd-c3856ced05f1", new RCSCPI("Cristina Garcia-Miller","","")},
 {"f87c22ed-a98f-428b-b037-5ee85680b9ac", new RCSCPI("Eileen Burke","","Mark Einstein")},
 {"6712db4f-91f8-4f9a-93ed-ab5264e6229c", new RCSCPI("Cristina Garcia-Miller","","")},
 {"29263093-7558-4101-8e0f-ae99b55ef2e2", new RCSCPI("","","Ira Braunschweig")},
-
 {"492b2139-1331-4f96-8e44-0f15e2b0320b", new RCSCPI("","","Ira Braunschweig")},
 {"68eb2982-af9a-4a60-9134-f6d42e0e1774", new RCSCPI("Cristina Garcia-Miller","","Jesus Anampa")},
 {"da1a6bfc-8572-4e60-b213-79470b5b5c8f", new RCSCPI("Randall Teeter","","Mark Einstein")},
@@ -961,73 +959,52 @@ namespace IrbAnalyser
 {"469c3f44-1aba-4055-aee2-7b0dd3df1c0e", new RCSCPI("","","Heather Ann Smith")},
 {"4189cd01-0b47-4ea2-9fa3-d515403459d0", new RCSCPI("Eileen Burke","","")},
 {"e987f815-ecd1-4cef-afcb-bc01c522eb7b", new RCSCPI("Cristina Garcia-Miller","","")},
-
 {"d4423ac9-3c75-4314-a4d8-787390ed7509", new RCSCPI("Cristina Garcia-Miller","","")},
-
 {"9e106fe6-eaa6-46f0-8456-63f5ee0e2137", new RCSCPI("Cristina Garcia-Miller","","")},
 {"584bb7c1-b81a-4570-9916-f9e4dd05865c", new RCSCPI("Cristina Garcia-Miller","","")},
 {"33114bed-54e1-4322-8da6-895add0e589e", new RCSCPI("Cristina Garcia-Miller","","")},
 {"29ddff54-80ee-4760-8e8d-245ac3b069bf", new RCSCPI("Cristina Garcia-Miller","","")},
-
 {"cb854309-8ecd-490f-93d6-933685fd3739", new RCSCPI("Cristina Garcia-Miller","","")},
 {"05f5a9e4-c720-4b1d-a8e5-c76fd5bd3829", new RCSCPI("Daniel Paucar","","")},
-
 {"5f7950cd-13ba-459c-9d02-4f47e9d5c63f", new RCSCPI("Cristina Garcia-Miller","","")},
 {"56228c59-b3d4-4adb-ae69-5cefbb035724", new RCSCPI("Cristina Garcia-Miller","","")},
-
 {"0129e82e-6439-451a-9889-41b773defa24", new RCSCPI("Alexandra Urman","","")},
 {"5054a963-3644-4302-880f-d7c70420d810", new RCSCPI("Cristina Garcia-Miller","","")},
 {"8ab5711a-184e-4d4b-937c-c02f1d867190", new RCSCPI("Cristina Garcia-Miller","","")},
 {"b9362a77-cc5e-462e-bcee-d2cf655e2198", new RCSCPI("Cristina Garcia-Miller","","")},
 {"5fbafe54-fb38-4b81-8b6d-bf1ad5a85cca", new RCSCPI("Cristina Garcia-Miller","","")},
 {"eb4b9b34-3f54-4675-880a-b43a1725aee7", new RCSCPI("Cristina Garcia-Miller","","")},
-
 {"9bd3cd8a-d97e-4d59-b9a8-6d7ea4bcceab", new RCSCPI("Cristina Garcia-Miller","","Jesus Anampa")},
 {"def46869-b642-4e55-94c9-44c6dc6a9a00", new RCSCPI("Cristina Garcia-Miller","","")},
-
 {"7d32649f-8eed-4a5d-97fb-4bc43af8a929", new RCSCPI("Randall Teeter","","Nicole Nevadunsky")},
 {"47139787-92ed-46b9-8f39-a0cc5e2b3658", new RCSCPI("Cristina Garcia-Miller","","")},
 {"cdc21c44-f840-41bb-8a0f-766adca33023", new RCSCPI("Cristina Garcia-Miller","","")},
 {"171371f2-2d15-4480-b9e6-40f7b6e0e64c", new RCSCPI("Cristina Garcia-Miller","","")},
-
-
 {"d909de99-330a-4391-9e03-8f1dccff4aad", new RCSCPI("Cristina Garcia-Miller","","")},
 {"1b761de8-918b-4756-86ed-49bb5ebac2ed", new RCSCPI("Cristina Garcia-Miller","","")},
 {"f5f39f81-3305-47b6-9ede-77dcf77e8540", new RCSCPI("","","Ira Braunschweig")},
 {"02be8429-50a5-497e-80c6-49ba58d10264", new RCSCPI("Cristina Garcia-Miller","","")},
 {"39a6d74f-90a1-4f04-81e8-c05b0e06fa57", new RCSCPI("Cristina Garcia-Miller","","Andreas Kaubisch")},
 {"1286a741-af55-4a32-8e9a-d85d81c4824a", new RCSCPI("Cristina Garcia-Miller","","")},
-
-
 {"6adf013f-08a2-4fdc-b24c-696c4e1f63ce", new RCSCPI("Cristina Garcia-Miller","","")},
 {"dd0e38f8-2eb4-4b66-8891-d6f4f1b688fa", new RCSCPI("Cristina Garcia-Miller","","")},
 {"98bd8373-d609-45ed-adab-eefb32ec2235", new RCSCPI("Randall Teeter","","Mark Einstein")},
 {"d48e43ab-36cc-44a1-901b-ffd93fc1cf87", new RCSCPI("Cristina Garcia-Miller","","")},
 {"268906d1-be98-4a79-8bb3-9b767408b937", new RCSCPI("Cristina Garcia-Miller","","")},
 {"e8e08d6d-b878-497f-9e36-0eebe3dabb86", new RCSCPI("Cristina Garcia-Miller","","")},
-
 {"2bd0d6c6-66dd-4fc0-a9f0-820975a95a8e", new RCSCPI("Cristina Garcia-Miller","","")},
 {"d7e6a654-1f40-4195-936a-17ce34d4c562", new RCSCPI("Cristina Garcia-Miller","","")},
 {"6fe2a311-342e-4f34-a9ca-3a9a8d1a4fbb", new RCSCPI("Cristina Garcia-Miller","","")},
 {"ff9d977d-4293-408f-b10f-fef41526be66", new RCSCPI("Cristina Garcia-Miller","","")},
-
 //{"8bda9c3f-97ef-4844-93a8-bd8503be9f6a", new RCSCPI("Mark Einstein","","Mark Einstein")},
 {"8bda9c3f-97ef-4844-93a8-bd8503be9f6a", new RCSCPI("Nicole Nevadunsky","","Nicole Nevadunsky")},
-
 {"167079a7-e146-45cd-be09-4bef594c4ed5", new RCSCPI("Cristina Garcia-Miller","","")},
 {"75e7950b-7844-438c-9584-58c2ad100d8f", new RCSCPI("Cristina Garcia-Miller","","")},
-
-
 {"2cd26b95-7790-49d0-b3e2-1d0f1b2ea363", new RCSCPI("","","Mark Einstein")},
-
-
 {"9659e5bd-0097-4864-890f-d2504828dc66", new RCSCPI("Randall Teeter","","Heather Ann Smith")},
 {"695be63a-286c-42fe-8dcb-168384ca4d75", new RCSCPI("Cristina Garcia-Miller","","")},
 {"5a08ef32-9b4f-4d48-a891-b1adebf4e5d9", new RCSCPI("Cristina Garcia-Miller","","")},
 {"f4e9c166-174f-4129-9fb8-a57e0a34159e", new RCSCPI("Cristina Garcia-Miller","","")},
-
-
-
 {"caf22a0c-fa8d-4fbf-85c3-28c0aba4a3eb", new RCSCPI("","","Murali Janakiram")},
 {"871ae38a-7289-4420-82c1-bb45e55ae740", new RCSCPI("Joshua Levitt","","")},
 {"27520241-9eb8-410f-be95-c93a26b36706", new RCSCPI("Cristina Garcia-Miller","","")},
@@ -1037,39 +1014,22 @@ namespace IrbAnalyser
 {"3479", new RCSCPI("Peter Cole","","Peter Cole")},
 {"3508", new RCSCPI("Peter Cole","","Peter Cole")},
 {"3557", new RCSCPI("Peter Cole","","Peter Cole")},
-
-
-
 {"3635", new RCSCPI("Shakira Forde","","")},
 {"3664", new RCSCPI("Peter Cole","","Peter Cole")},
 {"3680", new RCSCPI("","","Murali Janakiram")},
-
-
 {"3279", new RCSCPI("","","Joseph Sparano")},
 {"3696", new RCSCPI("","","Merieme Klobocista")},
-
-
 {"3713", new RCSCPI("Shakira Forde","","")},
 {"3733", new RCSCPI("Shakira Forde","","")},
-
-
 {"3750", new RCSCPI("Steven Libutti","","")},
 {"3758", new RCSCPI("Samantha Feliz","","")},
 {"4161", new RCSCPI("Randall Teeter","","Mark Einstein")},
 {"3767", new RCSCPI("Randall Teeter","","Mark Einstein")},
 {"3060", new RCSCPI("Shakira Forde","","")},
-
-
 {"3061", new RCSCPI("Shakira Forde","","")},
-
 {"3170", new RCSCPI("Steven Libutti","","")},
-
-
-
 {"4153", new RCSCPI("Randall Teeter","","Mark Einstein")},
 {"3823", new RCSCPI("Samantha Feliz","","")},
-
-
 {"3831", new RCSCPI("Peter Cole","","Peter Cole")},
 {"3832", new RCSCPI("Peter Cole","","Peter Cole")},
 {"3844", new RCSCPI("Shakira Forde","","")},
@@ -1077,47 +1037,27 @@ namespace IrbAnalyser
 {"3856", new RCSCPI("Peter Cole","","Peter Cole")},
 {"3870", new RCSCPI("Peter Cole","","Peter Cole")},
 {"3902", new RCSCPI("Joyce Brown","","")},
-
-
 {"2963", new RCSCPI("Samantha Feliz","","")},
 {"3430", new RCSCPI("Samantha Feliz","","")},
-
-
 {"2956", new RCSCPI("Shakira Forde","","")},
 {"3945", new RCSCPI("","","Murali Janakiram")},
 {"3950", new RCSCPI("","","Merieme Klobocista")},
 {"3954", new RCSCPI("Peter Cole","","Peter Cole")},
-
 {"3959", new RCSCPI("Michelle Goggin","","")},
-
 {"3970", new RCSCPI("Elaine Keung","","")},
 {"3971", new RCSCPI("Shakira Forde","","")},
-
-{"3978", new RCSCPI("Samantha Feliz","","")},
+//{"3978", new RCSCPI("Samantha Feliz","","")},
 {"3984", new RCSCPI("Shakira Forde","","Ira Braunschweig")},
 {"3989", new RCSCPI("Cristina Garcia-Miller","","")},
 {"3993", new RCSCPI("Stuart Packer","","")},
-
-
 {"1166", new RCSCPI("Samantha Feliz","","")},
-
 {"3013", new RCSCPI("Randall Teeter","","Mark Einstein")},
-
-
-
-
-
 {"3172", new RCSCPI("Steven Libutti","","")},
 {"3173", new RCSCPI("Steven Libutti","","")},
-
 {"3162", new RCSCPI("Shakira Forde","","")},
-{"3287", new RCSCPI("Shakira Forde","","")},
+//{"3287", new RCSCPI("Shakira Forde","","")},
 {"1312", new RCSCPI("Shakira Forde","","")},
-
-
 {"1507", new RCSCPI("Michelle Goggin","","")},
-
-
 {"2208", new RCSCPI("Shakira Forde","","")},
 {"2209", new RCSCPI("Shakira Forde","","")},
 {"2246", new RCSCPI("Samantha Feliz","","")},
@@ -1125,157 +1065,25 @@ namespace IrbAnalyser
 {"2445", new RCSCPI("Joyce Brown","","")},
 {"2805", new RCSCPI("Joyce Brown","","")},
 {"2820", new RCSCPI("Samantha Armstrong","","")},
-{"4139", new RCSCPI("Shakira Forde","","")},
+//{"4139", new RCSCPI("Shakira Forde","","")},
 {"4322", new RCSCPI("Michelle Goggin","","")},
-
 {"4419", new RCSCPI("Samantha Feliz","","Mark Einstein")},
-
 {"4619", new RCSCPI("Alexandra Urman","","Ira Braunschweig")},
-
-{"4632", new RCSCPI("Samantha Feliz","","")},
-
+//{"4632", new RCSCPI("Samantha Feliz","","")},
 {"1948", new RCSCPI("Samantha Feliz","","Mark Einstein")},
-
 {"7f0f8edc-43fe-4bf5-9f72-ed9b3c17b413", new RCSCPI("Ambar Baez","","Olga Derman")},
-
-
-
-
-
-
-
-
-
-
-
 {"284cad69-e0c0-4c01-99ab-9a7faab371dd", new RCSCPI("","","Olga Derman")},
-
-
-
 {"ff324b9f-3cd8-49cd-81af-15e9b79466ec", new RCSCPI("","","Olga Derman")},
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 {"7067f3a2-523c-45c0-b64a-c6fde4d0adee", new RCSCPI("","","Jerome Graber")},
 {"d34582e3-35c2-421c-87ca-c9539dd79fce", new RCSCPI("","","Alexander I. Sankin")},
-
-
-
-
-
-
-
-
-
-
 {"48b4b763-4785-4256-b83f-c0d31ecff84b", new RCSCPI("Elaine Keung","","")},
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 {"3087", new RCSCPI("","","Jerome Graber")},
-
-
-
-
-
-
-
-
-
-
-
-
-
-{"3978", new RCSCPI("","","Olga Derman")},
-
-
-
-
-
-
-
-
-
-
+{"3978", new RCSCPI("Samantha Feliz","","Olga Derman")},
 {"3261", new RCSCPI("","","Nitin Ohri")},
-
-
-
-
-
-
-{"3287", new RCSCPI("","","Roman Perez-Soler")},
-
-
-
-
-
-
-
-
-
-
-
-
-{"4139", new RCSCPI("","","Roman Perez-Soler")},
-
-
+{"3287", new RCSCPI("Shakira Forde","","Roman Perez-Soler")},
+{"4139", new RCSCPI("Shakira Forde","","Roman Perez-Soler")},
 {"4432", new RCSCPI("","","Jerome Graber")},
-
-
-{"4632", new RCSCPI("","","Nitin Ohri")}
-
-
+{"4632", new RCSCPI("Samantha Feliz","","Nitin Ohri")}
 
         };
 
