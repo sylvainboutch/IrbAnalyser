@@ -1010,7 +1010,9 @@ namespace IrbAnalyser
 {"d7e6a654-1f40-4195-936a-17ce34d4c562", new RCSCPI("Cristina Garcia-Miller","","")},
 {"6fe2a311-342e-4f34-a9ca-3a9a8d1a4fbb", new RCSCPI("Cristina Garcia-Miller","","")},
 {"ff9d977d-4293-408f-b10f-fef41526be66", new RCSCPI("Cristina Garcia-Miller","","")},
-{"8bda9c3f-97ef-4844-93a8-bd8503be9f6a", new RCSCPI("Mark Einstein","","Mark Einstein")},
+
+//{"8bda9c3f-97ef-4844-93a8-bd8503be9f6a", new RCSCPI("Mark Einstein","","Mark Einstein")},
+{"8bda9c3f-97ef-4844-93a8-bd8503be9f6a", new RCSCPI("Nicole Nevadunsky","","Nicole Nevadunsky")},
 
 {"167079a7-e146-45cd-be09-4bef594c4ed5", new RCSCPI("Cristina Garcia-Miller","","")},
 {"75e7950b-7844-438c-9584-58c2ad100d8f", new RCSCPI("Cristina Garcia-Miller","","")},
@@ -1132,7 +1134,149 @@ namespace IrbAnalyser
 
 {"4632", new RCSCPI("Samantha Feliz","","")},
 
-{"1948", new RCSCPI("Samantha Feliz","","Mark Einstein")}
+{"1948", new RCSCPI("Samantha Feliz","","Mark Einstein")},
+
+{"7f0f8edc-43fe-4bf5-9f72-ed9b3c17b413", new RCSCPI("Ambar Baez","","Olga Derman")},
+
+
+
+
+
+
+
+
+
+
+
+{"284cad69-e0c0-4c01-99ab-9a7faab371dd", new RCSCPI("","","Olga Derman")},
+
+
+
+{"ff324b9f-3cd8-49cd-81af-15e9b79466ec", new RCSCPI("","","Olga Derman")},
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{"7067f3a2-523c-45c0-b64a-c6fde4d0adee", new RCSCPI("","","Jerome Graber")},
+{"d34582e3-35c2-421c-87ca-c9539dd79fce", new RCSCPI("","","Alexander I. Sankin")},
+
+
+
+
+
+
+
+
+
+
+{"48b4b763-4785-4256-b83f-c0d31ecff84b", new RCSCPI("Elaine Keung","","")},
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{"3087", new RCSCPI("","","Jerome Graber")},
+
+
+
+
+
+
+
+
+
+
+
+
+
+{"3978", new RCSCPI("","","Olga Derman")},
+
+
+
+
+
+
+
+
+
+
+{"3261", new RCSCPI("","","Nitin Ohri")},
+
+
+
+
+
+
+{"3287", new RCSCPI("","","Roman Perez-Soler")},
+
+
+
+
+
+
+
+
+
+
+
+
+{"4139", new RCSCPI("","","Roman Perez-Soler")},
+
+
+{"4432", new RCSCPI("","","Jerome Graber")},
+
+
+{"4632", new RCSCPI("","","Nitin Ohri")}
+
+
+
         };
 
         public static RCSCPI getRCSCPI(string studyid)

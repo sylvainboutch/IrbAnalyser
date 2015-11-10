@@ -52,7 +52,7 @@ namespace IrbAnalyser
 
                 Analyse();
 
-                
+                txtOutput.Text = "Analysis complete.\r\n Requesting save file location.";
 
                 ExcelUtility exc = new ExcelUtility();
                 sfdCsv.Filter = "Excel Files|*.xlsx";

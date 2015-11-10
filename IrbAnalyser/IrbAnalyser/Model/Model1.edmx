@@ -263,8 +263,9 @@
         </EntityType>
         <EntityType Name="LCL_V_STUDYVER_APNDX">
           <Key>
-            <PropertyRef Name="PK_STUDY" />
+            <PropertyRef Name="PK_STUDYAPNDX" />
           </Key>
+          <Property Name="PK_STUDYAPNDX" Type="number" Nullable="false" />
           <Property Name="PK_STUDY" Type="number" Nullable="false" />
           <Property Name="MORE_IRBAGENCY" Type="varchar2" MaxLength="100" />
           <Property Name="IRBIDENTIFIERS" Type="varchar2" MaxLength="4000" />
@@ -499,8 +500,9 @@
         </EntityType>
         <EntityType Name="LCL_V_STUDYVER_APNDX">
           <Key>
-            <PropertyRef Name="PK_STUDY" />
+            <PropertyRef Name="PK_STUDYAPNDX" />
           </Key>
+          <Property Type="Decimal" Name="PK_STUDYAPNDX" Precision="38" Scale="0" Nullable="false" />
           <Property Type="Decimal" Name="PK_STUDY" Precision="38" Scale="0" Nullable="false" />
           <Property Type="String" Name="MORE_IRBAGENCY" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="IRBIDENTIFIERS" MaxLength="4000" FixedLength="false" Unicode="false" />
@@ -721,6 +723,7 @@
                 <ScalarProperty Name="STUDYAPNDX_URI" ColumnName="STUDYAPNDX_URI" />
                 <ScalarProperty Name="IRBIDENTIFIERS" ColumnName="IRBIDENTIFIERS" />
                 <ScalarProperty Name="MORE_IRBAGENCY" ColumnName="MORE_IRBAGENCY" />
+                <ScalarProperty Name="PK_STUDYAPNDX" ColumnName="PK_STUDYAPNDX" />
                 <ScalarProperty Name="PK_STUDY" ColumnName="PK_STUDY" />
               </MappingFragment>
             </EntityTypeMapping>

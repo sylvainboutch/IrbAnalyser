@@ -585,7 +585,7 @@ namespace IrbAnalyser
                 string sponsor = BranySponsorMap.getSponsor((string)row["Primarysponsorname"]);
                 if (String.IsNullOrWhiteSpace(sponsor) && !string.IsNullOrWhiteSpace((string)row["Primarysponsorname"]))
                 {
-                    dr["Sponsor information other"] = "Per BRANY System: " + (string)row["Primarysponsorname"];
+                    dr["Sponsor information other"] = "Per IRB System: " + (string)row["Primarysponsorname"];
                 }
                 else if (!String.IsNullOrWhiteSpace(sponsor))
                 {

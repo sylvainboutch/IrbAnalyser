@@ -2028,10 +2028,12 @@ namespace IrbAnalyser.Model
         /// <summary>
         /// Create a new LCL_V_STUDYVER_APNDX object.
         /// </summary>
+        /// <param name="pK_STUDYAPNDX">Initial value of the PK_STUDYAPNDX property.</param>
         /// <param name="pK_STUDY">Initial value of the PK_STUDY property.</param>
-        public static LCL_V_STUDYVER_APNDX CreateLCL_V_STUDYVER_APNDX(global::System.Decimal pK_STUDY)
+        public static LCL_V_STUDYVER_APNDX CreateLCL_V_STUDYVER_APNDX(global::System.Decimal pK_STUDYAPNDX, global::System.Decimal pK_STUDY)
         {
             LCL_V_STUDYVER_APNDX lCL_V_STUDYVER_APNDX = new LCL_V_STUDYVER_APNDX();
+            lCL_V_STUDYVER_APNDX.PK_STUDYAPNDX = pK_STUDYAPNDX;
             lCL_V_STUDYVER_APNDX.PK_STUDY = pK_STUDY;
             return lCL_V_STUDYVER_APNDX;
         }
@@ -2045,6 +2047,33 @@ namespace IrbAnalyser.Model
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
         [DataMemberAttribute()]
+        public global::System.Decimal PK_STUDYAPNDX
+        {
+            get
+            {
+                return _PK_STUDYAPNDX;
+            }
+            set
+            {
+                if (_PK_STUDYAPNDX != value)
+                {
+                    OnPK_STUDYAPNDXChanging(value);
+                    ReportPropertyChanging("PK_STUDYAPNDX");
+                    _PK_STUDYAPNDX = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("PK_STUDYAPNDX");
+                    OnPK_STUDYAPNDXChanged();
+                }
+            }
+        }
+        private global::System.Decimal _PK_STUDYAPNDX;
+        partial void OnPK_STUDYAPNDXChanging(global::System.Decimal value);
+        partial void OnPK_STUDYAPNDXChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
         public global::System.Decimal PK_STUDY
         {
             get
@@ -2053,14 +2082,11 @@ namespace IrbAnalyser.Model
             }
             set
             {
-                if (_PK_STUDY != value)
-                {
-                    OnPK_STUDYChanging(value);
-                    ReportPropertyChanging("PK_STUDY");
-                    _PK_STUDY = StructuralObject.SetValidValue(value);
-                    ReportPropertyChanged("PK_STUDY");
-                    OnPK_STUDYChanged();
-                }
+                OnPK_STUDYChanging(value);
+                ReportPropertyChanging("PK_STUDY");
+                _PK_STUDY = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("PK_STUDY");
+                OnPK_STUDYChanged();
             }
         }
         private global::System.Decimal _PK_STUDY;
