@@ -22,6 +22,31 @@ namespace IrbAnalyser
         public static string enabledGroup = "Study Member";
         public static string disabledGroup = "NO_PRIVILEGE";
 
+
+        public static string[] listRC = new string[]{
+            "Regulatory Coordinator (OCT Managed)",
+            "Regulatory Coordinator Full",
+            "SC_REG Coordinator (OCT Managed)",
+            "SC_REG Coordinator Full",
+            "Full Study Manager"
+        };
+
+        public static string[] activeGroups = new string[]{
+            "Admin",
+            "CPDMU_Admin",
+            "CPDMU_QA",
+            "CPDMU_RC", 
+            "CPDMU_SC", 
+            "GYN_RSC", 
+            "OCT Admin", 
+            "OCT Study Management", 
+            "Oncology Pharmacy", 
+            "OSRP Management", 
+            "PFS_Cal", 
+            "Study Team", 
+            "Study Team Limited"
+        };
+
         //List of new team members
         public static DataTable newTeam = new DataTable();
         //List of updated team members
@@ -183,6 +208,9 @@ namespace IrbAnalyser
                 //newTeam.Columns.Add("Group", typeof(string));
                 triggerTeam.Columns.Add("Organization", typeof(string));
                 triggerTeam.Columns.Add("Primary", typeof(string));
+                triggerTeam.Columns.Add("RC", typeof(string));
+                triggerTeam.Columns.Add("Source", typeof(string));
+                triggerTeam.Columns.Add("Date", typeof(string));
             }
             if (newNonSystemUser.Columns.Count == 0)
             {
@@ -371,6 +399,21 @@ namespace IrbAnalyser
 
             dr["TYPE"] = type;
 
+            if (records.Columns.Contains("RC"))
+            {
+                dr["RC"] = Tools.getRC(row.FK_STUDY);
+            }
+
+            if (records.Columns.Contains("Date"))
+            {
+                dr["Date"] = row.LAST_MODIFIED_DATE.ToString();
+            }
+
+            if (records.Columns.Contains("Source"))
+            {
+                dr["Source"] = Agency.agencyStrLwr;
+            }
+
             dr["Study_number"] = row.STUDY_NUMBER;
 
             dr["Email"] = row.USER_EMAIL;
@@ -477,6 +520,14 @@ namespace IrbAnalyser
                                      ))
                                      select us).All(x => x.USER_HIDDEN == 1);
 
+                    var istrained = (from us in accounts
+                                        where (us.USER_EMAIL.ToLower() == email
+                                        || (us.USER_NAME.ToLower().Contains(((string)userRow["FirstName"]).ToLower().Trim())
+                                        & us.USER_NAME.ToLower().Contains(((string)userRow["LastName"]).ToLower().Trim())
+                                        ))
+                                        && !(us.USER_JOBTYPE == null || us.USER_JOBTYPE == "Untrained")
+                                        select us).Any();
+
                     //For testing only   Michler is a deleted user
                     /*if (currentuser.USER_NAME.Contains("Michler"))
                     {
@@ -523,7 +574,8 @@ namespace IrbAnalyser
                                         {
                                             addRow(userRow, "Inactive User added to study team", triggerTeam);
                                         }
-                                        else if (currentuser.USER_DEFAULTGRP != enabledGroup && currentuser.USER_EMAIL == email && isactiveuser && !issuperuser)
+                                        //else if (currentuser.USER_DEFAULTGRP != enabledGroup && currentuser.USER_EMAIL == email && isactiveuser && !issuperuser)
+                                        else if (!istrained)
                                         {
                                             addRow(userRow, "User needs training", triggerTeam);
                                         }
@@ -594,7 +646,7 @@ namespace IrbAnalyser
                             {
                                 if (isdeleted)
                                 {
-                                    addRow(userRow, "Deleted user added to a study", addedDeletedUser);
+                                    addRow(userRow, "Deleted/Hidden user added to a study", addedDeletedUser);
                                 }
                                 else
                                 {
@@ -603,7 +655,7 @@ namespace IrbAnalyser
                                     {
                                         addRow(userRow, "Inactive User added to study team", triggerTeam);
                                     }
-                                    else if (currentuser.USER_DEFAULTGRP != enabledGroup && currentuser.USER_EMAIL == email && isactiveuser && !issuperuser)
+                                    else if (!listRC.Contains(currentuser.USER_DEFAULTGRP.Trim().ToLower(), StringComparer.OrdinalIgnoreCase) && currentuser.USER_EMAIL == email && isactiveuser && !issuperuser)
                                     {
                                         addRow(userRow, "User needs training", triggerTeam);
                                     }
@@ -638,8 +690,8 @@ namespace IrbAnalyser
                                            & account.USER_NAME.Trim().ToLower() == user.USER_NAME.Trim().ToLower()
                                            select account).First();
 
-                        if (userAccount.USER_TYPE != "Non-System User")
-                        {
+                        //if (userAccount.USER_TYPE != "Non-System User")
+                        //{
                             var agency = user.MORE_IRBAGENCY;
 
                             var countEmail = (from DataRow dr in fpTeam.data.Rows
@@ -654,10 +706,10 @@ namespace IrbAnalyser
 
                             if (countEmail == 0 && countStudy != 0 && user.ROLE != null && user.ROLE.Trim().ToLower() != RC.Trim().ToLower())
                             {
-                                addRowVelosUser(user, "Deleted member", updatedTeam);
-                                addRowVelosUser(user, "Deleted member", triggerTeam);
+                                //addRowVelosUser(user, "Non-RC Absent from the data source", updatedTeam);
+                                addRowVelosUser(user, "Non-RC Absent from the data source", triggerTeam);
                             }
-                            else if (user.ROLE != null && user.ROLE.Trim().ToLower() == RC.Trim().ToLower() && countEmail == 0 && countStudy != 0)
+                            else if (user.ROLE != null && listRC.Contains(user.ROLE.Trim().ToLower(), StringComparer.OrdinalIgnoreCase) && countEmail == 0 && countStudy != 0)
                             {
                                 var delete1 = (from DataRow dr in newTeam.AsEnumerable()
                                                where (string)dr["Study_number"] == user.STUDY_NUMBER
@@ -666,27 +718,28 @@ namespace IrbAnalyser
 
                                 var delete2 = (from us in team
                                                where us.IRBIDENTIFIERS.Trim().ToLower() == studyId
-                                               && us.ROLE == RC
+                                               && listRC.Contains(user.ROLE.Trim().ToLower(), StringComparer.OrdinalIgnoreCase)
+                                               //&& us.ROLE == RC
                                                select us).Any();
 
                                 var delete3 = (from DataRow dr in updatedTeam.AsEnumerable()
                                                where (string)dr["Study_number"] == user.STUDY_NUMBER
                                                && (string)dr["Role"] == RC
-                                               && (string)dr["TYPE"] == "Modified member"
+                                               //&& (string)dr["TYPE"] == "Modified member"
                                                select dr).Any();
 
 
                                 if (delete1 || delete2 || delete3)
                                 {
-                                    addRowVelosUser(user, "Deleted member", updatedTeam);
-                                    addRowVelosUser(user, "Deleted member", triggerTeam);
+                                    //addRowVelosUser(user, "Deleted member", updatedTeam);
+                                    addRowVelosUser(user, "RC Absent from the data source", triggerTeam);
                                 }
                                 else
                                 {
-                                    addRowVelosUser(user, "RC deleted", triggerTeam);
+                                    addRowVelosUser(user, "RC Absent from the data source - No replacement", triggerTeam);
                                 }
                             }
-                        }
+                        //}
                     }
                 }
             }

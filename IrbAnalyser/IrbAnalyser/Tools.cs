@@ -184,6 +184,28 @@ namespace IrbAnalyser
             return ret;
         }
 
+
+        /// <summary>
+        /// Gets the RC from Velos for that study, looks for the study in the database, 
+        /// </summary>
+        /// <param name="IRBstudyId"></param>
+        /// <param name="IRBnumber"></param>
+        /// <param name="accronym"></param>
+        /// <returns></returns>
+        public static string getRC(decimal? fkstudy)
+        {
+            string rc = "";
+
+
+            rc = (from stud in OutputStudy.studys
+                          where stud.PK_STUDY == fkstudy
+                          select stud.STUDY_ENTERED_BY).FirstOrDefault();
+
+            return rc;
+        }
+
+
+
         /// <summary>
         /// Clean a string of many special characters
         /// </summary>

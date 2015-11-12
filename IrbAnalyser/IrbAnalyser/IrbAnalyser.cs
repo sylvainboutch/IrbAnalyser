@@ -18,7 +18,8 @@ namespace IrbAnalyser
 {
     public partial class IrbAnalyser : Form
     {
-
+        public static string zipFile = "";
+        public static string dir = "";
         public void setTxt(string text)
         {
             this.txtOutput.Text = text;
@@ -125,7 +126,11 @@ namespace IrbAnalyser
                     lstxls.Add(new ExcelWorksheet("StudyPersonnelsShort", "List of study and Personnels short version", Study_Personnel_list.studyShort));
                     exc.WriteDataTableToExcel(savefilenoext + "_study_personnels.xlsx", lstxls);
                 }
-                
+
+                File.Copy(zipFile, savefilenoext + "_Source.zip");
+
+                Zip.CleanUpFile(dir);
+
                 txtOutput.Text = "Analysis complete.\r\nPlease open the excel file and create/modify studies in Velos accordingly.";
                 btnclicked = true;
                // btnOk.Text = "Analyse";
@@ -150,7 +155,7 @@ namespace IrbAnalyser
             Agency.AgencyVal = agency;
             Agency.AgencySetupVal = agency;
 
-            string zipFile;
+            //string zipFile;
             if (Agency.AgencyVal == Agency.AgencyList.BRANY)
             {
                 BRANY_API.getZip();
@@ -163,7 +168,7 @@ namespace IrbAnalyser
                 zipFile = ofdStudy.FileName;
             }
 
-            string dir = Zip.UnZip(zipFile);
+            dir = Zip.UnZip(zipFile);
             Tools.filename = dir;
 
             if (Agency.AgencyVal == Agency.AgencyList.BRANY || Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
@@ -198,7 +203,7 @@ namespace IrbAnalyser
                 Study_Personnel_list.generateData();
             }
                 
-            Zip.CleanUpFile(dir);
+            
 
         }
 

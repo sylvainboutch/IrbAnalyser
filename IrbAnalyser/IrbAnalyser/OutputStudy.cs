@@ -219,9 +219,10 @@ namespace IrbAnalyser
                                         select st).Any();
                         OutputSite.analyseRow(dr, true);
 
-                        OutputStatus.analyseRowStudy(dr, true);
+                        
                         if (!dtStudy)
                         {
+                            OutputStatus.analyseRowStudy(dr, true);
                             addRowStudy(dr, true);
                             //Add all related values for that study                            
                             OutputDocs.analyseRow(dr, true);
@@ -237,10 +238,11 @@ namespace IrbAnalyser
 
                         OutputSite.analyseRow(dr, false);
 
-                        OutputStatus.analyseRowStudy(dr, false);
+                        
                         if (!dtStudy)
                         {
 
+                            OutputStatus.analyseRowStudy(dr, false);
 
                             OutputDocs.analyseRow(dr, false);
 
