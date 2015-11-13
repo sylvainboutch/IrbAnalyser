@@ -71,6 +71,69 @@ namespace IrbAnalyser
 
 
         /// <summary>
+        /// If the study contains one of these status then we shouldnt update the IRB
+        /// </summary>
+        public static string[] nochangingstatus = new String[]{
+            "IRB Initial Approved"
+        };
+
+        /// <summary>
+        /// Check if study has the specified status in velos
+        /// </summary>
+        /// <param name="studyId"></param>
+        /// <returns></returns>
+        static public bool doesStudyHaveStatus(string[] status, string studyId)
+        {
+            bool hasstatus = (from stat in OutputStatus.allstatus
+                      where stat.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (studyId.Trim().ToLower())
+                      && status.Contains(stat.SSTAT_STUDY_STATUS.Trim().ToLower(), StringComparer.OrdinalIgnoreCase)
+                      select stat).Any();
+
+            return hasstatus;
+        }
+
+
+        /// <summary>
+        /// Check if the studyNumber needs to change
+        /// </summary>
+        /// <param name="studyId"></param>
+        /// <returns></returns>
+        static public bool shouldStudyNumberChange(string studyId, string IRBnumber, string accronym, string title, string sponsorId)
+        {
+            if (doesStudyHaveStatus(nochangingstatus, studyId))
+            {
+                return false;
+            }
+
+            string numberDB = getDBStudyNumber(studyId);
+
+            string usetitle = accronym;
+            if (string.IsNullOrWhiteSpace(usetitle))
+            {
+                usetitle = string.IsNullOrWhiteSpace(sponsorId) ? cleanTitle(title) : cleanTitle(sponsorId);
+            }
+
+            string numberActual = generateStudyNumber(IRBnumber, usetitle);
+
+            return numberActual == numberDB;
+        }
+
+
+        /// <summary>
+        /// Get the study number from the Velos DB
+        /// </summary>
+        /// <param name="studyId"></param>
+        /// <returns></returns>
+       public static string getDBStudyNumber(string studyId)
+       {
+           return (from stud in OutputStudy.studys
+                              where stud.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (studyId.Trim().ToLower())
+                  && stud.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
+                              select stud.STUDY_NUMBER).FirstOrDefault();
+       }
+
+       
+        /// <summary>
         /// Gets the study number for that study, looks for the study in the database, in previously added new study.
         /// If no study is found, creates the study number.
         /// The acronym is read from the datasource
@@ -102,43 +165,22 @@ namespace IrbAnalyser
         /// <returns></returns>
         public static string getStudyNumber(string IRBstudyId, string IRBnumber, string accronym, string title, string sponsorId)
         {
-            string number = "";
+            string number = getDBStudyNumber(IRBstudyId);
 
-
-            //BRANY look up agency in MSD
-            if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+            if (shouldStudyNumberChange(IRBstudyId, IRBnumber, accronym, title, sponsorId))
             {
-                number = (from stud in OutputStudy.studys
-                          where stud.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (IRBstudyId.Trim().ToLower())
-                       && stud.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
-                          select stud.STUDY_NUMBER).FirstOrDefault();
-            }
-            //IRIS all other agency in MSD, non IRB studies wont have 
-            else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
-            {
-                number = (from stud in OutputStudy.studys
-                          where stud.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (IRBstudyId.Trim().ToLower())
-                       && stud.MORE_IRBAGENCY.ToLower() != Agency.brany
-                          select stud.STUDY_NUMBER).FirstOrDefault();
-            }
-            else
-            {
-                number = (from stud in OutputStudy.studys
-                          where stud.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (IRBstudyId.Trim().ToLower())
-                          select stud.STUDY_NUMBER).FirstOrDefault();
-            }
-
-
-            if (number == null || number.Trim() == "")
-            {
-                string usetitle = accronym;
-                if (string.IsNullOrWhiteSpace(usetitle))
+                if (number == null || number.Trim() == "")
                 {
-                    usetitle = string.IsNullOrWhiteSpace(sponsorId) ? cleanTitle(title) : cleanTitle(sponsorId);
-                }
+                    string usetitle = accronym;
+                    if (string.IsNullOrWhiteSpace(usetitle))
+                    {
+                        usetitle = string.IsNullOrWhiteSpace(sponsorId) ? cleanTitle(title) : cleanTitle(sponsorId);
+                    }
 
-                number = generateStudyNumber(IRBnumber, usetitle);
+                    number = generateStudyNumber(IRBnumber, usetitle);
+                }
             }
+
             return number;
         }
 

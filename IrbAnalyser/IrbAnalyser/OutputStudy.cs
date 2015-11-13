@@ -141,6 +141,7 @@ namespace IrbAnalyser
                 updatedStudy.Columns.Add("IRB Study ID", typeof(string));
                 updatedStudy.Columns.Add("IRB Identifiers", typeof(string));
                 updatedStudy.Columns.Add("Study_number", typeof(string));
+                updatedStudy.Columns.Add("Old_study_number", typeof(string));
                 updatedStudy.Columns.Add("Regulatory_coordinator", typeof(string));
                 updatedStudy.Columns.Add("Study_coordinator", typeof(string));
                 updatedStudy.Columns.Add("Principal Investigator", typeof(string));
@@ -254,6 +255,14 @@ namespace IrbAnalyser
 
                             foreach (var stu in study)
                             {
+
+                                string newNumber = Tools.getStudyNumber((string)dr["StudyId"], (string)dr["IRBNumber"], (string)dr["StudyAcronym"], (string)dr["StudyTitle"], (string)dr["PrimarySponsorStudyId"]);
+                                string oldNumber = Tools.getDBStudyNumber((string)dr["StudyId"]);
+                                if (newNumber != oldNumber)
+                                {
+                                    hasChanged = true;
+                                }
+
                                 newpi = getPI((string)dr["StudyId"]);
                                 newrc = getRC((string)dr["StudyId"]);
                                 newcro = getCRO((string)dr["StudyId"]);
@@ -311,6 +320,10 @@ namespace IrbAnalyser
                                 {
                                     hasChanged = true;
                                 }
+
+
+
+
 
 
                                 if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
@@ -489,6 +502,13 @@ namespace IrbAnalyser
 
             //dr["Study_number"] = Tools.getStudyNumber((string)row["StudyId"], (string)dr["IRB no"], (string)row["StudyAcronym"], (string)row["StudyTitle"]);
             //Tools.getStudyNumber((string)row["StudyId"], (string)dr["IRB no"], (string)row["StudyAcronym"]);
+
+            string newNumber = Tools.getStudyNumber((string)dr["StudyId"], (string)dr["IRBNumber"], (string)dr["StudyAcronym"], (string)dr["StudyTitle"], (string)dr["PrimarySponsorStudyId"]);
+            string oldNumber = Tools.getDBStudyNumber((string)dr["StudyId"]);
+            if (newNumber != oldNumber)
+            {
+                dr["Old_study_number"] = oldNumber;
+            }
 
             if (newpi == null)
             {
@@ -959,6 +979,11 @@ namespace IrbAnalyser
                 int a = 1;
                 a = a + 1;
             }*/
+
+            if (Tools.getOldStudy((string)dr["StudyId"]))
+            {
+                return true;
+            }
 
             if (SpecialStudys.checkConsentAgentAndDevice && dr.Table.Columns.Contains("Consent") && dr.Table.Columns.Contains("PhaseDrugDevice"))
             {

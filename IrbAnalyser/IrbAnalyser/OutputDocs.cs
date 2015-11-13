@@ -115,32 +115,6 @@ namespace IrbAnalyser
                                    && ver.STUDYAPNDX_URI.ToLower() == url
                                 select ver).Count();
                     }
-
-
-                    if (docs == 0)
-                    {
-                        addRow("New URL", url, "documents", irbstudyId, irbno, false);
-
-
-                        var docs2 = (from ver in versions
-                                     where ver.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (irbstudyId.Trim().ToLower())
-                                     select ver).ToList();
-
-                        foreach (var calisse in versions)
-                        {
-                            var tabarnak = calisse.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0];
-                            var osti = calisse.MORE_IRBAGENCY;
-                            var criss = calisse.STUDYAPNDX_URI;
-                            if (tabarnak.Contains(irbstudyId.Trim().ToLower()) || criss.ToLower() == url.ToLower())
-                            {
-                                tabarnak = "tabarnak";
-                                osti = criss;
-                            }
-                        }
-                        var a = versions.ToArray();
-                        var g = docs2.ToString();
-
-                    }
                 }
             }
             else if (!((string)studyrow["IRBNumber"]).Contains("(IBC)"))
@@ -176,7 +150,7 @@ namespace IrbAnalyser
             dr["URL"] = url;
             if (url.ToLower().Contains("iris"))
             {
-                dr["Short description"] = newrecord ? "Einstein IRB Documents" : "";
+                dr["Short description"] = newrecord ? "IRIS IRB Documents" : "";
             }
             else
             {
