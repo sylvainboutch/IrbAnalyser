@@ -142,7 +142,7 @@ namespace IrbAnalyser
 
             dr["TYPE"] = type;
 
-            dr["Study_number"] = Tools.getStudyNumber(studyid, irbno);
+            dr["Study_number"] = Tools.getOldStudyNumber(studyid, irbno);
 
             dr["Version date"] = Tools.parseDate((string)DateTime.Now.ToShortDateString());
             dr["Version number"] = Agency.agencyStrLwr.ToUpper() + " " + section;

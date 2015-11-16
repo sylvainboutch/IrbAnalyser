@@ -74,7 +74,8 @@ namespace IrbAnalyser
         /// If the study contains one of these status then we shouldnt update the IRB
         /// </summary>
         public static string[] nochangingstatus = new String[]{
-            "IRB Initial Approved"
+            //"IRB Initial Approved"
+            "Blabla"
         };
 
         /// <summary>
@@ -98,14 +99,14 @@ namespace IrbAnalyser
         /// </summary>
         /// <param name="studyId"></param>
         /// <returns></returns>
-        static public bool shouldStudyNumberChange(string studyId, string IRBnumber, string accronym, string title, string sponsorId)
+        static public bool shouldStudyNumberChange(string studyId, string IRBnumber, string accronym, string title, string sponsorId, string numberDB)
         {
             if (doesStudyHaveStatus(nochangingstatus, studyId))
             {
                 return false;
             }
 
-            string numberDB = getDBStudyNumber(studyId);
+            //string numberDB = getDBStudyNumber(studyId);
 
             string usetitle = accronym;
             if (string.IsNullOrWhiteSpace(usetitle))
@@ -113,9 +114,27 @@ namespace IrbAnalyser
                 usetitle = string.IsNullOrWhiteSpace(sponsorId) ? cleanTitle(title) : cleanTitle(sponsorId);
             }
 
-            string numberActual = generateStudyNumber(IRBnumber, usetitle);
+            string pattern = @"^(19|20)\d{2}";
+            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+            string irbnumber = rgx.IsMatch(IRBnumber) ? IRBnumber.Substring(2) : IRBnumber;
+            irbnumber = irbnumber.Replace("-", "").ToLower();
 
-            return numberActual == numberDB;
+
+            string numberActual = "";
+            if (!numberDB.ToLower().Contains(irbnumber) && !string.IsNullOrWhiteSpace(accronym) && accronym.Length < 20)
+            {
+                numberActual = generateStudyNumber(IRBnumber, usetitle);
+            }
+            else if (!numberDB.ToLower().Contains(irbnumber) && (string.IsNullOrWhiteSpace(accronym) || accronym.Length >= 20))
+            {
+                numberActual = generateStudyNumber(IRBnumber, numberDB.Substring(numberDB.IndexOf("-")));
+            }
+            else if (!string.IsNullOrWhiteSpace(accronym) && accronym.Length < 20)
+            {
+                numberActual = generateStudyNumber(IRBnumber, usetitle);
+            }
+
+            return numberActual == numberDB && !string.IsNullOrWhiteSpace(numberActual);
         }
 
 
@@ -126,10 +145,40 @@ namespace IrbAnalyser
         /// <returns></returns>
        public static string getDBStudyNumber(string studyId)
        {
-           return (from stud in OutputStudy.studys
+           string retour = (from stud in OutputStudy.studys
                               where stud.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (studyId.Trim().ToLower())
                   && stud.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
                               select stud.STUDY_NUMBER).FirstOrDefault();
+           return retour;
+       }
+
+       /// <summary>
+       /// Gets the study number for that study, looks for the study in the database, in previously added new study.
+       /// If no study is found, creates the study number.
+       /// The acronym is read from the datasource
+       /// </summary>
+       /// <param name="IRBstudyId"></param>
+       /// <param name="IRBnumber"></param>
+       /// <returns></returns>
+       public static string getOldStudyNumber(string IRBstudyId, string IRBnumber)
+       {
+           var stud = (from st in OutputStudy.fpstudys.data.AsEnumerable()
+                       where st.Field<string>("StudyId").Trim().ToLower() == IRBstudyId.Trim().ToLower()
+                       select st).ToArray();
+
+           string accronym = stud.Count() > 0 ? stud[0].Field<string>("StudyAcronym") : "";
+           string title = stud.Count() > 0 ? stud[0].Field<string>("StudyTitle") : "";
+           string sponsorId = stud.Count() > 0 ? stud[0].Field<string>("PrimarySponsorStudyId") : "";
+
+           string oldNumber = getDBStudyNumber(IRBstudyId);
+           if (!string.IsNullOrWhiteSpace(oldNumber))
+           {
+               return oldNumber;
+           }
+           else
+           {
+               return getNewStudyNumber(IRBstudyId, IRBnumber, accronym, title, sponsorId);
+           }
        }
 
        
@@ -141,7 +190,7 @@ namespace IrbAnalyser
         /// <param name="IRBstudyId"></param>
         /// <param name="IRBnumber"></param>
         /// <returns></returns>
-        public static string getStudyNumber(string IRBstudyId, string IRBnumber)
+        public static string getNewStudyNumber(string IRBstudyId, string IRBnumber)
         {
             var stud = (from st in OutputStudy.fpstudys.data.AsEnumerable()
                         where st.Field<string>("StudyId").Trim().ToLower() == IRBstudyId.Trim().ToLower()
@@ -151,7 +200,7 @@ namespace IrbAnalyser
             string title = stud.Count() > 0 ? stud[0].Field<string>("StudyTitle") : "";
             string sponsorId = stud.Count() > 0 ? stud[0].Field<string>("PrimarySponsorStudyId") : "";
 
-            return getStudyNumber(IRBstudyId, IRBnumber, accronym, title, sponsorId);
+            return getNewStudyNumber(IRBstudyId, IRBnumber, accronym, title, sponsorId);
         }
 
         /// <summary>
@@ -163,22 +212,44 @@ namespace IrbAnalyser
         /// <param name="IRBnumber"></param>
         /// <param name="accronym"></param>
         /// <returns></returns>
-        public static string getStudyNumber(string IRBstudyId, string IRBnumber, string accronym, string title, string sponsorId)
+        public static string getNewStudyNumber(string IRBstudyId, string IRBnumber, string accronym, string title, string sponsorId)
         {
             string number = getDBStudyNumber(IRBstudyId);
 
-            if (shouldStudyNumberChange(IRBstudyId, IRBnumber, accronym, title, sponsorId))
-            {
-                if (number == null || number.Trim() == "")
-                {
-                    string usetitle = accronym;
-                    if (string.IsNullOrWhiteSpace(usetitle))
-                    {
-                        usetitle = string.IsNullOrWhiteSpace(sponsorId) ? cleanTitle(title) : cleanTitle(sponsorId);
-                    }
 
-                    number = generateStudyNumber(IRBnumber, usetitle);
-                }
+
+            string usetitle = accronym;
+            if (string.IsNullOrWhiteSpace(usetitle))
+            {
+                usetitle = string.IsNullOrWhiteSpace(sponsorId) ? cleanTitle(title) : cleanTitle(sponsorId);
+            }
+
+            if (number == null || number.Trim() == "")
+            {
+                return generateStudyNumber(IRBnumber, usetitle);
+            }
+
+            if (doesStudyHaveStatus(nochangingstatus, IRBstudyId))
+            {
+                return number;
+            }
+
+            string pattern = @"^(19|20)\d{2}";
+            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+            string irbnumber = rgx.IsMatch(IRBnumber) ? IRBnumber.Substring(2) : IRBnumber;
+            irbnumber = irbnumber.Replace("-", "").ToLower();
+
+            if (!number.ToLower().Contains(irbnumber) && !string.IsNullOrWhiteSpace(accronym) && accronym.Length < 20)
+            {
+                return generateStudyNumber(IRBnumber, usetitle);
+            }
+            else if (!number.ToLower().Contains(irbnumber) && (string.IsNullOrWhiteSpace(accronym) || accronym.Length >= 20))
+            {
+                return generateStudyNumber(IRBnumber, number.Substring(number.IndexOf("-")));
+            }
+            else if (!string.IsNullOrWhiteSpace(accronym) && accronym.Length < 20)
+            {
+                return generateStudyNumber(IRBnumber, usetitle);
             }
 
             return number;
@@ -196,6 +267,8 @@ namespace IrbAnalyser
             Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
             irbnumber = rgx.IsMatch(irbnumber) ? irbnumber.Substring(2) : irbnumber;
             string output = irbnumber.Replace("-", "");
+            accronym = cleanTitle(accronym);
+            accronym = accronym.Replace(" ","");
             output += "-" + accronym.Substring(0, accronym.Length > 20 ? 20:accronym.Length);
             return output.Trim();
         }

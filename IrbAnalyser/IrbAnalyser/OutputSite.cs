@@ -156,7 +156,7 @@ namespace IrbAnalyser
             { dr = updatedSites.NewRow(); }
             dr["Type"] = type;
 
-            dr["Study_number"] = Tools.getStudyNumber(studyid, IRBno);
+            dr["Study_number"] = Tools.getOldStudyNumber(studyid, IRBno);
 
             dr["Organization"] = site;
             dr["Local sample size"] = size;

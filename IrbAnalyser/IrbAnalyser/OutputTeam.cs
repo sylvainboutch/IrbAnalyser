@@ -325,7 +325,7 @@ namespace IrbAnalyser
 
                     dr["TYPE"] = type;
 
-                    dr["Study_number"] = Tools.getStudyNumber((string)row["StudyId"], ((string)row["IRBNumber"]).Replace("(IBC)", ""));
+                    dr["Study_number"] = Tools.getOldStudyNumber((string)row["StudyId"], ((string)row["IRBNumber"]).Replace("(IBC)", ""));
 
                     dr["Email"] = row["PrimaryEMailAddress"].ToString();
                     dr["AdditionnalEmails"] = row["OtherEmailAdresses"].ToString();

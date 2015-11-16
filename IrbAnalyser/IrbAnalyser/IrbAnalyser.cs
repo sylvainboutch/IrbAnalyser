@@ -127,7 +127,10 @@ namespace IrbAnalyser
                     exc.WriteDataTableToExcel(savefilenoext + "_study_personnels.xlsx", lstxls);
                 }
 
-                File.Copy(zipFile, savefilenoext + "_Source.zip");
+                if (zipFile != savefilenoext + "_Source.zip")
+                {
+                    File.Copy(zipFile, savefilenoext + "_Source.zip", true);
+                }
 
                 Zip.CleanUpFile(dir);
 

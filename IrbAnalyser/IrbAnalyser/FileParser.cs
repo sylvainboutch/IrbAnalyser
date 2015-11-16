@@ -61,6 +61,8 @@ namespace IrbAnalyser
                     data.Columns.Add("Cancer");
                     data.Columns.Add("ExternalIRB");
                     data.Columns.Add("ExternalIRBnumber");
+                    data.Columns.Add("oldNumber");
+                    data.Columns.Add("newNumber");
                     initColumnCount = data.Columns.Count;
                     break;
                 case type.Status:

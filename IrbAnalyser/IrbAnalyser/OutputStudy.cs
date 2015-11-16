@@ -201,7 +201,7 @@ namespace IrbAnalyser
             if (shouldStudyBeAdded(irbstudyId))
             {
                 string identifiers = Tools.generateStudyIdentifiers((string)dr["StudyId"]);
-                string number = Tools.getStudyNumber((string)dr["StudyId"], ((string)dr["IRBNumber"]).Replace("(IBC)", ""));
+                string number = Tools.getOldStudyNumber((string)dr["StudyId"], ((string)dr["IRBNumber"]).Replace("(IBC)", ""));
 
                 OutputIRBForm.addIds(number, identifiers);
 
@@ -256,11 +256,27 @@ namespace IrbAnalyser
                             foreach (var stu in study)
                             {
 
-                                string newNumber = Tools.getStudyNumber((string)dr["StudyId"], (string)dr["IRBNumber"], (string)dr["StudyAcronym"], (string)dr["StudyTitle"], (string)dr["PrimarySponsorStudyId"]);
+                                string newNumber = Tools.getNewStudyNumber((string)dr["StudyId"], (string)dr["IRBNumber"], (string)dr["StudyAcronym"], (string)dr["StudyTitle"], (string)dr["PrimarySponsorStudyId"]);
                                 string oldNumber = Tools.getDBStudyNumber((string)dr["StudyId"]);
-                                if (newNumber != oldNumber)
+
+                                if (!dr.Table.Columns.Contains("oldNumber"))
+                                {
+                                    dr.Table.Columns.Add("oldNumber");
+                                }
+                                if (!dr.Table.Columns.Contains("newNumber"))
+                                {
+                                    dr.Table.Columns.Add("newNumber");
+                                }
+
+                                dr["oldNumber"] = oldNumber;
+                                if (newNumber != oldNumber && !string.IsNullOrWhiteSpace((string)dr["StudyAcronym"]))
                                 {
                                     hasChanged = true;
+                                    dr["newNumber"] = newNumber;
+                                }
+                                else
+                                {
+                                    dr["newNumber"] = "";
                                 }
 
                                 newpi = getPI((string)dr["StudyId"]);
@@ -498,16 +514,15 @@ namespace IrbAnalyser
             dr["IRB Study ID"] = (string)row["StudyId"];
             dr["IRB Identifiers"] = Tools.generateStudyIdentifiers((string)row["StudyId"]);
 
-            dr["Study_number"] = Tools.getStudyNumber((string)row["StudyId"], (string)dr["IRB no"], (string)row["StudyAcronym"], (string)row["StudyTitle"], (string)row["PrimarySponsorStudyId"]);
-
-            //dr["Study_number"] = Tools.getStudyNumber((string)row["StudyId"], (string)dr["IRB no"], (string)row["StudyAcronym"], (string)row["StudyTitle"]);
-            //Tools.getStudyNumber((string)row["StudyId"], (string)dr["IRB no"], (string)row["StudyAcronym"]);
-
-            string newNumber = Tools.getStudyNumber((string)dr["StudyId"], (string)dr["IRBNumber"], (string)dr["StudyAcronym"], (string)dr["StudyTitle"], (string)dr["PrimarySponsorStudyId"]);
-            string oldNumber = Tools.getDBStudyNumber((string)dr["StudyId"]);
-            if (newNumber != oldNumber)
+            if (!string.IsNullOrWhiteSpace((string)row["newNumber"]))
             {
-                dr["Old_study_number"] = oldNumber;
+                dr["Old_study_number"] = row["oldNumber"];
+                dr["Study_number"] = row["newNumber"];
+            }
+            else
+            {
+                dr["Study_number"] = row["oldNumber"];
+                dr["Old_study_number"] = "";
             }
 
             if (newpi == null)
