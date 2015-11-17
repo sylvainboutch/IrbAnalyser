@@ -141,7 +141,8 @@ namespace IrbAnalyser
                 updatedStudy.Columns.Add("IRB Study ID", typeof(string));
                 updatedStudy.Columns.Add("IRB Identifiers", typeof(string));
                 updatedStudy.Columns.Add("Study_number", typeof(string));
-                updatedStudy.Columns.Add("Old_study_number", typeof(string));
+                //updatedStudy.Columns.Add("Old_study_number", typeof(string));
+                updatedStudy.Columns.Add("New_Number", typeof(string));
                 updatedStudy.Columns.Add("Regulatory_coordinator", typeof(string));
                 updatedStudy.Columns.Add("Study_coordinator", typeof(string));
                 updatedStudy.Columns.Add("Principal Investigator", typeof(string));
@@ -516,13 +517,13 @@ namespace IrbAnalyser
 
             if (!string.IsNullOrWhiteSpace((string)row["newNumber"]))
             {
-                dr["Old_study_number"] = row["oldNumber"];
-                dr["Study_number"] = row["newNumber"];
+                dr["Study_number"] = row["oldNumber"];
+                dr["New_Number"] = row["newNumber"];
             }
             else
             {
                 dr["Study_number"] = row["oldNumber"];
-                dr["Old_study_number"] = "";
+                dr["New_Number"] = "";
             }
 
             if (newpi == null)

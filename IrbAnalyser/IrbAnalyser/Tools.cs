@@ -239,15 +239,15 @@ namespace IrbAnalyser
             string irbnumber = rgx.IsMatch(IRBnumber) ? IRBnumber.Substring(2) : IRBnumber;
             irbnumber = irbnumber.Replace("-", "").ToLower();
 
-            if (!number.ToLower().Contains(irbnumber) && !string.IsNullOrWhiteSpace(accronym) && accronym.Length < 20)
+            if (!number.ToLower().Contains(irbnumber) && !string.IsNullOrWhiteSpace(accronym) && accronym.Length <= 20)
             {
                 return generateStudyNumber(IRBnumber, usetitle);
             }
-            else if (!number.ToLower().Contains(irbnumber) && (string.IsNullOrWhiteSpace(accronym) || accronym.Length >= 20))
+            else if (!number.ToLower().Contains(irbnumber) && (string.IsNullOrWhiteSpace(accronym) || accronym.Length > 20))
             {
                 return generateStudyNumber(IRBnumber, number.Substring(number.IndexOf("-")));
             }
-            else if (!string.IsNullOrWhiteSpace(accronym) && accronym.Length < 20)
+            else if (!string.IsNullOrWhiteSpace(accronym) && accronym.Length <= 20)
             {
                 return generateStudyNumber(IRBnumber, usetitle);
             }
