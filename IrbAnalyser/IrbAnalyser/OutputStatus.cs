@@ -823,11 +823,13 @@ namespace IrbAnalyser
             }
             else if (Agency.AgencyVal == Agency.AgencyList.BRANY)
             {
-                dr["Organization"] = BranySiteMap.getSite(((string)studyRow["Sitename"]).Replace("(IBC)", ""));
+                //dr["Organization"] = BranySiteMap.getSite(((string)studyRow["Sitename"]).Replace("(IBC)", ""));
+                dr["Organization"] = OutputSite.EMmainsite;
             }
             else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
             {
-                dr["Organization"] = IRISMap.SiteMap.getSite((string)studyRow["Sitename"]);
+                //dr["Organization"] = IRISMap.SiteMap.getSite((string)studyRow["Sitename"]);
+                dr["Organization"] = OutputSite.EMmainsite;
             }
 
             dr["Study status"] = status;

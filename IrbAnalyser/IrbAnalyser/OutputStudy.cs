@@ -132,6 +132,7 @@ namespace IrbAnalyser
                 newStudy.Columns.Add("Sponsor Protocol ID", typeof(string));
                 newStudy.Columns.Add("CRO", typeof(string));
                 newStudy.Columns.Add("Cancer", typeof(string));
+                //newStudy.Columns.Add("Accronym", typeof(string));
             }
 
             if (updatedStudy.Columns.Count == 0)
@@ -159,6 +160,7 @@ namespace IrbAnalyser
                 updatedStudy.Columns.Add("Sponsor Protocol ID", typeof(string));
                 updatedStudy.Columns.Add("CRO", typeof(string));
                 updatedStudy.Columns.Add("Cancer", typeof(string));
+                //updatedStudy.Columns.Add("Accronym", typeof(string));
             }
         }
 
@@ -199,8 +201,17 @@ namespace IrbAnalyser
                 }
             }
 
+            string a = "";
+            if (((string)dr["IRBNumber"]).Contains("5530"))
+            {
+                a = "g";
+            }
+
+            a = "c";
+
             if (shouldStudyBeAdded(irbstudyId))
             {
+                if (a == "g") a = "4";
                 string identifiers = Tools.generateStudyIdentifiers((string)dr["StudyId"]);
                 string number = Tools.getOldStudyNumber((string)dr["StudyId"], ((string)dr["IRBNumber"]).Replace("(IBC)", ""));
 
@@ -282,7 +293,8 @@ namespace IrbAnalyser
 
                                 newpi = getPI((string)dr["StudyId"]);
                                 newrc = getRC((string)dr["StudyId"]);
-                                newcro = getCRO((string)dr["StudyId"]);
+                                //newsc = getSC((string)dr["StudyId"]);
+                                //newcro = getCRO((string)dr["StudyId"]);
 
                                 RCSCPI rcscpi = new RCSCPI();
                                 rcscpi = SpecialStudys.getRCSCPI((string)dr["StudyId"]);
@@ -459,8 +471,8 @@ namespace IrbAnalyser
                                     hasChanged = true;
                                 }
 
-                                
-                                
+                                //TEMPORARY
+                                //hasChanged = true;
 
 
                             }
@@ -523,8 +535,14 @@ namespace IrbAnalyser
             else
             {
                 dr["Study_number"] = row["oldNumber"];
-                dr["New_Number"] = "";
+                if (dr.Table.Columns.Contains("New_Number"))
+                {
+                    dr["New_Number"] = "";
+                }
             }
+
+            //TEMPORARY
+            //dr["Accronym"] = row["StudyAcronym"];
 
             if (newpi == null)
             {
@@ -553,14 +571,14 @@ namespace IrbAnalyser
                 dr["Study_coordinator"] = newsc;
             }
 
-            if (newcro == null)
+            /*if (newcro == null)
             {
                 dr["CRO"] = getCRO((string)row["StudyId"]);
             }
             else
             {
                 dr["CRO"] = newcro;
-            }
+            }*/
 
             dr["Official title"] = Tools.removeHtml((string)row["StudyTitle"]);
             dr["Study summary"] = Tools.removeHtml((string)row["Studysummary"]);
@@ -1003,7 +1021,7 @@ namespace IrbAnalyser
 
             if (SpecialStudys.checkConsentAgentAndDevice && dr.Table.Columns.Contains("Consent") && dr.Table.Columns.Contains("PhaseDrugDevice"))
             {
-                if ((string)dr["Consent"] == "N" || (string)dr["PhaseDrugDevice"] == "N")
+                if ((string)dr["Consent"] == "N" && (string)dr["PhaseDrugDevice"] == "N")
                 {
                     return false;
                 }

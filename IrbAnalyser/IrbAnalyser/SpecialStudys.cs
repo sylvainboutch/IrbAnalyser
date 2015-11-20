@@ -940,6 +940,132 @@ namespace IrbAnalyser
 
         public static readonly Dictionary<string, RCSCPI> migrationStudysRCSCPI = new Dictionary<string, RCSCPI>()
         {
+
+
+
+
+
+{"7f0f8edc-43fe-4bf5-9f72-ed9b3c17b413", new RCSCPI("Ambar Baez","","Olga Derman")},
+{"ad1ecf6d-ad04-4ac3-a490-24fe60417b7b", new RCSCPI("Randall Teeter","","")},
+
+
+{"f87c22ed-a98f-428b-b037-5ee85680b9ac", new RCSCPI("Eileen Burke","","")},
+
+
+
+
+
+{"68eb2982-af9a-4a60-9134-f6d42e0e1774", new RCSCPI("","","Jesus Anampa")},
+{"da1a6bfc-8572-4e60-b213-79470b5b5c8f", new RCSCPI("Randall Teeter","","Nicole Nevadunsky")},
+
+
+
+
+
+{"469c3f44-1aba-4055-aee2-7b0dd3df1c0e", new RCSCPI("","","Heather Ann Smith")},
+{"4189cd01-0b47-4ea2-9fa3-d515403459d0", new RCSCPI("Eileen Burke","","")},
+
+
+
+{"284cad69-e0c0-4c01-99ab-9a7faab371dd", new RCSCPI("","","Olga Derman")},
+
+
+
+
+
+
+
+
+
+{"05f5a9e4-c720-4b1d-a8e5-c76fd5bd3829", new RCSCPI("Daniel Paucar","","")},
+
+
+
+
+
+{"ff324b9f-3cd8-49cd-81af-15e9b79466ec", new RCSCPI("","","Olga Derman")},
+{"0129e82e-6439-451a-9889-41b773defa24", new RCSCPI("Alexandra Urman","","")},
+
+
+
+
+
+
+
+{"9bd3cd8a-d97e-4d59-b9a8-6d7ea4bcceab", new RCSCPI("","","Jesus Anampa")},
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{"39a6d74f-90a1-4f04-81e8-c05b0e06fa57", new RCSCPI("","","Andreas Kaubisch")},
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{"8bda9c3f-97ef-4844-93a8-bd8503be9f6a", new RCSCPI("Nicole Nevadunsky","","Nicole Nevadunsky")},
+{"7067f3a2-523c-45c0-b64a-c6fde4d0adee", new RCSCPI("","","Jerome Graber")},
+{"d34582e3-35c2-421c-87ca-c9539dd79fce", new RCSCPI("","","Alexander I. Sankin")},
+
+
+
+
+
+
+
+{"2cd26b95-7790-49d0-b3e2-1d0f1b2ea363", new RCSCPI("","","Mark Einstein")},
+
+
+
+{"9659e5bd-0097-4864-890f-d2504828dc66", new RCSCPI("Randall Teeter","","Heather Ann Smith")},
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{"807ac22a-cbad-4525-b199-1865ef86b9fd", new RCSCPI("","","Balazs Halmos")},
+
+{"48b4b763-4785-4256-b83f-c0d31ecff84b", new RCSCPI("Elaine Keung","","")}            
+            
+            /*
            {"", new RCSCPI("","","")},
 {"42f28a55-7f67-4eb3-b2f3-597e1ebc750c", new RCSCPI("Cristina Garcia-Miller","","")},
 {"e14e8bac-c232-4520-985c-4912448c1293", new RCSCPI("Cristina Garcia-Miller","","")},
@@ -1084,7 +1210,7 @@ namespace IrbAnalyser
 {"4139", new RCSCPI("Shakira Forde","","Roman Perez-Soler")},
 {"4432", new RCSCPI("","","Jerome Graber")},
 {"4632", new RCSCPI("Samantha Feliz","","Nitin Ohri")}
-
+            */
         };
 
         public static RCSCPI getRCSCPI(string studyid)

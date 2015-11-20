@@ -68,11 +68,11 @@ namespace IrbAnalyser
                 { PI, "No privilege" },
                 { "Faculty Advisor", "No privilege" },
                 { "Research Assistant", "No privilege" },
-                { "Auditor", "No privilege" },
+                { "Auditor", "NA" },
                 { "CC Recipient", "No privilege" },
                 { "Co-Investigator", "No privilege" },
-                { "Sponsor", "No privilege" },
-                { "Consultant", "No privilege" },
+                { "Sponsor", "NA" },
+                { "Consultant", "NA" },
                 {"",""},
                 { CRO, "NA" }
             };
@@ -163,7 +163,10 @@ namespace IrbAnalyser
                 { "Pending Review (IBC)", "" },
                 { "Closed to Enrollment (IBC)", "Closed to Accrual" },
                 { "Dropped by Investigator", "" },
-                { "Administrative - Translation", "" }
+                { "Administrative - Translation", "" },
+                {"Closed (IBC)","Complete"},
+                {"Pending Approval - IRB only","IRB Initial Submitted**"}
+
                 
                 
 
