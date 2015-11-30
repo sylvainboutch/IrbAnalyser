@@ -464,7 +464,7 @@ namespace IrbAnalyser
 
                                 if (Tools.compareStr(stu.STUDY_SPONSORID, dr["PrimarysponsorstudyID"]) && !String.IsNullOrWhiteSpace((string)dr["PrimarysponsorstudyID"]))
                                 {
-                                    dr["PrimarysponsorstudyID"] = "";
+                                    //dr["PrimarysponsorstudyID"] = "";
                                 }
                                 else if (!String.IsNullOrWhiteSpace((string)dr["PrimarysponsorstudyID"]))
                                 {
@@ -782,13 +782,29 @@ namespace IrbAnalyser
             {
                 return getRole(studyId, BranyRoleMap.PI);
             }
+            else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
+            {
+                //string rcemail = OutputTeam.team.FirstOrDefault(x => x.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (studyId.Trim().ToLower()) && x.ROLE == Role).USER_EMAIL;
+                var study = studys.FirstOrDefault(x => x.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (studyId.Trim().ToLower()));
+                string piname = study == null ? "" : study.STUDY_PI;
+                piname = String.IsNullOrWhiteSpace(piname) ? "": piname;
+                string piemail = piname == "" ? "" : OutputTeam.accounts.FirstOrDefault(x => x.USER_NAME == piname).USER_EMAIL;
+                if (getRoleNotChange(studyId, IRISMap.RoleMap.PI, piname, piemail))
+                {
+                    return piname;
+                }
+                else
+                {
+                    return getRole(studyId, IRISMap.RoleMap.PI);
+                }
+            }
             else
             {
                 return getRole(studyId, IRISMap.RoleMap.PI);
             }
         }
 
-        /// <summary>
+        /*/// <summary>
         /// returns the PI email
         /// </summary>
         /// <param name="studyId"></param>
@@ -809,7 +825,7 @@ namespace IrbAnalyser
                 return (string)studyteam.FirstOrDefault(x => (string)x["Role"] == IRISMap.RoleMap.PI)["PrimaryEMailAddress"];
             }
 
-        }
+        }*/
 
 
         /// <summary>
@@ -826,9 +842,34 @@ namespace IrbAnalyser
                     return (string)value["RC"];
             }
             string retstr = "";
+            var study = studys.FirstOrDefault(x => x.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (studyId.Trim().ToLower()));
+            string rcname = study==null ? "": study.STUDY_ENTERED_BY;
+            string rcemail = rcname == "" ? "" : OutputTeam.accounts.FirstOrDefault(x => x.USER_NAME == rcname).USER_EMAIL;
             if (Agency.AgencyVal == Agency.AgencyList.BRANY)
             {
-                retstr = getRole(studyId, BranyRoleMap.RC);
+                if (getRoleNotChange(studyId, BranyRoleMap.RC, rcname, rcemail))
+                {
+                    retstr = rcname;
+                }
+                else
+                {
+                    retstr = getRole(studyId, BranyRoleMap.RC);
+                }
+            }
+            else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
+            {
+                //string rcemail = OutputTeam.team.FirstOrDefault(x => x.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (studyId.Trim().ToLower()) && x.ROLE == Role).USER_EMAIL;
+
+                if (getRoleNotChange(studyId, IRISMap.RoleMap.RC1, rcname, rcemail) || getRoleNotChange(studyId, IRISMap.RoleMap.RC2, rcname, rcemail))
+                {
+                    retstr = rcname;
+                }
+                else
+                {
+                    retstr = getRole(studyId, IRISMap.RoleMap.RC1);
+                    if (String.IsNullOrWhiteSpace(retstr))
+                        retstr = getRole(studyId, IRISMap.RoleMap.RC2);
+                }
             }
             else
             {
@@ -925,6 +966,30 @@ namespace IrbAnalyser
             else
             {
                 return Tools.getFullName(studyteam.FirstOrDefault(x => (string)x["Role"] == role));
+            }
+        }
+
+        /// <summary>
+        /// Check if the datasource has the following name/email has the specified roles, used for multiple member per role
+        /// </summary>
+        /// <param name="studyId"></param>
+        /// <param name="role"></param>
+        /// <param name="name"></param>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        private static bool getRoleNotChange(string studyId, string role, string name, string email)
+        {
+            if (name == "" && email == "")
+            {
+                return false;
+            }
+            else
+            {
+                return OutputTeam.fpTeam.data.AsEnumerable().Where(x => (string)x["StudyId"] == studyId
+                    && (string)x["Role"] == role
+                    && ((Tools.compareStr((string)x["FirstName"] + " " + (string)x["LastName"], name))
+                    || Tools.compareStr((string)x["PrimaryEMailAddress"], email))
+                    ).Any();
             }
         }
 

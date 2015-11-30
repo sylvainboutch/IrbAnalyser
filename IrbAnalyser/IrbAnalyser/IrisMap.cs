@@ -198,9 +198,9 @@ namespace IrbAnalyser.IRISMap
                 {"Migrated","Pre Activation"},
                 {"Migrated with amendment (no MCF)","Pre Activation"},
                 {"Open","Study Status"},
-                {"Open (45CFR46.118)","Pre Activation"},
-                {"Open, No Enrollment","Pre Activation"},
-                {"Open/No Active Subjects","Pre Activation"},
+                {"Open (45CFR46.118)","Study Status"},
+                {"Open, No Enrollment","Study Status"},
+                {"Open/No Active Subjects","Study Status"},
                 {"Pending","Pre Activation"},
                 {"Pending - Submitted for Initial Review","Pre Activation"},
                 {"Pending Acceptance to Participate","Pre Activation"},
@@ -220,7 +220,7 @@ namespace IrbAnalyser.IRISMap
                 {"Undergoing Review by IRB Chair/Designee","Pre Activation"},
                 {"Undergoing Review by Legal","Pre Activation"},
                 {"Withdrawn by PI","Study Status"},
-                {"","Pre Activation"}
+                {"",""}
             };
 
         public static string getType(string key)

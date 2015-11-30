@@ -113,7 +113,7 @@ namespace IrbAnalyser
 
                     drShort["OtherPersonnel"] = "= \"\"";
                     drShort["PI"] = OutputStudy.getPI((string)drStudy["StudyId"]);
-                    drShort["PIemail"] = OutputStudy.getPIeMail((string)drStudy["StudyId"]);
+                    //drShort["PIemail"] = OutputStudy.getPIeMail((string)drStudy["StudyId"]);
 
                     drShort["RC"] = OutputStudy.getRC((string)drStudy["StudyId"]);
                     drShort["SC"] = OutputStudy.getSC((string)drStudy["StudyId"]);

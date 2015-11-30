@@ -655,7 +655,7 @@ namespace IrbAnalyser
                                     {
                                         addRow(userRow, "Inactive User added to study team", triggerTeam);
                                     }
-                                    else if (!listRC.Contains(currentuser.USER_DEFAULTGRP.Trim().ToLower(), StringComparer.OrdinalIgnoreCase) && currentuser.USER_EMAIL == email && isactiveuser && !issuperuser)
+                                    else if (!listRC.Contains(string.IsNullOrWhiteSpace(currentuser.USER_DEFAULTGRP) ? "" : currentuser.USER_DEFAULTGRP.Trim().ToLower(), StringComparer.OrdinalIgnoreCase) && currentuser.USER_EMAIL == email && isactiveuser && !issuperuser)
                                     {
                                         addRow(userRow, "User needs training", triggerTeam);
                                     }

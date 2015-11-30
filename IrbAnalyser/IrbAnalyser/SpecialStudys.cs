@@ -941,7 +941,7 @@ namespace IrbAnalyser
         public static readonly Dictionary<string, RCSCPI> migrationStudysRCSCPI = new Dictionary<string, RCSCPI>()
         {
 
-
+/*
 
 
 
@@ -1064,7 +1064,7 @@ namespace IrbAnalyser
 {"807ac22a-cbad-4525-b199-1865ef86b9fd", new RCSCPI("","","Balazs Halmos")},
 
 {"48b4b763-4785-4256-b83f-c0d31ecff84b", new RCSCPI("Elaine Keung","","")}            
-            
+            */
             /*
            {"", new RCSCPI("","","")},
 {"42f28a55-7f67-4eb3-b2f3-597e1ebc750c", new RCSCPI("Cristina Garcia-Miller","","")},
