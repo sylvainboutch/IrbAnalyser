@@ -94,8 +94,11 @@ namespace IrbAnalyser
             }
             else if (Agency.AgencyVal == Agency.AgencyList.BRANY)
             {
-                site = BranySiteMap.getSite(((string)studyrow["Sitename"]).Replace("(IBC)", ""));
-                siteType = BranySiteMap.getSiteType(((string)studyrow["Sitename"]).Replace("(IBC)", ""));
+                if (!((string)studyrow["Sitename"]).Contains("(IBC)"))
+                {
+                    site = BranySiteMap.getSite(((string)studyrow["Sitename"]).Replace("(IBC)", ""));
+                    siteType = BranySiteMap.getSiteType(((string)studyrow["Sitename"]).Replace("(IBC)", ""));
+                }
             }
             else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
             {
