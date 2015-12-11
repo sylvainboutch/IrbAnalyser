@@ -203,8 +203,16 @@ namespace IrbAnalyser
                 DateTime.TryParse((string)statusRow["ValidOn"], out start);
                 start = start == DateTime.MinValue ? DateTime.Now : start;
                 string status1 = "";
+                if (irbstudyId == "315")
+                {
+                    status1 = status1 + " WTF";
+                }
                 if (Agency.AgencyVal == Agency.AgencyList.BRANY) status1 = BranyStatusMap.getStatus((string)statusRow["Status"]);
                 else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN) status1 = IRISMap.StatusMap.getStatus((string)statusRow["Status"]);
+                if (irbstudyId == "315")
+                {
+                    status1 = status1 + " WTF";
+                }
                 // todo einstein status map
 
 

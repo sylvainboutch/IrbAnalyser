@@ -293,6 +293,8 @@ namespace IrbAnalyser
 
                                 newpi = getPI((string)dr["StudyId"]);
                                 newrc = getRC((string)dr["StudyId"]);
+
+                                
                                 //newsc = getSC((string)dr["StudyId"]);
                                 //newcro = getCRO((string)dr["StudyId"]);
 
@@ -844,7 +846,7 @@ namespace IrbAnalyser
             string retstr = "";
             var study = studys.FirstOrDefault(x => x.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (studyId.Trim().ToLower()));
             string rcname = study==null ? "": study.STUDY_ENTERED_BY;
-            string rcemail = rcname == "" ? "" : OutputTeam.accounts.FirstOrDefault(x => x.USER_NAME == rcname).USER_EMAIL;
+            string rcemail = String.IsNullOrWhiteSpace(rcname) ? "" : OutputTeam.accounts.FirstOrDefault(x => x.USER_NAME == rcname).USER_EMAIL;
             if (Agency.AgencyVal == Agency.AgencyList.BRANY)
             {
                 if (getRoleNotChange(studyId, BranyRoleMap.RC, rcname, rcemail))

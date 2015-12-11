@@ -81,7 +81,10 @@ namespace IrbAnalyser
                 var siteslist = ((string)studyrow["Sitename"]).Split(',');
                 foreach (var sit in siteslist)
                 {
-                    addRow("New Site", sit, OutputSite.siteTypeTreating, "", irbstudyId, ((string)studyrow["IRBNumber"]).Replace("(IBC)", ""), true);
+                    if (!((string)studyrow["IRBNumber"]).Contains("(IBC)"))
+                    {
+                        addRow("New Site", sit, OutputSite.siteTypeTreating, "", irbstudyId, ((string)studyrow["IRBNumber"]).Replace("(IBC)", ""), true);
+                    }
                 }
                 site = OutputSite.EMmainsite;
             }
