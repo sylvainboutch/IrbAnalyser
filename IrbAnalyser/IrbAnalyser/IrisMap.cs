@@ -135,8 +135,8 @@ namespace IrbAnalyser.IRISMap
                 {"Exempt","IRB Exempt"},
                 {"Expired Approval","IRB Initial Disapproved"},
                 {"Inactive - Administratively Closed","Administratively Complete"},
-                {"Migrated",""},
-                {"Migrated with amendment (no MCF)",""},
+                {"Migrated","IRB Initial Submitted**"},
+                {"Migrated with amendment (no MCF)","IRB Initial Submitted**"},
                 {"Open","Active/Enrolling"},
                 {"Open (45CFR46.118)",""},
                 {"Open, No Enrollment",""},
@@ -263,7 +263,7 @@ namespace IrbAnalyser.IRISMap
 
         public static readonly Dictionary<string, string> eventsTypeMap = new Dictionary<string, string>()
             {
-                {"Amendment","Pre Activation"}
+                {"Amendment","Post Activation"}
             };
 
         public static string getType(string key)

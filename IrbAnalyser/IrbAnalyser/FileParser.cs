@@ -63,6 +63,10 @@ namespace IrbAnalyser
                     data.Columns.Add("ExternalIRBnumber");
                     data.Columns.Add("oldNumber");
                     data.Columns.Add("newNumber");
+                    data.Columns.Add("HasConsentForm");
+                    data.Columns.Add("Device");
+                    data.Columns.Add("Drug");
+                    data.Columns.Add("ReviewType");
                     initColumnCount = data.Columns.Count;
                     break;
                 case type.Status:

@@ -201,17 +201,9 @@ namespace IrbAnalyser
                 }
             }
 
-            string a = "";
-            if (((string)dr["IRBNumber"]).Contains("5530"))
-            {
-                a = "g";
-            }
-
-            a = "c";
 
             if (shouldStudyBeAdded(irbstudyId))
             {
-                if (a == "g") a = "4";
                 string identifiers = Tools.generateStudyIdentifiers((string)dr["StudyId"]);
                 string number = Tools.getOldStudyNumber((string)dr["StudyId"], ((string)dr["IRBNumber"]).Replace("(IBC)", ""));
 
@@ -236,6 +228,20 @@ namespace IrbAnalyser
                         if (!dtStudy)
                         {
                             OutputStatus.analyseRowStudy(dr, true);
+
+                            string newNumber = Tools.getOldStudyNumber((string)dr["StudyId"], ((string)dr["IRBNumber"]).Replace("(IBC)", ""));
+
+                            if (!dr.Table.Columns.Contains("oldNumber"))
+                            {
+                                dr.Table.Columns.Add("oldNumber");
+                            }
+                            if (!dr.Table.Columns.Contains("newNumber"))
+                            {
+                                dr.Table.Columns.Add("newNumber");
+                            }
+
+                            dr["oldNumber"] = newNumber;
+
                             addRowStudy(dr, true);
                             //Add all related values for that study                            
                             OutputDocs.analyseRow(dr, true);
@@ -732,9 +738,9 @@ namespace IrbAnalyser
             }
             else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
             {
-                labels = new string[3] { "IRB agency name", "IRB No.", "Is this a cancer related study ?" };
+                labels = new string[6] { "IRB agency name", "IRB No.", "Is this a cancer related study ?", "Is there an Informed Consent associated to study? ", "   Agent ", "   Device"  };
 
-                values = new string[3] { (string)dr["IRB Agency name"], (string)dr["IRB no"], (string)dr["Cancer"] };
+                values = new string[6] { (string)dr["IRB Agency name"], (string)dr["IRB no"], (string)dr["Cancer"], (string)dr["HasConsentForm"], (string)dr["Drug"], (string)dr["Device"] };
             }
 
             OutputMSD.initiate();

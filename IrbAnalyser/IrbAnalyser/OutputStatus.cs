@@ -131,6 +131,7 @@ namespace IrbAnalyser
                 newStatus.Columns.Add("Status Valid From", typeof(string));
                 newStatus.Columns.Add("Status Valid Until", typeof(string));
                 newStatus.Columns.Add("Outcome", typeof(string));
+                newStatus.Columns.Add("Review Type", typeof(string));
             }
 
             if (updatedStatus.Columns.Count == 0)
@@ -148,6 +149,7 @@ namespace IrbAnalyser
                 updatedStatus.Columns.Add("Status Valid From", typeof(string));
                 updatedStatus.Columns.Add("Status Valid Until", typeof(string));
                 updatedStatus.Columns.Add("Outcome", typeof(string));
+                updatedStatus.Columns.Add("Review Type", typeof(string));
             }
         }
 
@@ -493,12 +495,12 @@ namespace IrbAnalyser
 
                             if (latestStatus != (string)studyrow["Status"])
                             {
-                                addRowStudy(studyrow, (string)studyrow["Status"], "New study", true, Tools.parseDate(DateTime.Now.ToString()));
+                                addRowStudy(studyrow, (string)studyrow["Status"], "New study", (string)studyrow["Status"], true, Tools.parseDate(DateTime.Now.ToString()));
                             }
                         }
                         else
                         {
-                            addRowStudy(studyrow, (string)studyrow["Status"], "New study", true, Tools.parseDate(DateTime.Now.ToString()));
+                            addRowStudy(studyrow, (string)studyrow["Status"], "New study",(string)studyrow["Status"], true, Tools.parseDate(DateTime.Now.ToString()));
                         }
 
                     }
@@ -511,7 +513,7 @@ namespace IrbAnalyser
 
                     if (dtStatus && initial != DateTime.MinValue)
                     {
-                        addRowStudy(studyrow, "IRB Initial Approved", "New study", true, Tools.parseDate((string)studyrow["InitialApprovalDate"]).Trim().ToLower());
+                        addRowStudy(studyrow, "IRB Initial Approved", "New study", "Pre Activation", true, Tools.parseDate((string)studyrow["InitialApprovalDate"]).Trim().ToLower());
                     }
 
                     dtStatus = !(from st in OutputStatus.newStatus.AsEnumerable()
@@ -522,7 +524,7 @@ namespace IrbAnalyser
 
                     if (dtStatus && renew != DateTime.MinValue && renew.Date != initial.Date)
                     {
-                        addRowStudy(studyrow, "IRB Renewal Approved**", "New study", true, Tools.parseDate((string)studyrow["MostRecentApprovalDate"]).Trim().ToLower());
+                        addRowStudy(studyrow, "IRB Renewal Approved**", "New study", "Post Activation", true, Tools.parseDate((string)studyrow["MostRecentApprovalDate"]).Trim().ToLower());
                     }
 
                     /*if (SpecialStudys.closedStudys.Any(x => x.IRB == Agency.agencyStrLwr && Tools.compareStr(x.number, (string)studyrow["IRBNumber"])))
@@ -549,7 +551,7 @@ namespace IrbAnalyser
 
                     if (initial != DateTime.MinValue && isNotStatusDt && isNotStatusDb)
                     {
-                        addRowStudy(studyrow, "IRB Initial Approved", "New status", true, Tools.parseDate((string)studyrow["InitialApprovalDate"]).Trim().ToLower());
+                        addRowStudy(studyrow, "IRB Initial Approved", "New status", "Pre Activation", true, Tools.parseDate((string)studyrow["InitialApprovalDate"]).Trim().ToLower());
                     }
 
                     isNotStatusDb = !(from stat in allstatus
@@ -571,7 +573,7 @@ namespace IrbAnalyser
 
                     if (renew != DateTime.MinValue && isNotStatusDt && isNotStatusDb && renew.Date != initial.Date)
                     {
-                        addRowStudy(studyrow, "IRB Renewal Approved**", "New status", true, Tools.parseDate((string)studyrow["MostRecentApprovalDate"]).Trim().ToLower());
+                        addRowStudy(studyrow, "IRB Renewal Approved**", "New status", "Post Activation", true, Tools.parseDate((string)studyrow["MostRecentApprovalDate"]).Trim().ToLower());
                     }
                 }
             }
@@ -732,7 +734,7 @@ namespace IrbAnalyser
             }
 
             dr["Study status"] = status;
-            dr["status type"] = "Pre Activation";
+            dr["status type"] = "Post Activation";
             dr["Documented by"] = "IRB interface";
             dr["Status Valid From"] = Tools.parseDate(date);
 
@@ -811,7 +813,7 @@ namespace IrbAnalyser
         }
 
 
-        private static void addRowStudy(DataRow studyRow, string status, string type, bool newrecord, string startdate)
+        private static void addRowStudy(DataRow studyRow, string status, string type, string statustype, bool newrecord, string startdate)
         {
             initiate();
             DataRow dr;
@@ -840,8 +842,10 @@ namespace IrbAnalyser
                 dr["Organization"] = OutputSite.EMmainsite;
             }
 
+            dr["Review Type"] = (string)studyRow["ReviewType"];
+
             dr["Study status"] = status;
-            dr["status type"] = "Pre Activation";
+            dr["status type"] = statustype;
             dr["Documented by"] = "IRB interface";
             dr["Status Valid From"] = startdate;
             /*dr["Status Valid From"] = Tools.parseDate((string)studyRow["MostRecentApprovalDate"]);

@@ -149,7 +149,6 @@ namespace IrbAnalyser
        {
            string retour = (from stud in OutputStudy.studys
                               where stud.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (studyId.Trim().ToLower())
-                  && stud.MORE_IRBAGENCY.ToLower() == Agency.agencyStrLwr
                               select stud.STUDY_NUMBER).FirstOrDefault();
            return retour;
        }
