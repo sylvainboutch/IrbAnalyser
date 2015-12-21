@@ -32,19 +32,21 @@ namespace IrbAnalyser
         {
             initiate();
             DataRow dr;
-            if (newrecord)
+            dr = newMSD.NewRow();
+            /*if (newrecord)
             { dr = newMSD.NewRow(); }
             else
-            { dr = updatedMSD.NewRow(); }
+            { dr = updatedMSD.NewRow(); }*/
             dr["Label"] = label;
 
             dr["Study_number"] = Tools.getOldStudyNumber(studyid, IRBno);
 
             dr["Value"] = value;
-            if (newrecord)
+            newMSD.Rows.Add(dr); 
+            /*if (newrecord)
             { newMSD.Rows.Add(dr); }
             else
-            { updatedMSD.Rows.Add(dr); }
+            { updatedMSD.Rows.Add(dr); }*/
         }
     }
 }

@@ -916,7 +916,7 @@ namespace IrbAnalyser
 
         public static readonly List<string> ignoredStatus = new List<string>()
         {
-            "Draft",
+            //"Draft",
             "Withdrawn",
             "Administratively Complete",
             "Complete",

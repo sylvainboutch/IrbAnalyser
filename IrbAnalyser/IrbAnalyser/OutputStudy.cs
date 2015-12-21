@@ -132,6 +132,9 @@ namespace IrbAnalyser
                 newStudy.Columns.Add("Sponsor Protocol ID", typeof(string));
                 newStudy.Columns.Add("CRO", typeof(string));
                 newStudy.Columns.Add("Cancer", typeof(string));
+                newStudy.Columns.Add("Device", typeof(string));
+                newStudy.Columns.Add("Drug", typeof(string));
+                newStudy.Columns.Add("Consent", typeof(string));
                 //newStudy.Columns.Add("Accronym", typeof(string));
             }
 
@@ -158,8 +161,11 @@ namespace IrbAnalyser
                 updatedStudy.Columns.Add("Sponsor information other", typeof(string));
                 updatedStudy.Columns.Add("Sponsor contact", typeof(string));
                 updatedStudy.Columns.Add("Sponsor Protocol ID", typeof(string));
-                updatedStudy.Columns.Add("CRO", typeof(string));
                 updatedStudy.Columns.Add("Cancer", typeof(string));
+                updatedStudy.Columns.Add("CRO", typeof(string));
+                updatedStudy.Columns.Add("Device", typeof(string));
+                updatedStudy.Columns.Add("Drug", typeof(string));
+                updatedStudy.Columns.Add("Consent", typeof(string));
                 //updatedStudy.Columns.Add("Accronym", typeof(string));
             }
         }
@@ -535,6 +541,10 @@ namespace IrbAnalyser
             dr["IRB Study ID"] = (string)row["StudyId"];
             dr["IRB Identifiers"] = Tools.generateStudyIdentifiers((string)row["StudyId"]);
 
+            dr["Device"] = (string)row["Device"];
+            dr["Drug"] = (string)row["Drug"];
+            dr["Consent"] = (string)row["HasConsentForm"];
+
             if (!string.IsNullOrWhiteSpace((string)row["newNumber"]))
             {
                 dr["Study_number"] = row["oldNumber"];
@@ -740,7 +750,7 @@ namespace IrbAnalyser
             {
                 labels = new string[6] { "IRB agency name", "IRB No.", "Is this a cancer related study ?", "Is there an Informed Consent associated to study? ", "   Agent ", "   Device"  };
 
-                values = new string[6] { (string)dr["IRB Agency name"], (string)dr["IRB no"], (string)dr["Cancer"], (string)dr["HasConsentForm"], (string)dr["Drug"], (string)dr["Device"] };
+                values = new string[6] { (string)dr["IRB Agency name"], (string)dr["IRB no"], (string)dr["Cancer"], (string)dr["Consent"], (string)dr["Drug"], (string)dr["Device"] };
             }
 
             OutputMSD.initiate();
@@ -1092,9 +1102,9 @@ namespace IrbAnalyser
                 return true;
             }
 
-            if (SpecialStudys.checkConsentAgentAndDevice && dr.Table.Columns.Contains("Consent") && dr.Table.Columns.Contains("PhaseDrugDevice"))
+            if (SpecialStudys.checkConsentAgentAndDevice && dr.Table.Columns.Contains("HasConsentForm") && dr.Table.Columns.Contains("PhaseDrugDevice"))
             {
-                if ((string)dr["Consent"] == "N" && (string)dr["PhaseDrugDevice"] == "N")
+                if ((string)dr["HasConsentForm"] == "N" && (string)dr["PhaseDrugDevice"] == "N")
                 {
                     return false;
                 }
@@ -1219,8 +1229,13 @@ namespace IrbAnalyser
         /// <returns></returns>
         public static bool isStudyCancer(DataRow dr)
         {
+            if ((string)dr["Cancer"] == "Y")
+            {
+                return true;
+            }
             if (SpecialStudys.cancerTerms.Count >= 1)
             {
+                
                 foreach (var str in SpecialStudys.cancerTerms)
                 {
                     if (((string)dr["StudyTitle"]).ToLower().Contains(str) ||
