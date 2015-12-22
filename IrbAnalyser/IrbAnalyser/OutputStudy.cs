@@ -38,6 +38,12 @@ namespace IrbAnalyser
                     using (Model.VelosDb db = new Model.VelosDb())
                     {
                         IQueryable<Model.LCL_V_STUDYSUMM_PLUSMORE> query;
+
+                        query = (from st in db.LCL_V_STUDYSUMM_PLUSMORE
+                                 where st.MORE_IRBAGENCY != null
+                                 && st.IRBIDENTIFIERS != null
+                                 select st);
+                        /*
                         //BRANY look up agency in MSD
                         if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
                         {
@@ -68,7 +74,7 @@ namespace IrbAnalyser
                                      && st.IRBIDENTIFIERS != null
                                      select st);
                         }
-
+                        */
                         _studys = query.ToList<Model.LCL_V_STUDYSUMM_PLUSMORE>();
                     }
                 }
@@ -111,7 +117,7 @@ namespace IrbAnalyser
         {
             if (newStudy.Columns.Count == 0)
             {
-                newStudy.Columns.Add("IRB Agency name", typeof(string));
+                /*newStudy.Columns.Add("IRB Agency name", typeof(string));
                 newStudy.Columns.Add("IRB no", typeof(string));
                 newStudy.Columns.Add("IRB Study ID", typeof(string));
                 newStudy.Columns.Add("IRB Identifiers", typeof(string));
@@ -134,8 +140,32 @@ namespace IrbAnalyser
                 newStudy.Columns.Add("Cancer", typeof(string));
                 newStudy.Columns.Add("Device", typeof(string));
                 newStudy.Columns.Add("Drug", typeof(string));
-                newStudy.Columns.Add("Consent", typeof(string));
+                newStudy.Columns.Add("Consent", typeof(string));*/
                 //newStudy.Columns.Add("Accronym", typeof(string));
+                newStudy.Columns.Add("Study_number", typeof(string));
+                newStudy.Columns.Add("Regulatory_coordinator", typeof(string));
+                newStudy.Columns.Add("Division/Therapeutic area", typeof(string));
+                newStudy.Columns.Add("Phase", typeof(string));
+                newStudy.Columns.Add("Official title", typeof(string));
+                newStudy.Columns.Add("Study Summary", typeof(string));
+                newStudy.Columns.Add("Principal Investigator", typeof(string));
+                newStudy.Columns.Add("Study_coordinator", typeof(string));
+                newStudy.Columns.Add("Department", typeof(string));
+                newStudy.Columns.Add("Entire study sample size", typeof(string));
+                newStudy.Columns.Add("Study scope", typeof(string));
+                newStudy.Columns.Add("Primary funding sponsor", typeof(string));
+                newStudy.Columns.Add("Sponsor Protocol ID", typeof(string));
+                newStudy.Columns.Add("Sponsor contact", typeof(string));
+                newStudy.Columns.Add("Sponsor information other", typeof(string));
+                newStudy.Columns.Add("IRB Agency name", typeof(string));
+                newStudy.Columns.Add("IRB no", typeof(string));
+                newStudy.Columns.Add("IRB Study ID", typeof(string));
+                newStudy.Columns.Add("IRB Identifiers", typeof(string));
+                newStudy.Columns.Add("CRO", typeof(string));
+                newStudy.Columns.Add("Cancer", typeof(string));
+                newStudy.Columns.Add("Device", typeof(string));
+                newStudy.Columns.Add("Drug", typeof(string));
+                newStudy.Columns.Add("Consent", typeof(string));
             }
 
             if (updatedStudy.Columns.Count == 0)
@@ -1115,7 +1145,20 @@ namespace IrbAnalyser
                 return false;
             }
 
-            bool ignoreLatestStatus = (SpecialStudys.ignoredStatus.Count >= 1 && SpecialStudys.ignoredStatus.Any(x => Tools.compareStr(x, OutputStatus.getLatestStatusFP((string)dr["StudyId"]))));
+            bool ignoreLatestStatus = false;
+
+            if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+            {
+                ignoreLatestStatus = (SpecialStudys.ignoredStatusBRANY.Count >= 1 && SpecialStudys.ignoredStatusBRANY.Any(x => Tools.compareStr(x, OutputStatus.getLatestStatusFP((string)dr["StudyId"]))));
+            }
+            else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
+            {
+                ignoreLatestStatus = (SpecialStudys.ignoredStatusIRIS.Count >= 1 && SpecialStudys.ignoredStatusIRIS.Any(x => Tools.compareStr(x, OutputStatus.getLatestStatusFP((string)dr["StudyId"]))));
+            }
+            else
+            {
+                ignoreLatestStatus = (SpecialStudys.ignoredStatus.Count >= 1 && SpecialStudys.ignoredStatus.Any(x => Tools.compareStr(x, OutputStatus.getLatestStatusFP((string)dr["StudyId"]))));
+            }
 
             if (ignoreLatestStatus)
                 return false;

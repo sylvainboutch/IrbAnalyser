@@ -914,7 +914,7 @@ namespace IrbAnalyser
         };
 
 
-        public static readonly List<string> ignoredStatus = new List<string>()
+        public static readonly List<string> ignoredStatusIRIS = new List<string>()
         {
             //"Draft",
             "Withdrawn",
@@ -924,7 +924,26 @@ namespace IrbAnalyser
             "Exempt"
         };
 
+        public static readonly List<string> ignoredStatusBRANY = new List<string>()
+        {
+            "IRB Draft",
+            "Withdrawn",
+            "Administratively Complete",
+            "Complete",
+            "Archived",
+            "Exempt"
+        };
 
+
+        public static readonly List<string> ignoredStatus = new List<string>()
+        {
+            "IRB Draft",
+            "Withdrawn",
+            "Administratively Complete",
+            "Complete",
+            "Archived",
+            "Exempt"
+        };
 
         public static readonly Dictionary<string, RCSCPI> migrationStudysRCSCPI = new Dictionary<string, RCSCPI>()
         {

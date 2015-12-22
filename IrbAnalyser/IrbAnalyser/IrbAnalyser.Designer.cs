@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.txtOutput = new System.Windows.Forms.TextBox();
-            this.btnOk = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
             this.ofdStudy = new System.Windows.Forms.OpenFileDialog();
             this.sfdCsv = new System.Windows.Forms.SaveFileDialog();
             this.txtStudy = new System.Windows.Forms.TextBox();
@@ -41,6 +41,7 @@
             this.cboSource = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.cboGenerate = new System.Windows.Forms.CheckBox();
+            this.btnAnalyse = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txtOutput
@@ -48,7 +49,7 @@
             this.txtOutput.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtOutput.Location = new System.Drawing.Point(0, 193);
+            this.txtOutput.Location = new System.Drawing.Point(0, 170);
             this.txtOutput.Multiline = true;
             this.txtOutput.Name = "txtOutput";
             this.txtOutput.ReadOnly = true;
@@ -56,16 +57,16 @@
             this.txtOutput.Size = new System.Drawing.Size(419, 162);
             this.txtOutput.TabIndex = 0;
             // 
-            // btnOk
+            // btnSave
             // 
-            this.btnOk.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.btnOk.Location = new System.Drawing.Point(0, 361);
-            this.btnOk.Name = "btnOk";
-            this.btnOk.Size = new System.Drawing.Size(419, 23);
-            this.btnOk.TabIndex = 1;
-            this.btnOk.Text = "Analyze";
-            this.btnOk.UseVisualStyleBackColor = true;
-            this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
+            this.btnSave.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.btnSave.Location = new System.Drawing.Point(0, 361);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(419, 23);
+            this.btnSave.TabIndex = 1;
+            this.btnSave.Text = "Save";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // txtStudy
             // 
@@ -124,21 +125,34 @@
             this.cboGenerate.UseVisualStyleBackColor = false;
             this.cboGenerate.Visible = false;
             // 
+            // btnAnalyse
+            // 
+            this.btnAnalyse.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.btnAnalyse.Location = new System.Drawing.Point(0, 338);
+            this.btnAnalyse.Name = "btnAnalyse";
+            this.btnAnalyse.Size = new System.Drawing.Size(419, 23);
+            this.btnAnalyse.TabIndex = 15;
+            this.btnAnalyse.Text = "Analyze and Add";
+            this.btnAnalyse.UseVisualStyleBackColor = true;
+            this.btnAnalyse.Click += new System.EventHandler(this.btnAnalyse_Click);
+            // 
             // IrbAnalyser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(419, 384);
+            this.Controls.Add(this.btnAnalyse);
             this.Controls.Add(this.cboGenerate);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.cboSource);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnStudy);
             this.Controls.Add(this.txtStudy);
-            this.Controls.Add(this.btnOk);
+            this.Controls.Add(this.btnSave);
             this.Controls.Add(this.txtOutput);
             this.Name = "IrbAnalyser";
             this.Text = "IRB Analyzer";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.IrbAnalyser_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -147,7 +161,7 @@
         #endregion
 
         private System.Windows.Forms.TextBox txtOutput;
-        private System.Windows.Forms.Button btnOk;
+        private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.OpenFileDialog ofdStudy;
         private System.Windows.Forms.SaveFileDialog sfdCsv;
         private System.Windows.Forms.Button btnStudy;
@@ -159,6 +173,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.CheckBox cboGenerate;
         private System.Windows.Forms.TextBox txtStudy;
+        private System.Windows.Forms.Button btnAnalyse;
     }
 }
 

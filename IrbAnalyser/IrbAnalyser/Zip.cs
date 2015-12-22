@@ -49,9 +49,15 @@ namespace IrbAnalyser
 
         public static void CleanUpFile(string filepath)
         {
-            DirectoryInfo directory = new DirectoryInfo(filepath);
-            foreach (System.IO.FileInfo file in directory.GetFiles()) file.Delete();
-            foreach (System.IO.DirectoryInfo subDirectory in directory.GetDirectories()) subDirectory.Delete(true);
+            bool exists = System.IO.Directory.Exists(filepath);
+
+            if (exists)
+            {
+                DirectoryInfo directory = new DirectoryInfo(filepath);
+                foreach (System.IO.FileInfo file in directory.GetFiles()) file.Delete();
+                foreach (System.IO.DirectoryInfo subDirectory in directory.GetDirectories()) subDirectory.Delete(true);
+            }
+
         }
 
     }

@@ -12,6 +12,11 @@ namespace IrbAnalyser
         public DataTable data;
         public int initColumnCount = 0;
 
+        public void reset()
+        {
+            data.Clear();
+        }
+
         public FileParser(string file, type typ)
         {
             getDataTable(file, typ);

@@ -71,7 +71,14 @@ namespace IrbAnalyser
 
 
                         IQueryable<Model.VDA_V_STUDYTEAM_MEMBERS> query;
-                        if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
+                        
+                        query = (from st in db.VDA_V_STUDYTEAM_MEMBERS
+                                 where st.MORE_IRBAGENCY != null
+                                 && st.IRBIDENTIFIERS != null
+                                 && st.USER_EMAIL != null
+                                 select st);
+
+                        /*if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
                         {
                             query = (from st in db.VDA_V_STUDYTEAM_MEMBERS
                                      where st.MORE_IRBAGENCY != null
@@ -96,7 +103,7 @@ namespace IrbAnalyser
                                      && st.IRBIDENTIFIERS != null
                                      && st.USER_EMAIL != null
                                      select st);
-                        }
+                        }*/
 
                         _team = query.ToList<Model.VDA_V_STUDYTEAM_MEMBERS>();
                     }
