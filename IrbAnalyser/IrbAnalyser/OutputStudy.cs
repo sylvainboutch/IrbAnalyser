@@ -395,8 +395,10 @@ namespace IrbAnalyser
                                 }*/
 
 
-
-
+                                dr["Studysummary"] = "";
+                                dr["Department"] = "";
+                                dr["Division"] = "";
+                                dr["Cancer"] = "";
 
 
                                 /*if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
@@ -512,6 +514,11 @@ namespace IrbAnalyser
                                 else if (!String.IsNullOrWhiteSpace((string)dr["PrimarysponsorstudyID"]))
                                 {
                                     hasChanged = true;
+                                }
+
+                                for (int i = fpstudys.initColumnCount-1; i < fpstudys.data.Columns.Count-1; i++ )
+                                {
+                                    dr[i] = "";
                                 }
 
                                 //TEMPORARY
