@@ -351,11 +351,11 @@ namespace IrbAnalyser
                                     dr["Cancer"] = "N";
                                 }
 
-                                if ((stu.MORE_CANCER == "N" || stu.MORE_CANCER == null) && cancer == "Y")
+                                /*if ((stu.MORE_CANCER == "N" || stu.MORE_CANCER == null) && cancer == "Y")
                                 {
                                     hasChanged = true;
                                     dr["Cancer"] = "Y";
-                                }
+                                }*/
 
                                 if (stu.STUDY_PI != newpi && !String.IsNullOrEmpty(newpi) && newpi != rcscpi.PI)
                                 {
@@ -385,21 +385,21 @@ namespace IrbAnalyser
                                     hasChanged = true;
                                 }
 
-                                if (Tools.compareStr(stu.STUDY_SUMMARY, Tools.removeHtml((string)dr["Studysummary"])) && !String.IsNullOrWhiteSpace(Tools.removeHtml((string)dr["Studysummary"])))
+                                /*if (Tools.compareStr(stu.STUDY_SUMMARY, Tools.removeHtml((string)dr["Studysummary"])) && !String.IsNullOrWhiteSpace(Tools.removeHtml((string)dr["Studysummary"])))
                                 {
                                     dr["Studysummary"] = "";
                                 }
                                 else if (!String.IsNullOrWhiteSpace(Tools.removeHtml((string)dr["Studysummary"])))
                                 {
                                     hasChanged = true;
-                                }
+                                }*/
 
 
 
 
 
 
-                                if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
+                                /*if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
                                 {
                                     string newdep = string.IsNullOrWhiteSpace((string)dr["Department"]) ? "" : IRISMap.Department.getDepartment((string)dr["Department"]);
                                     if (Tools.compareStr(newdep, stu.STUDY_DIVISION) && !string.IsNullOrWhiteSpace((string)dr["Department"]))
@@ -422,11 +422,10 @@ namespace IrbAnalyser
                                     {
                                         hasChanged = true;
                                     }
-                                }
+                                }*/
 
 
-
-                                int samplesize = 0;
+                                /*int samplesize = 0;
                                 Int32.TryParse((string)dr["Studysamplesize"], out samplesize);
 
                                 if (stu.STUDY_NATSAMPSIZE == samplesize)
@@ -436,7 +435,7 @@ namespace IrbAnalyser
                                 else if (samplesize != 0)
                                 {
                                     hasChanged = true;
-                                }
+                                }*/
 
                                 bool cmp = (stu.STUDY_SCOPE == "Multi Center Study" && dr["Multicenter"].ToString().ToLower() == "yes") ||
                                     (stu.STUDY_SCOPE == "Single Center Study" && dr["Multicenter"].ToString().ToLower() == "no") ||
@@ -720,9 +719,11 @@ namespace IrbAnalyser
             string[] labels = new string[] { };
             string[] values = new string[] { };
 
-            if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
+            if (newentry)
             {
-                labels = new string[17] { 
+                if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
+                {
+                    labels = new string[17] { 
                     "Study Financials Managed By**", 
                     //"CRO, if any*", 
                     "IRB agency name", 
@@ -743,7 +744,7 @@ namespace IrbAnalyser
                     "Responsible Party*"  
                 };
 
-                values = new string[17] { 
+                    values = new string[17] { 
                     (string)dr["STUDY_MANAGED_BY_IMPORT"],
                     //(string)dr["CRO"], 
                     (string)dr["IRB Agency name"], 
@@ -765,32 +766,32 @@ namespace IrbAnalyser
                     
 
                 };
-            }
-            else if (Agency.AgencyVal == Agency.AgencyList.BRANY)
-            {
-                labels = new string[4] { "Study Financials Managed By*", 
+                }
+                else if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+                {
+                    labels = new string[4] { "Study Financials Managed By*", 
                     //"CRO, if any*", 
                     "IRB agency name", "IRB No.", "Is this a cancer related study ?" };
 
-                values = new string[4] { "BRY", 
+                    values = new string[4] { "BRY", 
                     //(string)dr["CRO"], 
                     Agency.agencyStrLwr, (string)dr["IRB no"], (string)dr["Cancer"] };
+                }
+                else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
+                {
+                    labels = new string[6] { "IRB agency name", "IRB No.", "Is this a cancer related study ?", "Is there an Informed Consent associated to study? ", "   Agent ", "   Device" };
+
+                    values = new string[6] { (string)dr["IRB Agency name"], (string)dr["IRB no"], (string)dr["Cancer"], (string)dr["Consent"], (string)dr["Drug"], (string)dr["Device"] };
+                }
+
+                OutputMSD.initiate();
+
+                for (int i = 0; i < labels.Count(); i++)
+                {
+                    OutputMSD.addRow(labels[i], values[i], (string)row["StudyId"], (string)dr["IRB no"], (string)row["StudyAcronym"], newentry);
+                }
+
             }
-            else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
-            {
-                labels = new string[6] { "IRB agency name", "IRB No.", "Is this a cancer related study ?", "Is there an Informed Consent associated to study? ", "   Agent ", "   Device"  };
-
-                values = new string[6] { (string)dr["IRB Agency name"], (string)dr["IRB no"], (string)dr["Cancer"], (string)dr["Consent"], (string)dr["Drug"], (string)dr["Device"] };
-            }
-
-            OutputMSD.initiate();
-
-            for (int i = 0; i < labels.Count(); i++)
-            {
-                OutputMSD.addRow(labels[i], values[i], (string)row["StudyId"], (string)dr["IRB no"], (string)row["StudyAcronym"], newentry);
-            }
-
-
             OutputIRBForm.addIds((string)dr["Study_number"], (string)dr["IRB Identifiers"]);
 
             if (fpstudys.initColumnCount < row.Table.Columns.Count)

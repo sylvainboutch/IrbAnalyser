@@ -145,16 +145,18 @@ namespace IrbAnalyser
             dr["Study_number"] = Tools.getOldStudyNumber(studyid, irbno);
 
             dr["Version date"] = Tools.parseDate((string)DateTime.Now.ToShortDateString());
-            dr["Version number"] = Agency.agencyStrLwr.ToUpper() + " " + section;
+            
             dr["Category"] = "External Site Docs";
             dr["URL"] = url;
             if (url.ToLower().Contains("iris"))
             {
                 dr["Short description"] = newrecord ? "IRIS IRB Documents" : "";
+                dr["Version number"] = "IRIS " + section;
             }
             else
             {
                 dr["Short description"] = newrecord ? "BRANY IRB Documents" : "";
+                dr["Version number"] = "BRANY " + section;
             }
             dr["Version status"] = "Approved";
 
