@@ -73,8 +73,8 @@ namespace IrbAnalyser
                         IQueryable<Model.VDA_V_STUDYTEAM_MEMBERS> query;
                         
                         query = (from st in db.VDA_V_STUDYTEAM_MEMBERS
-                                 where st.MORE_IRBAGENCY != null
-                                 && st.IRBIDENTIFIERS != null
+                                 where st.IRBIDENTIFIERS != null
+                                 //&& st.MORE_IRBAGENCY != null
                                  && st.USER_EMAIL != null
                                  select st);
 
@@ -332,7 +332,7 @@ namespace IrbAnalyser
 
                     dr["TYPE"] = type;
 
-                    dr["Study_number"] = Tools.getOldStudyNumber((string)row["StudyId"], ((string)row["IRBNumber"]).Replace("(IBC)", ""));
+                    dr["Study_number"] = Tools.getOldStudyNumber((string)row["StudyId"]);
 
                     dr["Email"] = row["PrimaryEMailAddress"].ToString();
                     dr["AdditionnalEmails"] = row["OtherEmailAdresses"].ToString();
@@ -699,7 +699,7 @@ namespace IrbAnalyser
 
                         //if (userAccount.USER_TYPE != "Non-System User")
                         //{
-                            var agency = user.MORE_IRBAGENCY;
+                            //var agency = user.MORE_IRBAGENCY;
 
                             var countEmail = (from DataRow dr in fpTeam.data.Rows
                                               where (string)dr["StudyId"] == studyId

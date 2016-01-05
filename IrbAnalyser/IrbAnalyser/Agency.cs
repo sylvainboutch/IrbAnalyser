@@ -43,7 +43,15 @@ namespace IrbAnalyser
             }
         }
 
-
-
+        public Dictionary<string, string> listAgency = new Dictionary<string, string>
+        {
+            {"","Select an option"},
+            {"BRANY","BRANY"},
+            {"Einstein IRB","Einstein IRB"},
+            {"NCI CIRB","NCI CIRB"},
+            {"NeuroNext CIRB","NeuroNext CIRB"},
+            {"StrokeNet CIRB","StrokeNet CIRB"},
+            {"","Select an option"}
+        };
     }
 }

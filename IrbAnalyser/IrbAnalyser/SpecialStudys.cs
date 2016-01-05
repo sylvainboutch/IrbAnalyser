@@ -926,7 +926,7 @@ namespace IrbAnalyser
 
         public static readonly List<string> ignoredStatusBRANY = new List<string>()
         {
-            "IRB Draft",
+            //"IRB Draft",
             "Withdrawn",
             "Administratively Complete",
             "Complete",
@@ -937,7 +937,7 @@ namespace IrbAnalyser
 
         public static readonly List<string> ignoredStatus = new List<string>()
         {
-            "IRB Draft",
+            //"IRB Draft",
             "Withdrawn",
             "Administratively Complete",
             "Complete",

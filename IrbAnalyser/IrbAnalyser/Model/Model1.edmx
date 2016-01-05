@@ -111,6 +111,9 @@
               "LCL_V_STUDYSUMM_PLUSMORE"."MORE_IRBNUM" AS "MORE_IRBNUM",
               "LCL_V_STUDYSUMM_PLUSMORE"."MORE_IRBAGENCY" AS "MORE_IRBAGENCY",
               "LCL_V_STUDYSUMM_PLUSMORE"."MORE_MANAGEDBY" AS "MORE_MANAGEDBY",
+              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_INFORMEDCONSENT" AS "MORE_INFORMEDCONSENT",
+              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_SC_AGENT" AS "MORE_SC_AGENT",
+              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_SC_DEVICE" AS "MORE_SC_DEVICE",
               "VDA"."LCL_V_IRBFORM"."IRBIDENTIFIERS" AS "IRBIDENTIFIERS"
               FROM "VDA"."LCL_V_STUDYSUMM_PLUSMORE" "LCL_V_STUDYSUMM_PLUSMORE"
               LEFT JOIN "VDA"."LCL_V_IRBFORM" ON "VDA"."LCL_V_IRBFORM"."FK_STUDY" = "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."PK_STUDY"
@@ -343,6 +346,9 @@
           <Property Name="IRBIDENTIFIERS" Type="varchar2" MaxLength="4000" />
           <Property Name="MORE_IRBAGENCY" Type="varchar2" MaxLength="100" />
           <Property Name="MORE_MANAGEDBY" Type="varchar2" MaxLength="100" />
+          <Property Name="MORE_INFORMEDCONSENT" Type="varchar2" MaxLength="100" />
+          <Property Name="MORE_SC_AGENT" Type="varchar2" MaxLength="100" />
+          <Property Name="MORE_SC_DEVICE" Type="varchar2" MaxLength="100" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'VDA.VDA_V_STUDYSITES' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -577,6 +583,9 @@
           <Property Type="String" Name="IRBIDENTIFIERS" MaxLength="4000" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="MORE_IRBAGENCY" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="MORE_MANAGEDBY" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_INFORMEDCONSENT" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_SC_AGENT" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_SC_DEVICE" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="VDA_V_STUDYSITES">
           <Key>
@@ -732,6 +741,9 @@
             <EntityTypeMapping TypeName="VelosModel.LCL_V_STUDYSUMM_PLUSMORE">
               <MappingFragment StoreEntitySet="LCL_V_STUDYSUMM_PLUSMORE">
                 <ScalarProperty Name="MORE_MANAGEDBY" ColumnName="MORE_MANAGEDBY" />
+                <ScalarProperty Name="MORE_INFORMEDCONSENT" ColumnName="MORE_INFORMEDCONSENT" />
+                <ScalarProperty Name="MORE_SC_AGENT" ColumnName="MORE_SC_AGENT" />
+                <ScalarProperty Name="MORE_SC_DEVICE" ColumnName="MORE_SC_DEVICE" />
 
                 <ScalarProperty Name="MORE_IRBAGENCY" ColumnName="MORE_IRBAGENCY" />
 

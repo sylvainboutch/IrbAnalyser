@@ -27,8 +27,8 @@ namespace IrbAnalyser
                         IQueryable<Model.VDA_V_STUDYSTAT> query;
 
                         query = (from st in db.VDA_V_STUDYSTAT
-                                 where st.MORE_IRBAGENCY != null
-                                 && st.IRBIDENTIFIERS != null
+                                 where //st.MORE_IRBAGENCY != null &&
+                                 st.IRBIDENTIFIERS != null
                                  select st);
                         /*
                         //BRANY look up agency in MSD
@@ -334,7 +334,14 @@ namespace IrbAnalyser
                     {
                         if (status == status1)
                         {
-                            IEnumerable<Model.VDA_V_STUDYSTAT> statusesDB1;
+                            IEnumerable<Model.VDA_V_STUDYSTAT> statusesDB1 = from stat in allstatus
+                                              where stat.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (irbstudyId.Trim().ToLower())
+                                              && stat.SSTAT_STUDY_STATUS == status1
+                                              && stat.SSTAT_VALID_FROM.Value.Year == start.Year
+                                              && stat.SSTAT_VALID_FROM.Value.Month == start.Month
+                                              && stat.SSTAT_VALID_FROM.Value.Day == start.Day
+                                            select stat;
+                            /*
                             //BRANY look up agency in MSD
                             if (Agency.AgencyVal == Agency.AgencyList.BRANY)
                             {
@@ -361,6 +368,7 @@ namespace IrbAnalyser
                                               //&& stat.SSTAT_NOTES == ((string)eventRow["Event"]).Trim().ToLower()
                                               select stat;
                             }
+                             */
 
                             if (!statusesDB1.Any())
                             {
@@ -369,7 +377,14 @@ namespace IrbAnalyser
 
                             if (end != DateTime.MinValue)
                             {
-                                IEnumerable<Model.VDA_V_STUDYSTAT> statusesDB2;
+                                IEnumerable<Model.VDA_V_STUDYSTAT> statusesDB2 = from stat in allstatus
+                                                                                 where stat.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (irbstudyId.Trim().ToLower())
+                                                                                 && stat.SSTAT_STUDY_STATUS.Trim().ToLower() == status2.Trim().ToLower()
+                                                                                 && stat.SSTAT_VALID_FROM.Value.Year == end.Year
+                                                                                 && stat.SSTAT_VALID_FROM.Value.Month == end.Month
+                                                                                 && stat.SSTAT_VALID_FROM.Value.Day == end.Day
+                                                                                 select stat; ;
+                                /*
                                 //BRANY look up agency in MSD
                                 if (Agency.AgencyVal == Agency.AgencyList.BRANY)
                                 {
@@ -394,6 +409,7 @@ namespace IrbAnalyser
                                                   && stat.SSTAT_VALID_FROM.Value.Day == end.Day
                                                   select stat;
                                 }
+                                 */ 
 
                                 if (!statusesDB2.Any())
                                 {
@@ -605,7 +621,7 @@ namespace IrbAnalyser
                 if (!alreadyAdded)
                 {
 
-                    OutputIRBForm.addStatus(Tools.getOldStudyNumber((string)statusRow["StudyId"], ((string)statusRow["IRBNumber"]).Replace("(IBC)", "")), undefinedEvent);
+                    OutputIRBForm.addStatus(Tools.getOldStudyNumber((string)statusRow["StudyId"]), undefinedEvent);
                 }
             }
             else
@@ -623,7 +639,7 @@ namespace IrbAnalyser
 
                 dr["TYPE"] = type;
 
-                dr["Study_number"] = Tools.getOldStudyNumber((string)statusRow["StudyId"], ((string)statusRow["IRBNumber"]).Replace("(IBC)", ""));
+                dr["Study_number"] = Tools.getOldStudyNumber((string)statusRow["StudyId"]);
 
                 dr["IRB Study ID"] = (string)statusRow["StudyId"];
                 if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
@@ -713,7 +729,7 @@ namespace IrbAnalyser
 
             dr["TYPE"] = type;
 
-            dr["Study_number"] = Tools.getOldStudyNumber((string)eventRow["StudyId"], ((string)eventRow["IRBNumber"]).Replace("(IBC)", ""));
+            dr["Study_number"] = Tools.getOldStudyNumber((string)eventRow["StudyId"]);
 
             dr["IRB Study ID"] = (string)eventRow["StudyId"];
 
@@ -821,7 +837,7 @@ namespace IrbAnalyser
             { dr = updatedStatus.NewRow(); }
             dr["TYPE"] = type;
             dr["Comment"] = ((string)studyRow["IRBNumber"]).Contains("(IBC)") ? "Status from IBC" : "";
-            dr["Study_number"] = Tools.getOldStudyNumber((string)studyRow["StudyId"], ((string)studyRow["IRBNumber"]).Replace("(IBC)", ""));
+            dr["Study_number"] = Tools.getOldStudyNumber((string)studyRow["StudyId"]);
 
             dr["IRB Study ID"] = (string)studyRow["StudyId"];
 

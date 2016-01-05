@@ -39,7 +39,7 @@ namespace IrbAnalyser
             { dr = updatedMSD.NewRow(); }*/
             dr["Label"] = label;
 
-            dr["Study_number"] = Tools.getOldStudyNumber(studyid, IRBno);
+            dr["Study_number"] = Tools.getOldStudyNumber(studyid);
 
             dr["Value"] = value;
             newMSD.Rows.Add(dr); 

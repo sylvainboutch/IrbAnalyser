@@ -2009,6 +2009,78 @@ namespace IrbAnalyser.Model
         private global::System.String _MORE_MANAGEDBY;
         partial void OnMORE_MANAGEDBYChanging(global::System.String value);
         partial void OnMORE_MANAGEDBYChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String MORE_INFORMEDCONSENT
+        {
+            get
+            {
+                return _MORE_INFORMEDCONSENT;
+            }
+            set
+            {
+                OnMORE_INFORMEDCONSENTChanging(value);
+                ReportPropertyChanging("MORE_INFORMEDCONSENT");
+                _MORE_INFORMEDCONSENT = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_INFORMEDCONSENT");
+                OnMORE_INFORMEDCONSENTChanged();
+            }
+        }
+        private global::System.String _MORE_INFORMEDCONSENT;
+        partial void OnMORE_INFORMEDCONSENTChanging(global::System.String value);
+        partial void OnMORE_INFORMEDCONSENTChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String MORE_SC_AGENT
+        {
+            get
+            {
+                return _MORE_SC_AGENT;
+            }
+            set
+            {
+                OnMORE_SC_AGENTChanging(value);
+                ReportPropertyChanging("MORE_SC_AGENT");
+                _MORE_SC_AGENT = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_SC_AGENT");
+                OnMORE_SC_AGENTChanged();
+            }
+        }
+        private global::System.String _MORE_SC_AGENT;
+        partial void OnMORE_SC_AGENTChanging(global::System.String value);
+        partial void OnMORE_SC_AGENTChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String MORE_SC_DEVICE
+        {
+            get
+            {
+                return _MORE_SC_DEVICE;
+            }
+            set
+            {
+                OnMORE_SC_DEVICEChanging(value);
+                ReportPropertyChanging("MORE_SC_DEVICE");
+                _MORE_SC_DEVICE = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_SC_DEVICE");
+                OnMORE_SC_DEVICEChanged();
+            }
+        }
+        private global::System.String _MORE_SC_DEVICE;
+        partial void OnMORE_SC_DEVICEChanging(global::System.String value);
+        partial void OnMORE_SC_DEVICEChanged();
 
         #endregion
 

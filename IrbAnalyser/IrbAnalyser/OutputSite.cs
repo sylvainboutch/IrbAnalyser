@@ -25,8 +25,8 @@ namespace IrbAnalyser
                     {
 
                         var query = (from st in db.VDA_V_STUDYSITES
-                                     where st.MORE_IRBAGENCY != null
-                                     && st.IRBIDENTIFIERS != null
+                                     where st.IRBIDENTIFIERS != null
+                                     //&& st.MORE_IRBAGENCY != null
                                      select st);
                         _sites = query.ToList<Model.VDA_V_STUDYSITES>();
                     }
@@ -113,7 +113,11 @@ namespace IrbAnalyser
                 {
                     if (!String.IsNullOrEmpty(site))
                     {
-                        IEnumerable<Model.VDA_V_STUDYSITES> sites2;
+                        IEnumerable<Model.VDA_V_STUDYSITES> sites2 = (from sit in sites
+                                                                      where sit.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (irbstudyId.Trim().ToLower())
+                                                                        && sit.SITE_NAME == site
+                                                                      select sit);
+                        /*
                         //BRANY look up agency in MSD
                         if (Agency.AgencyVal == Agency.AgencyList.BRANY)
                         {
@@ -132,7 +136,7 @@ namespace IrbAnalyser
                                         && sit.SITE_NAME == site
                                       select sit);
                         }
-
+                        */
 
                         if (sites2.Count() == 0 && !site.Contains("(IBC)"))
                         {
@@ -162,7 +166,7 @@ namespace IrbAnalyser
             { dr = updatedSites.NewRow(); }
             dr["Type"] = type;
 
-            dr["Study_number"] = Tools.getOldStudyNumber(studyid, IRBno);
+            dr["Study_number"] = Tools.getOldStudyNumber(studyid);
 
             dr["Organization"] = site;
             dr["Local sample size"] = size;

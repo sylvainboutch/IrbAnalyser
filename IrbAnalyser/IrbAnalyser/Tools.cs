@@ -110,11 +110,15 @@ namespace IrbAnalyser
 
             //string numberDB = getDBStudyNumber(studyId);
 
-            string usetitle = accronym;
+            /*string usetitle = accronym;
             if (string.IsNullOrWhiteSpace(usetitle))
             {
                 usetitle = string.IsNullOrWhiteSpace(sponsorId) ? cleanTitle(title) : cleanTitle(sponsorId);
-            }
+            }*/
+
+
+            string usetitle = numberDB.Substring(numberDB.IndexOf("-"));
+
 
             string pattern = @"^(19|20)\d{2}";
             Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
@@ -123,7 +127,11 @@ namespace IrbAnalyser
 
 
             string numberActual = "";
-            if (!numberDB.ToLower().Contains(irbnumber) && !string.IsNullOrWhiteSpace(accronym) && accronym.Length < 20)
+            if (!numberDB.ToLower().Contains(irbnumber))
+            {
+                numberActual = generateStudyNumber(IRBnumber, usetitle);
+            }
+            /*if (!numberDB.ToLower().Contains(irbnumber) && !string.IsNullOrWhiteSpace(accronym) && accronym.Length < 20)
             {
                 numberActual = generateStudyNumber(IRBnumber, usetitle);
             }
@@ -134,7 +142,7 @@ namespace IrbAnalyser
             else if (!string.IsNullOrWhiteSpace(accronym) && accronym.Length < 20)
             {
                 numberActual = generateStudyNumber(IRBnumber, usetitle);
-            }
+            }*/
 
             return numberActual == numberDB && !string.IsNullOrWhiteSpace(numberActual);
         }
@@ -161,13 +169,25 @@ namespace IrbAnalyser
        /// <param name="IRBstudyId"></param>
        /// <param name="IRBnumber"></param>
        /// <returns></returns>
-       public static string getOldStudyNumber(string IRBstudyId, string IRBnumber)
+       public static string getOldStudyNumber(string IRBstudyId)
        {
            var stud = (from st in OutputStudy.fpstudys.data.AsEnumerable()
                        where st.Field<string>("StudyId").Trim().ToLower() == IRBstudyId.Trim().ToLower()
                        select st).ToArray();
 
            string accronym = stud.Count() > 0 ? stud[0].Field<string>("StudyAcronym") : "";
+
+           string IRBnumber = "";
+           if (!string.IsNullOrWhiteSpace((stud[0].Field<string>("ExternalIRB"))))
+           {
+               IRBnumber = stud[0].Field<string>("ExternalIRBnumber");
+           }
+           else
+           {
+               IRBnumber = (stud[0].Field<string>("IRBNumber")).Replace("(IBC)", "");
+           }
+
+
            string title = stud.Count() > 0 ? stud[0].Field<string>("StudyTitle") : "";
            string sponsorId = stud.Count() > 0 ? stud[0].Field<string>("PrimarySponsorStudyId") : "";
 
@@ -219,7 +239,11 @@ namespace IrbAnalyser
 
 
 
-            string usetitle = accronym;
+            //string usetitle = accronym;
+            string usetitle = string.IsNullOrWhiteSpace(number) ? "" : number.Substring(number.IndexOf("-"));
+
+            usetitle = string.IsNullOrWhiteSpace(usetitle) ? accronym : usetitle;
+
             if (string.IsNullOrWhiteSpace(usetitle))
             {
                 usetitle = string.IsNullOrWhiteSpace(sponsorId) ? cleanTitle(title) : cleanTitle(sponsorId);
@@ -240,6 +264,16 @@ namespace IrbAnalyser
             string irbnumber = rgx.IsMatch(IRBnumber) ? IRBnumber.Substring(2) : IRBnumber;
             irbnumber = irbnumber.Replace("-", "").ToLower();
 
+            if (!number.ToLower().Contains(irbnumber))
+            {
+                return generateStudyNumber(IRBnumber, usetitle);
+            }
+
+            /*if (!string.IsNullOrWhiteSpace(accronym) && accronym.Length <= 20)
+            {
+                return generateStudyNumber(IRBnumber, usetitle);
+            }
+
             if (!number.ToLower().Contains(irbnumber) && !string.IsNullOrWhiteSpace(accronym) && accronym.Length <= 20)
             {
                 return generateStudyNumber(IRBnumber, usetitle);
@@ -251,7 +285,7 @@ namespace IrbAnalyser
             else if (!string.IsNullOrWhiteSpace(accronym) && accronym.Length <= 20)
             {
                 return generateStudyNumber(IRBnumber, usetitle);
-            }
+            }*/
 
             return number;
         }
@@ -281,8 +315,8 @@ namespace IrbAnalyser
         /// <returns></returns>
         public static bool getOldStudy(string IRBstudyId)
         {
-            bool ret;
-
+            return OutputStudy.studys.Any(x => x.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (IRBstudyId.Trim().ToLower()));
+            /*bool ret; 
             if (Agency.AgencyVal == Agency.AgencyList.BRANY)
             {
                 ret = OutputStudy.studys.Any(x => x.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (IRBstudyId.Trim().ToLower())
@@ -297,7 +331,7 @@ namespace IrbAnalyser
             {
                 ret = OutputStudy.studys.Any(x => x.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (IRBstudyId.Trim().ToLower()));
             }
-            return ret;
+            return ret;*/
         }
 
 

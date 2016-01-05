@@ -22,8 +22,8 @@ namespace IrbAnalyser
                     {
 
                         var query = (from st in db.LCL_V_STUDYVER_APNDX
-                                     where st.MORE_IRBAGENCY != null
-                                     && st.IRBIDENTIFIERS != null
+                                     where st.IRBIDENTIFIERS != null
+                                     //&& st.MORE_IRBAGENCY != null
                                      && st.STUDYAPNDX_URI != null
                                      select st);
                         _versions = query.ToList<Model.LCL_V_STUDYVER_APNDX>();
@@ -95,8 +95,11 @@ namespace IrbAnalyser
                 if (!String.IsNullOrEmpty(url))
                 {
 
-                    int docs;
-
+                    int docs = (from ver in versions
+                                where ver.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (irbstudyId.Trim().ToLower())
+                                   && ver.STUDYAPNDX_URI.ToLower() == url
+                                select ver).Count(); ;
+                    /*
                     //BRANY look up agency in MSD
                     if (Agency.AgencyVal == Agency.AgencyList.BRANY)
                     {
@@ -115,6 +118,7 @@ namespace IrbAnalyser
                                    && ver.STUDYAPNDX_URI.ToLower() == url
                                 select ver).Count();
                     }
+                    */
                 }
             }
             else if (!((string)studyrow["IRBNumber"]).Contains("(IBC)"))
@@ -142,7 +146,7 @@ namespace IrbAnalyser
 
             dr["TYPE"] = type;
 
-            dr["Study_number"] = Tools.getOldStudyNumber(studyid, irbno);
+            dr["Study_number"] = Tools.getOldStudyNumber(studyid);
 
             dr["Version date"] = Tools.parseDate((string)DateTime.Now.ToShortDateString());
             
