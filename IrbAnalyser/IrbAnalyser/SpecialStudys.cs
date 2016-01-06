@@ -168,7 +168,7 @@ namespace IrbAnalyser
             new irbpair("einstein", "2003-434"),
             new irbpair("einstein", "2004-047"),
             new irbpair("einstein", "2004-064"),
-            new irbpair("einstein", "2004-128"),
+            //new irbpair("einstein", "2004-128"),
             new irbpair("einstein", "2004-667"),
             new irbpair("einstein", "2005-405"),
             new irbpair("einstein", "2005-406"),
@@ -183,7 +183,7 @@ namespace IrbAnalyser
             new irbpair("einstein", "2007-317"),
             new irbpair("einstein", "2007-405"),
             new irbpair("einstein", "2007-418"),
-            new irbpair("einstein", "2007-552"),
+            //new irbpair("einstein", "2007-552"),
             new irbpair("einstein", "2007-554"),
             new irbpair("einstein", "2007-579"),
             new irbpair("einstein", "2007-587"),
@@ -286,7 +286,7 @@ namespace IrbAnalyser
             new irbpair("einstein", "2013-265"),
             new irbpair("einstein", "2013-2650"),
             new irbpair("einstein", "2013-267"),
-            new irbpair("einstein", "2013-2687"),
+            //new irbpair("einstein", "2013-2687"),
             new irbpair("einstein", "2013-2701"),
             new irbpair("einstein", "2013-2716"),
             new irbpair("einstein", "2013-2721"),
@@ -385,7 +385,7 @@ namespace IrbAnalyser
             new irbpair("einstein", "2014-4168"),
             new irbpair("einstein", "2014-4236"),
             new irbpair("einstein", "2014-4256"),
-            new irbpair("einstein", "2014-4262"),
+            //new irbpair("einstein", "2014-4262"),
             new irbpair("einstein", "2014-4271"),
             new irbpair("einstein", "2014-4287"),
             new irbpair("einstein", "2014-4294"),
@@ -888,6 +888,27 @@ namespace IrbAnalyser
         public static readonly List<irbpair> studyToInclude = new List<irbpair>()
         {
 
+
+        };
+
+        public static readonly List<irbpair> forceInclude = new List<irbpair>()
+        {
+            new irbpair("brany", "15-06-249-01"),
+            new irbpair("brany", "15-02-444-01"),
+            new irbpair("brany", "15-08-201-01"),
+            new irbpair("brany", "15-06-272-01"),
+            new irbpair("brany", "14-02-311-01"),
+            new irbpair("einstein", "03-01-015E"),
+            new irbpair("einstein", "2015-4683"),
+            new irbpair("einstein", "2007-552"),
+            new irbpair("einstein", "2007-301"),
+            new irbpair("einstein", "2013-2687"),
+            new irbpair("einstein", "2014-4262"),
+            new irbpair("einstein", "12-04-179E"),
+            new irbpair("einstein", "2004-128"),
+            new irbpair("einstein", "12-05-189"),
+            new irbpair("einstein", "2015-449"),
+            new irbpair("einstein", "996-192")
 
         };
 

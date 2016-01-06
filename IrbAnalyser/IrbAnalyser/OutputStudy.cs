@@ -407,7 +407,7 @@ namespace IrbAnalyser
                                     dr["Cancer"] = "Y";
                                 }*/
 
-
+                                
                                 if (stu.MORE_SC_AGENT == "Y" && ((string)dr["Drug"] != "Y"))
                                 {
                                     hasChanged = true;
@@ -437,7 +437,7 @@ namespace IrbAnalyser
                                 {
                                     dr["Device"] = "";
                                 }
-
+                                
 
                                 if (stu.MORE_INFORMEDCONSENT == "Y" && ((string)dr["HasConsentForm"] != "Y"))
                                 {
@@ -453,7 +453,7 @@ namespace IrbAnalyser
                                 {
                                     dr["HasConsentForm"] = "";
                                 }
-
+                                
 
                                 if (stu.STUDY_PI != newpi && !String.IsNullOrEmpty(newpi) && newpi != rcscpi.PI)
                                 {
@@ -1245,11 +1245,18 @@ namespace IrbAnalyser
                 int a = 1;
                 a = a + 1;
             }*/
+            if (SpecialStudys.forceInclude.Any(x => Tools.compareStr(x.number, (string)dr["IRBNumber"])))
+            {
+                var a = Tools.getOldStudy((string)dr["StudyId"]);
+                return true;
+            }
 
             if (Tools.getOldStudy((string)dr["StudyId"]))
             {
                 return true;
             }
+
+
 
             if (SpecialStudys.checkConsentAgentAndDevice && dr.Table.Columns.Contains("HasConsentForm") && dr.Table.Columns.Contains("PhaseDrugDevice"))
             {
