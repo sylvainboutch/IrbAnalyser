@@ -98,7 +98,12 @@ namespace IrbAnalyser
                     int docs = (from ver in versions
                                 where ver.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (irbstudyId.Trim().ToLower())
                                    && ver.STUDYAPNDX_URI.ToLower() == url
-                                select ver).Count(); ;
+                                select ver).Count();
+
+                    if (docs == 0)
+                    {
+                        addRow("Updated Study - Wrong URL", url, "documents", irbstudyId, irbno, true);
+                    }
                     /*
                     //BRANY look up agency in MSD
                     if (Agency.AgencyVal == Agency.AgencyList.BRANY)

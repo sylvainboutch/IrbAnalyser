@@ -222,6 +222,11 @@ namespace IrbAnalyser
         /// <param name="dr"></param>
         private static void analyseRow(DataRow dr)
         {
+            if ((string)dr["StudyId"] == "4230")
+            {
+                dr["StudyAcronym"] = "";
+            }
+
             string irbstudyId = (string)dr["StudyId"];
 
             if (!String.IsNullOrEmpty((string)dr["IRBAgency"]))
@@ -340,6 +345,9 @@ namespace IrbAnalyser
                                 string newNumber = Tools.getNewStudyNumber((string)dr["StudyId"], irbnumber, (string)dr["StudyAcronym"], (string)dr["StudyTitle"], (string)dr["PrimarySponsorStudyId"]);
                                 string oldNumber = Tools.getDBStudyNumber((string)dr["StudyId"]);
 
+
+
+
                                 if (!dr.Table.Columns.Contains("oldNumber"))
                                 {
                                     dr.Table.Columns.Add("oldNumber");
@@ -394,11 +402,11 @@ namespace IrbAnalyser
 
                                 string cancer = isStudyCancer(dr) ? "Y" : "";
 
-                                if (stu.MORE_CANCER == "Y" && cancer == "")
+                                /*if (stu.MORE_CANCER == "Y" && cancer == "")
                                 {
                                     hasChanged = true;
                                     dr["Cancer"] = "N";
-                                }
+                                }*/
 
 
                                 /*if ((stu.MORE_CANCER == "N" || stu.MORE_CANCER == null) && cancer == "Y")
@@ -408,7 +416,7 @@ namespace IrbAnalyser
                                 }*/
 
                                 
-                                if (stu.MORE_SC_AGENT == "Y" && ((string)dr["Drug"] != "Y"))
+                                /*if (stu.MORE_SC_AGENT == "Y" && ((string)dr["Drug"] != "Y"))
                                 {
                                     hasChanged = true;
                                     dr["Drug"] = "N";
@@ -452,8 +460,12 @@ namespace IrbAnalyser
                                 else
                                 {
                                     dr["HasConsentForm"] = "";
-                                }
-                                
+                                }*/
+
+                                dr["Cancer"] = "";
+                                dr["HasConsentForm"] = "";
+                                dr["Device"] = "";
+                                dr["Drug"] = "";
 
                                 if (stu.STUDY_PI != newpi && !String.IsNullOrEmpty(newpi) && newpi != rcscpi.PI)
                                 {

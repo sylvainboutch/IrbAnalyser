@@ -21,10 +21,11 @@ namespace IrbAnalyser.IRISMap
                 {"Einstein_DOSA",OutputSite.EMmainsite},
                 {"Einstein_CRC East",OutputSite.EMmainsite},
                 {"NBHN_Jacobi Medical Center", "Jacobi Hospital"},
-                //{"NBHN_North Central Bronx Hospital",OutputSite.EMmainsite},
+                {"NBHN_North Central Bronx Hospital",OutputSite.EMmainsite},
                 {"Einstein_MRRC",OutputSite.EMmainsite},
                 //{"Yeshiva University_Azrieli School of Education",OutputSite.EMmainsite}
-                //{"Yeshiva University_Ferkauf Graduate School of Psychology",OutputSite.EMmainsite}
+                {"Yeshiva University_Ferkauf Graduate School of Psychology",OutputSite.EMmainsite},
+                {"Yeshiva University_Yeshiva College",OutputSite.EMmainsite}               
             };
 
         public static string getSite(string key)
@@ -361,7 +362,9 @@ namespace IrbAnalyser.IRISMap
             {"Rheumatology","Medicine"},
             {"Surgery","Surgery"},
             {"Systems & Computational Biology","Systems & Computational Biology"},
-            {"Urology","Urology"}
+            {"Urology","Urology"},
+            {"Plastic & Reconstructive Surgery","Surgery"},
+            {"Stern College","N/A"}, 
         };
 
         public static string getDepartment(string key)
@@ -447,7 +450,9 @@ namespace IrbAnalyser.IRISMap
             {"Rheumatology","Rheumatology"},
             {"Surgery","N/A"},
             {"Systems & Computational Biology","N/A"},
-            {"Urology","N/A"}
+            {"Urology","N/A"},
+            {"Plastic & Reconstructive Surgery","Plastic and Reconstructive Surgery"},
+            {"Stern College","N/A"},          
         };
 
         public static string getDivision(string key)

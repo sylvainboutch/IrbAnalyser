@@ -450,7 +450,7 @@ namespace IrbAnalyser
             new irbpair("einstein", "2014-3185")
         };
 
-        public static readonly bool checkConsentAgentAndDevice = true;
+        public static readonly bool checkConsentAgentAndDevice = false;
 
         public static readonly List<string> ignoredIrbNumbers = new List<string>()
         {
@@ -908,7 +908,10 @@ namespace IrbAnalyser
             new irbpair("einstein", "2004-128"),
             new irbpair("einstein", "12-05-189"),
             new irbpair("einstein", "2015-449"),
-            new irbpair("einstein", "996-192")
+            new irbpair("einstein", "996-192"),
+            new irbpair("einstein", "2015-5035"),
+            new irbpair("einstein", "2015-5878"),
+            
 
         };
 
@@ -931,7 +934,9 @@ namespace IrbAnalyser
             "carcin",
             "blastom",
             "malignan",
-            "myelofibrosis"
+            "myelofibrosis",
+            "neutropenia",
+            "sickle"
         };
 
 
