@@ -67,8 +67,8 @@ namespace IrbAnalyser
         public bool WriteDataTableToExcel(System.Data.DataTable dataTable, string worksheetName, string saveAsLocation, string ReporType)
         {
 
-            try
-            {
+            //try
+            //{
                 // Start Excel and get Application object.
                 excel = new Microsoft.Office.Interop.Excel.Application();
 
@@ -145,19 +145,24 @@ namespace IrbAnalyser
                 excelworkBook.SaveAs(saveAsLocation); ;
                 excelworkBook.Close();
                 excel.Quit();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-                return false;
-            }
-            finally
-            {
+
                 excelSheet = null;
                 excelCellrange = null;
                 excelworkBook = null;
-            }
+
+                return true;
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show(ex.Message);
+            //    return false;
+            //}
+            //finally
+            //{
+                excelSheet = null;
+                excelCellrange = null;
+                excelworkBook = null;
+            //}
 
         }
 
@@ -174,8 +179,8 @@ namespace IrbAnalyser
             Microsoft.Office.Interop.Excel.Application excel;
             Microsoft.Office.Interop.Excel.Workbook excelworkBook;
 
-            try
-            {
+            //try
+            //{
                 // Start Excel and get Application object.
                 excel = new Microsoft.Office.Interop.Excel.Application();
 
@@ -259,18 +264,23 @@ namespace IrbAnalyser
 
                 excelworkBook.Close();
                 excel.Quit();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error while saving Excel file : ", ex);
-            }
-            finally
-            {
-                excelSheet = null;
-                excelCellrange = null;
+
+                //excelSheet = null;
+                //excelCellrange = null;
                 excelworkBook = null;
-            }
+
+                return true;
+            //}
+            //catch (Exception ex)
+            //{
+            //    throw new Exception("Error while saving Excel file : ", ex);
+            //}
+            //finally
+            //{
+                //excelSheet = null;
+                //excelCellrange = null;
+                excelworkBook = null;
+            //}
 
         }
 

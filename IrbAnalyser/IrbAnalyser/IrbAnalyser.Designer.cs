@@ -42,6 +42,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.cboGenerate = new System.Windows.Forms.CheckBox();
             this.btnAnalyse = new System.Windows.Forms.Button();
+            this.btnAll = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txtOutput
@@ -54,13 +55,13 @@
             this.txtOutput.Name = "txtOutput";
             this.txtOutput.ReadOnly = true;
             this.txtOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtOutput.Size = new System.Drawing.Size(419, 162);
+            this.txtOutput.Size = new System.Drawing.Size(419, 248);
             this.txtOutput.TabIndex = 0;
             // 
             // btnSave
             // 
             this.btnSave.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.btnSave.Location = new System.Drawing.Point(0, 361);
+            this.btnSave.Location = new System.Drawing.Point(0, 470);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(419, 23);
             this.btnSave.TabIndex = 1;
@@ -128,7 +129,7 @@
             // btnAnalyse
             // 
             this.btnAnalyse.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.btnAnalyse.Location = new System.Drawing.Point(0, 338);
+            this.btnAnalyse.Location = new System.Drawing.Point(0, 447);
             this.btnAnalyse.Name = "btnAnalyse";
             this.btnAnalyse.Size = new System.Drawing.Size(419, 23);
             this.btnAnalyse.TabIndex = 15;
@@ -136,11 +137,23 @@
             this.btnAnalyse.UseVisualStyleBackColor = true;
             this.btnAnalyse.Click += new System.EventHandler(this.btnAnalyse_Click);
             // 
+            // btnAll
+            // 
+            this.btnAll.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.btnAll.Location = new System.Drawing.Point(0, 424);
+            this.btnAll.Name = "btnAll";
+            this.btnAll.Size = new System.Drawing.Size(419, 23);
+            this.btnAll.TabIndex = 16;
+            this.btnAll.Text = "Do it all !";
+            this.btnAll.UseVisualStyleBackColor = true;
+            this.btnAll.Click += new System.EventHandler(this.btnAll_Click);
+            // 
             // IrbAnalyser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(419, 384);
+            this.ClientSize = new System.Drawing.Size(419, 493);
+            this.Controls.Add(this.btnAll);
             this.Controls.Add(this.btnAnalyse);
             this.Controls.Add(this.cboGenerate);
             this.Controls.Add(this.label2);
@@ -174,6 +187,7 @@
         private System.Windows.Forms.CheckBox cboGenerate;
         private System.Windows.Forms.TextBox txtStudy;
         private System.Windows.Forms.Button btnAnalyse;
+        private System.Windows.Forms.Button btnAll;
     }
 }
 

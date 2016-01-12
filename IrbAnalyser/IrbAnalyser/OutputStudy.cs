@@ -1122,7 +1122,7 @@ namespace IrbAnalyser
         /// <returns></returns>
         private static string getRole(string studyId, string role, bool getSecond = false)
         {
-            var studyteam = OutputTeam.fpTeam.data.AsEnumerable().Where(x => (string)x["StudyId"] == studyId);
+            var studyteam = OutputTeam.fpTeam.data.AsEnumerable().Where(x => (string)x["StudyId"] == studyId).OrderBy(x => x.Field<string>("LastName")).ThenBy(y => y.Field<string>("FirstName"));
             if (Agency.AgencyVal == Agency.AgencyList.BRANY && !getSecond)
             {
                 return Tools.getFullName(studyteam.FirstOrDefault(x => (string)x["Role"] == role && (string)x["Primary"] == "Y"));
@@ -1273,6 +1273,18 @@ namespace IrbAnalyser
             if (SpecialStudys.checkConsentAgentAndDevice && dr.Table.Columns.Contains("HasConsentForm") && dr.Table.Columns.Contains("PhaseDrugDevice"))
             {
                 if ((string)dr["HasConsentForm"] == "N" && (string)dr["PhaseDrugDevice"] == "N")
+                {
+                    return false;
+                }
+            }
+
+
+            if (SpecialStudys.checkConsentAgentAndDeviceDate && dr.Table.Columns.Contains("HasConsentForm") && dr.Table.Columns.Contains("PhaseDrugDevice") && dr.Table.Columns.Contains("CreationDate") && Agency.AgencySetupVal == Agency.AgencyList.EINSTEIN)
+            {
+                DateTime dateparsed = DateTime.MinValue;
+                DateTime.TryParse((string)dr["CreationDate"], out dateparsed);
+
+                if ((string)dr["HasConsentForm"] == "N" && (string)dr["PhaseDrugDevice"] == "N" && dateparsed < SpecialStudys.checkConsentAgentAndDeviceDateDate)
                 {
                     return false;
                 }

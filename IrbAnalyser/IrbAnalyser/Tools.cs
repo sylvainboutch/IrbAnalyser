@@ -65,7 +65,7 @@ namespace IrbAnalyser
         public static string parseDate(string date)
         {
             DateTime dateparsed = DateTime.MinValue;
-            DateTime.TryParse(date,out dateparsed);
+            DateTime.TryParse(date, out dateparsed);
             return dateparsed == DateTime.MinValue ? "" : dateparsed.Date.ToString("MM/dd/yyyy");
         }
 
@@ -88,9 +88,9 @@ namespace IrbAnalyser
         static public bool doesStudyHaveStatus(string[] status, string studyId)
         {
             bool hasstatus = (from stat in OutputStatus.allstatus
-                      where stat.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (studyId.Trim().ToLower())
-                      && status.Contains(stat.SSTAT_STUDY_STATUS.Trim().ToLower(), StringComparer.OrdinalIgnoreCase)
-                      select stat).Any();
+                              where stat.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (studyId.Trim().ToLower())
+                              && status.Contains(stat.SSTAT_STUDY_STATUS.Trim().ToLower(), StringComparer.OrdinalIgnoreCase)
+                              select stat).Any();
 
             return hasstatus;
         }
@@ -153,56 +153,56 @@ namespace IrbAnalyser
         /// </summary>
         /// <param name="studyId"></param>
         /// <returns></returns>
-       public static string getDBStudyNumber(string studyId)
-       {
-           string retour = (from stud in OutputStudy.studys
-                              where stud.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (studyId.Trim().ToLower())
-                              select stud.STUDY_NUMBER).FirstOrDefault();
-           return retour;
-       }
+        public static string getDBStudyNumber(string studyId)
+        {
+            string retour = (from stud in OutputStudy.studys
+                             where stud.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (studyId.Trim().ToLower())
+                             select stud.STUDY_NUMBER).FirstOrDefault();
+            return retour;
+        }
 
-       /// <summary>
-       /// Gets the study number for that study, looks for the study in the database, in previously added new study.
-       /// If no study is found, creates the study number.
-       /// The acronym is read from the datasource
-       /// </summary>
-       /// <param name="IRBstudyId"></param>
-       /// <param name="IRBnumber"></param>
-       /// <returns></returns>
-       public static string getOldStudyNumber(string IRBstudyId)
-       {
-           var stud = (from st in OutputStudy.fpstudys.data.AsEnumerable()
-                       where st.Field<string>("StudyId").Trim().ToLower() == IRBstudyId.Trim().ToLower()
-                       select st).ToArray();
+        /// <summary>
+        /// Gets the study number for that study, looks for the study in the database, in previously added new study.
+        /// If no study is found, creates the study number.
+        /// The acronym is read from the datasource
+        /// </summary>
+        /// <param name="IRBstudyId"></param>
+        /// <param name="IRBnumber"></param>
+        /// <returns></returns>
+        public static string getOldStudyNumber(string IRBstudyId)
+        {
+            var stud = (from st in OutputStudy.fpstudys.data.AsEnumerable()
+                        where st.Field<string>("StudyId").Trim().ToLower() == IRBstudyId.Trim().ToLower()
+                        select st).ToArray();
 
-           string accronym = stud.Count() > 0 ? stud[0].Field<string>("StudyAcronym") : "";
+            string accronym = stud.Count() > 0 ? stud[0].Field<string>("StudyAcronym") : "";
 
-           string IRBnumber = "";
-           if (!string.IsNullOrWhiteSpace((stud[0].Field<string>("ExternalIRB"))))
-           {
-               IRBnumber = stud[0].Field<string>("ExternalIRBnumber");
-           }
-           else
-           {
-               IRBnumber = (stud[0].Field<string>("IRBNumber")).Replace("(IBC)", "");
-           }
+            string IRBnumber = "";
+            if (!string.IsNullOrWhiteSpace((stud[0].Field<string>("ExternalIRB"))))
+            {
+                IRBnumber = stud[0].Field<string>("ExternalIRBnumber");
+            }
+            else
+            {
+                IRBnumber = (stud[0].Field<string>("IRBNumber")).Replace("(IBC)", "");
+            }
 
 
-           string title = stud.Count() > 0 ? stud[0].Field<string>("StudyTitle") : "";
-           string sponsorId = stud.Count() > 0 ? stud[0].Field<string>("PrimarySponsorStudyId") : "";
+            string title = stud.Count() > 0 ? stud[0].Field<string>("StudyTitle") : "";
+            string sponsorId = stud.Count() > 0 ? stud[0].Field<string>("PrimarySponsorStudyId") : "";
 
-           string oldNumber = getDBStudyNumber(IRBstudyId);
-           if (!string.IsNullOrWhiteSpace(oldNumber))
-           {
-               return oldNumber;
-           }
-           else
-           {
-               return getNewStudyNumber(IRBstudyId, IRBnumber, accronym, title, sponsorId);
-           }
-       }
+            string oldNumber = getDBStudyNumber(IRBstudyId);
+            if (!string.IsNullOrWhiteSpace(oldNumber))
+            {
+                return oldNumber;
+            }
+            else
+            {
+                return getNewStudyNumber(IRBstudyId, IRBnumber, accronym, title, sponsorId);
+            }
+        }
 
-       
+
         /// <summary>
         /// Gets the study number for that study, looks for the study in the database, in previously added new study.
         /// If no study is found, creates the study number.
@@ -303,8 +303,8 @@ namespace IrbAnalyser
             irbnumber = rgx.IsMatch(irbnumber) ? irbnumber.Substring(2) : irbnumber;
             string output = irbnumber.Replace("-", "");
             accronym = cleanTitle(accronym);
-            accronym = accronym.Replace(" ","");
-            output += "-" + accronym.Substring(0, accronym.Length > 20 ? 20:accronym.Length);
+            accronym = accronym.Replace(" ", "");
+            output += "-" + accronym.Substring(0, accronym.Length > 20 ? 20 : accronym.Length);
             return output.Trim();
         }
 
@@ -348,8 +348,8 @@ namespace IrbAnalyser
 
 
             rc = (from stud in OutputStudy.studys
-                          where stud.PK_STUDY == fkstudy
-                          select stud.STUDY_ENTERED_BY).FirstOrDefault();
+                  where stud.PK_STUDY == fkstudy
+                  select stud.STUDY_ENTERED_BY).FirstOrDefault();
 
             return rc;
         }
@@ -363,7 +363,7 @@ namespace IrbAnalyser
         /// <returns></returns>
         public static string cleanMap(string input)
         {
-            input = input.Trim();       
+            input = input.Trim();
             string output = "";
             StringBuilder sb = new StringBuilder();
             foreach (char c in input)
@@ -416,7 +416,7 @@ namespace IrbAnalyser
             return output;
         }
 
-        
+
         /// <summary>
         /// Remove all non alphanumeric character from a string except . and _
         /// </summary>
@@ -561,6 +561,39 @@ namespace IrbAnalyser
             return Table;
         }
 
+
+        /// <summary>
+        /// Delete duplicate row based on multiple columns from a data table
+        /// </summary>
+        /// <param name="Table"></param>
+        /// <param name="colName"></param>
+        /// <returns></returns>
+        public static DataTable removeDuplicate(DataTable Table, string[] colNames)
+        {
+            // note that strongly typed dictionary has replaced the hash table + it uses custom comparer 
+            var hTable = new Dictionary<DataRowInfo, string>();
+            var duplicateList = new ArrayList();
+
+            //Add list of all the unique item value to hashtable, which stores combination of key, value pair.
+            //And add duplicate item value in arraylist.
+            foreach (DataRow drow in Table.Rows)
+            {
+                var dataRowInfo = new DataRowInfo(drow, colNames);
+
+                if (hTable.ContainsKey(dataRowInfo))
+                    duplicateList.Add(drow);
+                else
+                    hTable.Add(dataRowInfo, string.Empty);
+            }
+
+            //Removing a list of duplicate items from datatable.
+            foreach (DataRow dRow in duplicateList)
+                Table.Rows.Remove(dRow);
+
+            //Datatable which contains unique records will be return as output.
+            return Table;
+        }
+
         /// <summary>
         /// Delete duplicate row based on all columns
         /// </summary>
@@ -584,6 +617,72 @@ namespace IrbAnalyser
             Table.Clear();
             Table = tempTable.Copy();
             return Table;
+        }
+
+        // contains values of specified columns
+        internal sealed class DataRowInfo
+        {
+            public object[] Values { get; private set; }
+
+            public DataRowInfo(DataRow dataRow, string[] columns)
+            {
+                Values = columns.Select(c => dataRow[c]).ToArray();
+            }
+
+            public override bool Equals(object obj)
+            {
+                if (ReferenceEquals(this, obj))
+                    return true;
+
+                var other = obj as DataRowInfo;
+                if (other == null)
+                    return false;
+
+                return Equals(other);
+            }
+
+            private bool Equals(DataRowInfo other)
+            {
+                if (this.Values.Length != other.Values.Length)
+                    return false;
+                for (int i = 0; i < this.Values.Length; i++)
+                {
+                    if (AreObjectsEqual(this.Values[i], other.Values[i]))
+                        return false;
+                }
+
+                return true;
+            }
+
+            private static bool AreObjectsEqual(object left, object right)
+            {
+                if (ReferenceEquals(left, right))
+                    return true;
+
+                if (ReferenceEquals(left, null))
+                    return false;
+
+                if (ReferenceEquals(right, null))
+                    return false;
+
+                if (left.GetType() != right.GetType())
+                    return false;
+
+                return left.Equals(right);
+            }
+
+            public override int GetHashCode()
+            {
+                unchecked
+                {
+                    int hashCode = 0;
+                    foreach (var value in this.Values)
+                    {
+                        hashCode = hashCode ^ ((value != null ? value.GetHashCode() : 0) * 397);
+                    }
+                    return hashCode;
+                }
+            }
         }
 
     }

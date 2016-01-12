@@ -452,6 +452,10 @@ namespace IrbAnalyser
 
         public static readonly bool checkConsentAgentAndDevice = false;
 
+        public static readonly bool checkConsentAgentAndDeviceDate = true;
+
+        public static readonly DateTime checkConsentAgentAndDeviceDateDate = DateTime.Parse("2015-07-01");
+
         public static readonly List<string> ignoredIrbNumbers = new List<string>()
         {
             "00-01-018",
@@ -907,10 +911,9 @@ namespace IrbAnalyser
             new irbpair("einstein", "12-04-179E"),
             new irbpair("einstein", "2004-128"),
             new irbpair("einstein", "12-05-189"),
-            new irbpair("einstein", "2015-449"),
             new irbpair("einstein", "996-192"),
             new irbpair("einstein", "2015-5035"),
-            new irbpair("einstein", "2015-5878"),
+            new irbpair("einstein", "2015-5878")
             
 
         };
