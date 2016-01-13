@@ -103,7 +103,25 @@ namespace IrbAnalyser
                 Study_Personnel_list.generateData();
             }
 
+            /*if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+            {
+                DataTable newDT = new DataTable();
+                XmlTools xmltool = new XmlTools();
+                foreach(DataRow dr in OutputStatus.fpevent.data.Rows)
+                {
+                    if (!String.IsNullOrWhiteSpace((string)dr["xForms"]))
+                    {
+                        newDT = xmltool.AnalyseXmlString((string)dr["xForms"], newDT);
+                    }
+                }
 
+                ExcelUtility exc = new ExcelUtility();
+                List<ExcelWorksheet> lstxls = new List<ExcelWorksheet>();
+
+                lstxls.Add(new ExcelWorksheet("Submission", "Submission XFORM", newDT));
+                exc.WriteDataTableToExcel(zipDir + "\\XFORM_Submission.xlsx", lstxls);
+
+            }*/
 
         }
 
@@ -246,8 +264,8 @@ namespace IrbAnalyser
 
         private void btnAnalyse_Click(object sender, EventArgs e)
         {
-            try
-            {
+            //try
+            //{
                 Agency.AgencyList agency = Agency.AgencyList.BRANY;
                 Enum.TryParse<Agency.AgencyList>(cboSource.SelectedValue.ToString(), out agency);
                 Agency.AgencyVal = agency;
@@ -287,11 +305,11 @@ namespace IrbAnalyser
                 btnAnalyse.Enabled = true;
                 btnSave.Enabled = true;
                 btnAll.Enabled = true;
-            }
+            /*}
             catch (Exception ex)
             {
                 txtOutput.Text = ex.ToString();
-            }
+            }*/
         }
 
         private void copyDir(string source, string destination)

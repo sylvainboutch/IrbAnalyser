@@ -7,11 +7,11 @@ namespace IRBAnalyser_test
     
     
     /// <summary>
-    ///This is a test class for BRANY_APITest and is intended
-    ///to contain all BRANY_APITest Unit Tests
+    ///This is a test class for XmlToolsTest and is intended
+    ///to contain all XmlToolsTest Unit Tests
     ///</summary>
     [TestClass()]
-    public class BRANY_APITest
+    public class XmlToolsTest
     {
 
 
@@ -62,17 +62,20 @@ namespace IRBAnalyser_test
         //}
         //
         #endregion
-        
+
 
         /// <summary>
-        ///A test for getZip
+        ///A test for AnalyseXML
         ///</summary>
         [TestMethod()]
-        public void getZipTest()
+        public void AnalyseXMLTest()
         {
-            //BRANY_API.getZip();
-            //Assert.Inconclusive("A method that does not return a value cannot be verified.");
-            Assert.IsTrue(true);
+            XmlTools target = new XmlTools(); // TODO: Initialize to an appropriate value
+            bool expected = true; // TODO: Initialize to an appropriate value
+            bool actual;
+            actual = target.AnalyseXML();
+            Assert.AreEqual(expected, actual);
+            Assert.Inconclusive("Verify the correctness of this test method.");
         }
     }
 }

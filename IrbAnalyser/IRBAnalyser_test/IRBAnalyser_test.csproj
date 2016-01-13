@@ -64,6 +64,8 @@
     <Reference Include="System.Drawing">
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Management" />
+    <Reference Include="System.Management.Automation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Runtime.Serialization">
       <Private>True</Private>
     </Reference>
@@ -88,12 +90,16 @@
   <ItemGroup>
     <Compile Include="BRANY_APITest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="XmlToolsTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IrbAnalyser\IrbAnalyser.csproj">
       <Project>{4A1D8233-024D-4BA3-BA23-39482115C5D1}</Project>
       <Name>IrbAnalyser</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Shadow Include="Test References\IrbAnalyser.accessor" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

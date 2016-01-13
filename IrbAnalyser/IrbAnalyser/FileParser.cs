@@ -113,6 +113,7 @@ namespace IrbAnalyser
                     data.Columns.Add("EventOutcome");
                     data.Columns.Add("TaskCompletionDate");
                     data.Columns.Add("EventCompletionDate");
+                    data.Columns.Add("xForms");
                     initColumnCount = data.Columns.Count;
                     break;
             }
@@ -153,10 +154,23 @@ namespace IrbAnalyser
                             for (int i = 0; i < columns.Count(); i++)
                             {
                                 if (!String.IsNullOrEmpty(columns[i]))
-                                    dr[columns[i]] = Tools.parse((linesplt[i]));
-                                if (linesplt[i].Contains("�"))
                                 {
-                                    dr[columns[i]] = Tools.parse(linesplt[i].Replace("�", "-"));
+                                    if (columns[i] == "xForms")
+                                    {
+                                        dr[columns[i]] = linesplt[i];
+                                        if (linesplt.Length > i)
+                                        {
+                                            dr[columns[i]] = String.Join(((char)9).ToString(), linesplt.Skip(i).Take(linesplt.Length - i).ToArray());
+                                        }
+                                    }
+                                    else if (linesplt[i].Contains("�"))
+                                    {
+                                        dr[columns[i]] = Tools.parse(linesplt[i].Replace("�", "-"));
+                                    } 
+                                    else
+                                    {
+                                        dr[columns[i]] = Tools.parse((linesplt[i]));
+                                    }
                                 }
                             }
 
