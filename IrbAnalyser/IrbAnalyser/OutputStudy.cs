@@ -445,12 +445,13 @@ namespace IrbAnalyser
                                 {
                                     dr["Device"] = "";
                                 }
-                                
+                                */
 
                                 if (stu.MORE_INFORMEDCONSENT == "Y" && ((string)dr["HasConsentForm"] != "Y"))
                                 {
-                                    hasChanged = true;
-                                    dr["HasConsentForm"] = "N";
+                                    //hasChanged = true;
+                                    //dr["HasConsentForm"] = "N";
+                                    dr["HasConsentForm"] = "";
                                 }
                                 else if ((string.IsNullOrWhiteSpace(stu.MORE_INFORMEDCONSENT) || stu.MORE_INFORMEDCONSENT == "N") && ((string)dr["HasConsentForm"] == "Y"))
                                 {
@@ -460,10 +461,10 @@ namespace IrbAnalyser
                                 else
                                 {
                                     dr["HasConsentForm"] = "";
-                                }*/
+                                }
 
                                 dr["Cancer"] = "";
-                                dr["HasConsentForm"] = "";
+                                //dr["HasConsentForm"] = "";
                                 dr["Device"] = "";
                                 dr["Drug"] = "";
 
@@ -896,13 +897,13 @@ namespace IrbAnalyser
             }
             else if (Agency.AgencyVal == Agency.AgencyList.BRANY)
             {
-                labels = new string[4] { "Study Financials Managed By*", 
+                labels = new string[5] { "Study Financials Managed By*", 
                     //"CRO, if any*", 
-                    "IRB agency name", "IRB No.", "Is this a cancer related study ?" };
+                    "IRB agency name", "IRB No.", "Is this a cancer related study ?" , "Is there an Informed Consent associated to study? "};
 
-                values = new string[4] { "BRY", 
+                values = new string[5] { "BRY", 
                     //(string)dr["CRO"], 
-                    Agency.agencyStrLwr, (string)dr["IRB no"], (string)dr["Cancer"] };
+                    Agency.agencyStrLwr, (string)dr["IRB no"], (string)dr["Cancer"] , (string)dr["Consent"] };
             }
             else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
             {
