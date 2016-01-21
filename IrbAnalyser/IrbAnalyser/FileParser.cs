@@ -72,6 +72,13 @@ namespace IrbAnalyser
                     data.Columns.Add("Device");
                     data.Columns.Add("Drug");
                     data.Columns.Add("ReviewType");
+                    data.Columns.Add("QI_STUDY");
+                    data.Columns.Add("HUMANITARIAN_USE");
+                    data.Columns.Add("EMERGENCY_INVESTIGATIONAL");
+                    data.Columns.Add("SpecimenData");
+                    data.Columns.Add("NCT_NUMBER");
+                    data.Columns.Add("IND_Holder");
+                    data.Columns.Add("INDNumber");
                     initColumnCount = data.Columns.Count;
                     break;
                 case type.Status:

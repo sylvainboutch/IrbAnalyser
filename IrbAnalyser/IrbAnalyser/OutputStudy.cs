@@ -145,6 +145,11 @@ namespace IrbAnalyser
                 //newStudy.Columns.Add("Accronym", typeof(string));
                 newStudy.Columns.Add("Study_number", typeof(string));
                 newStudy.Columns.Add("Regulatory_coordinator", typeof(string));
+
+                newStudy.Columns.Add("INDNumber", typeof(string));
+                newStudy.Columns.Add("INDHolder", typeof(string));
+                newStudy.Columns.Add("AgentDevice", typeof(string));
+
                 newStudy.Columns.Add("Division/Therapeutic area", typeof(string));
                 newStudy.Columns.Add("Phase", typeof(string));
                 newStudy.Columns.Add("Official title", typeof(string));
@@ -166,7 +171,7 @@ namespace IrbAnalyser
                 newStudy.Columns.Add("Cancer", typeof(string));
                 newStudy.Columns.Add("Device", typeof(string));
                 newStudy.Columns.Add("Drug", typeof(string));
-                newStudy.Columns.Add("Consent", typeof(string));
+
             }
 
             if (updatedStudy.Columns.Count == 0)
@@ -197,6 +202,7 @@ namespace IrbAnalyser
                 updatedStudy.Columns.Add("Device", typeof(string));
                 updatedStudy.Columns.Add("Drug", typeof(string));
                 updatedStudy.Columns.Add("Consent", typeof(string));
+                updatedStudy.Columns.Add("NCTNumber", typeof(string));
                 //updatedStudy.Columns.Add("Accronym", typeof(string));
             }
         }
@@ -344,9 +350,6 @@ namespace IrbAnalyser
 
                                 string newNumber = Tools.getNewStudyNumber((string)dr["StudyId"], irbnumber, (string)dr["StudyAcronym"], (string)dr["StudyTitle"], (string)dr["PrimarySponsorStudyId"]);
                                 string oldNumber = Tools.getDBStudyNumber((string)dr["StudyId"]);
-
-
-
 
                                 if (!dr.Table.Columns.Contains("oldNumber"))
                                 {
@@ -704,6 +707,7 @@ namespace IrbAnalyser
             dr["Drug"] = (string)row["Drug"];
             dr["Consent"] = (string)row["HasConsentForm"];
 
+
             if (!string.IsNullOrWhiteSpace((string)row["newNumber"]))
             {
                 dr["Study_number"] = row["oldNumber"];
@@ -865,11 +869,22 @@ namespace IrbAnalyser
                     "&nbsp;&nbsp;&nbsp;Device",
                     "&nbsp;&nbsp;&nbsp;Epidemiologic",
                     "&nbsp;&nbsp;&nbsp;In Vitro",
-                    "&nbsp;&nbsp;&nbsp;Other Observational Studies",
+                    "&nbsp;&nbsp;&nbsp;Observational Studies",
                     "&nbsp;&nbsp;&nbsp;Retrospective chart review",
                     "&nbsp;&nbsp;&nbsp;Tissue Banking",
                     "&nbsp;&nbsp;&nbsp;Trials Involving Interventions",
-                    "Responsible Party*"  
+                    "Responsible Party*",  
+
+                    "&nbsp;&nbsp;&nbsp;Quality Improvement (QI) project",
+
+                    "&nbsp;&nbsp;&nbsp;Humanitarian Use Device (HUD)",
+                    "&nbsp;&nbsp;&nbsp;Emergency use of an investigational drug or device",
+                    
+                    "&nbsp;&nbsp;&nbsp;Blood Draw",
+                    "&nbsp;&nbsp;&nbsp;Survey Study (e.g. questionnaire, etc.)",  
+                    "&nbsp;&nbsp;&nbsp;Data Collection during routine clinical care",
+                    "Will the ONLY research activity be analysis of specimens or data/medical records obtained without consent? (Note: This means there will be NO interventions with human subjects.)"
+
                 };
 
                 values = new string[17] { 
@@ -890,7 +905,11 @@ namespace IrbAnalyser
                     (string)dr["RETROSPECTIVE_CHART_REVIEW"],
                     (string)dr["TISSUE BANKING"],
                     (string)dr["TRIALS_Involving_INTERVENTIONS"],
-                    (string)dr["RESPONSIBLE_PARTY"]
+                    (string)dr["QI_STUDY"],
+                    (string)dr["HUMANITARIAN_USE"],
+                    (string)dr["EMERGENCY_INVESTIGATIONAL"],
+                    (string)dr["ONLY_RETRO2"]
+
                     
 
                 };
@@ -907,9 +926,21 @@ namespace IrbAnalyser
             }
             else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
             {
-                labels = new string[6] { "IRB agency name", "IRB No.", "Is this a cancer related study ?", "Is there an Informed Consent associated to study? ", "   Agent ", "   Device" };
+                labels = new string[6] { "IRB agency name", "IRB No.", "Is this a cancer related study ?", "Is there an Informed Consent associated to study? ", "   Agent ", "   Device",
+                "Humanitarian Use Device (HUD)",
+                "Emergency use of an investigational drug or device",
+                "Quality Improvement (QI) project",
+                "Will the ONLY research activity be analysis of specimens or data/medical records obtained without consent? (Note: This means there will be NO interventions with human subjects.)"
 
-                values = new string[6] { (string)dr["IRB Agency name"], (string)dr["IRB no"], (string)dr["Cancer"], (string)dr["Consent"], (string)dr["Drug"], (string)dr["Device"] };
+            };
+
+                values = new string[6] { (string)dr["IRB Agency name"], (string)dr["IRB no"], (string)dr["Cancer"], (string)dr["Consent"], (string)dr["Drug"], (string)dr["Device"],
+                (string)dr["HUMANITARIAN_USE"],
+                (string)dr["EMERGENCY_INVESTIGATIONAL"],
+                (string)dr["QI_STUDY"],
+                (string)dr["SpecimenData"]
+                
+                };
             }
 
             OutputMSD.initiate();
