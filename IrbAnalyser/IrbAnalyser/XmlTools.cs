@@ -5,11 +5,29 @@ using System.Text;
 using System.Xml;
 using System.IO;
 using System.Data;
+using System.Xml.Linq;
 
 namespace IrbAnalyser
 {
     public class XmlTools
     {
+
+        private string submissionFormEvent = "New Application for IRB Review";
+        private string[] modificationFormEvents = new string[] {  
+            "Amendment",
+            "Administrative Review",
+            "Administrative - Translation",
+            "1572 Modification",
+            "Personnel Change",
+            "xForm Request Form Only",
+            "Advertisements",
+            "Full Board Reconsideration"
+        };
+
+        private Tuple<string, string> xmlQuestion = Tuple.Create("XFPQ", "QuestionVIG");
+        private Tuple<string, string> xmlAnswer = Tuple.Create("XFIR", "Response");
+        private string xmlAnswerNumber = "RepeatingGroupInstance";
+
 
         public XmlTools()
         {
@@ -239,6 +257,182 @@ namespace IrbAnalyser
             }
 
             return dt;
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="studyId"></param>
+        /// <returns></returns>
+        public string getStudyType(string studyId)
+        {
+            return getValue(studyId, "C1D6AD85-CFEF-471C-ABE1-E87D66817DB8");
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="studyId"></param>
+        /// <returns></returns>
+        public DataTable getAllPersonnal(string studyId)
+        {
+            DataTable personnal = new DataTable();
+            //KP
+            string vigName = "0A22BA93-DCDD-4E24-BC8C-2E15DEF7DB8A";
+            string vigRole = "433DA8A3-5F34-4B32-AFC9-A26E07F605AA";
+            string vigEmail = "4982BAF6-25C0-4F36-8303-0EF23CC40B83";
+            string[] submission = new string[] { submissionFormEvent };
+            personnal = getValuePersonnelDataTable(studyId, vigName, vigEmail, vigRole, personnal, submission);
+
+            //Regulatory Personnel Information
+            vigName = "63ACBAE3-A690-4B7B-9E0B-E41EDE217F15";
+            vigRole = "";
+            vigEmail = "A8F10A12-F2AF-466F-B937-281C75FB36DB";
+
+            personnal = getValuePersonnelDataTable(studyId, vigName, vigEmail, vigRole, personnal, submission);
+
+            //Add key personnel
+            vigName = "56918BF3-7EB6-4DD2-BE5C-C5A8AADEE86D";
+            vigRole = "FCD3E85F-4EED-4D6A-925B-12EC7423EA33";
+            vigEmail = "8FC0DA63-E6BC-4D44-8AF9-4850E48EBE5E";
+
+            personnal = getValuePersonnelDataTable(studyId, vigName, vigEmail, vigRole, personnal, submission);
+
+            //
+
+            return personnal;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="studyId"></param>
+        /// <param name="vigName"></param>
+        /// <param name="vigEmail"></param>
+        /// <param name="vigRole"></param>
+        /// <param name="personnal"></param>
+        /// <returns></returns>
+        private DataTable getValuePersonnelDataTable(string studyId, string vigName, string vigEmail, string vigRole, DataTable personnal, string[] formEvents)
+        {
+            if (!personnal.Columns.Contains("Name"))
+            {
+                personnal.Columns.Add("Name");
+            }
+            if (!personnal.Columns.Contains("Email"))
+            {
+                personnal.Columns.Add("Email");
+            }
+            if (!personnal.Columns.Contains("Role"))
+            {
+                personnal.Columns.Add("Role");
+            }
+
+            string name = "";
+            string email = "";
+            string role = "";
+            string id = "";
+
+                        
+            string xmlString = "";
+            
+
+            var eventRecords = OutputStatus.fpevent.data.AsEnumerable().Where(x => (string)x["StudyId"] == studyId && formEvents.Contains((string)x["Event"])).AsEnumerable();
+
+            if (formEvents.Count() == 1)
+            {
+                eventRecords = eventRecords.OrderByDescending(x => x.Field<string>("EventCreationDate")).Take(1);
+            }
+            else if (formEvents.Count() >= 1)
+            {
+                eventRecords = eventRecords.OrderBy(x => x.Field<string>("EventCreationDate"));
+            }
+
+            foreach (var eventRecord in eventRecords)
+            {
+                if (eventRecord != null)
+                {
+                    xmlString = eventRecord.Field<string>("xForms");
+
+                    XDocument xdocument = XDocument.Parse(xmlString);
+                    IEnumerable<XElement> document = xdocument.Elements();
+
+                    var persons = from d in document.Descendants(xmlQuestion.Item1)
+                                  where d.Attribute(xmlQuestion.Item2).Value.Equals(vigName)
+                                  from q in d.Elements(xmlAnswer.Item1)
+                                  select q;
+
+                    foreach (var p in persons)
+                    {
+                        name = p.Attribute(xmlAnswer.Item2).Value;
+                        id = p.Attribute(xmlAnswerNumber).Value;
+
+                        if (!String.IsNullOrEmpty(vigEmail))
+                        {
+                            email = (from d in document.Descendants(xmlQuestion.Item1)
+                                     where d.Attribute(xmlQuestion.Item2).Value.Equals(vigEmail)
+                                     from q in d.Elements(xmlAnswer.Item1)
+                                     where q.Attribute(xmlAnswerNumber).Value.Equals(id)
+                                     select q.Attribute(xmlAnswer.Item2).Value).FirstOrDefault();
+                        }
+                        if (!String.IsNullOrEmpty(vigRole))
+                        {
+                            role = (from d in document.Descendants(xmlQuestion.Item1)
+                                    where d.Attribute(xmlQuestion.Item2).Value.Equals(vigRole)
+                                    from q in d.Elements(xmlAnswer.Item1)
+                                    where q.Attribute(xmlAnswerNumber).Value.Equals(id)
+                                    select q.Attribute(xmlAnswer.Item2).Value).FirstOrDefault();
+                        }
+                        DataRow nr = personnal.NewRow();
+                        nr["Name"] = name;
+                        nr["Email"] = email;
+                        nr["Role"] = role;
+                        personnal.Rows.Add(nr);
+
+                    }
+
+                }
+            }
+            return personnal;
+
+
+        }
+
+        /// <summary>
+        /// Possible values : 
+        /// </summary>
+        /// <param name="studyId"></param>
+        /// <param name="valuename"></param>
+        /// <returns></returns>
+        private string getValue(string studyId, string questionVIG)
+        {
+            string retour = "";
+            string xmlString = "";
+            var eventRecord = OutputStatus.fpevent.data.AsEnumerable().Where(x => (string)x["StudyId"] == studyId && (string)x["Event"] == submissionFormEvent).OrderByDescending(x => x.Field<string>("EventCreationDate")).FirstOrDefault();
+            if (eventRecord != null)
+            {
+                xmlString = eventRecord.Field<string>("xForms");
+
+                XDocument xdocument = XDocument.Parse(xmlString);
+                IEnumerable<XElement> document = xdocument.Elements();
+
+                var childType = from d in document.Descendants(xmlQuestion.Item1)
+                                where d.Attribute(xmlQuestion.Item2).Value.Equals(questionVIG)
+                                from q in d.Elements(xmlAnswer.Item1)
+                                select new
+                                {
+                                    value = q.Attribute(xmlAnswer.Item2).Value
+                                };
+
+                foreach (var t in childType)
+                {
+                    retour += t.value;
+                }
+
+            }
+
+            return retour;
         }
 
 

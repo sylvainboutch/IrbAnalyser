@@ -181,6 +181,7 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>IRIS.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <None Include="Properties\DataSources\IrbAnalyser.Model.MED_PROD_903Entities1.datasource" />
     <None Include="Properties\DataSources\IrbAnalyser.Model.VelosDb.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

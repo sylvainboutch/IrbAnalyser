@@ -146,8 +146,8 @@ namespace IrbAnalyser
                 newStudy.Columns.Add("Study_number", typeof(string));
                 newStudy.Columns.Add("Regulatory_coordinator", typeof(string));
 
-                newStudy.Columns.Add("INDNumber", typeof(string));
-                newStudy.Columns.Add("INDHolder", typeof(string));
+                newStudy.Columns.Add("IND_NUMBERS", typeof(string));
+                newStudy.Columns.Add("IND_Holder", typeof(string));
                 newStudy.Columns.Add("AgentDevice", typeof(string));
 
                 newStudy.Columns.Add("Division/Therapeutic area", typeof(string));
@@ -168,14 +168,30 @@ namespace IrbAnalyser
                 newStudy.Columns.Add("IRB Study ID", typeof(string));
                 newStudy.Columns.Add("IRB Identifiers", typeof(string));
                 newStudy.Columns.Add("CRO", typeof(string));
-                newStudy.Columns.Add("Cancer", typeof(string));
-                newStudy.Columns.Add("Device", typeof(string));
-                newStudy.Columns.Add("Drug", typeof(string));
 
+                newStudy.Columns.Add("Cancer", typeof(string));
+                
+                newStudy.Columns.Add("Agent", typeof(string));
+                newStudy.Columns.Add("Biological", typeof(string));
+                newStudy.Columns.Add("BLood_Draw", typeof(string));
+                newStudy.Columns.Add("Data_Collection", typeof(string));
+                newStudy.Columns.Add("Device", typeof(string));
+                newStudy.Columns.Add("EMERGENCY_INVESTIGATIONAL", typeof(string));
+                newStudy.Columns.Add("HUMANITARIAN_USE", typeof(string));
+                newStudy.Columns.Add("QI_STUDY", typeof(string));
+                newStudy.Columns.Add("RETROSPECTIVE_CHART_REVIEW", typeof(string));
+                newStudy.Columns.Add("Survey", typeof(string));
+                newStudy.Columns.Add("TISSUE_BANKING", typeof(string));
+                newStudy.Columns.Add("TRIALS_Involving_INTERVENTIONS", typeof(string));  
+
+                newStudy.Columns.Add("SpecimenDataAnalysis", typeof(string));
+
+
+                newStudy.Columns.Add("NCT_NUMBER", typeof(string));
             }
 
             if (updatedStudy.Columns.Count == 0)
-            {
+            {/*
                 updatedStudy.Columns.Add("IRB Agency name", typeof(string));
                 updatedStudy.Columns.Add("IRB no", typeof(string));
                 updatedStudy.Columns.Add("IRB Study ID", typeof(string));
@@ -200,10 +216,56 @@ namespace IrbAnalyser
                 updatedStudy.Columns.Add("Cancer", typeof(string));
                 updatedStudy.Columns.Add("CRO", typeof(string));
                 updatedStudy.Columns.Add("Device", typeof(string));
-                updatedStudy.Columns.Add("Drug", typeof(string));
+                updatedStudy.Columns.Add("Agent", typeof(string));
                 updatedStudy.Columns.Add("Consent", typeof(string));
                 updatedStudy.Columns.Add("NCTNumber", typeof(string));
                 //updatedStudy.Columns.Add("Accronym", typeof(string));
+              */
+                updatedStudy.Columns.Add("Study_number", typeof(string));
+                updatedStudy.Columns.Add("Regulatory_coordinator", typeof(string));
+
+                updatedStudy.Columns.Add("IND_NUMBERS", typeof(string));
+                updatedStudy.Columns.Add("IND_Holder", typeof(string));
+                updatedStudy.Columns.Add("AgentDevice", typeof(string));
+
+                updatedStudy.Columns.Add("Division/Therapeutic area", typeof(string));
+                updatedStudy.Columns.Add("Phase", typeof(string));
+                updatedStudy.Columns.Add("Official title", typeof(string));
+                updatedStudy.Columns.Add("Study Summary", typeof(string));
+                updatedStudy.Columns.Add("Principal Investigator", typeof(string));
+                updatedStudy.Columns.Add("Study_coordinator", typeof(string));
+                updatedStudy.Columns.Add("Department", typeof(string));
+                updatedStudy.Columns.Add("Entire study sample size", typeof(string));
+                updatedStudy.Columns.Add("Study scope", typeof(string));
+                updatedStudy.Columns.Add("Primary funding sponsor", typeof(string));
+                updatedStudy.Columns.Add("Sponsor Protocol ID", typeof(string));
+                updatedStudy.Columns.Add("Sponsor contact", typeof(string));
+                updatedStudy.Columns.Add("Sponsor information other", typeof(string));
+                updatedStudy.Columns.Add("IRB Agency name", typeof(string));
+                updatedStudy.Columns.Add("IRB no", typeof(string));
+                updatedStudy.Columns.Add("IRB Study ID", typeof(string));
+                updatedStudy.Columns.Add("IRB Identifiers", typeof(string));
+                updatedStudy.Columns.Add("CRO", typeof(string));
+
+                updatedStudy.Columns.Add("Cancer", typeof(string));
+
+                updatedStudy.Columns.Add("Agent", typeof(string));
+                updatedStudy.Columns.Add("Biological", typeof(string));
+                updatedStudy.Columns.Add("BLood_Draw", typeof(string));
+                updatedStudy.Columns.Add("Data_Collection", typeof(string));
+                updatedStudy.Columns.Add("Device", typeof(string));
+                updatedStudy.Columns.Add("EMERGENCY_INVESTIGATIONAL", typeof(string));
+                updatedStudy.Columns.Add("HUMANITARIAN_USE", typeof(string));
+                updatedStudy.Columns.Add("QI_STUDY", typeof(string));
+                updatedStudy.Columns.Add("RETROSPECTIVE_CHART_REVIEW", typeof(string));
+                updatedStudy.Columns.Add("Survey", typeof(string));
+                updatedStudy.Columns.Add("TISSUE_BANKING", typeof(string));
+                updatedStudy.Columns.Add("TRIALS_Involving_INTERVENTIONS", typeof(string));
+
+                updatedStudy.Columns.Add("SpecimenDataAnalysis", typeof(string));
+
+
+                updatedStudy.Columns.Add("NCT_NUMBER", typeof(string));
             }
         }
 
@@ -287,6 +349,29 @@ namespace IrbAnalyser
                     var study = from st in studys
                                 where st.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (irbstudyId.Trim().ToLower())
                                 select st;
+
+                    if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+                    {
+                        XmlTools xmltool = new XmlTools();
+                        string category = xmltool.getStudyType((string)dr["StudyId"]);
+                        if (category == "")
+                        {
+                            dr["Agent"] = "Yes";
+                            dr["Biological"] = "";
+                            dr["BLood_Draw"] = "";
+                            dr["Data_Collection"] = "";
+                            dr["Device"] = "";
+                            dr["EMERGENCY_INVESTIGATIONAL"] = "";
+                            dr["HUMANITARIAN_USE"] = "";
+                            dr["QI_STUDY"] = "";
+                            dr["RETROSPECTIVE_CHART_REVIEW"] = "";
+                            dr["Survey"] = "";
+                            dr["TISSUE_BANKING"] = "";
+                            dr["TRIALS_Involving_INTERVENTIONS"] = "";
+                            dr["SpecimenDataAnalysis"] = "";
+                            dr["NCT_NUMBER"] = "";
+                        }
+                    }
 
                     if (!study.Any())
                     {
@@ -419,19 +504,19 @@ namespace IrbAnalyser
                                 }*/
 
                                 
-                                /*if (stu.MORE_SC_AGENT == "Y" && ((string)dr["Drug"] != "Y"))
+                                /*if (stu.MORE_SC_AGENT == "Y" && ((string)dr["Agent"] != "Y"))
                                 {
                                     hasChanged = true;
-                                    dr["Drug"] = "N";
+                                    dr["Agent"] = "N";
                                 }
-                                else if ((string.IsNullOrWhiteSpace(stu.MORE_SC_AGENT) || stu.MORE_SC_AGENT == "N") && ((string)dr["Drug"] == "Y"))
+                                else if ((string.IsNullOrWhiteSpace(stu.MORE_SC_AGENT) || stu.MORE_SC_AGENT == "N") && ((string)dr["Agent"] == "Y"))
                                 {
                                     hasChanged = true;
-                                    dr["Drug"] = "Y";
+                                    dr["Agent"] = "Y";
                                 }
                                 else
                                 {
-                                    dr["Drug"] = "";
+                                    dr["Agent"] = "";
                                 }
 
                                 if (stu.MORE_SC_DEVICE == "Y" && ((string)dr["Device"] != "Y"))
@@ -469,7 +554,7 @@ namespace IrbAnalyser
                                 dr["Cancer"] = "";
                                 //dr["HasConsentForm"] = "";
                                 dr["Device"] = "";
-                                dr["Drug"] = "";
+                                dr["Agent"] = "";
 
                                 if (stu.STUDY_PI != newpi && !String.IsNullOrEmpty(newpi) && newpi != rcscpi.PI)
                                 {
@@ -704,9 +789,23 @@ namespace IrbAnalyser
             dr["IRB Identifiers"] = Tools.generateStudyIdentifiers((string)row["StudyId"]);
 
             dr["Device"] = (string)row["Device"];
-            dr["Drug"] = (string)row["Drug"];
+            dr["Agent"] = (string)row["Agent"];
             dr["Consent"] = (string)row["HasConsentForm"];
 
+            dr["Agent"] = (string)row["Agent"];
+            dr["Biological"] = (string)row["Biological"];
+            dr["BLood_Draw"] = (string)row["BLood_Draw"];
+            dr["Data_Collection"] = (string)row["Data_Collection"];
+            dr["Device"] = (string)row["Device"];
+            dr["EMERGENCY_INVESTIGATIONAL"] = (string)row["EMERGENCY_INVESTIGATIONAL"];
+            dr["HUMANITARIAN_USE"] = (string)row["HUMANITARIAN_USE"];
+            dr["QI_STUDY"] = (string)row["QI_STUDY"];
+            dr["RETROSPECTIVE_CHART_REVIEW"] = (string)row["RETROSPECTIVE_CHART_REVIEW"];
+            dr["Survey"] = (string)row["Survey"];
+            dr["TISSUE_BANKING"] = (string)row["TISSUE_BANKING"];
+            dr["TRIALS_Involving_INTERVENTIONS"] = (string)row["TRIALS_Involving_INTERVENTIONS"];
+            dr["SpecimenDataAnalysis"] = (string)row["SpecimenDataAnalysis"];
+            dr["NCT_NUMBER"] = (string)row["NCT_NUMBER"];
 
             if (!string.IsNullOrWhiteSpace((string)row["newNumber"]))
             {
@@ -855,7 +954,7 @@ namespace IrbAnalyser
 
             if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
             {
-                labels = new string[17] { 
+                labels = new string[24] { 
                     "Study Financials Managed By**", 
                     //"CRO, if any*", 
                     "IRB agency name", 
@@ -887,7 +986,7 @@ namespace IrbAnalyser
 
                 };
 
-                values = new string[17] { 
+                values = new string[20] { 
                     (string)dr["STUDY_MANAGED_BY_IMPORT"],
                     //(string)dr["CRO"], 
                     (string)dr["IRB Agency name"], 
@@ -926,7 +1025,7 @@ namespace IrbAnalyser
             }
             else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
             {
-                labels = new string[6] { "IRB agency name", "IRB No.", "Is this a cancer related study ?", "Is there an Informed Consent associated to study? ", "   Agent ", "   Device",
+                labels = new string[10] { "IRB agency name", "IRB No.", "Is this a cancer related study ?", "Is there an Informed Consent associated to study? ", "   Agent ", "   Device",
                 "Humanitarian Use Device (HUD)",
                 "Emergency use of an investigational drug or device",
                 "Quality Improvement (QI) project",
@@ -934,7 +1033,7 @@ namespace IrbAnalyser
 
             };
 
-                values = new string[6] { (string)dr["IRB Agency name"], (string)dr["IRB no"], (string)dr["Cancer"], (string)dr["Consent"], (string)dr["Drug"], (string)dr["Device"],
+                values = new string[10] { (string)dr["IRB Agency name"], (string)dr["IRB no"], (string)dr["Cancer"], (string)dr["Consent"], (string)dr["Agent"], (string)dr["Device"],
                 (string)dr["HUMANITARIAN_USE"],
                 (string)dr["EMERGENCY_INVESTIGATIONAL"],
                 (string)dr["QI_STUDY"],
