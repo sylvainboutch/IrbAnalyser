@@ -24,7 +24,38 @@ namespace IrbAnalyser
         /// <returns></returns>
         public static string getFullName(DataRow dr)
         {
-            return dr == null ? "" : dr["FirstName"] + " " + dr["LastName"];
+            if (dr == null) return "";
+
+            string email = ((string)dr["PrimaryEMailAddress"]).ToLower().Trim();
+
+            string[] split = ((string)dr["FirstName"]).Split(' ');
+            string firstnameLonguest = split[0];
+            foreach (string part in split)
+            {
+                firstnameLonguest = firstnameLonguest.Length > part.Length ? firstnameLonguest : part;
+            }
+
+            split = ((string)dr["LastName"]).Split(' ');
+            string lastnameLonguest = split[0];
+            foreach (string part in split)
+            {
+                lastnameLonguest = lastnameLonguest.Length > part.Length ? lastnameLonguest : part;
+            }
+
+            var user = (from us in OutputTeam.accounts
+                                where ((!string.IsNullOrWhiteSpace(us.USER_EMAIL) && us.USER_EMAIL.ToLower() == email)
+                                || (us.USER_NAME.ToLower().Contains(firstnameLonguest.ToLower().Trim())
+                                & us.USER_NAME.ToLower().Contains(lastnameLonguest.ToLower().Trim())
+                                ))
+                                select us);
+
+            if (user == null || user.Count() == 0)
+            {
+                return dr["FirstName"] + " " + dr["LastName"];
+            }
+
+            return user.First().USER_NAME;
+            
         }
 
         /// <summary>
@@ -570,6 +601,7 @@ namespace IrbAnalyser
         /// <returns></returns>
         public static DataTable removeDuplicate(DataTable Table, string[] colNames)
         {
+            /*
             // note that strongly typed dictionary has replaced the hash table + it uses custom comparer 
             var hTable = new Dictionary<DataRowInfo, string>();
             var duplicateList = new ArrayList();
@@ -591,6 +623,27 @@ namespace IrbAnalyser
                 Table.Rows.Remove(dRow);
 
             //Datatable which contains unique records will be return as output.
+            return Table;*/
+           
+            //AsEnumerable().Where(x => (string)x["StudyId"] == studyId && formEvents.Contains((string)x["Event"])).AsEnumerable();
+
+            var newTable = Table.Clone();
+            foreach (DataRow dr in Table.Rows)
+            {
+                bool exist = true;
+                foreach (string columnName in colNames)
+                {
+                    exist = exist && (from newrow in newTable.AsEnumerable()
+                                      where ((string)newrow[columnName]).Trim().ToLower() == ((string)dr[columnName]).Trim().ToLower()
+                                 select newrow).Any();
+                }
+                if (!exist)
+                {
+                    newTable.Rows.Add(dr.ItemArray);
+                }
+            }
+            Table.Clear();
+            Table = newTable.Copy();
             return Table;
         }
 

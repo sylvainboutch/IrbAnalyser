@@ -69,14 +69,29 @@ namespace IrbAnalyser
                     data.Columns.Add("oldNumber");
                     data.Columns.Add("newNumber");
                     data.Columns.Add("HasConsentForm");
-                    data.Columns.Add("Device");
-                    data.Columns.Add("Drug");
+                    //data.Columns.Add("Device");
+                    //data.Columns.Add("Agent");
+
                     data.Columns.Add("ReviewType");
-                    data.Columns.Add("QI_STUDY");
-                    data.Columns.Add("HUMANITARIAN_USE");
+
+                    data.Columns.Add("Agent");
+                    data.Columns.Add("Biological");
+                    data.Columns.Add("BLood_Draw");
+                    data.Columns.Add("Data_Collection");
+                    data.Columns.Add("Device");
                     data.Columns.Add("EMERGENCY_INVESTIGATIONAL");
-                    data.Columns.Add("SpecimenData");
+                    data.Columns.Add("HUMANITARIAN_USE");
+                    data.Columns.Add("QI_STUDY");
+                    data.Columns.Add("RETROSPECTIVE_CHART_REVIEW");
+                    data.Columns.Add("Survey");
+                    data.Columns.Add("TISSUE_BANKING");
+                    data.Columns.Add("TRIALS_Involving_INTERVENTIONS");  
+
+                    data.Columns.Add("SpecimenDataAnalysis");
+
+
                     data.Columns.Add("NCT_NUMBER");
+
                     data.Columns.Add("IND_Holder");
                     data.Columns.Add("INDNumber");
                     initColumnCount = data.Columns.Count;

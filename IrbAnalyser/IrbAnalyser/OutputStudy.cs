@@ -144,18 +144,21 @@ namespace IrbAnalyser
                 newStudy.Columns.Add("Consent", typeof(string));*/
                 //newStudy.Columns.Add("Accronym", typeof(string));
                 newStudy.Columns.Add("Study_number", typeof(string));
+                newStudy.Columns.Add("New_Number", typeof(string));
                 newStudy.Columns.Add("Regulatory_coordinator", typeof(string));
-
-                newStudy.Columns.Add("IND_NUMBERS", typeof(string));
-                newStudy.Columns.Add("IND_Holder", typeof(string));
-                newStudy.Columns.Add("AgentDevice", typeof(string));
-
                 newStudy.Columns.Add("Division/Therapeutic area", typeof(string));
                 newStudy.Columns.Add("Phase", typeof(string));
                 newStudy.Columns.Add("Official title", typeof(string));
                 newStudy.Columns.Add("Study Summary", typeof(string));
                 newStudy.Columns.Add("Principal Investigator", typeof(string));
                 newStudy.Columns.Add("Study_coordinator", typeof(string));
+                newStudy.Columns.Add("IND_Holder", typeof(string));
+                newStudy.Columns.Add("IND_NUMBERS", typeof(string));
+
+                newStudy.Columns.Add("AgentDevice", typeof(string));
+
+
+
                 newStudy.Columns.Add("Department", typeof(string));
                 newStudy.Columns.Add("Entire study sample size", typeof(string));
                 newStudy.Columns.Add("Study scope", typeof(string));
@@ -170,7 +173,8 @@ namespace IrbAnalyser
                 newStudy.Columns.Add("CRO", typeof(string));
 
                 newStudy.Columns.Add("Cancer", typeof(string));
-                
+                newStudy.Columns.Add("Consent", typeof(string));
+
                 newStudy.Columns.Add("Agent", typeof(string));
                 newStudy.Columns.Add("Biological", typeof(string));
                 newStudy.Columns.Add("BLood_Draw", typeof(string));
@@ -182,7 +186,7 @@ namespace IrbAnalyser
                 newStudy.Columns.Add("RETROSPECTIVE_CHART_REVIEW", typeof(string));
                 newStudy.Columns.Add("Survey", typeof(string));
                 newStudy.Columns.Add("TISSUE_BANKING", typeof(string));
-                newStudy.Columns.Add("TRIALS_Involving_INTERVENTIONS", typeof(string));  
+                newStudy.Columns.Add("TRIALS_Involving_INTERVENTIONS", typeof(string));
 
                 newStudy.Columns.Add("SpecimenDataAnalysis", typeof(string));
 
@@ -222,18 +226,21 @@ namespace IrbAnalyser
                 //updatedStudy.Columns.Add("Accronym", typeof(string));
               */
                 updatedStudy.Columns.Add("Study_number", typeof(string));
+                updatedStudy.Columns.Add("New_Number", typeof(string));
                 updatedStudy.Columns.Add("Regulatory_coordinator", typeof(string));
-
-                updatedStudy.Columns.Add("IND_NUMBERS", typeof(string));
-                updatedStudy.Columns.Add("IND_Holder", typeof(string));
-                updatedStudy.Columns.Add("AgentDevice", typeof(string));
-
                 updatedStudy.Columns.Add("Division/Therapeutic area", typeof(string));
                 updatedStudy.Columns.Add("Phase", typeof(string));
                 updatedStudy.Columns.Add("Official title", typeof(string));
                 updatedStudy.Columns.Add("Study Summary", typeof(string));
                 updatedStudy.Columns.Add("Principal Investigator", typeof(string));
                 updatedStudy.Columns.Add("Study_coordinator", typeof(string));
+                updatedStudy.Columns.Add("IND_Holder", typeof(string));
+                updatedStudy.Columns.Add("IND_NUMBERS", typeof(string));
+
+                updatedStudy.Columns.Add("AgentDevice", typeof(string));
+
+
+
                 updatedStudy.Columns.Add("Department", typeof(string));
                 updatedStudy.Columns.Add("Entire study sample size", typeof(string));
                 updatedStudy.Columns.Add("Study scope", typeof(string));
@@ -248,6 +255,7 @@ namespace IrbAnalyser
                 updatedStudy.Columns.Add("CRO", typeof(string));
 
                 updatedStudy.Columns.Add("Cancer", typeof(string));
+                updatedStudy.Columns.Add("Consent", typeof(string));
 
                 updatedStudy.Columns.Add("Agent", typeof(string));
                 updatedStudy.Columns.Add("Biological", typeof(string));
@@ -352,8 +360,10 @@ namespace IrbAnalyser
 
                     if (Agency.AgencyVal == Agency.AgencyList.BRANY)
                     {
-                        XmlTools xmltool = new XmlTools();
-                        string category = xmltool.getStudyType((string)dr["StudyId"]);
+                        OutputTeam.addRowXForm(irbstudyId, number, irbnumber);
+
+                        //XmlTools xmltool = new XmlTools();
+                        /*string category = xmltool.getStudyType((string)dr["StudyId"]);
                         if (category == "")
                         {
                             dr["Agent"] = "Yes";
@@ -370,7 +380,9 @@ namespace IrbAnalyser
                             dr["TRIALS_Involving_INTERVENTIONS"] = "";
                             dr["SpecimenDataAnalysis"] = "";
                             dr["NCT_NUMBER"] = "";
-                        }
+
+                        }*/
+
                     }
 
                     if (!study.Any())
@@ -503,7 +515,7 @@ namespace IrbAnalyser
                                     dr["Cancer"] = "Y";
                                 }*/
 
-                                
+
                                 /*if (stu.MORE_SC_AGENT == "Y" && ((string)dr["Agent"] != "Y"))
                                 {
                                     hasChanged = true;
@@ -546,9 +558,14 @@ namespace IrbAnalyser
                                     hasChanged = true;
                                     dr["HasConsentForm"] = "Y";
                                 }
+                                else if ((string.IsNullOrWhiteSpace(stu.MORE_INFORMEDCONSENT)) && ((string)dr["HasConsentForm"] == "N"))
+                                {
+                                    hasChanged = true;
+                                    dr["HasConsentForm"] = "N";
+                                }
                                 else
                                 {
-                                    dr["HasConsentForm"] = "";
+                                    dr["HasConsentForm"] = "N";
                                 }
 
                                 dr["Cancer"] = "";
@@ -655,13 +672,13 @@ namespace IrbAnalyser
                                 if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
                                 {
                                     string newphase = IRISMap.Phase.getPhase((string)dr["Phase"]);
-                                    if (Tools.compareStr(newphase, stu.STUDY_PHASE) && !string.IsNullOrWhiteSpace((string)dr["Phase"]))
-                                    {
-                                        dr["Phase"] = "";
-                                    }
-                                    else if (!string.IsNullOrWhiteSpace((string)dr["Phase"]))
+                                    if (!Tools.compareStr(newphase, stu.STUDY_PHASE) && newphase != "Please specify")
                                     {
                                         hasChanged = true;
+                                    }
+                                    else
+                                    {
+                                        dr["Phase"] = "";
                                     }
                                 }
 
@@ -1037,7 +1054,7 @@ namespace IrbAnalyser
                 (string)dr["HUMANITARIAN_USE"],
                 (string)dr["EMERGENCY_INVESTIGATIONAL"],
                 (string)dr["QI_STUDY"],
-                (string)dr["SpecimenData"]
+                (string)dr["SpecimenDataAnalysis"]
                 
                 };
             }
@@ -1099,14 +1116,51 @@ namespace IrbAnalyser
                 string piname = study == null ? "" : study.STUDY_PI;
                 piname = String.IsNullOrWhiteSpace(piname) ? "" : piname;
                 string piemail = piname == "" ? "" : OutputTeam.accounts.FirstOrDefault(x => x.USER_NAME == piname).USER_EMAIL;
-                if (getRoleNotChange(studyId, IRISMap.RoleMap.PI, piname, piemail))
+
+
+                piemail = String.IsNullOrWhiteSpace(piemail) ? "" : piemail.ToLower().Trim();
+                piname = String.IsNullOrWhiteSpace(piname) ? "" : piname;
+
+                string[] split = piname.Split(' ');
+                var split2 = from s in split
+                             orderby s.Length descending
+                             select s;
+
+                string nameLonguest = split2.First().Trim().ToLower();
+                string nameSecondLonguest = nameLonguest;
+
+
+                if (split2.Count() > 1)
+                {
+                    nameSecondLonguest = split2.ElementAt(1).Trim().ToLower();
+                }
+
+                var pis = from pi in OutputTeam.fpTeam.data.AsEnumerable()
+                           where (pi.Field<string>("Role") == IRISMap.RoleMap.RC1 || pi.Field<string>("Role") == IRISMap.RoleMap.RC2)
+                          && pi.Field<string>("StudyId") == studyId
+                          && (
+                          (piemail != "" && (string)pi["PrimaryEMailAddress"] == piemail)
+                            || (((string)pi["FirstName"] + " " + (string)pi["LastName"]).Trim().ToLower().Contains(nameLonguest) && ((string)pi["FirstName"] + " " + (string)pi["LastName"]).Trim().ToLower().Contains(nameSecondLonguest))
+                          )
+                          select pi;
+
+                if (pis.Count() > 0)
+                {
+                    return pis.First().Field<string>("FirstName") + " " + pis.First().Field<string>("LastName");
+                }
+                else
+                {
+                    return getRole(studyId, IRISMap.RoleMap.PI);
+                }
+
+                /*if (getRoleNotChange(studyId, IRISMap.RoleMap.PI, piname, piemail))
                 {
                     return piname;
                 }
                 else
                 {
                     return getRole(studyId, IRISMap.RoleMap.PI);
-                }
+                }*/
             }
             else
             {
@@ -1155,22 +1209,85 @@ namespace IrbAnalyser
             var study = studys.FirstOrDefault(x => x.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (studyId.Trim().ToLower()));
             string rcname = study == null ? "" : study.STUDY_ENTERED_BY;
             string rcemail = String.IsNullOrWhiteSpace(rcname) ? "" : OutputTeam.accounts.FirstOrDefault(x => x.USER_NAME == rcname).USER_EMAIL;
+
+            rcemail = String.IsNullOrWhiteSpace(rcemail) ? "" : rcemail.ToLower().Trim();
+            rcname = String.IsNullOrWhiteSpace(rcname) ? "" : rcname;
+
+            string[] split = rcname.Split(' ');
+            var split2 = from s in split
+                         orderby s.Length descending
+                         select s;
+
+            string nameLonguest = split2.First().Trim().ToLower();
+            string nameSecondLonguest = nameLonguest;
+
+
+            if (split2.Count() > 1)
+            {
+                nameSecondLonguest = split2.ElementAt(1).Trim().ToLower();
+            }
+
+
             if (Agency.AgencyVal == Agency.AgencyList.BRANY)
             {
-                if (getRoleNotChange(studyId, BranyRoleMap.RC, rcname, rcemail))
+                /*string test = "";
+                if (rcname.Contains("Barrera"))
+                {
+                    test = rcname + " s";
+                }*/
+
+                var rcs = from rc in OutputTeam.fpTeam.data.AsEnumerable()
+                          where rc.Field<string>("Role") == BranyRoleMap.RC
+                          && rc.Field<string>("StudyId") == studyId
+                          && (
+                          (rcemail != "" && (string)rc["PrimaryEMailAddress"] == rcemail)
+                            || (((string)rc["FirstName"] + " " + (string)rc["LastName"]).Trim().ToLower().Contains(nameLonguest) && ((string)rc["FirstName"] + " " + (string)rc["LastName"]).Trim().ToLower().Contains(nameSecondLonguest))
+                          )
+                          select rc;
+
+                if (rcs.Count() > 0)
+                {
+                    return rcname;//test + rcs.First().Field<string>("FirstName") + " " + rcs.First().Field<string>("LastName");
+                }
+                else
+                {
+                    return getRole(studyId, BranyRoleMap.RC);
+                }
+
+                /*if (getRoleNotChange(studyId, BranyRoleMap.RC, rcname, rcemail))
                 {
                     retstr = rcname;
                 }
                 else
                 {
                     retstr = getRole(studyId, BranyRoleMap.RC);
-                }
+                }*/
             }
             else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
             {
+
+                var rcs = from rc in OutputTeam.fpTeam.data.AsEnumerable()
+                          where (rc.Field<string>("Role") == IRISMap.RoleMap.RC1 || rc.Field<string>("Role") == IRISMap.RoleMap.RC2)
+                          && rc.Field<string>("StudyId") == studyId
+                          && (
+                          (rcemail != "" && (string)rc["PrimaryEMailAddress"] == rcemail)
+                            || (((string)rc["FirstName"] + " " + (string)rc["LastName"]).Trim().ToLower().Contains(nameLonguest) && ((string)rc["FirstName"] + " " + (string)rc["LastName"]).Trim().ToLower().Contains(nameSecondLonguest))
+                          )
+                          select rc;
+
+                if (rcs.Count() > 0 && !String.IsNullOrWhiteSpace(rcname))
+                {
+                    return rcname;//rcs.First().Field<string>("FirstName") + " " + rcs.First().Field<string>("LastName");
+                }
+                else
+                {
+                    string rc1 = getRole(studyId, IRISMap.RoleMap.RC1);
+                    return String.IsNullOrWhiteSpace(rc1) ? getRole(studyId, IRISMap.RoleMap.RC2) : rc1;
+                }
+
                 //string rcemail = OutputTeam.team.FirstOrDefault(x => x.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (studyId.Trim().ToLower()) && x.ROLE == Role).USER_EMAIL;
 
-                if (getRoleNotChange(studyId, IRISMap.RoleMap.RC1, rcname, rcemail) || getRoleNotChange(studyId, IRISMap.RoleMap.RC2, rcname, rcemail))
+                /*if (getRoleNotChange(studyId, IRISMap.RoleMap.RC1, rcname, rcemail) || getRoleNotChange(studyId, IRISMap.RoleMap.RC2, rcname, rcemail))
                 {
                     retstr = rcname;
                 }
@@ -1179,7 +1296,7 @@ namespace IrbAnalyser
                     retstr = getRole(studyId, IRISMap.RoleMap.RC1);
                     if (String.IsNullOrWhiteSpace(retstr))
                         retstr = getRole(studyId, IRISMap.RoleMap.RC2);
-                }
+                }*/
             }
             else
             {
@@ -1202,7 +1319,8 @@ namespace IrbAnalyser
         /// <returns></returns>
         public static string getSC(string studyId)
         {
-            if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
+            return "";
+            /*if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
             {
                 var value = fpstudys.data.AsEnumerable().Where(x => (string)x["StudyId"] == studyId).FirstOrDefault();
                 if (value != null)
@@ -1218,7 +1336,7 @@ namespace IrbAnalyser
                 retstr = getRole(studyId, BranyRoleMap.RC, true);
             }
 
-            return retstr;
+            return retstr;*/
         }
 
 
@@ -1295,10 +1413,28 @@ namespace IrbAnalyser
             }
             else
             {
+
+                email = String.IsNullOrWhiteSpace(email) ? "" : email.ToLower().Trim();
+                name = String.IsNullOrWhiteSpace(name) ? "" : name;
+
+                if (email == "" & name == "") return true;
+
+                string[] split = name.Split(' ');
+                var split2 = from s in split
+                             orderby s.Length descending
+                             select s;
+
+                string nameLonguest = split2.First().Trim().ToLower();
+                string nameSecondLonguest = nameLonguest;
+                if (split2.Count() > 1)
+                {
+                    nameSecondLonguest = split2.ElementAt(1).Trim().ToLower();
+                }
+
                 return OutputTeam.fpTeam.data.AsEnumerable().Where(x => (string)x["StudyId"] == studyId
                     && (string)x["Role"] == role
-                    && ((Tools.compareStr((string)x["FirstName"] + " " + (string)x["LastName"], name))
-                    || Tools.compareStr((string)x["PrimaryEMailAddress"], email))
+                    && (email != "" && (string)x["PrimaryEMailAddress"] == email)
+                    && (((string)x["FirstName"] + " " + (string)x["LastName"]).Trim().ToLower().Contains(nameLonguest) && ((string)x["FirstName"] + " " + (string)x["LastName"]).Trim().ToLower().Contains(nameSecondLonguest))
                     ).Any();
             }
         }
@@ -1390,7 +1526,6 @@ namespace IrbAnalyser
             }*/
             if (SpecialStudys.forceInclude.Any(x => Tools.compareStr(x.number, (string)dr["IRBNumber"])))
             {
-                var a = Tools.getOldStudy((string)dr["StudyId"]);
                 return true;
             }
 

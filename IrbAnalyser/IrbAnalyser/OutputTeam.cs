@@ -5,6 +5,7 @@ using System.Text;
 using System.Data;
 using System.Collections.Specialized;
 using System.Collections;
+using System.Text.RegularExpressions;
 
 namespace IrbAnalyser
 {
@@ -273,8 +274,8 @@ namespace IrbAnalyser
         /// <param name="row"></param>
         private static void addRow(DataRow row, string type, DataTable records)
         {
-            if (!string.IsNullOrWhiteSpace((string)row["PrimaryEMailAddress"]) || type == "New non system user")
-            {
+            //if (!string.IsNullOrWhiteSpace((string)row["PrimaryEMailAddress"]) || type == "New non system user")
+            //{
                 string role = "";
                 //string group = "";
                 string site = "";
@@ -328,14 +329,14 @@ namespace IrbAnalyser
                         doNotAdd = true;
                     }
 
-                    if (type == "New non system user" && (role == SC || role == RC || role == PI))
+                    /*if (type == "New non system user" && (role == SC || role == RC || role == PI))
                     {
                         doNotAdd = false;
                     }
                     else if (type == "New non system user")
                     {
                         doNotAdd = true;
-                    }
+                    }*/
 
 
                     dr = records.NewRow();
@@ -373,10 +374,32 @@ namespace IrbAnalyser
                         }
                     }
 
+                    string email = ((string)row["PrimaryEMailAddress"]).ToLower().Trim();
+
+                    string[] split = ((string)row["FirstName"]).Split(' ');
+                    string firstnameLonguest = split[0];
+                    foreach (string part in split)
+                    {
+                        firstnameLonguest = firstnameLonguest.Length > part.Length ? firstnameLonguest : part;
+                    }
+
+                    split = ((string)row["LastName"]).Split(' ');
+                    string lastnameLonguest = split[0];
+                    foreach (string part in split)
+                    {
+                        lastnameLonguest = lastnameLonguest.Length > part.Length ? lastnameLonguest : part;
+                    }
+
                     var dtUser = from user in records.AsEnumerable()
-                                 where user.Field<string>("Email").Trim().ToLower() == ((string)row["PrimaryEMailAddress"]).Trim().ToLower()
+                                 where ((!string.IsNullOrWhiteSpace(user.Field<string>("Email")) && user.Field<string>("Email").Trim().ToLower() == email && !string.IsNullOrWhiteSpace(email))
+                                        || (
+                                        user.Field<string>("First name").Trim().ToLower().Contains(firstnameLonguest.Trim().ToLower())
+                                        & user.Field<string>("Last name").Trim().ToLower().Contains(lastnameLonguest.Trim().ToLower())))
+                                 
                                  && user.Field<string>("Study_number").Trim().ToLower() == ((string)dr["Study_number"]).Trim().ToLower()
+
                                  select user;
+
                     if (dtUser.Count() > 0)
                     {
                         foreach (DataRow rw in dtUser)
@@ -393,6 +416,10 @@ namespace IrbAnalyser
                             {
                                 rw["Role"] = role;
                             }
+                            else if (rw.Field<string>("Role") != role && rw.Field<string>("Role") == defaultDisabledRole)
+                            {
+                                rw["Role"] = role;
+                            }
                         }
                     }
                     else if (!(doNotAdd && (type == "New study" || type == "New non system user")))
@@ -400,7 +427,7 @@ namespace IrbAnalyser
                         records.Rows.Add(dr);
                     }
                 }
-            }
+            //}
         }
 
         /// <summary>
@@ -467,6 +494,7 @@ namespace IrbAnalyser
         /// <param name="dr"></param>
         private static void analyseRow(DataRow userRow)
         {
+
             string irbstudyId = userRow["StudyId"].ToString();
 
             if (!String.IsNullOrEmpty((string)userRow["IRBAgency"]))
@@ -480,18 +508,46 @@ namespace IrbAnalyser
 
             if (OutputStudy.shouldStudyBeAdded(irbstudyId))
             {
+                /*if ((string)userRow["LastName"] == "Anampa Mesias")
+                {
+                    userRow["Role"] = "wtf";
+                }*/
+
                 string email = ((string)userRow["PrimaryEMailAddress"]).ToLower().Trim();
 
+                string[] split = ((string)userRow["FirstName"]).Split(' ');
+                split = split.Count() == 1 ? ((string)userRow["FirstName"]).Split('-') : split;
+                string firstnameLonguest = split[0];
+                foreach (string part in split)
+                {
+                    firstnameLonguest = firstnameLonguest.Length > part.Length ? firstnameLonguest : part;
+                }
+
+                split = ((string)userRow["LastName"]).Split(' ');
+                split = split.Count() == 1 ? ((string)userRow["LastName"]).Split('-') : split;
+                string lastnameLonguest = split[0];
+                foreach (string part in split)
+                {
+                    lastnameLonguest = lastnameLonguest.Length >= part.Length ? lastnameLonguest : part;
+                }
+
                 var currentusers = (from us in accounts
+                                    where ((!string.IsNullOrWhiteSpace(us.USER_EMAIL) && us.USER_EMAIL.ToLower() == email && !string.IsNullOrWhiteSpace(email))
+                                    || (us.USER_NAME.ToLower().Contains((firstnameLonguest).ToLower().Trim())
+                                    & us.USER_NAME.ToLower().Contains((lastnameLonguest).ToLower().Trim())
+                                    ))
+                                        select us);
+
+                /*var currentusers = (from us in accounts
                                     where ((!string.IsNullOrWhiteSpace(us.USER_EMAIL) && us.USER_EMAIL.ToLower() == email && !string.IsNullOrWhiteSpace(email))
                                     || (us.USER_NAME.ToLower().Contains(((string)userRow["FirstName"]).ToLower().Trim())
                                     & us.USER_NAME.ToLower().Contains(((string)userRow["LastName"]).ToLower().Trim())
                                     ))
-                                    select us);
+                                    select us);*/
 
                 var currentuser = currentusers.FirstOrDefault();
 
-                if (currentuser == null)
+                if (currentuser == null && !String.IsNullOrWhiteSpace((string)userRow["PrimaryEMailAddress"]))
                 {
                     string login = ((string)userRow["PrimaryEMailAddress"]).Split('@')[0].ToLower().Trim();
 
@@ -517,8 +573,8 @@ namespace IrbAnalyser
                 var issuperuser = (from us in accounts
                                    where
                                    ((!string.IsNullOrWhiteSpace(us.USER_EMAIL) && us.USER_EMAIL.ToLower() == email)
-                                    || (us.USER_NAME.ToLower().Contains(((string)userRow["FirstName"]).ToLower().Trim())
-                                    & us.USER_NAME.ToLower().Contains(((string)userRow["LastName"]).ToLower().Trim())
+                                    || (us.USER_NAME.ToLower().Contains(firstnameLonguest.ToLower().Trim())
+                                    & us.USER_NAME.ToLower().Contains(lastnameLonguest.ToLower().Trim())
                                     ))
                                    && us.GRP_SUPUSR_FLAG == 1
                                    && us.USER_STATUS == "Active"
@@ -526,24 +582,24 @@ namespace IrbAnalyser
 
                 var isactiveuser = (from us in accounts
                                     where ((!string.IsNullOrWhiteSpace(us.USER_EMAIL) && us.USER_EMAIL.ToLower() == email)
-                                    || (us.USER_NAME.ToLower().Contains(((string)userRow["FirstName"]).ToLower().Trim())
-                                    & us.USER_NAME.ToLower().Contains(((string)userRow["LastName"]).ToLower().Trim())
+                                    || (us.USER_NAME.ToLower().Contains(firstnameLonguest.ToLower().Trim())
+                                    & us.USER_NAME.ToLower().Contains(lastnameLonguest.ToLower().Trim())
                                     ))
                                     && us.USER_STATUS == "Active"
                                     select us).Any();
 
                 var isdeleted = (from us in accounts
                                  where ((!string.IsNullOrWhiteSpace(us.USER_EMAIL) && us.USER_EMAIL.ToLower() == email)
-                                 || (us.USER_NAME.ToLower().Contains(((string)userRow["FirstName"]).ToLower().Trim())
-                                 & us.USER_NAME.ToLower().Contains(((string)userRow["LastName"]).ToLower().Trim())
-                                 ))
+                                    || (us.USER_NAME.ToLower().Contains(firstnameLonguest.ToLower().Trim())
+                                    & us.USER_NAME.ToLower().Contains(lastnameLonguest.ToLower().Trim())
+                                    ))
                                  select us).All(x => x.USER_HIDDEN == 1);
 
                 var istrained = (from us in accounts
                                  where ((!string.IsNullOrWhiteSpace(us.USER_EMAIL) && us.USER_EMAIL.ToLower() == email)
-                                 || (us.USER_NAME.ToLower().Contains(((string)userRow["FirstName"]).ToLower().Trim())
-                                 & us.USER_NAME.ToLower().Contains(((string)userRow["LastName"]).ToLower().Trim())
-                                 ))
+                                    || (us.USER_NAME.ToLower().Contains(firstnameLonguest.ToLower().Trim())
+                                    & us.USER_NAME.ToLower().Contains(lastnameLonguest.ToLower().Trim())
+                                    ))
                                  && !(us.USER_JOBTYPE == null || us.USER_JOBTYPE == "Untrained")
                                  select us).Any();
 
@@ -582,9 +638,10 @@ namespace IrbAnalyser
                             {
                                 var user = from us in team
                                            where us.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (irbstudyId.Trim().ToLower())
-                                          && (us.USER_EMAIL.ToLower() == email
-                                    || (us.USER_NAME.ToLower().Contains(((string)userRow["FirstName"]).ToLower().Trim())
-                                    & us.USER_NAME.ToLower().Contains(((string)userRow["LastName"]).ToLower().Trim())))
+                                          && ((!string.IsNullOrWhiteSpace(us.USER_EMAIL) && us.USER_EMAIL.ToLower() == email)
+                                    || (us.USER_NAME.ToLower().Contains(firstnameLonguest.ToLower().Trim())
+                                    & us.USER_NAME.ToLower().Contains(lastnameLonguest.ToLower().Trim())
+                                    ))
                                            select us;
                                 if (!user.Any() && !isdeleted)
                                 {
@@ -682,7 +739,7 @@ namespace IrbAnalyser
                         }
                     }
                 }
-                else if (!Tools.getOldStudy((string)userRow["StudyId"]))
+                else// if (!Tools.getOldStudy((string)userRow["StudyId"]))
                 {
                     //addRow(userRow, "User needs access", triggerTeam);
                     addRow(userRow, "New non system user", newNonSystemUser);
@@ -704,6 +761,8 @@ namespace IrbAnalyser
                 {
                     if (OutputStudy.isStudyInDataSource(studyId))
                     {
+
+
                         var userAccount = (from account in accounts
                                            where (!string.IsNullOrWhiteSpace(account.USER_EMAIL) && account.USER_EMAIL.Trim().ToLower() == user.USER_EMAIL.Trim().ToLower())
                                            & account.USER_NAME.Trim().ToLower() == user.USER_NAME.Trim().ToLower()
@@ -713,6 +772,7 @@ namespace IrbAnalyser
                         //{
                         //var agency = user.MORE_IRBAGENCY;
 
+                        //CONTEXT SWITCH BLOCKING HERE
                         var countEmail = (from DataRow dr in fpTeam.data.Rows
                                           where (string)dr["StudyId"] == studyId
                                           && ((!string.IsNullOrWhiteSpace(user.USER_EMAIL) && ((string)dr["PrimaryEMailAddress"]).ToLower().Trim() == user.USER_EMAIL.ToLower().Trim())
@@ -810,6 +870,95 @@ namespace IrbAnalyser
             dr["Role"] = migrationRoleMap(role);
             dr["Organization"] = OutputSite.EMmainsite;
             newTeam.Rows.Add(dr);
+        }
+
+        public static void addRowXForm(string studyId, string studyNumber, string irbNumber)
+        {
+
+            initiate();
+
+            XmlTools xmltools =  new XmlTools();
+            DataTable team = xmltools.getAllPersonnal(studyId);
+
+            foreach (DataRow person in team.Rows)
+            {
+
+                //DataRow dr = newTeam.NewRow();
+                //dr["Study_number"] = studyNumber;
+
+                string name = (string)person["Name"];
+
+                name = name.Replace(", MD", "");
+                name = name.Replace("MD", "");
+                name = name.Replace("Md", "");
+                name = name.Replace("M.D", "");
+                name = name.Replace("PA-C", "");
+                name = name.Replace("FNP-BC", "");
+                name = name.Replace("NP-C", "");
+                name = name.Replace("RN", "");
+                name = name.Replace("ANP", "");
+                name = name.Replace("FNP", "");
+                name = name.Replace("CCRP", "");
+                name = name.Replace("PhD", "");
+                name = name.Replace("MSN", "");
+                name = name.Replace("BSN", "");
+                name = name.Replace("LNC", "");
+                name = name.Replace("FNP", "");
+                name = name.Replace("NP", "");
+                name = name.Replace("MS", "");
+                name = name.Replace("PAS", "");
+                name = name.Replace("PA", "");
+
+
+                name = name.Replace("Dr.", "");
+                name = name.Replace("Dr ", "");
+
+                name = name.Replace(",", "");
+
+                while (name.Contains("  ")) name = name.Replace("  ", " ");
+
+                name = name.Trim();
+
+                var namesplit = name.Split(' ');
+                var lastname = "";
+                for (int i = 1; i < namesplit.Count(); i++)
+                {
+                    lastname += namesplit[i].Trim();
+                    if (i + 1 < namesplit.Count())
+                        lastname += " ";
+                }
+
+
+
+                /*dr["First name"] = namesplit[0].Trim();
+                dr["Last name"] = lastname;
+                dr["User Name"] = (string)person["Name"];
+                dr["Role"] = (string)person["Role"];//migrationRoleMap(role);
+                dr["Email"] = (string)person["Email"];
+                dr["Organization"] = OutputSite.EMmainsite;
+
+                newTeam.Rows.Add(dr);*/
+
+                DataRow dr = fpTeam.data.NewRow();
+
+                foreach (DataColumn dc in fpTeam.data.Columns)
+                {
+                    dr[dc.ColumnName] = "";
+                }
+
+                dr["StudyId"] = studyId;
+                dr["IRBNumber"] = irbNumber;
+                dr["IRBAgency"] = "brany";
+                dr["SiteName"] = OutputSite.EMmainsite; ;
+                dr["PrimaryEMailAddress"] = (string)person["Email"];
+                dr["FirstName"] = namesplit[0].Trim();
+                dr["LastName"] = lastname;
+                dr["Role"] = (string)person["Role"];
+                //dr[""] = "";
+
+                fpTeam.data.Rows.Add(dr);
+            }
+
         }
 
         public static string migrationRoleMap(string role)

@@ -913,7 +913,12 @@ namespace IrbAnalyser
             new irbpair("einstein", "12-05-189"),
             new irbpair("einstein", "996-192"),
             new irbpair("einstein", "2015-5035"),
-            new irbpair("einstein", "2015-5878")
+            new irbpair("einstein", "11-12-434"),
+            new irbpair("einstein", "2015-5878"),
+            new irbpair("brany", "14-02-109-01"),
+            new irbpair("einstein", "11-04-147"),
+            new irbpair("einstein", "10-03-055")
+            
             
 
         };

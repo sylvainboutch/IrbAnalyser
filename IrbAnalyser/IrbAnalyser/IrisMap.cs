@@ -158,12 +158,18 @@ namespace IrbAnalyser.IRISMap
                 {"Terminated by IRB","Complete"},
                 {"Terminated by PI","Complete"},
                 {"Undergoing COI Review",""},
-                {"Undergoing Exempt Determination","IRB Initial Submitted"},
+                /*{"Undergoing Exempt Determination","IRB Initial Submitted"},
                 {"Undergoing Expedited Review","IRB Initial Submitted"},
                 {"Undergoing Full Board Review","IRB Initial Submitted"},
                 {"Undergoing Review by IRB Chair","IRB Initial Submitted"},
                 {"Undergoing Review by IRB Chair/Designee","IRB Initial Submitted"},
-                {"Undergoing Review by Legal","IRB Initial Submitted"},
+                {"Undergoing Review by Legal","IRB Initial Submitted"},*/
+                {"Undergoing Exempt Determination",""},
+                {"Undergoing Expedited Review",""},
+                {"Undergoing Full Board Review",""},
+                {"Undergoing Review by IRB Chair",""},
+                {"Undergoing Review by IRB Chair/Designee",""},
+                {"Undergoing Review by Legal",""},
                 {"Withdrawn by PI","Withdrawn"},        
                 {"",""}
             };

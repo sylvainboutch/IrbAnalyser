@@ -266,13 +266,16 @@
         </EntityType>
         <EntityType Name="LCL_V_STUDYVER_APNDX">
           <Key>
-            <PropertyRef Name="PK_STUDYAPNDX" />
+            <PropertyRef Name="PK_VIEW" />
           </Key>
-          <Property Name="PK_STUDYAPNDX" Type="number" Nullable="false" />
+          <Property Name="PK_VIEW" Type="varchar2" MaxLength="300" Nullable="false" />
+          <Property Name="PK_STUDYAPNDX" Type="number" />
           <Property Name="PK_STUDY" Type="number" Nullable="false" />
           <Property Name="MORE_IRBAGENCY" Type="varchar2" MaxLength="100" />
           <Property Name="IRBIDENTIFIERS" Type="varchar2" MaxLength="4000" />
           <Property Name="STUDYAPNDX_URI" Type="varchar2" MaxLength="300" />
+		      <Property Name="STUDYVER_NUMBER" Type="varchar2" MaxLength="300" />
+		      <Property Name="PK_STUDYVER" Type="number" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'VDA.LCL_V_STUDYSUMM_PLUSMORE' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -506,13 +509,16 @@
         </EntityType>
         <EntityType Name="LCL_V_STUDYVER_APNDX">
           <Key>
-            <PropertyRef Name="PK_STUDYAPNDX" />
+            <PropertyRef Name="PK_VIEW" />
           </Key>
-          <Property Type="Decimal" Name="PK_STUDYAPNDX" Precision="38" Scale="0" Nullable="false" />
+          <Property Type="String" Name="PK_VIEW" MaxLength="300" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Type="Decimal" Name="PK_STUDYAPNDX" Precision="38" Scale="0" />
           <Property Type="Decimal" Name="PK_STUDY" Precision="38" Scale="0" Nullable="false" />
           <Property Type="String" Name="MORE_IRBAGENCY" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="IRBIDENTIFIERS" MaxLength="4000" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="STUDYAPNDX_URI" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDYVER_NUMBER" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="PK_STUDYVER" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="LCL_V_STUDYSUMM_PLUSMORE">
           <Key>
@@ -729,11 +735,14 @@
           <EntitySetMapping Name="LCL_V_STUDYVER_APNDX">
             <EntityTypeMapping TypeName="VelosModel.LCL_V_STUDYVER_APNDX">
               <MappingFragment StoreEntitySet="LCL_V_STUDYVER_APNDX">
+                <ScalarProperty Name="PK_VIEW" ColumnName="PK_VIEW" />
                 <ScalarProperty Name="STUDYAPNDX_URI" ColumnName="STUDYAPNDX_URI" />
                 <ScalarProperty Name="IRBIDENTIFIERS" ColumnName="IRBIDENTIFIERS" />
                 <ScalarProperty Name="MORE_IRBAGENCY" ColumnName="MORE_IRBAGENCY" />
                 <ScalarProperty Name="PK_STUDYAPNDX" ColumnName="PK_STUDYAPNDX" />
                 <ScalarProperty Name="PK_STUDY" ColumnName="PK_STUDY" />
+                <ScalarProperty Name="STUDYVER_NUMBER" ColumnName="STUDYVER_NUMBER" />
+                <ScalarProperty Name="PK_STUDYVER" ColumnName="PK_STUDYVER" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

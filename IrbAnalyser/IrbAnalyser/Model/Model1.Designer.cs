@@ -2100,13 +2100,15 @@ namespace IrbAnalyser.Model
         /// <summary>
         /// Create a new LCL_V_STUDYVER_APNDX object.
         /// </summary>
-        /// <param name="pK_STUDYAPNDX">Initial value of the PK_STUDYAPNDX property.</param>
+        /// <param name="pK_VIEW">Initial value of the PK_VIEW property.</param>
         /// <param name="pK_STUDY">Initial value of the PK_STUDY property.</param>
-        public static LCL_V_STUDYVER_APNDX CreateLCL_V_STUDYVER_APNDX(global::System.Decimal pK_STUDYAPNDX, global::System.Decimal pK_STUDY)
+        /// <param name="pK_STUDYVER">Initial value of the PK_STUDYVER property.</param>
+        public static LCL_V_STUDYVER_APNDX CreateLCL_V_STUDYVER_APNDX(global::System.String pK_VIEW, global::System.Decimal pK_STUDY, global::System.Decimal pK_STUDYVER)
         {
             LCL_V_STUDYVER_APNDX lCL_V_STUDYVER_APNDX = new LCL_V_STUDYVER_APNDX();
-            lCL_V_STUDYVER_APNDX.PK_STUDYAPNDX = pK_STUDYAPNDX;
+            lCL_V_STUDYVER_APNDX.PK_VIEW = pK_VIEW;
             lCL_V_STUDYVER_APNDX.PK_STUDY = pK_STUDY;
+            lCL_V_STUDYVER_APNDX.PK_STUDYVER = pK_STUDYVER;
             return lCL_V_STUDYVER_APNDX;
         }
 
@@ -2119,7 +2121,34 @@ namespace IrbAnalyser.Model
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.Decimal PK_STUDYAPNDX
+        public global::System.String PK_VIEW
+        {
+            get
+            {
+                return _PK_VIEW;
+            }
+            set
+            {
+                if (_PK_VIEW != value)
+                {
+                    OnPK_VIEWChanging(value);
+                    ReportPropertyChanging("PK_VIEW");
+                    _PK_VIEW = StructuralObject.SetValidValue(value, false);
+                    ReportPropertyChanged("PK_VIEW");
+                    OnPK_VIEWChanged();
+                }
+            }
+        }
+        private global::System.String _PK_VIEW;
+        partial void OnPK_VIEWChanging(global::System.String value);
+        partial void OnPK_VIEWChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Decimal> PK_STUDYAPNDX
         {
             get
             {
@@ -2127,18 +2156,15 @@ namespace IrbAnalyser.Model
             }
             set
             {
-                if (_PK_STUDYAPNDX != value)
-                {
-                    OnPK_STUDYAPNDXChanging(value);
-                    ReportPropertyChanging("PK_STUDYAPNDX");
-                    _PK_STUDYAPNDX = StructuralObject.SetValidValue(value);
-                    ReportPropertyChanged("PK_STUDYAPNDX");
-                    OnPK_STUDYAPNDXChanged();
-                }
+                OnPK_STUDYAPNDXChanging(value);
+                ReportPropertyChanging("PK_STUDYAPNDX");
+                _PK_STUDYAPNDX = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("PK_STUDYAPNDX");
+                OnPK_STUDYAPNDXChanged();
             }
         }
-        private global::System.Decimal _PK_STUDYAPNDX;
-        partial void OnPK_STUDYAPNDXChanging(global::System.Decimal value);
+        private Nullable<global::System.Decimal> _PK_STUDYAPNDX;
+        partial void OnPK_STUDYAPNDXChanging(Nullable<global::System.Decimal> value);
         partial void OnPK_STUDYAPNDXChanged();
     
         /// <summary>
@@ -2236,6 +2262,54 @@ namespace IrbAnalyser.Model
         private global::System.String _STUDYAPNDX_URI;
         partial void OnSTUDYAPNDX_URIChanging(global::System.String value);
         partial void OnSTUDYAPNDX_URIChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String STUDYVER_NUMBER
+        {
+            get
+            {
+                return _STUDYVER_NUMBER;
+            }
+            set
+            {
+                OnSTUDYVER_NUMBERChanging(value);
+                ReportPropertyChanging("STUDYVER_NUMBER");
+                _STUDYVER_NUMBER = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("STUDYVER_NUMBER");
+                OnSTUDYVER_NUMBERChanged();
+            }
+        }
+        private global::System.String _STUDYVER_NUMBER;
+        partial void OnSTUDYVER_NUMBERChanging(global::System.String value);
+        partial void OnSTUDYVER_NUMBERChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Decimal PK_STUDYVER
+        {
+            get
+            {
+                return _PK_STUDYVER;
+            }
+            set
+            {
+                OnPK_STUDYVERChanging(value);
+                ReportPropertyChanging("PK_STUDYVER");
+                _PK_STUDYVER = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("PK_STUDYVER");
+                OnPK_STUDYVERChanged();
+            }
+        }
+        private global::System.Decimal _PK_STUDYVER;
+        partial void OnPK_STUDYVERChanging(global::System.Decimal value);
+        partial void OnPK_STUDYVERChanged();
 
         #endregion
 

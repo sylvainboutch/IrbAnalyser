@@ -300,7 +300,67 @@ namespace IrbAnalyser
 
             personnal = getValuePersonnelDataTable(studyId, vigName, vigEmail, vigRole, personnal, submission);
 
-            //
+            //remove KP
+            vigName = "173251E9-E0C7-4C3A-93AD-8EAC85E54083";
+
+            personnal = removePersonnel(studyId, vigName, personnal, submission);
+
+            return personnal;
+        }
+
+
+        private DataTable removePersonnel(string studyId, string vigName, DataTable personnal, string[] formEvents)
+        {
+            var eventRecords = OutputStatus.fpevent.data.AsEnumerable().Where(x => (string)x["StudyId"] == studyId && formEvents.Contains((string)x["Event"])).AsEnumerable();
+
+            string name = "";
+
+
+            string xmlString = "";
+
+            if (formEvents.Count() == 1)
+            {
+                eventRecords = eventRecords.OrderByDescending(x => x.Field<string>("EventCreationDate")).Take(1);
+            }
+            else if (formEvents.Count() >= 1)
+            {
+                eventRecords = eventRecords.OrderBy(x => x.Field<string>("EventCreationDate"));
+            }
+
+            foreach (var eventRecord in eventRecords)
+            {
+                if (eventRecord != null)
+                {
+                    xmlString = eventRecord.Field<string>("xForms");
+                    if (!String.IsNullOrWhiteSpace(xmlString))
+                    {
+                        XDocument xdocument = XDocument.Parse(xmlString);
+                        IEnumerable<XElement> document = xdocument.Elements();
+
+                        var persons = from d in document.Descendants(xmlQuestion.Item1)
+                                      where d.Attribute(xmlQuestion.Item2).Value.Equals(vigName)
+                                      from q in d.Elements(xmlAnswer.Item1)
+                                      select q;
+
+                        foreach (var p in persons)
+                        {
+                            name = p.Attribute(xmlAnswer.Item2).Value;
+
+                            var rows = (from DataRow dr in personnal.Rows
+                                        where ((string)dr["name"]).Trim().ToLower() == name.ToLower().Trim()
+                                        select dr);
+
+                            foreach (var row in rows)
+                            {
+                                personnal.Rows.Remove(row);
+                            }
+                        }
+                    }
+                }
+            }
+
+
+
 
             return personnal;
         }
@@ -354,42 +414,45 @@ namespace IrbAnalyser
                 if (eventRecord != null)
                 {
                     xmlString = eventRecord.Field<string>("xForms");
-
-                    XDocument xdocument = XDocument.Parse(xmlString);
-                    IEnumerable<XElement> document = xdocument.Elements();
-
-                    var persons = from d in document.Descendants(xmlQuestion.Item1)
-                                  where d.Attribute(xmlQuestion.Item2).Value.Equals(vigName)
-                                  from q in d.Elements(xmlAnswer.Item1)
-                                  select q;
-
-                    foreach (var p in persons)
+                    if (!String.IsNullOrWhiteSpace(xmlString))
                     {
-                        name = p.Attribute(xmlAnswer.Item2).Value;
-                        id = p.Attribute(xmlAnswerNumber).Value;
+                        XDocument xdocument = XDocument.Parse(xmlString);
+                        IEnumerable<XElement> document = xdocument.Elements();
 
-                        if (!String.IsNullOrEmpty(vigEmail))
-                        {
-                            email = (from d in document.Descendants(xmlQuestion.Item1)
-                                     where d.Attribute(xmlQuestion.Item2).Value.Equals(vigEmail)
-                                     from q in d.Elements(xmlAnswer.Item1)
-                                     where q.Attribute(xmlAnswerNumber).Value.Equals(id)
-                                     select q.Attribute(xmlAnswer.Item2).Value).FirstOrDefault();
-                        }
-                        if (!String.IsNullOrEmpty(vigRole))
-                        {
-                            role = (from d in document.Descendants(xmlQuestion.Item1)
-                                    where d.Attribute(xmlQuestion.Item2).Value.Equals(vigRole)
-                                    from q in d.Elements(xmlAnswer.Item1)
-                                    where q.Attribute(xmlAnswerNumber).Value.Equals(id)
-                                    select q.Attribute(xmlAnswer.Item2).Value).FirstOrDefault();
-                        }
-                        DataRow nr = personnal.NewRow();
-                        nr["Name"] = name;
-                        nr["Email"] = email;
-                        nr["Role"] = role;
-                        personnal.Rows.Add(nr);
+                        var persons = from d in document.Descendants(xmlQuestion.Item1)
+                                      where d.Attribute(xmlQuestion.Item2).Value.Equals(vigName)
+                                      from q in d.Elements(xmlAnswer.Item1)
+                                      select q;
 
+                        foreach (var p in persons)
+                        {
+                            name = p.Attribute(xmlAnswer.Item2).Value;
+                            id = p.Attribute(xmlAnswerNumber).Value;
+
+                            if (!String.IsNullOrEmpty(vigEmail))
+                            {
+                                email = (from d in document.Descendants(xmlQuestion.Item1)
+                                         where d.Attribute(xmlQuestion.Item2).Value.Equals(vigEmail)
+                                         from q in d.Elements(xmlAnswer.Item1)
+                                         where q.Attribute(xmlAnswerNumber).Value.Equals(id)
+                                         select q.Attribute(xmlAnswer.Item2).Value).FirstOrDefault();
+                            }
+                            if (!String.IsNullOrEmpty(vigRole))
+                            {
+                                role = (from d in document.Descendants(xmlQuestion.Item1)
+                                        where d.Attribute(xmlQuestion.Item2).Value.Equals(vigRole)
+                                        from q in d.Elements(xmlAnswer.Item1)
+                                        where q.Attribute(xmlAnswerNumber).Value.Equals(id)
+                                        select q.Attribute(xmlAnswer.Item2).Value).FirstOrDefault();
+                            }
+                            DataRow nr = personnal.NewRow();
+                            nr["Name"] = String.IsNullOrEmpty(name) ? "" : name;
+                            nr["Email"] = String.IsNullOrEmpty(email) ? "" : email;
+                            nr["Role"] = String.IsNullOrEmpty(role) ? "" : role;
+
+                            personnal.Rows.Add(nr);
+
+                        }
                     }
 
                 }
@@ -413,23 +476,24 @@ namespace IrbAnalyser
             if (eventRecord != null)
             {
                 xmlString = eventRecord.Field<string>("xForms");
-
-                XDocument xdocument = XDocument.Parse(xmlString);
-                IEnumerable<XElement> document = xdocument.Elements();
-
-                var childType = from d in document.Descendants(xmlQuestion.Item1)
-                                where d.Attribute(xmlQuestion.Item2).Value.Equals(questionVIG)
-                                from q in d.Elements(xmlAnswer.Item1)
-                                select new
-                                {
-                                    value = q.Attribute(xmlAnswer.Item2).Value
-                                };
-
-                foreach (var t in childType)
+                if (!string.IsNullOrWhiteSpace(xmlString))
                 {
-                    retour += t.value;
-                }
+                    XDocument xdocument = XDocument.Parse(xmlString);
+                    IEnumerable<XElement> document = xdocument.Elements();
 
+                    var childType = from d in document.Descendants(xmlQuestion.Item1)
+                                    where d.Attribute(xmlQuestion.Item2).Value.Equals(questionVIG)
+                                    from q in d.Elements(xmlAnswer.Item1)
+                                    select new
+                                    {
+                                        value = q.Attribute(xmlAnswer.Item2).Value
+                                    };
+
+                    foreach (var t in childType)
+                    {
+                        retour += t.value;
+                    }
+                }
             }
 
             return retour;

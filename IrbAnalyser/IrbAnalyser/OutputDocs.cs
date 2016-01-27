@@ -11,6 +11,9 @@ namespace IrbAnalyser
         public static DataTable newDocs = new DataTable();
         public static DataTable updatedDocs = new DataTable();
 
+        private static string branydocs = "BRANY Documents";
+        private static string irisdocs = "IRIS Documents";
+
         private static IEnumerable<Model.LCL_V_STUDYVER_APNDX> _versions;
         public static IEnumerable<Model.LCL_V_STUDYVER_APNDX> versions
         {
@@ -24,7 +27,7 @@ namespace IrbAnalyser
                         var query = (from st in db.LCL_V_STUDYVER_APNDX
                                      where st.IRBIDENTIFIERS != null
                                      //&& st.MORE_IRBAGENCY != null
-                                     && st.STUDYAPNDX_URI != null
+                                     //&& st.STUDYAPNDX_URI != null
                                      select st);
                         _versions = query.ToList<Model.LCL_V_STUDYVER_APNDX>();
                     }
@@ -52,6 +55,8 @@ namespace IrbAnalyser
                 newDocs.Columns.Add("URL", typeof(string));
                 newDocs.Columns.Add("Short description", typeof(string));
                 newDocs.Columns.Add("Version status", typeof(string));
+                newDocs.Columns.Add("PK_STUDYVER", typeof(string));
+                newDocs.Columns.Add("PK_STUDYAPNDX", typeof(string));
             }
 
             if (updatedDocs.Columns.Count == 0)
@@ -66,6 +71,8 @@ namespace IrbAnalyser
                 updatedDocs.Columns.Add("URL", typeof(string));
                 updatedDocs.Columns.Add("Short description", typeof(string));
                 updatedDocs.Columns.Add("Version status", typeof(string));
+                updatedDocs.Columns.Add("PK_STUDYVER", typeof(string));
+                updatedDocs.Columns.Add("PK_STUDYAPNDX", typeof(string));
             }
         }
 
@@ -95,15 +102,56 @@ namespace IrbAnalyser
                 if (!String.IsNullOrEmpty(url))
                 {
 
-                    int docs = (from ver in versions
-                                where ver.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (irbstudyId.Trim().ToLower())
-                                   && ver.STUDYAPNDX_URI.ToLower() == url
+
+
+                    int docs2 = (from ver in versions
+                                where ver != null && ver.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (irbstudyId.Trim().ToLower())
+                                   && !String.IsNullOrWhiteSpace(ver.STUDYVER_NUMBER) && (ver.STUDYVER_NUMBER.ToLower() == irisdocs.ToLower() || ver.STUDYVER_NUMBER.ToLower() == branydocs.ToLower())
                                 select ver).Count();
 
-                    if (docs == 0)
+
+                    if ((string)studyrow["IRBNumber"] == "2015-5616")
                     {
-                        addRow("Updated Study - Wrong URL", url, "documents", irbstudyId, irbno, true);
+                        var test = (from ver in versions
+                                     where ver != null && ver.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (irbstudyId.Trim().ToLower())
+                                     select ver);
+                        studyrow["DocumentLink1"] = test.ToString();
                     }
+
+                    if (docs2 == 0)
+                    {
+                        addRow("Updated Study - Missing Version", url, irbstudyId, irbno, true);
+                        addRow("Updated Study - Missing Version", url, irbstudyId, irbno, false);
+                    }
+                    else 
+                    {
+                        var docs = (from ver in versions
+                                    where ver != null && ver.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (irbstudyId.Trim().ToLower())
+                                       && !String.IsNullOrWhiteSpace(ver.STUDYAPNDX_URI) && ver.STUDYAPNDX_URI.ToLower() == url.ToLower()
+                                    select ver);
+
+                        if (docs.Count() == 0)
+                        {
+                            docs = (from ver in versions
+                                    where ver != null && ver.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (irbstudyId.Trim().ToLower())
+                                       && !String.IsNullOrWhiteSpace(ver.STUDYAPNDX_URI) && (ver.STUDYAPNDX_URI.ToLower().Contains("https://") && (ver.STUDYAPNDX_URI.ToLower().Contains("brany") || ver.STUDYAPNDX_URI.ToLower().Contains("iris")))
+                                    select ver);
+
+                            if (docs.Count() == 0)
+                            {
+                                docs = (from ver in versions
+                                        where ver != null && ver.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (irbstudyId.Trim().ToLower())
+                                           && !String.IsNullOrWhiteSpace(ver.STUDYVER_NUMBER) && (ver.STUDYVER_NUMBER.ToLower() == irisdocs.ToLower() || ver.STUDYVER_NUMBER.ToLower() == branydocs.ToLower())
+                                        select ver);
+                            }
+
+                            int PK_STUDYVER = docs.FirstOrDefault() == null ||  docs.FirstOrDefault().PK_STUDYVER == null ? 0:(int)docs.FirstOrDefault().PK_STUDYVER;
+                            int PK_STUDYAPNDX = docs.FirstOrDefault() == null || docs.FirstOrDefault().PK_STUDYAPNDX == null ? 0 : (int)docs.FirstOrDefault().PK_STUDYAPNDX;
+
+                            addRow("Updated Study - Wrong URL", url, irbstudyId, irbno, false, PK_STUDYVER, PK_STUDYAPNDX);
+                        }
+                    }
+
                     /*
                     //BRANY look up agency in MSD
                     if (Agency.AgencyVal == Agency.AgencyList.BRANY)
@@ -131,27 +179,33 @@ namespace IrbAnalyser
                 if (!String.IsNullOrEmpty(url))
                 {
 
-                    addRow("New study", url, "documents", irbstudyId, irbno, true);
+                    addRow("New study", url, irbstudyId, irbno, true);
                 }
             }
 
 
         }
 
-        public static void addRow(string type, string url, string section, string studyid, string irbno, bool newrecord)
+        public static void addRow(string type, string url, string studyid, string irbno, bool newrecord, int PK_STUDYVER = 0, int PK_STUDYAPNDX = 0)
         {
             initiate();
             DataRow dr;
+            string studyNumber = Tools.getOldStudyNumber(studyid);
+
             if (newrecord)
             {
+                if (newDocs.AsEnumerable().Where(x => x.Field<string>("Study_number") == studyNumber).Any()) { return; }
                 dr = newDocs.NewRow();
             }
             else
-            { dr = updatedDocs.NewRow(); }
+            {
+                if (updatedDocs.AsEnumerable().Where(x => x.Field<string>("Study_number") == studyNumber).Any()) { return; }
+                dr = updatedDocs.NewRow(); 
+            }
 
             dr["TYPE"] = type;
 
-            dr["Study_number"] = Tools.getOldStudyNumber(studyid);
+            dr["Study_number"] = studyNumber;
 
             dr["Version date"] = Tools.parseDate((string)DateTime.Now.ToShortDateString());
             
@@ -160,14 +214,17 @@ namespace IrbAnalyser
             if (url.ToLower().Contains("iris"))
             {
                 dr["Short description"] = newrecord ? "IRIS IRB Documents" : "";
-                dr["Version number"] = "IRIS " + section;
+                dr["Version number"] = irisdocs;
             }
             else
             {
                 dr["Short description"] = newrecord ? "BRANY IRB Documents" : "";
-                dr["Version number"] = "BRANY " + section;
+                dr["Version number"] = branydocs;
             }
             dr["Version status"] = "Approved";
+
+            dr["PK_STUDYAPNDX"] = PK_STUDYAPNDX;
+            dr["PK_STUDYVER"] = PK_STUDYVER;
 
             if (newrecord)
             {
