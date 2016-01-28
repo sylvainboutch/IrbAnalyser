@@ -260,6 +260,53 @@ namespace IrbAnalyser
         }
 
 
+
+        public void fillDataRow(DataRow dr)
+        {
+            if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+            {
+                string type = getStudyType((string)dr["StudyId"]);
+                switch (type)
+                {
+                    case "Blood Draw":
+                        dr["BLood_Draw"] = "Y";
+                        break;
+                    case "Drug/Biologic or New Use of Drug/Biologic":
+                        dr["Agent"] = "Y";
+                        break;
+                    case "Retrospective Chart Review":
+                        dr["RETROSPECTIVE_CHART_REVIEW"] = "Y";
+                        break;
+                    case "Biological Specimen Research":
+                        dr["Biological"] = "Y";
+                        break;
+                    case "Combination Product":
+                        //dr["Agent"] = "Y";
+                        //dr["Device"] = "Y";
+                        dr["AgentDevice"] = "Please Specify";
+                        break;
+                    case "Data Collection during routine clinical care":
+                        dr["Data_Collection"] = "Y";
+                        break;
+                    case "Survey Study":
+                        dr["Survey"] = "Y";
+                        break;
+                    case "Device":
+                        dr["Device"] = "Y";
+                        break;
+                    case "Combination Product (Drug/Device, Drug/Biologic, Device/Biologic, Drug/Device/Biologic, co-packaged test articles, 2 products separately packaged but labeled for use together)":
+                        //dr["Agent"] = "Y";
+                        //dr["Device"] = "Y";
+                        dr["AgentDevice"] = "Please Specify";
+                        break;
+                }
+                dr["Studysamplesize"] = getValue((string)dr["StudyId"], "B1259520-1DCD-41FE-A62B-0C2516D3C4F1");
+                dr["StudySummary"] = getValue((string)dr["StudyId"], "E1077C72-26E4-427C-A47B-97D2EFD29D0C");
+                        
+
+            }
+        }
+
         /// <summary>
         /// 
         /// </summary>

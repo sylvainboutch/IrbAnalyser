@@ -151,6 +151,7 @@ namespace IrbAnalyser
                 newStudy.Columns.Add("Official title", typeof(string));
                 newStudy.Columns.Add("Study Summary", typeof(string));
                 newStudy.Columns.Add("Principal Investigator", typeof(string));
+                newStudy.Columns.Add("PIMajorAuthor", typeof(string));
                 newStudy.Columns.Add("Study_coordinator", typeof(string));
                 newStudy.Columns.Add("IND_Holder", typeof(string));
                 newStudy.Columns.Add("IND_NUMBERS", typeof(string));
@@ -233,6 +234,7 @@ namespace IrbAnalyser
                 updatedStudy.Columns.Add("Official title", typeof(string));
                 updatedStudy.Columns.Add("Study Summary", typeof(string));
                 updatedStudy.Columns.Add("Principal Investigator", typeof(string));
+                updatedStudy.Columns.Add("PIMajorAuthor", typeof(string));
                 updatedStudy.Columns.Add("Study_coordinator", typeof(string));
                 updatedStudy.Columns.Add("IND_Holder", typeof(string));
                 updatedStudy.Columns.Add("IND_NUMBERS", typeof(string));
@@ -298,10 +300,6 @@ namespace IrbAnalyser
         /// <param name="dr"></param>
         private static void analyseRow(DataRow dr)
         {
-            if ((string)dr["StudyId"] == "4230")
-            {
-                dr["StudyAcronym"] = "";
-            }
 
             string irbstudyId = (string)dr["StudyId"];
 
@@ -384,6 +382,9 @@ namespace IrbAnalyser
                         }*/
 
                     }
+
+                    XmlTools xmltool =  new XmlTools();
+                    xmltool.fillDataRow(dr);
 
                     if (!study.Any())
                     {
@@ -500,78 +501,47 @@ namespace IrbAnalyser
                                 RCSCPI rcscpi = new RCSCPI();
                                 rcscpi = SpecialStudys.getRCSCPI((string)dr["StudyId"]);
 
-                                string cancer = isStudyCancer(dr) ? "Y" : "";
 
-                                /*if (stu.MORE_CANCER == "Y" && cancer == "")
-                                {
-                                    hasChanged = true;
-                                    dr["Cancer"] = "N";
-                                }*/
+                                dr["Cancer"] = isStudyCancer(dr) ? "Y" : "";
+
+                                hasChanged = checkChangeOverwriteFalse("Cancer", dr, stu.MORE_CANCER, hasChanged);
+
+                                hasChanged = checkChangeOverwriteFalse("HasConsentForm", dr, stu.MORE_INFORMEDCONSENT, hasChanged);
+                                
+                                hasChanged = checkChangeOverwriteFalse("Agent", dr, stu.MORE_SC_AGENT, hasChanged);
+
+                                hasChanged = checkChangeOverwriteFalse("Biological", dr, stu.MORE_SC_DEVICE, hasChanged);
+
+                                hasChanged = checkChangeOverwriteFalse("BLood_Draw", dr, stu.MORE_SC_BLOOD_DRAW, hasChanged);
+
+                                hasChanged = checkChangeOverwriteFalse("Data_Collection", dr, stu.MORE_SC_DATA_ROUTINE_CARE, hasChanged);
+
+                                hasChanged = checkChangeOverwriteFalse("Device", dr, stu.MORE_SC_DEVICE, hasChanged);
+
+                                hasChanged = checkChangeOverwriteFalse("EMERGENCY_INVESTIGATIONAL", dr, stu.MORE_SC_EMERGENCY_USE, hasChanged);
+
+                                hasChanged = checkChangeOverwriteFalse("HUMANITARIAN_USE", dr, stu.MORE_SC_HUD, hasChanged);
+
+                                hasChanged = checkChangeOverwriteFalse("QI_STUDY", dr, stu.MORE_SC_QI_PROJECT, hasChanged);
+
+                                hasChanged = checkChangeOverwriteFalse("RETROSPECTIVE_CHART_REVIEW", dr, stu.MORE_SC_RETROCHARTREVIEW, hasChanged);
+
+                                hasChanged = checkChangeOverwriteFalse("TISSUE_BANKING", dr, stu.MORE_SC_TISSUEBANKING, hasChanged);
+
+                                hasChanged = checkChangeOverwriteFalse("TRIALS_Involving_INTERVENTIONS", dr, stu.MORE_SC_TRIALS, hasChanged);
+
+                                hasChanged = checkChangeOverwriteFalse("SpecimenDataAnalysis", dr, stu.MORE_ANALYSIS_WO_CONSENT, hasChanged);
+
+                                hasChanged = checkChangeOverwriteFalse("PIMajorAuthor", dr, stu.STUDY_MAJ_AUTH, hasChanged);
 
 
-                                /*if ((stu.MORE_CANCER == "N" || stu.MORE_CANCER == null) && cancer == "Y")
-                                {
-                                    hasChanged = true;
-                                    dr["Cancer"] = "Y";
-                                }*/
+                                //hasChanged = checkChangeOverwriteString("IND_NUMBERS", dr, stu.
+
+                                hasChanged = checkChangeOverwriteString("NCT_NUMBER", dr, stu.NCT_NUMBER, hasChanged);
+
+                                //HUMANITARIAN_USE
 
 
-                                /*if (stu.MORE_SC_AGENT == "Y" && ((string)dr["Agent"] != "Y"))
-                                {
-                                    hasChanged = true;
-                                    dr["Agent"] = "N";
-                                }
-                                else if ((string.IsNullOrWhiteSpace(stu.MORE_SC_AGENT) || stu.MORE_SC_AGENT == "N") && ((string)dr["Agent"] == "Y"))
-                                {
-                                    hasChanged = true;
-                                    dr["Agent"] = "Y";
-                                }
-                                else
-                                {
-                                    dr["Agent"] = "";
-                                }
-
-                                if (stu.MORE_SC_DEVICE == "Y" && ((string)dr["Device"] != "Y"))
-                                {
-                                    hasChanged = true;
-                                    dr["Device"] = "N";
-                                }
-                                else if ((string.IsNullOrWhiteSpace(stu.MORE_SC_DEVICE) || stu.MORE_SC_DEVICE == "N") && ((string)dr["Device"] == "Y"))
-                                {
-                                    hasChanged = true;
-                                    dr["Device"] = "Y";
-                                }
-                                else
-                                {
-                                    dr["Device"] = "";
-                                }
-                                */
-
-                                if (stu.MORE_INFORMEDCONSENT == "Y" && ((string)dr["HasConsentForm"] != "Y"))
-                                {
-                                    //hasChanged = true;
-                                    //dr["HasConsentForm"] = "N";
-                                    dr["HasConsentForm"] = "";
-                                }
-                                else if ((string.IsNullOrWhiteSpace(stu.MORE_INFORMEDCONSENT) || stu.MORE_INFORMEDCONSENT == "N") && ((string)dr["HasConsentForm"] == "Y"))
-                                {
-                                    hasChanged = true;
-                                    dr["HasConsentForm"] = "Y";
-                                }
-                                else if ((string.IsNullOrWhiteSpace(stu.MORE_INFORMEDCONSENT)) && ((string)dr["HasConsentForm"] == "N"))
-                                {
-                                    hasChanged = true;
-                                    dr["HasConsentForm"] = "N";
-                                }
-                                else
-                                {
-                                    dr["HasConsentForm"] = "N";
-                                }
-
-                                dr["Cancer"] = "";
-                                //dr["HasConsentForm"] = "";
-                                dr["Device"] = "";
-                                dr["Agent"] = "";
 
                                 if (stu.STUDY_PI != newpi && !String.IsNullOrEmpty(newpi) && newpi != rcscpi.PI)
                                 {
@@ -591,32 +561,17 @@ namespace IrbAnalyser
                                 }
                                 else { newsc = ""; }
 
+                                hasChanged = checkChangeOverwriteString("Studytitle", dr, stu.STUDY_TITLE, hasChanged);
 
-                                if (Tools.compareStr(stu.STUDY_TITLE, Tools.removeHtml((string)dr["StudyTitle"])) && !String.IsNullOrWhiteSpace(Tools.removeHtml((string)dr["StudyTitle"])))
-                                {
-                                    dr["Studytitle"] = "";
-                                }
-                                else if (!String.IsNullOrWhiteSpace((string)dr["StudyTitle"]))
-                                {
-                                    hasChanged = true;
-                                }
+                                hasChanged = checkChangeOverwriteNullString("Studysummary", dr, stu.STUDY_SUMMARY, hasChanged);
 
-                                /*if (Tools.compareStr(stu.STUDY_SUMMARY, Tools.removeHtml((string)dr["Studysummary"])) && !String.IsNullOrWhiteSpace(Tools.removeHtml((string)dr["Studysummary"])))
+                                /*if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
                                 {
-                                    dr["Studysummary"] = "";
-                                }
-                                else if (!String.IsNullOrWhiteSpace(Tools.removeHtml((string)dr["Studysummary"])))
-                                {
-                                    hasChanged = true;
+                                    string newdep = string.IsNullOrWhiteSpace((string)dr["Department"]) ? "" : IRISMap.Department.getDepartment((string)dr["Department"]);
+                                    hasChanged = checkChangeOverwriteNullString("Department", dr, newdep, hasChanged);
+                                    string newDiv = string.IsNullOrWhiteSpace((string)dr["Department"]) ? "" : IRISMap.Department.getDivision((string)dr["Department"]);
+                                    hasChanged = checkChangeOverwriteNullString("Department", dr, newDiv, hasChanged);
                                 }*/
-
-
-                                dr["Studysummary"] = "";
-                                dr["Department"] = "";
-                                dr["Division"] = "";
-                                dr["Cancer"] = "";
-                                dr["Studysamplesize"] = "";
-
 
                                 /*if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
                                 {
@@ -752,6 +707,91 @@ namespace IrbAnalyser
                     }
                 }
             }
+        }
+
+
+        /// <summary>
+        /// Specific for Y/N  overwrite null or false only
+        /// </summary>
+        /// <param name="field"></param>
+        /// <param name="dr"></param>
+        /// <param name="dbValue"></param>
+        /// <param name="hasChanged"></param>
+        /// <returns></returns>
+        private static bool checkChangeOverwriteFalse(string field, DataRow dr, string dbValue, bool hasChanged)
+        {
+            //bool hasChanged = false;
+            if (String.IsNullOrWhiteSpace(dbValue) && (string)dr[field] == "N")
+            {
+                hasChanged = true;
+            }
+            else if ((dbValue == "N" || dbValue == null) && (string)dr[field] == "Y")
+            {
+                hasChanged = true;
+            }
+            /*else if (dbValue == "Y" && (string)dr[field] == "N")
+            {
+                hasChanged = true;
+                dr[field] = "N";
+            }*/
+            else
+            {
+                dr[field] = "";
+            }
+            return hasChanged;
+
+        }
+
+        /// <summary>
+        /// Overwrite only if null
+        /// </summary>
+        /// <param name="field"></param>
+        /// <param name="dr"></param>
+        /// <param name="dbValue"></param>
+        /// <param name="hasChanged"></param>
+        /// <returns></returns>
+        private static bool checkChangeOverwriteNullString(string field, DataRow dr, string dbValue, bool hasChanged)
+        {
+            //bool hasChanged = false;
+            if (!String.IsNullOrWhiteSpace((string)dr[field]) & 
+                (String.IsNullOrWhiteSpace(dbValue))
+                )
+            {
+                hasChanged = true;
+            }
+            else
+            {
+                dr[field] = "";
+            }
+            return hasChanged;
+
+        }
+
+        /// <summary>
+        /// Overwrite if different
+        /// </summary>
+        /// <param name="field"></param>
+        /// <param name="dr"></param>
+        /// <param name="dbValue"></param>
+        /// <param name="hasChanged"></param>
+        /// <returns></returns>
+        private static bool checkChangeOverwriteString(string field, DataRow dr, string dbValue, bool hasChanged)
+        {
+            //bool hasChanged = false;
+            if (!String.IsNullOrWhiteSpace((string)dr[field]) &
+                (String.IsNullOrWhiteSpace(dbValue)
+                || (!Tools.compareStr(dbValue, (string)dr[field]))
+                )
+                )
+            {
+                hasChanged = true;
+            }
+            else
+            {
+                dr[field] = "";
+            }
+            return hasChanged;
+
         }
 
         /// <summary>

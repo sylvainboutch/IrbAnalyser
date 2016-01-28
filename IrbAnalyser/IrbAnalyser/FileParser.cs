@@ -41,6 +41,7 @@ namespace IrbAnalyser
                     data.Columns.Add("IRBNumber");
                     data.Columns.Add("IRBAgency");
                     data.Columns.Add("PI");
+                    data.Columns.Add("PIMajorAuthor");
                     data.Columns.Add("RC");
                     data.Columns.Add("SC");
                     data.Columns.Add("CRO");
@@ -69,6 +70,8 @@ namespace IrbAnalyser
                     data.Columns.Add("oldNumber");
                     data.Columns.Add("newNumber");
                     data.Columns.Add("HasConsentForm");
+
+                    data.Columns.Add("AgentDevice");
                     //data.Columns.Add("Device");
                     //data.Columns.Add("Agent");
 
@@ -93,7 +96,7 @@ namespace IrbAnalyser
                     data.Columns.Add("NCT_NUMBER");
 
                     data.Columns.Add("IND_Holder");
-                    data.Columns.Add("INDNumber");
+                    data.Columns.Add("IND_NUMBERS");
                     initColumnCount = data.Columns.Count;
                     break;
                 case type.Status:

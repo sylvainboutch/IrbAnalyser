@@ -47,74 +47,124 @@
           <EntitySet Name="LCL_V_STUDYSUMM_PLUSMORE" EntityType="VelosModel.Store.LCL_V_STUDYSUMM_PLUSMORE" store:Type="Views" store:Schema="VDA" store:Name="LCL_V_STUDYSUMM_PLUSMORE">
             <DefiningQuery>
               SELECT
-              "LCL_V_STUDYSUMM_PLUSMORE"."PK_STUDY" AS "PK_STUDY",
-              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_NUMBER" AS "STUDY_NUMBER",
-              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_ENTERED_BY" AS "STUDY_ENTERED_BY",
-              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_PI" AS "STUDY_PI",
-              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_COORDINATOR" AS "STUDY_COORDINATOR",
-              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_MAJ_AUTH" AS "STUDY_MAJ_AUTH",
-              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_TITLE" AS "STUDY_TITLE",
-              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_OBJECTIVE" AS "STUDY_OBJECTIVE",
-              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_SUMMARY" AS "STUDY_SUMMARY",
-              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_AGENT_DEVICE" AS "STUDY_AGENT_DEVICE",
-              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_DIVISION" AS "STUDY_DIVISION",
-              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_TAREA" AS "STUDY_TAREA",
-              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_DISEASE_SITE" AS "STUDY_DISEASE_SITE",
-              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_ICDCODE1" AS "STUDY_ICDCODE1",
-              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_ICDCODE2" AS "STUDY_ICDCODE2",
-              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_NATSAMPSIZE" AS "STUDY_NATSAMPSIZE",
-              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_DURATION" AS "STUDY_DURATION",
-              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_DURATN_UNIT" AS "STUDY_DURATN_UNIT",
-              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_EST_BEGIN_DATE" AS "STUDY_EST_BEGIN_DATE",
-              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_PHASE" AS "STUDY_PHASE",
-              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_RESEARCH_TYPE" AS "STUDY_RESEARCH_TYPE",
-              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_TYPE" AS "STUDY_TYPE",
-              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_LINKED_TO" AS "STUDY_LINKED_TO",
-              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_BLINDING" AS "STUDY_BLINDING",
-              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_RANDOM" AS "STUDY_RANDOM",
-              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_SPONSOR" AS "STUDY_SPONSOR",
-              "LCL_V_STUDYSUMM_PLUSMORE"."SPONSOR_CONTACT" AS "SPONSOR_CONTACT",
-              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_INFO" AS "STUDY_INFO",
-              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_KEYWRDS" AS "STUDY_KEYWRDS",
-              "LCL_V_STUDYSUMM_PLUSMORE"."FK_ACCOUNT" AS "FK_ACCOUNT",
-              "LCL_V_STUDYSUMM_PLUSMORE"."CREATED_ON" AS "CREATED_ON",
-              "LCL_V_STUDYSUMM_PLUSMORE"."LAST_MODIFIED_BY" AS "LAST_MODIFIED_BY",
-              "LCL_V_STUDYSUMM_PLUSMORE"."LAST_MODIFIED_DATE" AS "LAST_MODIFIED_DATE",
-              "LCL_V_STUDYSUMM_PLUSMORE"."CREATOR" AS "CREATOR",
-              "LCL_V_STUDYSUMM_PLUSMORE"."SPONSOR_DD" AS "SPONSOR_DD",
-              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_SPONSORID" AS "STUDY_SPONSORID",
-              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_ACTUALDT" AS "STUDY_ACTUALDT",
-              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_INVIND_FLAG" AS "STUDY_INVIND_FLAG",
-              "LCL_V_STUDYSUMM_PLUSMORE"."CTRP_ACCRREP_LASTRUN_DATE" AS "CTRP_ACCRREP_LASTRUN_DATE",
-              "LCL_V_STUDYSUMM_PLUSMORE"."CTRP_ACCRUAL_GEN_DATE" AS "CTRP_ACCRUAL_GEN_DATE",
-              "LCL_V_STUDYSUMM_PLUSMORE"."CTRP_CUTOFF_DATE" AS "CTRP_CUTOFF_DATE",
-              "LCL_V_STUDYSUMM_PLUSMORE"."CTRP_LAST_DOWNLOAD_BY" AS "CTRP_LAST_DOWNLOAD_BY",
-              "LCL_V_STUDYSUMM_PLUSMORE"."NCI_TRIAL_IDENTIFIER" AS "NCI_TRIAL_IDENTIFIER",
-              "LCL_V_STUDYSUMM_PLUSMORE"."NCT_NUMBER" AS "NCT_NUMBER",
-              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_ENTERED_BY_FK" AS "STUDY_ENTERED_BY_FK",
-              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_PI_FK" AS "STUDY_PI_FK",
-              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_COORDINATOR_FK" AS "STUDY_COORDINATOR_FK",
-              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_DIVISION_FK" AS "STUDY_DIVISION_FK",
-              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_TAREA_FK" AS "STUDY_TAREA_FK",
-              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_DISEASE_SITE_FK" AS "STUDY_DISEASE_SITE_FK",
-              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_PHASE_FK" AS "STUDY_PHASE_FK",
-              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_RESEARCH_TYPE_FK" AS "STUDY_RESEARCH_TYPE_FK",
-              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_TYPE_FK" AS "STUDY_TYPE_FK",
-              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_BLINDING_FK" AS "STUDY_BLINDING_FK",
-              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_RANDOM_FK" AS "STUDY_RANDOM_FK",
-              "LCL_V_STUDYSUMM_PLUSMORE"."CREATOR_FK" AS "CREATOR_FK",
-              "LCL_V_STUDYSUMM_PLUSMORE"."LAST_MODIFIED_BY_FK" AS "LAST_MODIFIED_BY_FK",
-              "LCL_V_STUDYSUMM_PLUSMORE"."SPONSOR_DD_FK" AS "SPONSOR_DD_FK",
-              "LCL_V_STUDYSUMM_PLUSMORE"."CTRP_LAST_DOWNLOAD_BY_FK" AS "CTRP_LAST_DOWNLOAD_BY_FK",
-              "LCL_V_STUDYSUMM_PLUSMORE"."STUDY_SCOPE" AS "STUDY_SCOPE",
-              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_CANCER" AS "MORE_CANCER",
-              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_IRBNUM" AS "MORE_IRBNUM",
-              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_IRBAGENCY" AS "MORE_IRBAGENCY",
-              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_MANAGEDBY" AS "MORE_MANAGEDBY",
-              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_INFORMEDCONSENT" AS "MORE_INFORMEDCONSENT",
-              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_SC_AGENT" AS "MORE_SC_AGENT",
-              "LCL_V_STUDYSUMM_PLUSMORE"."MORE_SC_DEVICE" AS "MORE_SC_DEVICE",
-              "VDA"."LCL_V_IRBFORM"."IRBIDENTIFIERS" AS "IRBIDENTIFIERS"
+              "VDA"."LCL_V_IRBFORM"."IRBIDENTIFIERS" AS "IRBIDENTIFIERS",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."STUDY_SCOPE" AS "STUDY_SCOPE",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."STUDY_EST_BEGIN_DATE" AS "STUDY_EST_BEGIN_DATE",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."STUDY_INVIND_FLAG" AS "STUDY_INVIND_FLAG",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_SPONSOR_ORGANIZATION" AS "MORE_SPONSOR_ORGANIZATION",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_INFORMEDCONSENT" AS "MORE_INFORMEDCONSENT",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."STUDY_NATSAMPSIZE" AS "STUDY_NATSAMPSIZE",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."STUDY_DISEASE_SITE" AS "STUDY_DISEASE_SITE",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_SC_TRIALS" AS "MORE_SC_TRIALS",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."STUDY_KEYWRDS" AS "STUDY_KEYWRDS",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_EPIC" AS "MORE_EPIC",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."SPONSOR_DD" AS "SPONSOR_DD",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."LAST_MODIFIED_DATE" AS "LAST_MODIFIED_DATE",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_IRBAGENCY" AS "MORE_IRBAGENCY",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."STUDY_TITLE" AS "STUDY_TITLE",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."NCI_TRIAL_IDENTIFIER" AS "NCI_TRIAL_IDENTIFIER",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."LAST_MODIFIED_BY" AS "LAST_MODIFIED_BY",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_FINANCE_ANALYST_NAME" AS "MORE_FINANCE_ANALYST_NAME",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_SC_DEVICE" AS "MORE_SC_DEVICE",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."NCT_NUMBER" AS "NCT_NUMBER",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_CANCER" AS "MORE_CANCER",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_SC_HUD" AS "MORE_SC_HUD",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_AT_MTA" AS "MORE_AT_MTA",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_SC_RETROCHARTREVIEW" AS "MORE_SC_RETROCHARTREVIEW",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_ANCIL_RADIOLOGY" AS "MORE_ANCIL_RADIOLOGY",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."STUDY_SPONSOR" AS "STUDY_SPONSOR",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."STUDY_DURATION" AS "STUDY_DURATION",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."STUDY_OBJECTIVE" AS "STUDY_OBJECTIVE",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."CTRP_ACCRREP_LASTRUN_DATE" AS "CTRP_ACCRREP_LASTRUN_DATE",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."SPONSOR_CONTACT" AS "SPONSOR_CONTACT",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."EINSTEIN_MONTE_MRN" AS "EINSTEIN_MONTE_MRN",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."STUDY_LINKED_TO" AS "STUDY_LINKED_TO",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."STUDY_DURATN_UNIT" AS "STUDY_DURATN_UNIT",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."STUDY_MAJ_AUTH" AS "STUDY_MAJ_AUTH",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_SC_OBSERVE_STUDIES" AS "MORE_SC_OBSERVE_STUDIES",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_RECCATG" AS "MORE_RECCATG",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."STUDY_DISEASE_SITE_FK" AS "STUDY_DISEASE_SITE_FK",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."STUDY_TAREA_FK" AS "STUDY_TAREA_FK",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_GRANTNUM" AS "MORE_GRANTNUM",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_AGENTS_PURCHASED" AS "MORE_AGENTS_PURCHASED",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."SPONSOR_DD_FK" AS "SPONSOR_DD_FK",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."STUDY_RESEARCH_TYPE" AS "STUDY_RESEARCH_TYPE",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_SC_TISSUEBANKING" AS "MORE_SC_TISSUEBANKING",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."CTRP_CUTOFF_DATE" AS "CTRP_CUTOFF_DATE",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."PK_STUDY" AS "PK_STUDY",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_AT_CTA" AS "MORE_AT_CTA",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."LAST_MODIFIED_BY_FK" AS "LAST_MODIFIED_BY_FK",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_SC_EMERGENCY_USE" AS "MORE_SC_EMERGENCY_USE",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_FINANCE_ANALYST_PHONE" AS "MORE_FINANCE_ANALYST_PHONE",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_SC_ANCILLARY" AS "MORE_SC_ANCILLARY",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_SPONSOR_EQUIPMENT" AS "MORE_SPONSOR_EQUIPMENT",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_SC_BIOLOGIC" AS "MORE_SC_BIOLOGIC",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."CTRP_ACCRUAL_GEN_DATE" AS "CTRP_ACCRUAL_GEN_DATE",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."STUDY_NUMBER" AS "STUDY_NUMBER",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_ANCIL_PATHOLOGY" AS "MORE_ANCIL_PATHOLOGY",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_SC_CORR" AS "MORE_SC_CORR",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."STUDY_PI_FK" AS "STUDY_PI_FK",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."STUDY_ENTERED_BY" AS "STUDY_ENTERED_BY",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."CTRP_LAST_DOWNLOAD_BY" AS "CTRP_LAST_DOWNLOAD_BY",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."FK_ACCOUNT" AS "FK_ACCOUNT",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."STUDY_BLINDING_FK" AS "STUDY_BLINDING_FK",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_SC_AGENT" AS "MORE_SC_AGENT",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_AT_MSTRA" AS "MORE_AT_MSTRA",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."STUDY_BLINDING" AS "STUDY_BLINDING",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_FINANCIALS" AS "MORE_FINANCIALS",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."STUDY_TYPE" AS "STUDY_TYPE",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."CREATOR" AS "CREATOR",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_SC_DATA_ROUTINE_CARE" AS "MORE_SC_DATA_ROUTINE_CARE",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."STUDY_INFO" AS "STUDY_INFO",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."STUDY_PHASE" AS "STUDY_PHASE",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_PRIMPURPOSE" AS "MORE_PRIMPURPOSE",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_SECPURPOSE" AS "MORE_SECPURPOSE",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."CTRP_LAST_DOWNLOAD_BY_FK" AS "CTRP_LAST_DOWNLOAD_BY_FK",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_ANCIL_OTHER" AS "MORE_ANCIL_OTHER",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_SC_EPIDEMEOLOGIC" AS "MORE_SC_EPIDEMEOLOGIC",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."STUDY_SPONSORID" AS "STUDY_SPONSORID",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_NUMPROTSRCVD" AS "MORE_NUMPROTSRCVD",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_PROGCODE" AS "MORE_PROGCODE",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_SC_SURVEY_STUDY" AS "MORE_SC_SURVEY_STUDY",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_SC_BLOOD_DRAW" AS "MORE_SC_BLOOD_DRAW",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_SC_INVITRO" AS "MORE_SC_INVITRO",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."STUDY_ICDCODE1" AS "STUDY_ICDCODE1",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."STUDY_RANDOM" AS "STUDY_RANDOM",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."STUDY_PHASE_FK" AS "STUDY_PHASE_FK",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."STUDY_ENTERED_BY_FK" AS "STUDY_ENTERED_BY_FK",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_SUBJECTS_REIMBURSED" AS "MORE_SUBJECTS_REIMBURSED",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."STUDY_ACTUALDT" AS "STUDY_ACTUALDT",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."STUDY_RESEARCH_TYPE_FK" AS "STUDY_RESEARCH_TYPE_FK",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_IRBNUM" AS "MORE_IRBNUM",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_SC_OTHER" AS "MORE_SC_OTHER",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_ANALYSIS_WO_CONSENT" AS "MORE_ANALYSIS_WO_CONSENT",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."STUDY_SUMMARY" AS "STUDY_SUMMARY",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_AT_SA" AS "MORE_AT_SA",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."STUDY_DIVISION" AS "STUDY_DIVISION",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."STUDY_RANDOM_FK" AS "STUDY_RANDOM_FK",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."STUDY_DIVISION_FK" AS "STUDY_DIVISION_FK",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_SC_QI_PROJECT" AS "MORE_SC_QI_PROJECT",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."CREATOR_FK" AS "CREATOR_FK",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."CREATED_ON" AS "CREATED_ON",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_AT_DTA" AS "MORE_AT_DTA",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_AT_II" AS "MORE_AT_II",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_PROTLINKED" AS "MORE_PROTLINKED",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."STUDY_COORDINATOR_FK" AS "STUDY_COORDINATOR_FK",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_INS_BIOSAFETY" AS "MORE_INS_BIOSAFETY",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."STUDY_COORDINATOR" AS "STUDY_COORDINATOR",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_RESPONSIBLE_PARTY" AS "MORE_RESPONSIBLE_PARTY",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_MANAGEDBY" AS "MORE_MANAGEDBY",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_FINANCE_PAYMENT_TERMS" AS "MORE_FINANCE_PAYMENT_TERMS",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_FINANCE_ANALYST_EMAIL" AS "MORE_FINANCE_ANALYST_EMAIL",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."STUDY_ICDCODE2" AS "STUDY_ICDCODE2",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_ANCIL_CRC" AS "MORE_ANCIL_CRC",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."STUDY_AGENT_DEVICE" AS "STUDY_AGENT_DEVICE",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_AT_MA" AS "MORE_AT_MA",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_ANTICIPATED_ENDDT" AS "MORE_ANTICIPATED_ENDDT",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."MORE_SITENUM" AS "MORE_SITENUM",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."STUDY_TYPE_FK" AS "STUDY_TYPE_FK",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."STUDY_PI" AS "STUDY_PI",
+              "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."STUDY_TAREA" AS "STUDY_TAREA"
               FROM "VDA"."LCL_V_STUDYSUMM_PLUSMORE" "LCL_V_STUDYSUMM_PLUSMORE"
               LEFT JOIN "VDA"."LCL_V_IRBFORM" ON "VDA"."LCL_V_IRBFORM"."FK_STUDY" = "VDA"."LCL_V_STUDYSUMM_PLUSMORE"."PK_STUDY"
             </DefiningQuery>
@@ -284,74 +334,124 @@
           <Key>
             <PropertyRef Name="PK_STUDY" />
           </Key>
+          <Property Name="IRBIDENTIFIERS" Type="varchar2" Nullable="true" MaxLength="4000" />
+          <Property Name="STUDY_SCOPE" Type="varchar2" Nullable="true" MaxLength="4000" />
+          <Property Name="STUDY_EST_BEGIN_DATE" Type="date" Nullable="true" />
+          <Property Name="STUDY_INVIND_FLAG" Type="varchar2" Nullable="true" MaxLength="4000" />
+          <Property Name="MORE_SPONSOR_ORGANIZATION" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="MORE_INFORMEDCONSENT" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="STUDY_NATSAMPSIZE" Type="number" Nullable="true" />
+          <Property Name="STUDY_DISEASE_SITE" Type="varchar2" Nullable="true" MaxLength="4000" />
+          <Property Name="MORE_SC_TRIALS" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="STUDY_KEYWRDS" Type="varchar2" Nullable="true" MaxLength="500" />
+          <Property Name="MORE_EPIC" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="SPONSOR_DD" Type="varchar2" Nullable="true" MaxLength="4000" />
+          <Property Name="LAST_MODIFIED_DATE" Type="date" Nullable="true" />
+          <Property Name="MORE_IRBAGENCY" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="STUDY_TITLE" Type="varchar2" Nullable="true" MaxLength="1000" />
+          <Property Name="NCI_TRIAL_IDENTIFIER" Type="varchar2" Nullable="true" MaxLength="35" />
+          <Property Name="LAST_MODIFIED_BY" Type="varchar2" Nullable="true" MaxLength="61" />
+          <Property Name="MORE_FINANCE_ANALYST_NAME" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="MORE_SC_DEVICE" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="NCT_NUMBER" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="MORE_CANCER" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="MORE_SC_HUD" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="MORE_AT_MTA" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="MORE_SC_RETROCHARTREVIEW" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="MORE_ANCIL_RADIOLOGY" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="STUDY_SPONSOR" Type="varchar2" Nullable="true" MaxLength="200" />
+          <Property Name="STUDY_DURATION" Type="number" Nullable="true" Precision="5" />
+          <Property Name="STUDY_OBJECTIVE" Type="clob" Nullable="true" />
+          <Property Name="CTRP_ACCRREP_LASTRUN_DATE" Type="date" Nullable="true" />
+          <Property Name="SPONSOR_CONTACT" Type="varchar2" Nullable="true" MaxLength="2000" />
+          <Property Name="EINSTEIN_MONTE_MRN" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="STUDY_LINKED_TO" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="STUDY_DURATN_UNIT" Type="varchar2" Nullable="true" MaxLength="10" />
+          <Property Name="STUDY_MAJ_AUTH" Type="varchar2" Nullable="true" MaxLength="4000" />
+          <Property Name="MORE_SC_OBSERVE_STUDIES" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="MORE_RECCATG" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="STUDY_DISEASE_SITE_FK" Type="varchar2" Nullable="true" MaxLength="500" />
+          <Property Name="STUDY_TAREA_FK" Type="number" Nullable="true" />
+          <Property Name="MORE_GRANTNUM" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="MORE_AGENTS_PURCHASED" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="SPONSOR_DD_FK" Type="number" Nullable="true" />
+          <Property Name="STUDY_RESEARCH_TYPE" Type="varchar2" Nullable="true" MaxLength="4000" />
+          <Property Name="MORE_SC_TISSUEBANKING" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="CTRP_CUTOFF_DATE" Type="date" Nullable="true" />
           <Property Name="PK_STUDY" Type="number" Nullable="false" />
-          <Property Name="STUDY_NUMBER" Type="varchar2" MaxLength="100" />
-          <Property Name="STUDY_ENTERED_BY" Type="varchar2" MaxLength="61" />
-          <Property Name="STUDY_PI" Type="varchar2" MaxLength="61" />
-          <Property Name="STUDY_COORDINATOR" Type="varchar2" MaxLength="61" />
-          <Property Name="STUDY_MAJ_AUTH" Type="varchar2" />
-          <Property Name="STUDY_TITLE" Type="varchar2" MaxLength="1000" />
-          <Property Name="STUDY_OBJECTIVE" Type="clob" />
-          <Property Name="STUDY_SUMMARY" Type="clob" />
-          <Property Name="STUDY_AGENT_DEVICE" Type="varchar2" MaxLength="100" />
-          <Property Name="STUDY_DIVISION" Type="varchar2" />
-          <Property Name="STUDY_TAREA" Type="varchar2" />
-          <Property Name="STUDY_DISEASE_SITE" Type="varchar2" />
-          <Property Name="STUDY_ICDCODE1" Type="varchar2" MaxLength="2000" />
-          <Property Name="STUDY_ICDCODE2" Type="varchar2" MaxLength="2000" />
-          <Property Name="STUDY_NATSAMPSIZE" Type="number" />
-          <Property Name="STUDY_DURATION" Type="number" Precision="5" />
-          <Property Name="STUDY_DURATN_UNIT" Type="varchar2" MaxLength="10" />
-          <Property Name="STUDY_EST_BEGIN_DATE" Type="date" />
-          <Property Name="STUDY_PHASE" Type="varchar2" />
-          <Property Name="STUDY_RESEARCH_TYPE" Type="varchar2" />
-          <Property Name="STUDY_TYPE" Type="varchar2" />
-          <Property Name="STUDY_LINKED_TO" Type="varchar2" MaxLength="100" />
-          <Property Name="STUDY_BLINDING" Type="varchar2" />
-          <Property Name="STUDY_RANDOM" Type="varchar2" />
-          <Property Name="STUDY_SPONSOR" Type="varchar2" MaxLength="200" />
-          <Property Name="SPONSOR_CONTACT" Type="varchar2" MaxLength="2000" />
-          <Property Name="STUDY_INFO" Type="varchar2" MaxLength="2000" />
-          <Property Name="STUDY_KEYWRDS" Type="varchar2" MaxLength="500" />
-          <Property Name="FK_ACCOUNT" Type="number" />
-          <Property Name="CREATED_ON" Type="date" />
-          <Property Name="LAST_MODIFIED_BY" Type="varchar2" MaxLength="61" />
-          <Property Name="LAST_MODIFIED_DATE" Type="date" />
-          <Property Name="CREATOR" Type="varchar2" MaxLength="61" />
-          <Property Name="SPONSOR_DD" Type="varchar2" />
-          <Property Name="STUDY_SPONSORID" Type="varchar2" MaxLength="50" />
-          <Property Name="STUDY_ACTUALDT" Type="date" />
-          <Property Name="STUDY_INVIND_FLAG" Type="varchar2" />
-          <Property Name="CTRP_ACCRREP_LASTRUN_DATE" Type="date" />
-          <Property Name="CTRP_ACCRUAL_GEN_DATE" Type="date" />
-          <Property Name="CTRP_CUTOFF_DATE" Type="date" />
-          <Property Name="CTRP_LAST_DOWNLOAD_BY" Type="varchar2" MaxLength="61" />
-          <Property Name="NCI_TRIAL_IDENTIFIER" Type="varchar2" MaxLength="35" />
-          <Property Name="NCT_NUMBER" Type="varchar2" MaxLength="100" />
-          <Property Name="STUDY_ENTERED_BY_FK" Type="number" />
-          <Property Name="STUDY_PI_FK" Type="varchar2" MaxLength="1000" />
-          <Property Name="STUDY_COORDINATOR_FK" Type="number" />
-          <Property Name="STUDY_DIVISION_FK" Type="number" />
-          <Property Name="STUDY_TAREA_FK" Type="number" />
-          <Property Name="STUDY_DISEASE_SITE_FK" Type="varchar2" MaxLength="500" />
-          <Property Name="STUDY_PHASE_FK" Type="number" />
-          <Property Name="STUDY_RESEARCH_TYPE_FK" Type="number" />
-          <Property Name="STUDY_TYPE_FK" Type="number" />
-          <Property Name="STUDY_BLINDING_FK" Type="number" />
-          <Property Name="STUDY_RANDOM_FK" Type="number" />
-          <Property Name="CREATOR_FK" Type="number" />
-          <Property Name="LAST_MODIFIED_BY_FK" Type="number" />
-          <Property Name="SPONSOR_DD_FK" Type="number" />
-          <Property Name="CTRP_LAST_DOWNLOAD_BY_FK" Type="number" />
-          <Property Name="STUDY_SCOPE" Type="varchar2" />
-          <Property Name="MORE_CANCER" Type="varchar2" MaxLength="100" />
-          <Property Name="MORE_IRBNUM" Type="varchar2" MaxLength="100" />
-          <Property Name="IRBIDENTIFIERS" Type="varchar2" MaxLength="4000" />
-          <Property Name="MORE_IRBAGENCY" Type="varchar2" MaxLength="100" />
-          <Property Name="MORE_MANAGEDBY" Type="varchar2" MaxLength="100" />
-          <Property Name="MORE_INFORMEDCONSENT" Type="varchar2" MaxLength="100" />
-          <Property Name="MORE_SC_AGENT" Type="varchar2" MaxLength="100" />
-          <Property Name="MORE_SC_DEVICE" Type="varchar2" MaxLength="100" />
+          <Property Name="MORE_AT_CTA" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="LAST_MODIFIED_BY_FK" Type="number" Nullable="true" />
+          <Property Name="MORE_SC_EMERGENCY_USE" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="MORE_FINANCE_ANALYST_PHONE" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="MORE_SC_ANCILLARY" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="MORE_SPONSOR_EQUIPMENT" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="MORE_SC_BIOLOGIC" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="CTRP_ACCRUAL_GEN_DATE" Type="date" Nullable="true" />
+          <Property Name="STUDY_NUMBER" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="MORE_ANCIL_PATHOLOGY" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="MORE_SC_CORR" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="STUDY_PI_FK" Type="varchar2" Nullable="true" MaxLength="1000" />
+          <Property Name="STUDY_ENTERED_BY" Type="varchar2" Nullable="true" MaxLength="61" />
+          <Property Name="CTRP_LAST_DOWNLOAD_BY" Type="varchar2" Nullable="true" MaxLength="61" />
+          <Property Name="FK_ACCOUNT" Type="number" Nullable="true" />
+          <Property Name="STUDY_BLINDING_FK" Type="number" Nullable="true" />
+          <Property Name="MORE_SC_AGENT" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="MORE_AT_MSTRA" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="STUDY_BLINDING" Type="varchar2" Nullable="true" MaxLength="4000" />
+          <Property Name="MORE_FINANCIALS" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="STUDY_TYPE" Type="varchar2" Nullable="true" MaxLength="4000" />
+          <Property Name="CREATOR" Type="varchar2" Nullable="true" MaxLength="61" />
+          <Property Name="MORE_SC_DATA_ROUTINE_CARE" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="STUDY_INFO" Type="varchar2" Nullable="true" MaxLength="2000" />
+          <Property Name="STUDY_PHASE" Type="varchar2" Nullable="true" MaxLength="4000" />
+          <Property Name="MORE_PRIMPURPOSE" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="MORE_SECPURPOSE" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="CTRP_LAST_DOWNLOAD_BY_FK" Type="number" Nullable="true" />
+          <Property Name="MORE_ANCIL_OTHER" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="MORE_SC_EPIDEMEOLOGIC" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="STUDY_SPONSORID" Type="varchar2" Nullable="true" MaxLength="50" />
+          <Property Name="MORE_NUMPROTSRCVD" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="MORE_PROGCODE" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="MORE_SC_SURVEY_STUDY" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="MORE_SC_BLOOD_DRAW" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="MORE_SC_INVITRO" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="STUDY_ICDCODE1" Type="varchar2" Nullable="true" MaxLength="2000" />
+          <Property Name="STUDY_RANDOM" Type="varchar2" Nullable="true" MaxLength="4000" />
+          <Property Name="STUDY_PHASE_FK" Type="number" Nullable="true" />
+          <Property Name="STUDY_ENTERED_BY_FK" Type="number" Nullable="true" />
+          <Property Name="MORE_SUBJECTS_REIMBURSED" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="STUDY_ACTUALDT" Type="date" Nullable="true" />
+          <Property Name="STUDY_RESEARCH_TYPE_FK" Type="number" Nullable="true" />
+          <Property Name="MORE_IRBNUM" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="MORE_SC_OTHER" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="MORE_ANALYSIS_WO_CONSENT" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="STUDY_SUMMARY" Type="clob" Nullable="true" />
+          <Property Name="MORE_AT_SA" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="STUDY_DIVISION" Type="varchar2" Nullable="true" MaxLength="4000" />
+          <Property Name="STUDY_RANDOM_FK" Type="number" Nullable="true" />
+          <Property Name="STUDY_DIVISION_FK" Type="number" Nullable="true" Precision="38" />
+          <Property Name="MORE_SC_QI_PROJECT" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="CREATOR_FK" Type="number" Nullable="true" />
+          <Property Name="CREATED_ON" Type="date" Nullable="true" />
+          <Property Name="MORE_AT_DTA" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="MORE_AT_II" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="MORE_PROTLINKED" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="STUDY_COORDINATOR_FK" Type="number" Nullable="true" />
+          <Property Name="MORE_INS_BIOSAFETY" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="STUDY_COORDINATOR" Type="varchar2" Nullable="true" MaxLength="61" />
+          <Property Name="MORE_RESPONSIBLE_PARTY" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="MORE_MANAGEDBY" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="MORE_FINANCE_PAYMENT_TERMS" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="MORE_FINANCE_ANALYST_EMAIL" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="STUDY_ICDCODE2" Type="varchar2" Nullable="true" MaxLength="2000" />
+          <Property Name="MORE_ANCIL_CRC" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="STUDY_AGENT_DEVICE" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="MORE_AT_MA" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="MORE_ANTICIPATED_ENDDT" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="MORE_SITENUM" Type="varchar2" Nullable="true" MaxLength="100" />
+          <Property Name="STUDY_TYPE_FK" Type="number" Nullable="true" />
+          <Property Name="STUDY_PI" Type="varchar2" Nullable="true" MaxLength="61" />
+          <Property Name="STUDY_TAREA" Type="varchar2" Nullable="true" MaxLength="4000" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'VDA.VDA_V_STUDYSITES' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -524,74 +624,124 @@
           <Key>
             <PropertyRef Name="PK_STUDY" />
           </Key>
-          <Property Type="Decimal" Name="PK_STUDY" Nullable="false" Precision="38" Scale="0" />
-          <Property Type="String" Name="STUDY_NUMBER" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="STUDY_ENTERED_BY" MaxLength="61" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="STUDY_PI" MaxLength="61" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="STUDY_COORDINATOR" MaxLength="61" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="STUDY_MAJ_AUTH" MaxLength="4000" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="STUDY_TITLE" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="STUDY_OBJECTIVE" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="STUDY_SUMMARY" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="STUDY_AGENT_DEVICE" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="STUDY_DIVISION" MaxLength="4000" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="STUDY_TAREA" MaxLength="4000" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="STUDY_DISEASE_SITE" MaxLength="4000" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="STUDY_ICDCODE1" MaxLength="2000" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="STUDY_ICDCODE2" MaxLength="2000" FixedLength="false" Unicode="false" />
-          <Property Type="Decimal" Name="STUDY_NATSAMPSIZE" Precision="38" Scale="0" />
-          <Property Type="Int16" Name="STUDY_DURATION" />
-          <Property Type="String" Name="STUDY_DURATN_UNIT" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="STUDY_EST_BEGIN_DATE" />
-          <Property Type="String" Name="STUDY_PHASE" MaxLength="4000" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="STUDY_RESEARCH_TYPE" MaxLength="4000" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="STUDY_TYPE" MaxLength="4000" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="STUDY_LINKED_TO" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="STUDY_BLINDING" MaxLength="4000" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="STUDY_RANDOM" MaxLength="4000" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="STUDY_SPONSOR" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SPONSOR_CONTACT" MaxLength="2000" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="STUDY_INFO" MaxLength="2000" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="STUDY_KEYWRDS" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Type="Decimal" Name="FK_ACCOUNT" Precision="38" Scale="0" />
-          <Property Type="DateTime" Name="CREATED_ON" />
-          <Property Type="String" Name="LAST_MODIFIED_BY" MaxLength="61" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="LAST_MODIFIED_DATE" />
-          <Property Type="String" Name="CREATOR" MaxLength="61" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="SPONSOR_DD" MaxLength="4000" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="STUDY_SPONSORID" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="STUDY_ACTUALDT" />
-          <Property Type="String" Name="STUDY_INVIND_FLAG" MaxLength="4000" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="CTRP_ACCRREP_LASTRUN_DATE" />
-          <Property Type="DateTime" Name="CTRP_ACCRUAL_GEN_DATE" />
-          <Property Type="DateTime" Name="CTRP_CUTOFF_DATE" />
-          <Property Type="String" Name="CTRP_LAST_DOWNLOAD_BY" MaxLength="61" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="NCI_TRIAL_IDENTIFIER" MaxLength="35" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="NCT_NUMBER" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="Decimal" Name="STUDY_ENTERED_BY_FK" Precision="38" Scale="0" />
-          <Property Type="String" Name="STUDY_PI_FK" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <Property Type="Decimal" Name="STUDY_COORDINATOR_FK" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="STUDY_DIVISION_FK" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="STUDY_TAREA_FK" Precision="38" Scale="0" />
-          <Property Type="String" Name="STUDY_DISEASE_SITE_FK" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Type="Decimal" Name="STUDY_PHASE_FK" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="STUDY_RESEARCH_TYPE_FK" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="STUDY_TYPE_FK" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="STUDY_BLINDING_FK" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="STUDY_RANDOM_FK" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="CREATOR_FK" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="LAST_MODIFIED_BY_FK" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="SPONSOR_DD_FK" Precision="38" Scale="0" />
-          <Property Type="Decimal" Name="CTRP_LAST_DOWNLOAD_BY_FK" Precision="38" Scale="0" />
-          <Property Type="String" Name="STUDY_SCOPE" MaxLength="4000" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MORE_CANCER" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MORE_IRBNUM" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="IRBIDENTIFIERS" MaxLength="4000" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MORE_IRBAGENCY" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MORE_MANAGEDBY" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_SCOPE" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="STUDY_EST_BEGIN_DATE" />
+          <Property Type="String" Name="STUDY_INVIND_FLAG" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_SPONSOR_ORGANIZATION" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="MORE_INFORMEDCONSENT" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="MORE_SC_AGENT" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="STUDY_NATSAMPSIZE" Precision="38" Scale="0" />
+          <Property Type="String" Name="STUDY_DISEASE_SITE" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_SC_TRIALS" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_KEYWRDS" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_EPIC" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="SPONSOR_DD" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="LAST_MODIFIED_DATE" />
+          <Property Type="String" Name="MORE_IRBAGENCY" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_TITLE" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="NCI_TRIAL_IDENTIFIER" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="LAST_MODIFIED_BY" MaxLength="61" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_FINANCE_ANALYST_NAME" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="MORE_SC_DEVICE" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="NCT_NUMBER" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_CANCER" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_SC_HUD" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_AT_MTA" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_SC_RETROCHARTREVIEW" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_ANCIL_RADIOLOGY" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_SPONSOR" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="Int16" Name="STUDY_DURATION" />
+          <Property Type="String" Name="STUDY_OBJECTIVE" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CTRP_ACCRREP_LASTRUN_DATE" />
+          <Property Type="String" Name="SPONSOR_CONTACT" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="EINSTEIN_MONTE_MRN" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_LINKED_TO" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_DURATN_UNIT" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_MAJ_AUTH" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_SC_OBSERVE_STUDIES" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_RECCATG" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_DISEASE_SITE_FK" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="STUDY_TAREA_FK" Precision="38" Scale="0" />
+          <Property Type="String" Name="MORE_GRANTNUM" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_AGENTS_PURCHASED" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="SPONSOR_DD_FK" Precision="38" Scale="0" />
+          <Property Type="String" Name="STUDY_RESEARCH_TYPE" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_SC_TISSUEBANKING" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CTRP_CUTOFF_DATE" />
+          <Property Type="Decimal" Name="PK_STUDY" Nullable="false" Precision="38" Scale="0" />
+          <Property Type="String" Name="MORE_AT_CTA" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="LAST_MODIFIED_BY_FK" Precision="38" Scale="0" />
+          <Property Type="String" Name="MORE_SC_EMERGENCY_USE" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_FINANCE_ANALYST_PHONE" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_SC_ANCILLARY" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_SPONSOR_EQUIPMENT" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_SC_BIOLOGIC" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="CTRP_ACCRUAL_GEN_DATE" />
+          <Property Type="String" Name="STUDY_NUMBER" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_ANCIL_PATHOLOGY" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_SC_CORR" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_PI_FK" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_ENTERED_BY" MaxLength="61" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CTRP_LAST_DOWNLOAD_BY" MaxLength="61" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="FK_ACCOUNT" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="STUDY_BLINDING_FK" Precision="38" Scale="0" />
+          <Property Type="String" Name="MORE_SC_AGENT" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_AT_MSTRA" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_BLINDING" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_FINANCIALS" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_TYPE" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CREATOR" MaxLength="61" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_SC_DATA_ROUTINE_CARE" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_INFO" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_PHASE" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_PRIMPURPOSE" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_SECPURPOSE" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="CTRP_LAST_DOWNLOAD_BY_FK" Precision="38" Scale="0" />
+          <Property Type="String" Name="MORE_ANCIL_OTHER" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_SC_EPIDEMEOLOGIC" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_SPONSORID" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_NUMPROTSRCVD" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_PROGCODE" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_SC_SURVEY_STUDY" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_SC_BLOOD_DRAW" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_SC_INVITRO" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_ICDCODE1" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_RANDOM" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="STUDY_PHASE_FK" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="STUDY_ENTERED_BY_FK" Precision="38" Scale="0" />
+          <Property Type="String" Name="MORE_SUBJECTS_REIMBURSED" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="STUDY_ACTUALDT" />
+          <Property Type="Decimal" Name="STUDY_RESEARCH_TYPE_FK" Precision="38" Scale="0" />
+          <Property Type="String" Name="MORE_IRBNUM" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_SC_OTHER" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_ANALYSIS_WO_CONSENT" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_SUMMARY" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_AT_SA" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_DIVISION" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="STUDY_RANDOM_FK" Precision="38" Scale="0" />
+          <Property Type="Decimal" Name="STUDY_DIVISION_FK" Precision="38" Scale="0" />
+          <Property Type="String" Name="MORE_SC_QI_PROJECT" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="CREATOR_FK" Precision="38" Scale="0" />
+          <Property Type="DateTime" Name="CREATED_ON" />
+          <Property Type="String" Name="MORE_AT_DTA" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_AT_II" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_PROTLINKED" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="STUDY_COORDINATOR_FK" Precision="38" Scale="0" />
+          <Property Type="String" Name="MORE_INS_BIOSAFETY" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_COORDINATOR" MaxLength="61" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_RESPONSIBLE_PARTY" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_MANAGEDBY" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_FINANCE_PAYMENT_TERMS" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_FINANCE_ANALYST_EMAIL" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_ICDCODE2" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_ANCIL_CRC" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_AGENT_DEVICE" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_AT_MA" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_ANTICIPATED_ENDDT" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MORE_SITENUM" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="STUDY_TYPE_FK" Precision="38" Scale="0" />
+          <Property Type="String" Name="STUDY_PI" MaxLength="61" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_TAREA" MaxLength="4000" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="VDA_V_STUDYSITES">
           <Key>
@@ -749,76 +899,124 @@
           <EntitySetMapping Name="LCL_V_STUDYSUMM_PLUSMORE">
             <EntityTypeMapping TypeName="VelosModel.LCL_V_STUDYSUMM_PLUSMORE">
               <MappingFragment StoreEntitySet="LCL_V_STUDYSUMM_PLUSMORE">
-                <ScalarProperty Name="MORE_MANAGEDBY" ColumnName="MORE_MANAGEDBY" />
-                <ScalarProperty Name="MORE_INFORMEDCONSENT" ColumnName="MORE_INFORMEDCONSENT" />
-                <ScalarProperty Name="MORE_SC_AGENT" ColumnName="MORE_SC_AGENT" />
-                <ScalarProperty Name="MORE_SC_DEVICE" ColumnName="MORE_SC_DEVICE" />
-
-                <ScalarProperty Name="MORE_IRBAGENCY" ColumnName="MORE_IRBAGENCY" />
-
-                <ScalarProperty Name="MORE_IRBNUM" ColumnName="MORE_IRBNUM" />
                 <ScalarProperty Name="IRBIDENTIFIERS" ColumnName="IRBIDENTIFIERS" />
-                <ScalarProperty Name="MORE_CANCER" ColumnName="MORE_CANCER" />
                 <ScalarProperty Name="STUDY_SCOPE" ColumnName="STUDY_SCOPE" />
-                <ScalarProperty Name="CTRP_LAST_DOWNLOAD_BY_FK" ColumnName="CTRP_LAST_DOWNLOAD_BY_FK" />
-                <ScalarProperty Name="SPONSOR_DD_FK" ColumnName="SPONSOR_DD_FK" />
-                <ScalarProperty Name="LAST_MODIFIED_BY_FK" ColumnName="LAST_MODIFIED_BY_FK" />
-                <ScalarProperty Name="CREATOR_FK" ColumnName="CREATOR_FK" />
-                <ScalarProperty Name="STUDY_RANDOM_FK" ColumnName="STUDY_RANDOM_FK" />
-                <ScalarProperty Name="STUDY_BLINDING_FK" ColumnName="STUDY_BLINDING_FK" />
-                <ScalarProperty Name="STUDY_TYPE_FK" ColumnName="STUDY_TYPE_FK" />
-                <ScalarProperty Name="STUDY_RESEARCH_TYPE_FK" ColumnName="STUDY_RESEARCH_TYPE_FK" />
-                <ScalarProperty Name="STUDY_PHASE_FK" ColumnName="STUDY_PHASE_FK" />
+                <ScalarProperty Name="STUDY_EST_BEGIN_DATE" ColumnName="STUDY_EST_BEGIN_DATE" />
+                <ScalarProperty Name="STUDY_INVIND_FLAG" ColumnName="STUDY_INVIND_FLAG" />
+                <ScalarProperty Name="MORE_SPONSOR_ORGANIZATION" ColumnName="MORE_SPONSOR_ORGANIZATION" />
+                <ScalarProperty Name="MORE_INFORMEDCONSENT" ColumnName="MORE_INFORMEDCONSENT" />
+                <ScalarProperty Name="STUDY_NATSAMPSIZE" ColumnName="STUDY_NATSAMPSIZE" />
+                <ScalarProperty Name="STUDY_DISEASE_SITE" ColumnName="STUDY_DISEASE_SITE" />
+                <ScalarProperty Name="MORE_SC_TRIALS" ColumnName="MORE_SC_TRIALS" />
+                <ScalarProperty Name="STUDY_KEYWRDS" ColumnName="STUDY_KEYWRDS" />
+                <ScalarProperty Name="MORE_EPIC" ColumnName="MORE_EPIC" />
+                <ScalarProperty Name="SPONSOR_DD" ColumnName="SPONSOR_DD" />
+                <ScalarProperty Name="LAST_MODIFIED_DATE" ColumnName="LAST_MODIFIED_DATE" />
+                <ScalarProperty Name="MORE_IRBAGENCY" ColumnName="MORE_IRBAGENCY" />
+                <ScalarProperty Name="STUDY_TITLE" ColumnName="STUDY_TITLE" />
+                <ScalarProperty Name="NCI_TRIAL_IDENTIFIER" ColumnName="NCI_TRIAL_IDENTIFIER" />
+                <ScalarProperty Name="LAST_MODIFIED_BY" ColumnName="LAST_MODIFIED_BY" />
+                <ScalarProperty Name="MORE_FINANCE_ANALYST_NAME" ColumnName="MORE_FINANCE_ANALYST_NAME" />
+                <ScalarProperty Name="MORE_SC_DEVICE" ColumnName="MORE_SC_DEVICE" />
+                <ScalarProperty Name="NCT_NUMBER" ColumnName="NCT_NUMBER" />
+                <ScalarProperty Name="MORE_CANCER" ColumnName="MORE_CANCER" />
+                <ScalarProperty Name="MORE_SC_HUD" ColumnName="MORE_SC_HUD" />
+                <ScalarProperty Name="MORE_AT_MTA" ColumnName="MORE_AT_MTA" />
+                <ScalarProperty Name="MORE_SC_RETROCHARTREVIEW" ColumnName="MORE_SC_RETROCHARTREVIEW" />
+                <ScalarProperty Name="MORE_ANCIL_RADIOLOGY" ColumnName="MORE_ANCIL_RADIOLOGY" />
+                <ScalarProperty Name="STUDY_SPONSOR" ColumnName="STUDY_SPONSOR" />
+                <ScalarProperty Name="STUDY_DURATION" ColumnName="STUDY_DURATION" />
+                <ScalarProperty Name="STUDY_OBJECTIVE" ColumnName="STUDY_OBJECTIVE" />
+                <ScalarProperty Name="CTRP_ACCRREP_LASTRUN_DATE" ColumnName="CTRP_ACCRREP_LASTRUN_DATE" />
+                <ScalarProperty Name="SPONSOR_CONTACT" ColumnName="SPONSOR_CONTACT" />
+                <ScalarProperty Name="EINSTEIN_MONTE_MRN" ColumnName="EINSTEIN_MONTE_MRN" />
+                <ScalarProperty Name="STUDY_LINKED_TO" ColumnName="STUDY_LINKED_TO" />
+                <ScalarProperty Name="STUDY_DURATN_UNIT" ColumnName="STUDY_DURATN_UNIT" />
+                <ScalarProperty Name="STUDY_MAJ_AUTH" ColumnName="STUDY_MAJ_AUTH" />
+                <ScalarProperty Name="MORE_SC_OBSERVE_STUDIES" ColumnName="MORE_SC_OBSERVE_STUDIES" />
+                <ScalarProperty Name="MORE_RECCATG" ColumnName="MORE_RECCATG" />
                 <ScalarProperty Name="STUDY_DISEASE_SITE_FK" ColumnName="STUDY_DISEASE_SITE_FK" />
                 <ScalarProperty Name="STUDY_TAREA_FK" ColumnName="STUDY_TAREA_FK" />
-                <ScalarProperty Name="STUDY_DIVISION_FK" ColumnName="STUDY_DIVISION_FK" />
-                <ScalarProperty Name="STUDY_COORDINATOR_FK" ColumnName="STUDY_COORDINATOR_FK" />
-                <ScalarProperty Name="STUDY_PI_FK" ColumnName="STUDY_PI_FK" />
-                <ScalarProperty Name="STUDY_ENTERED_BY_FK" ColumnName="STUDY_ENTERED_BY_FK" />
-                <ScalarProperty Name="NCT_NUMBER" ColumnName="NCT_NUMBER" />
-                <ScalarProperty Name="NCI_TRIAL_IDENTIFIER" ColumnName="NCI_TRIAL_IDENTIFIER" />
-                <ScalarProperty Name="CTRP_LAST_DOWNLOAD_BY" ColumnName="CTRP_LAST_DOWNLOAD_BY" />
-                <ScalarProperty Name="CTRP_CUTOFF_DATE" ColumnName="CTRP_CUTOFF_DATE" />
-                <ScalarProperty Name="CTRP_ACCRUAL_GEN_DATE" ColumnName="CTRP_ACCRUAL_GEN_DATE" />
-                <ScalarProperty Name="CTRP_ACCRREP_LASTRUN_DATE" ColumnName="CTRP_ACCRREP_LASTRUN_DATE" />
-                <ScalarProperty Name="STUDY_INVIND_FLAG" ColumnName="STUDY_INVIND_FLAG" />
-                <ScalarProperty Name="STUDY_ACTUALDT" ColumnName="STUDY_ACTUALDT" />
-                <ScalarProperty Name="STUDY_SPONSORID" ColumnName="STUDY_SPONSORID" />
-                <ScalarProperty Name="SPONSOR_DD" ColumnName="SPONSOR_DD" />
-                <ScalarProperty Name="CREATOR" ColumnName="CREATOR" />
-                <ScalarProperty Name="LAST_MODIFIED_DATE" ColumnName="LAST_MODIFIED_DATE" />
-                <ScalarProperty Name="LAST_MODIFIED_BY" ColumnName="LAST_MODIFIED_BY" />
-                <ScalarProperty Name="CREATED_ON" ColumnName="CREATED_ON" />
-                <ScalarProperty Name="FK_ACCOUNT" ColumnName="FK_ACCOUNT" />
-                <ScalarProperty Name="STUDY_KEYWRDS" ColumnName="STUDY_KEYWRDS" />
-                <ScalarProperty Name="STUDY_INFO" ColumnName="STUDY_INFO" />
-                <ScalarProperty Name="SPONSOR_CONTACT" ColumnName="SPONSOR_CONTACT" />
-                <ScalarProperty Name="STUDY_SPONSOR" ColumnName="STUDY_SPONSOR" />
-                <ScalarProperty Name="STUDY_RANDOM" ColumnName="STUDY_RANDOM" />
-                <ScalarProperty Name="STUDY_BLINDING" ColumnName="STUDY_BLINDING" />
-                <ScalarProperty Name="STUDY_LINKED_TO" ColumnName="STUDY_LINKED_TO" />
-                <ScalarProperty Name="STUDY_TYPE" ColumnName="STUDY_TYPE" />
+                <ScalarProperty Name="MORE_GRANTNUM" ColumnName="MORE_GRANTNUM" />
+                <ScalarProperty Name="MORE_AGENTS_PURCHASED" ColumnName="MORE_AGENTS_PURCHASED" />
+                <ScalarProperty Name="SPONSOR_DD_FK" ColumnName="SPONSOR_DD_FK" />
                 <ScalarProperty Name="STUDY_RESEARCH_TYPE" ColumnName="STUDY_RESEARCH_TYPE" />
-                <ScalarProperty Name="STUDY_PHASE" ColumnName="STUDY_PHASE" />
-                <ScalarProperty Name="STUDY_EST_BEGIN_DATE" ColumnName="STUDY_EST_BEGIN_DATE" />
-                <ScalarProperty Name="STUDY_DURATN_UNIT" ColumnName="STUDY_DURATN_UNIT" />
-                <ScalarProperty Name="STUDY_DURATION" ColumnName="STUDY_DURATION" />
-                <ScalarProperty Name="STUDY_NATSAMPSIZE" ColumnName="STUDY_NATSAMPSIZE" />
-                <ScalarProperty Name="STUDY_ICDCODE2" ColumnName="STUDY_ICDCODE2" />
-                <ScalarProperty Name="STUDY_ICDCODE1" ColumnName="STUDY_ICDCODE1" />
-                <ScalarProperty Name="STUDY_DISEASE_SITE" ColumnName="STUDY_DISEASE_SITE" />
-                <ScalarProperty Name="STUDY_TAREA" ColumnName="STUDY_TAREA" />
-                <ScalarProperty Name="STUDY_DIVISION" ColumnName="STUDY_DIVISION" />
-                <ScalarProperty Name="STUDY_AGENT_DEVICE" ColumnName="STUDY_AGENT_DEVICE" />
-                <ScalarProperty Name="STUDY_SUMMARY" ColumnName="STUDY_SUMMARY" />
-                <ScalarProperty Name="STUDY_OBJECTIVE" ColumnName="STUDY_OBJECTIVE" />
-                <ScalarProperty Name="STUDY_TITLE" ColumnName="STUDY_TITLE" />
-                <ScalarProperty Name="STUDY_MAJ_AUTH" ColumnName="STUDY_MAJ_AUTH" />
-                <ScalarProperty Name="STUDY_COORDINATOR" ColumnName="STUDY_COORDINATOR" />
-                <ScalarProperty Name="STUDY_PI" ColumnName="STUDY_PI" />
-                <ScalarProperty Name="STUDY_ENTERED_BY" ColumnName="STUDY_ENTERED_BY" />
-                <ScalarProperty Name="STUDY_NUMBER" ColumnName="STUDY_NUMBER" />
+                <ScalarProperty Name="MORE_SC_TISSUEBANKING" ColumnName="MORE_SC_TISSUEBANKING" />
+                <ScalarProperty Name="CTRP_CUTOFF_DATE" ColumnName="CTRP_CUTOFF_DATE" />
                 <ScalarProperty Name="PK_STUDY" ColumnName="PK_STUDY" />
+                <ScalarProperty Name="MORE_AT_CTA" ColumnName="MORE_AT_CTA" />
+                <ScalarProperty Name="LAST_MODIFIED_BY_FK" ColumnName="LAST_MODIFIED_BY_FK" />
+                <ScalarProperty Name="MORE_SC_EMERGENCY_USE" ColumnName="MORE_SC_EMERGENCY_USE" />
+                <ScalarProperty Name="MORE_FINANCE_ANALYST_PHONE" ColumnName="MORE_FINANCE_ANALYST_PHONE" />
+                <ScalarProperty Name="MORE_SC_ANCILLARY" ColumnName="MORE_SC_ANCILLARY" />
+                <ScalarProperty Name="MORE_SPONSOR_EQUIPMENT" ColumnName="MORE_SPONSOR_EQUIPMENT" />
+                <ScalarProperty Name="MORE_SC_BIOLOGIC" ColumnName="MORE_SC_BIOLOGIC" />
+                <ScalarProperty Name="CTRP_ACCRUAL_GEN_DATE" ColumnName="CTRP_ACCRUAL_GEN_DATE" />
+                <ScalarProperty Name="STUDY_NUMBER" ColumnName="STUDY_NUMBER" />
+                <ScalarProperty Name="MORE_ANCIL_PATHOLOGY" ColumnName="MORE_ANCIL_PATHOLOGY" />
+                <ScalarProperty Name="MORE_SC_CORR" ColumnName="MORE_SC_CORR" />
+                <ScalarProperty Name="STUDY_PI_FK" ColumnName="STUDY_PI_FK" />
+                <ScalarProperty Name="STUDY_ENTERED_BY" ColumnName="STUDY_ENTERED_BY" />
+                <ScalarProperty Name="CTRP_LAST_DOWNLOAD_BY" ColumnName="CTRP_LAST_DOWNLOAD_BY" />
+                <ScalarProperty Name="FK_ACCOUNT" ColumnName="FK_ACCOUNT" />
+                <ScalarProperty Name="STUDY_BLINDING_FK" ColumnName="STUDY_BLINDING_FK" />
+                <ScalarProperty Name="MORE_SC_AGENT" ColumnName="MORE_SC_AGENT" />
+                <ScalarProperty Name="MORE_AT_MSTRA" ColumnName="MORE_AT_MSTRA" />
+                <ScalarProperty Name="STUDY_BLINDING" ColumnName="STUDY_BLINDING" />
+                <ScalarProperty Name="MORE_FINANCIALS" ColumnName="MORE_FINANCIALS" />
+                <ScalarProperty Name="STUDY_TYPE" ColumnName="STUDY_TYPE" />
+                <ScalarProperty Name="CREATOR" ColumnName="CREATOR" />
+                <ScalarProperty Name="MORE_SC_DATA_ROUTINE_CARE" ColumnName="MORE_SC_DATA_ROUTINE_CARE" />
+                <ScalarProperty Name="STUDY_INFO" ColumnName="STUDY_INFO" />
+                <ScalarProperty Name="STUDY_PHASE" ColumnName="STUDY_PHASE" />
+                <ScalarProperty Name="MORE_PRIMPURPOSE" ColumnName="MORE_PRIMPURPOSE" />
+                <ScalarProperty Name="MORE_SECPURPOSE" ColumnName="MORE_SECPURPOSE" />
+                <ScalarProperty Name="CTRP_LAST_DOWNLOAD_BY_FK" ColumnName="CTRP_LAST_DOWNLOAD_BY_FK" />
+                <ScalarProperty Name="MORE_ANCIL_OTHER" ColumnName="MORE_ANCIL_OTHER" />
+                <ScalarProperty Name="MORE_SC_EPIDEMEOLOGIC" ColumnName="MORE_SC_EPIDEMEOLOGIC" />
+                <ScalarProperty Name="STUDY_SPONSORID" ColumnName="STUDY_SPONSORID" />
+                <ScalarProperty Name="MORE_NUMPROTSRCVD" ColumnName="MORE_NUMPROTSRCVD" />
+                <ScalarProperty Name="MORE_PROGCODE" ColumnName="MORE_PROGCODE" />
+                <ScalarProperty Name="MORE_SC_SURVEY_STUDY" ColumnName="MORE_SC_SURVEY_STUDY" />
+                <ScalarProperty Name="MORE_SC_BLOOD_DRAW" ColumnName="MORE_SC_BLOOD_DRAW" />
+                <ScalarProperty Name="MORE_SC_INVITRO" ColumnName="MORE_SC_INVITRO" />
+                <ScalarProperty Name="STUDY_ICDCODE1" ColumnName="STUDY_ICDCODE1" />
+                <ScalarProperty Name="STUDY_RANDOM" ColumnName="STUDY_RANDOM" />
+                <ScalarProperty Name="STUDY_PHASE_FK" ColumnName="STUDY_PHASE_FK" />
+                <ScalarProperty Name="STUDY_ENTERED_BY_FK" ColumnName="STUDY_ENTERED_BY_FK" />
+                <ScalarProperty Name="MORE_SUBJECTS_REIMBURSED" ColumnName="MORE_SUBJECTS_REIMBURSED" />
+                <ScalarProperty Name="STUDY_ACTUALDT" ColumnName="STUDY_ACTUALDT" />
+                <ScalarProperty Name="STUDY_RESEARCH_TYPE_FK" ColumnName="STUDY_RESEARCH_TYPE_FK" />
+                <ScalarProperty Name="MORE_IRBNUM" ColumnName="MORE_IRBNUM" />
+                <ScalarProperty Name="MORE_SC_OTHER" ColumnName="MORE_SC_OTHER" />
+                <ScalarProperty Name="MORE_ANALYSIS_WO_CONSENT" ColumnName="MORE_ANALYSIS_WO_CONSENT" />
+                <ScalarProperty Name="STUDY_SUMMARY" ColumnName="STUDY_SUMMARY" />
+                <ScalarProperty Name="MORE_AT_SA" ColumnName="MORE_AT_SA" />
+                <ScalarProperty Name="STUDY_DIVISION" ColumnName="STUDY_DIVISION" />
+                <ScalarProperty Name="STUDY_RANDOM_FK" ColumnName="STUDY_RANDOM_FK" />
+                <ScalarProperty Name="STUDY_DIVISION_FK" ColumnName="STUDY_DIVISION_FK" />
+                <ScalarProperty Name="MORE_SC_QI_PROJECT" ColumnName="MORE_SC_QI_PROJECT" />
+                <ScalarProperty Name="CREATOR_FK" ColumnName="CREATOR_FK" />
+                <ScalarProperty Name="CREATED_ON" ColumnName="CREATED_ON" />
+                <ScalarProperty Name="MORE_AT_DTA" ColumnName="MORE_AT_DTA" />
+                <ScalarProperty Name="MORE_AT_II" ColumnName="MORE_AT_II" />
+                <ScalarProperty Name="MORE_PROTLINKED" ColumnName="MORE_PROTLINKED" />
+                <ScalarProperty Name="STUDY_COORDINATOR_FK" ColumnName="STUDY_COORDINATOR_FK" />
+                <ScalarProperty Name="MORE_INS_BIOSAFETY" ColumnName="MORE_INS_BIOSAFETY" />
+                <ScalarProperty Name="STUDY_COORDINATOR" ColumnName="STUDY_COORDINATOR" />
+                <ScalarProperty Name="MORE_RESPONSIBLE_PARTY" ColumnName="MORE_RESPONSIBLE_PARTY" />
+                <ScalarProperty Name="MORE_MANAGEDBY" ColumnName="MORE_MANAGEDBY" />
+                <ScalarProperty Name="MORE_FINANCE_PAYMENT_TERMS" ColumnName="MORE_FINANCE_PAYMENT_TERMS" />
+                <ScalarProperty Name="MORE_FINANCE_ANALYST_EMAIL" ColumnName="MORE_FINANCE_ANALYST_EMAIL" />
+                <ScalarProperty Name="STUDY_ICDCODE2" ColumnName="STUDY_ICDCODE2" />
+                <ScalarProperty Name="MORE_ANCIL_CRC" ColumnName="MORE_ANCIL_CRC" />
+                <ScalarProperty Name="STUDY_AGENT_DEVICE" ColumnName="STUDY_AGENT_DEVICE" />
+                <ScalarProperty Name="MORE_AT_MA" ColumnName="MORE_AT_MA" />
+                <ScalarProperty Name="MORE_ANTICIPATED_ENDDT" ColumnName="MORE_ANTICIPATED_ENDDT" />
+                <ScalarProperty Name="MORE_SITENUM" ColumnName="MORE_SITENUM" />
+                <ScalarProperty Name="STUDY_TYPE_FK" ColumnName="STUDY_TYPE_FK" />
+                <ScalarProperty Name="STUDY_PI" ColumnName="STUDY_PI" />
+                <ScalarProperty Name="STUDY_TAREA" ColumnName="STUDY_TAREA" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
