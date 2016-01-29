@@ -60,6 +60,7 @@ namespace IrbAnalyser
                     data.Columns.Add("PrimarySponsorContactLastName");
                     data.Columns.Add("PrimarySponsorContactEmail");
                     data.Columns.Add("PrimarySponsorStudyId");
+                    data.Columns.Add("KeyWords");
                     data.Columns.Add("DocumentLink1");
                     data.Columns.Add("InitialApprovalDate");
                     data.Columns.Add("MostRecentApprovalDate");
@@ -97,6 +98,10 @@ namespace IrbAnalyser
 
                     data.Columns.Add("IND_Holder");
                     data.Columns.Add("IND_NUMBERS");
+                    data.Columns.Add("pk_study");
+                    data.Columns.Add("FinancialBy");
+                    
+                    
                     initColumnCount = data.Columns.Count;
                     break;
                 case type.Status:

@@ -543,6 +543,8 @@ namespace IrbAnalyser
                 }
             }
 
+            if (retour == "0")
+                retour = "";
             return retour;
         }
 

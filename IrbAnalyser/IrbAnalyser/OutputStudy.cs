@@ -167,12 +167,13 @@ namespace IrbAnalyser
                 newStudy.Columns.Add("Sponsor Protocol ID", typeof(string));
                 newStudy.Columns.Add("Sponsor contact", typeof(string));
                 newStudy.Columns.Add("Sponsor information other", typeof(string));
+                newStudy.Columns.Add("KeyWords", typeof(string));
                 newStudy.Columns.Add("IRB Agency name", typeof(string));
                 newStudy.Columns.Add("IRB no", typeof(string));
                 newStudy.Columns.Add("IRB Study ID", typeof(string));
                 newStudy.Columns.Add("IRB Identifiers", typeof(string));
                 newStudy.Columns.Add("CRO", typeof(string));
-
+                newStudy.Columns.Add("FinancialBy", typeof(string));
                 newStudy.Columns.Add("Cancer", typeof(string));
                 newStudy.Columns.Add("Consent", typeof(string));
 
@@ -193,6 +194,8 @@ namespace IrbAnalyser
 
 
                 newStudy.Columns.Add("NCT_NUMBER", typeof(string));
+                newStudy.Columns.Add("pk_study", typeof(string));
+                
             }
 
             if (updatedStudy.Columns.Count == 0)
@@ -250,12 +253,13 @@ namespace IrbAnalyser
                 updatedStudy.Columns.Add("Sponsor Protocol ID", typeof(string));
                 updatedStudy.Columns.Add("Sponsor contact", typeof(string));
                 updatedStudy.Columns.Add("Sponsor information other", typeof(string));
+                updatedStudy.Columns.Add("KeyWords", typeof(string));
                 updatedStudy.Columns.Add("IRB Agency name", typeof(string));
                 updatedStudy.Columns.Add("IRB no", typeof(string));
                 updatedStudy.Columns.Add("IRB Study ID", typeof(string));
                 updatedStudy.Columns.Add("IRB Identifiers", typeof(string));
                 updatedStudy.Columns.Add("CRO", typeof(string));
-
+                updatedStudy.Columns.Add("FinancialBy", typeof(string));
                 updatedStudy.Columns.Add("Cancer", typeof(string));
                 updatedStudy.Columns.Add("Consent", typeof(string));
 
@@ -276,6 +280,7 @@ namespace IrbAnalyser
 
 
                 updatedStudy.Columns.Add("NCT_NUMBER", typeof(string));
+                updatedStudy.Columns.Add("pk_study", typeof(string));
             }
         }
 
@@ -325,13 +330,24 @@ namespace IrbAnalyser
             {
                 irbnumber = (string)dr["ExternalIRBnumber"];
                 if (((string)dr["ExternalIRB"]).ToLower().Contains("neuronext"))
+                {
+                    dr["KeyWords"] = "IRIS=" + (string)dr["IRBNumber"];
                     irbagency = "NeuroNext CIRB";
+                }
                 else if (((string)dr["ExternalIRB"]).ToLower().Contains("strokenet"))
+                {
+                    dr["KeyWords"] = "IRIS=" + (string)dr["IRBNumber"];
                     irbagency = "StrokeNet CIRB";
+                }
                 else if (((string)dr["ExternalIRB"]).ToLower().Contains("nci") || ((string)dr["ExternalIRB"]).ToLower().Contains("cirb"))
+                {
+                    dr["KeyWords"] = "IRIS=" + (string)dr["IRBNumber"];
                     irbagency = "NCI CIRB";
+                }
                 else// if (((string)row["ExternalIRB"]).ToLower().Contains("external"))
+                {
                     irbagency = "";
+                }
             }
             else
             {
@@ -407,6 +423,11 @@ namespace IrbAnalyser
                             if (!dr.Table.Columns.Contains("newNumber"))
                             {
                                 dr.Table.Columns.Add("newNumber");
+                            }
+
+                            if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+                            {
+                                dr["FinancialBy"] = "BRY";
                             }
 
                             dr["oldNumber"] = newNumber;
@@ -510,7 +531,7 @@ namespace IrbAnalyser
                                 
                                 hasChanged = checkChangeOverwriteFalse("Agent", dr, stu.MORE_SC_AGENT, hasChanged);
 
-                                hasChanged = checkChangeOverwriteFalse("Biological", dr, stu.MORE_SC_DEVICE, hasChanged);
+                                hasChanged = checkChangeOverwriteFalse("Biological", dr, stu.MORE_SC_BIOLOGIC, hasChanged);
 
                                 hasChanged = checkChangeOverwriteFalse("BLood_Draw", dr, stu.MORE_SC_BLOOD_DRAW, hasChanged);
 
@@ -530,6 +551,8 @@ namespace IrbAnalyser
 
                                 hasChanged = checkChangeOverwriteFalse("TRIALS_Involving_INTERVENTIONS", dr, stu.MORE_SC_TRIALS, hasChanged);
 
+                                hasChanged = checkChangeOverwriteFalse("Survey", dr, stu.MORE_SC_SURVEY_STUDY, hasChanged);
+
                                 hasChanged = checkChangeOverwriteFalse("SpecimenDataAnalysis", dr, stu.MORE_ANALYSIS_WO_CONSENT, hasChanged);
 
                                 hasChanged = checkChangeOverwriteFalse("PIMajorAuthor", dr, stu.STUDY_MAJ_AUTH, hasChanged);
@@ -540,6 +563,17 @@ namespace IrbAnalyser
                                 hasChanged = checkChangeOverwriteString("NCT_NUMBER", dr, stu.NCT_NUMBER, hasChanged);
 
                                 //HUMANITARIAN_USE
+
+                                if (!String.IsNullOrWhiteSpace((string)dr["KeyWords"]) && !String.IsNullOrWhiteSpace(stu.STUDY_KEYWRDS))
+                                {
+                                    dr["KeyWords"] = stu.STUDY_KEYWRDS.Contains((string)dr["KeyWords"]) ? "" : "update eres.er_study set study_keywrds = '" + stu.STUDY_KEYWRDS + "' || chr(13) || chr(10) || '" + (string)dr["KeyWords"] + "' || chr(13) || chr(10) where pk_study = " + stu.PK_STUDY;                                    
+                                }
+                                else if (!String.IsNullOrWhiteSpace((string)dr["KeyWords"]))
+                                {
+                                    dr["KeyWords"] = "update eres.er_study set study_keywrds = '" + (string)dr["KeyWords"] + "' || chr(13) || chr(10) where pk_study = " + stu.PK_STUDY;
+                                }
+
+                                dr["pk_study"] = stu.PK_STUDY;
 
 
 
@@ -564,6 +598,8 @@ namespace IrbAnalyser
                                 hasChanged = checkChangeOverwriteString("Studytitle", dr, stu.STUDY_TITLE, hasChanged);
 
                                 hasChanged = checkChangeOverwriteNullString("Studysummary", dr, stu.STUDY_SUMMARY, hasChanged);
+
+                                hasChanged = checkChangeOverwriteString("PrimarySponsorStudyId", dr, stu.STUDY_SPONSORID, hasChanged);
 
                                 /*if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
                                 {
@@ -675,15 +711,6 @@ namespace IrbAnalyser
                                     dr["Primarysponsorcontactlastname"] = "";
                                 }
                                 else if (!String.IsNullOrWhiteSpace((string)dr["Primarysponsorcontactfirstname"]) && !String.IsNullOrWhiteSpace((string)dr["Primarysponsorcontactlastname"]))
-                                {
-                                    hasChanged = true;
-                                }
-
-                                if (Tools.compareStr(stu.STUDY_SPONSORID, dr["PrimarysponsorstudyID"]) && !String.IsNullOrWhiteSpace((string)dr["PrimarysponsorstudyID"]))
-                                {
-                                    //dr["PrimarysponsorstudyID"] = "";
-                                }
-                                else if (!String.IsNullOrWhiteSpace((string)dr["PrimarysponsorstudyID"]))
                                 {
                                     hasChanged = true;
                                 }
@@ -808,6 +835,11 @@ namespace IrbAnalyser
             else
             { dr = updatedStudy.NewRow(); }
 
+            //make sur no dbnull row is in the datarow
+            foreach (DataColumn c in row.Table.Columns)
+            {
+                row[c.ColumnName] = String.IsNullOrWhiteSpace((string)row[c.ColumnName]) ? "" : row[c.ColumnName];
+            }
 
             dr["IRB Agency name"] = (string)row["IRBAgency"];
             dr["IRB no"] = (string)row["IRBNUMBER"];
@@ -845,9 +877,10 @@ namespace IrbAnalyser
             dr["IRB Study ID"] = (string)row["StudyId"];
             dr["IRB Identifiers"] = Tools.generateStudyIdentifiers((string)row["StudyId"]);
 
-            dr["Device"] = (string)row["Device"];
-            dr["Agent"] = (string)row["Agent"];
+
             dr["Consent"] = (string)row["HasConsentForm"];
+
+            dr["PIMajorAuthor"] = (string)row["PIMajorAuthor"];
 
             dr["Agent"] = (string)row["Agent"];
             dr["Biological"] = (string)row["Biological"];
@@ -863,6 +896,16 @@ namespace IrbAnalyser
             dr["TRIALS_Involving_INTERVENTIONS"] = (string)row["TRIALS_Involving_INTERVENTIONS"];
             dr["SpecimenDataAnalysis"] = (string)row["SpecimenDataAnalysis"];
             dr["NCT_NUMBER"] = (string)row["NCT_NUMBER"];
+            dr["KeyWords"] = (string)row["KeyWords"];
+            dr["pk_study"] = (string)row["pk_study"];
+
+
+            //dr["IND_Holder"] = (string)row["IND_Holder"];
+            dr["IND_Holder"] = "";
+            dr["IND_NUMBERS"] = (string)row["IND_NUMBERS"];
+            dr["AgentDevice"] = (string)row["AgentDevice"];
+            dr["Primary funding sponsor"] = (string)row["AgentDevice"];
+            dr["FinancialBy"] = (string)row["FinancialBy"];
 
             if (!string.IsNullOrWhiteSpace((string)row["newNumber"]))
             {
@@ -925,15 +968,20 @@ namespace IrbAnalyser
                 dr["Department"] = String.IsNullOrEmpty((string)row["Department"]) && newentry ? "Please specify" : (string)row["Department"];
                 dr["Division/Therapeutic area"] = String.IsNullOrEmpty((string)row["Division"]) && newentry ? "N/A" : (string)row["Division"];
             }
-            else if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+            else if (Agency.AgencyVal == Agency.AgencyList.BRANY && newentry)
             {
                 dr["Department"] = String.IsNullOrEmpty((string)row["Department"]) && newentry ? "Please specify" : (string)row["Department"];
                 dr["Division/Therapeutic area"] = String.IsNullOrEmpty((string)row["Division"]) && newentry ? "N/A" : (string)row["Division"];
             }
-            else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
+            else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN && newentry)
             {
                 dr["Department"] = String.IsNullOrWhiteSpace((string)row["Department"]) ? "" : IRISMap.Department.getDepartment((string)row["Department"]);
                 dr["Division/Therapeutic area"] = String.IsNullOrWhiteSpace((string)row["Department"]) ? "" : IRISMap.Department.getDivision((string)row["Department"]);
+            }
+            else
+            {
+                dr["Department"] = "";
+                dr["Division/Therapeutic area"] = "";
             }
 
             if (fpstudys.initColumnCount < fpstudys.data.Columns.Count)
@@ -946,9 +994,14 @@ namespace IrbAnalyser
                 }
             }
 
-            int size = 0;
-            int.TryParse((string)row["Studysamplesize"], out size);
-            dr["Entire study sample size"] = size == 0 ? "" : size.ToString();
+            if (newentry)
+            {
+                int size = 0;
+                int.TryParse((string)row["Studysamplesize"], out size);
+                dr["Entire study sample size"] = size == 0 ? "" : size.ToString();
+            }
+            else { dr["Entire study sample size"] = ""; }
+
 
             if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
             {
@@ -979,19 +1032,34 @@ namespace IrbAnalyser
                 if (String.IsNullOrWhiteSpace(sponsor) && !string.IsNullOrWhiteSpace((string)row["Primarysponsorname"]))
                 {
                     dr["Sponsor information other"] = "Per IRB System: " + (string)row["Primarysponsorname"];
+                    dr["Primary funding sponsor"] = "";
                 }
                 else if (!String.IsNullOrWhiteSpace(sponsor))
                 {
                     dr["Primary funding sponsor"] = sponsor;
+                    dr["Sponsor information other"] = "";
                 }
+                else
+                {
+                    dr["Primary funding sponsor"] = "";
+                    dr["Sponsor information other"] = "";
+                }
+
             }
             else if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
             {
                 dr["Primary funding sponsor"] = (string)row["Primarysponsorname"];
+                dr["Sponsor information other"] = "";
             }
             else if (!String.IsNullOrWhiteSpace((string)row["Primarysponsorname"]))
             {
                 dr["Sponsor information other"] = "Per IRB System: " + (string)row["Primarysponsorname"];
+                dr["Primary funding sponsor"] = "";
+            }
+            else
+            {
+                dr["Primary funding sponsor"] = "";
+                dr["Sponsor information other"] = "";
             }
 
             dr["Sponsor contact"] = row["PrimarySponsorContactFirstName"].ToString() + " " + row["PrimarySponsorContactLastName"].ToString();
@@ -1009,9 +1077,16 @@ namespace IrbAnalyser
             string[] labels = new string[] { };
             string[] values = new string[] { };
 
+            //make sure no dbnull row is in the datarow
+            /*foreach (DataColumn c in dr.Table.Columns)
+            {
+                dr[c.ColumnName] = DBNull.Value.Equals(dr[c.ColumnName]) || dr[c.ColumnName] == null || String.IsNullOrWhiteSpace((string)dr[c.ColumnName]) ? "" : dr[c.ColumnName];
+            }*/
+
+
             if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
             {
-                labels = new string[24] { 
+                labels = new string[20] { 
                     "Study Financials Managed By**", 
                     //"CRO, if any*", 
                     "IRB agency name", 
@@ -1019,83 +1094,89 @@ namespace IrbAnalyser
                     "Is this a cancer related study ?", 
                     "PI Program Code (Cancer Center Studies Only)*", 
                     "Primary Purpose*", 
-                    "&nbsp;&nbsp;&nbsp;Agent", 
-                    "&nbsp;&nbsp;&nbsp;Ancillary", 
-                    "&nbsp;&nbsp;&nbsp;Correlative (Laboratary based specimen studies &nbsp;&nbsp;&nbsp;to access risks)",
+                    "Is there an Informed Consent associated to study?",
+                    "&nbsp;&nbsp;&nbsp;Agent",
+                    "&nbsp;&nbsp&nbsp;Biologic Specimen Research (Only tissue or blood collected)",
+                    "&nbsp;&nbsp&nbsp;Blood Draw",
+                    "&nbsp;&nbsp;&nbsp;Data Collection during routine clinical care",
                     "&nbsp;&nbsp;&nbsp;Device",
-                    "&nbsp;&nbsp;&nbsp;Epidemiologic",
-                    "&nbsp;&nbsp;&nbsp;In Vitro",
-                    "&nbsp;&nbsp;&nbsp;Observational Studies",
-                    "&nbsp;&nbsp;&nbsp;Retrospective chart review",
+                    "&nbsp;&nbsp&nbsp;Emergency use of an investigational drug or device",
+                    "&nbsp;&nbsp&nbsp;Humanitarian Use Device (HUD)",
+                    "&nbsp;&nbsp&nbsp;Quality Improvement (QI) project",
+                    "&nbsp;&nbsp;&nbsp;Retrospective Chart Review",
+                    "&nbsp;&nbsp&nbsp;Survey Study (e.g. questionnaire, etc.)",
                     "&nbsp;&nbsp;&nbsp;Tissue Banking",
                     "&nbsp;&nbsp;&nbsp;Trials Involving Interventions",
-                    "Responsible Party*",  
-
-                    "&nbsp;&nbsp;&nbsp;Quality Improvement (QI) project",
-
-                    "&nbsp;&nbsp;&nbsp;Humanitarian Use Device (HUD)",
-                    "&nbsp;&nbsp;&nbsp;Emergency use of an investigational drug or device",
-                    
-                    "&nbsp;&nbsp;&nbsp;Blood Draw",
-                    "&nbsp;&nbsp;&nbsp;Survey Study (e.g. questionnaire, etc.)",  
-                    "&nbsp;&nbsp;&nbsp;Data Collection during routine clinical care",
                     "Will the ONLY research activity be analysis of specimens or data/medical records obtained without consent? (Note: This means there will be NO interventions with human subjects.)"
 
                 };
 
                 values = new string[20] { 
                     (string)dr["STUDY_MANAGED_BY_IMPORT"],
-                    //(string)dr["CRO"], 
                     (string)dr["IRB Agency name"], 
                     (string)dr["IRB no"], 
                     (string)dr["Cancer"],
                     (string)dr["Program_Code_Mapped"],
                     (string)dr["PRIMARY_PURPOSE"],
-                    (string)dr["MSD_AGENT"],
-                    (string)dr["ANCILLARY"],
-                    (string)dr["CORRELATIVE"],
-                    (string)dr["DEVICE"],
-                    (string)dr["EPIDEMIOLOGIC"],
-                    (string)dr["IN_VITRO"],
-                    (string)dr["OTHER_Observational_STUDIES"],
-                    (string)dr["RETROSPECTIVE_CHART_REVIEW"],
-                    (string)dr["TISSUE BANKING"],
-                    (string)dr["TRIALS_Involving_INTERVENTIONS"],
-                    (string)dr["QI_STUDY"],
-                    (string)dr["HUMANITARIAN_USE"],
+
+                    (string)dr["Consent"],
+                    (string)dr["Agent"],
+                    (string)dr["Biological"],
+                    (string)dr["BLood_Draw"],
+                    (string)dr["Data_Collection"],
+                    (string)dr["Device"],
                     (string)dr["EMERGENCY_INVESTIGATIONAL"],
-                    (string)dr["ONLY_RETRO2"]
-
-                    
-
+                    (string)dr["HUMANITARIAN_USE"],
+                    (string)dr["QI_STUDY"],
+                    (string)dr["RETROSPECTIVE_CHART_REVIEW"],
+                    (string)dr["Survey"],
+                    (string)dr["TISSUE_BANKING"],
+                    (string)dr["TRIALS_Involving_INTERVENTIONS"],
+                    (string)dr["SpecimenDataAnalysis"] 
                 };
             }
-            else if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+            else 
             {
-                labels = new string[5] { "Study Financials Managed By*", 
-                    //"CRO, if any*", 
-                    "IRB agency name", "IRB No.", "Is this a cancer related study ?" , "Is there an Informed Consent associated to study? "};
+                labels = new string[18] { 
+                    "Study Financials Managed By*",
+                    "IRB Agency Name",
+                    "IRB No.",
+                    "Is this a cancer related study?",
+                    "Is there an Informed Consent associated to study?",
+                    "&nbsp;&nbsp;&nbsp;Agent",
+                    "&nbsp;&nbsp&nbsp;Biologic Specimen Research (Only tissue or blood collected)",
+                    "&nbsp;&nbsp&nbsp;Blood Draw",
+                    "&nbsp;&nbsp;&nbsp;Data Collection during routine clinical care",
+                    "&nbsp;&nbsp;&nbsp;Device",
+                    "&nbsp;&nbsp&nbsp;Emergency use of an investigational drug or device",
+                    "&nbsp;&nbsp&nbsp;Humanitarian Use Device (HUD)",
+                    "&nbsp;&nbsp&nbsp;Quality Improvement (QI) project",
+                    "&nbsp;&nbsp;&nbsp;Retrospective Chart Review",
+                    "&nbsp;&nbsp&nbsp;Survey Study (e.g. questionnaire, etc.)",
+                    "&nbsp;&nbsp;&nbsp;Tissue Banking",
+                    "&nbsp;&nbsp;&nbsp;Trials Involving Interventions",
+                    "Will the ONLY research activity be analysis of specimens or data/medical records obtained without consent? (Note: This means there will be NO interventions with human subjects.)"
+                };
 
-                values = new string[5] { "BRY", 
-                    //(string)dr["CRO"], 
-                    Agency.agencyStrLwr, (string)dr["IRB no"], (string)dr["Cancer"] , (string)dr["Consent"] };
-            }
-            else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
-            {
-                labels = new string[10] { "IRB agency name", "IRB No.", "Is this a cancer related study ?", "Is there an Informed Consent associated to study? ", "   Agent ", "   Device",
-                "Humanitarian Use Device (HUD)",
-                "Emergency use of an investigational drug or device",
-                "Quality Improvement (QI) project",
-                "Will the ONLY research activity be analysis of specimens or data/medical records obtained without consent? (Note: This means there will be NO interventions with human subjects.)"
-
-            };
-
-                values = new string[10] { (string)dr["IRB Agency name"], (string)dr["IRB no"], (string)dr["Cancer"], (string)dr["Consent"], (string)dr["Agent"], (string)dr["Device"],
-                (string)dr["HUMANITARIAN_USE"],
-                (string)dr["EMERGENCY_INVESTIGATIONAL"],
-                (string)dr["QI_STUDY"],
-                (string)dr["SpecimenDataAnalysis"]
-                
+                values = new string[18] { 
+                    (string)dr["FinancialBy"],
+                    (string)dr["IRB Agency name"],
+                    (string)dr["IRB no"],
+                    (string)dr["Cancer"],
+                    (string)dr["Consent"],
+                    (string)dr["Agent"],
+                    (string)dr["Biological"],
+                    (string)dr["BLood_Draw"],
+                    (string)dr["Data_Collection"],
+                    (string)dr["Device"],
+                    (string)dr["EMERGENCY_INVESTIGATIONAL"],
+                    (string)dr["HUMANITARIAN_USE"],
+                    (string)dr["QI_STUDY"],
+                    (string)dr["RETROSPECTIVE_CHART_REVIEW"],
+                    (string)dr["Survey"],
+                    (string)dr["TISSUE_BANKING"],
+                    (string)dr["TRIALS_Involving_INTERVENTIONS"],
+                    (string)dr["SpecimenDataAnalysis"]                
                 };
             }
 
