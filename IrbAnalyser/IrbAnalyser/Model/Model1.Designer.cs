@@ -548,48 +548,72 @@ namespace IrbAnalyser.Model
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_SPONSOR_ORGANIZATION
+        public global::System.String MORE_AT_SA
         {
             get
             {
-                return _MORE_SPONSOR_ORGANIZATION;
+                return _MORE_AT_SA;
             }
             set
             {
-                OnMORE_SPONSOR_ORGANIZATIONChanging(value);
-                ReportPropertyChanging("MORE_SPONSOR_ORGANIZATION");
-                _MORE_SPONSOR_ORGANIZATION = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_SPONSOR_ORGANIZATION");
-                OnMORE_SPONSOR_ORGANIZATIONChanged();
+                OnMORE_AT_SAChanging(value);
+                ReportPropertyChanging("MORE_AT_SA");
+                _MORE_AT_SA = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_AT_SA");
+                OnMORE_AT_SAChanged();
             }
         }
-        private global::System.String _MORE_SPONSOR_ORGANIZATION;
-        partial void OnMORE_SPONSOR_ORGANIZATIONChanging(global::System.String value);
-        partial void OnMORE_SPONSOR_ORGANIZATIONChanged();
+        private global::System.String _MORE_AT_SA;
+        partial void OnMORE_AT_SAChanging(global::System.String value);
+        partial void OnMORE_AT_SAChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_INFORMEDCONSENT
+        public global::System.String MORE_CT_NIH
         {
             get
             {
-                return _MORE_INFORMEDCONSENT;
+                return _MORE_CT_NIH;
             }
             set
             {
-                OnMORE_INFORMEDCONSENTChanging(value);
-                ReportPropertyChanging("MORE_INFORMEDCONSENT");
-                _MORE_INFORMEDCONSENT = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_INFORMEDCONSENT");
-                OnMORE_INFORMEDCONSENTChanged();
+                OnMORE_CT_NIHChanging(value);
+                ReportPropertyChanging("MORE_CT_NIH");
+                _MORE_CT_NIH = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_CT_NIH");
+                OnMORE_CT_NIHChanged();
             }
         }
-        private global::System.String _MORE_INFORMEDCONSENT;
-        partial void OnMORE_INFORMEDCONSENTChanging(global::System.String value);
-        partial void OnMORE_INFORMEDCONSENTChanged();
+        private global::System.String _MORE_CT_NIH;
+        partial void OnMORE_CT_NIHChanging(global::System.String value);
+        partial void OnMORE_CT_NIHChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String MORE_SECPURPOSE
+        {
+            get
+            {
+                return _MORE_SECPURPOSE;
+            }
+            set
+            {
+                OnMORE_SECPURPOSEChanging(value);
+                ReportPropertyChanging("MORE_SECPURPOSE");
+                _MORE_SECPURPOSE = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_SECPURPOSE");
+                OnMORE_SECPURPOSEChanged();
+            }
+        }
+        private global::System.String _MORE_SECPURPOSE;
+        partial void OnMORE_SECPURPOSEChanging(global::System.String value);
+        partial void OnMORE_SECPURPOSEChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -644,24 +668,24 @@ namespace IrbAnalyser.Model
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_SC_TRIALS
+        public global::System.String MORE_SC_TISSUEBANKING
         {
             get
             {
-                return _MORE_SC_TRIALS;
+                return _MORE_SC_TISSUEBANKING;
             }
             set
             {
-                OnMORE_SC_TRIALSChanging(value);
-                ReportPropertyChanging("MORE_SC_TRIALS");
-                _MORE_SC_TRIALS = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_SC_TRIALS");
-                OnMORE_SC_TRIALSChanged();
+                OnMORE_SC_TISSUEBANKINGChanging(value);
+                ReportPropertyChanging("MORE_SC_TISSUEBANKING");
+                _MORE_SC_TISSUEBANKING = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_SC_TISSUEBANKING");
+                OnMORE_SC_TISSUEBANKINGChanged();
             }
         }
-        private global::System.String _MORE_SC_TRIALS;
-        partial void OnMORE_SC_TRIALSChanging(global::System.String value);
-        partial void OnMORE_SC_TRIALSChanged();
+        private global::System.String _MORE_SC_TISSUEBANKING;
+        partial void OnMORE_SC_TISSUEBANKINGChanging(global::System.String value);
+        partial void OnMORE_SC_TISSUEBANKINGChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -692,24 +716,24 @@ namespace IrbAnalyser.Model
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_EPIC
+        public global::System.String MORE_AT_MSTRA
         {
             get
             {
-                return _MORE_EPIC;
+                return _MORE_AT_MSTRA;
             }
             set
             {
-                OnMORE_EPICChanging(value);
-                ReportPropertyChanging("MORE_EPIC");
-                _MORE_EPIC = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_EPIC");
-                OnMORE_EPICChanged();
+                OnMORE_AT_MSTRAChanging(value);
+                ReportPropertyChanging("MORE_AT_MSTRA");
+                _MORE_AT_MSTRA = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_AT_MSTRA");
+                OnMORE_AT_MSTRAChanged();
             }
         }
-        private global::System.String _MORE_EPIC;
-        partial void OnMORE_EPICChanging(global::System.String value);
-        partial void OnMORE_EPICChanged();
+        private global::System.String _MORE_AT_MSTRA;
+        partial void OnMORE_AT_MSTRAChanging(global::System.String value);
+        partial void OnMORE_AT_MSTRAChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -764,24 +788,48 @@ namespace IrbAnalyser.Model
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_IRBAGENCY
+        public global::System.String MORE_AT_MTA
         {
             get
             {
-                return _MORE_IRBAGENCY;
+                return _MORE_AT_MTA;
             }
             set
             {
-                OnMORE_IRBAGENCYChanging(value);
-                ReportPropertyChanging("MORE_IRBAGENCY");
-                _MORE_IRBAGENCY = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_IRBAGENCY");
-                OnMORE_IRBAGENCYChanged();
+                OnMORE_AT_MTAChanging(value);
+                ReportPropertyChanging("MORE_AT_MTA");
+                _MORE_AT_MTA = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_AT_MTA");
+                OnMORE_AT_MTAChanged();
             }
         }
-        private global::System.String _MORE_IRBAGENCY;
-        partial void OnMORE_IRBAGENCYChanging(global::System.String value);
-        partial void OnMORE_IRBAGENCYChanged();
+        private global::System.String _MORE_AT_MTA;
+        partial void OnMORE_AT_MTAChanging(global::System.String value);
+        partial void OnMORE_AT_MTAChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String MORE_RESPONSIBLE_PARTY
+        {
+            get
+            {
+                return _MORE_RESPONSIBLE_PARTY;
+            }
+            set
+            {
+                OnMORE_RESPONSIBLE_PARTYChanging(value);
+                ReportPropertyChanging("MORE_RESPONSIBLE_PARTY");
+                _MORE_RESPONSIBLE_PARTY = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_RESPONSIBLE_PARTY");
+                OnMORE_RESPONSIBLE_PARTYChanged();
+            }
+        }
+        private global::System.String _MORE_RESPONSIBLE_PARTY;
+        partial void OnMORE_RESPONSIBLE_PARTYChanging(global::System.String value);
+        partial void OnMORE_RESPONSIBLE_PARTYChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -860,48 +908,48 @@ namespace IrbAnalyser.Model
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_FINANCE_ANALYST_NAME
+        public global::System.String MORE_ANALYSIS_WO_CONSENT
         {
             get
             {
-                return _MORE_FINANCE_ANALYST_NAME;
+                return _MORE_ANALYSIS_WO_CONSENT;
             }
             set
             {
-                OnMORE_FINANCE_ANALYST_NAMEChanging(value);
-                ReportPropertyChanging("MORE_FINANCE_ANALYST_NAME");
-                _MORE_FINANCE_ANALYST_NAME = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_FINANCE_ANALYST_NAME");
-                OnMORE_FINANCE_ANALYST_NAMEChanged();
+                OnMORE_ANALYSIS_WO_CONSENTChanging(value);
+                ReportPropertyChanging("MORE_ANALYSIS_WO_CONSENT");
+                _MORE_ANALYSIS_WO_CONSENT = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_ANALYSIS_WO_CONSENT");
+                OnMORE_ANALYSIS_WO_CONSENTChanged();
             }
         }
-        private global::System.String _MORE_FINANCE_ANALYST_NAME;
-        partial void OnMORE_FINANCE_ANALYST_NAMEChanging(global::System.String value);
-        partial void OnMORE_FINANCE_ANALYST_NAMEChanged();
+        private global::System.String _MORE_ANALYSIS_WO_CONSENT;
+        partial void OnMORE_ANALYSIS_WO_CONSENTChanging(global::System.String value);
+        partial void OnMORE_ANALYSIS_WO_CONSENTChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_SC_DEVICE
+        public global::System.String MORE_SC_DATA_ROUTINE_CARE
         {
             get
             {
-                return _MORE_SC_DEVICE;
+                return _MORE_SC_DATA_ROUTINE_CARE;
             }
             set
             {
-                OnMORE_SC_DEVICEChanging(value);
-                ReportPropertyChanging("MORE_SC_DEVICE");
-                _MORE_SC_DEVICE = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_SC_DEVICE");
-                OnMORE_SC_DEVICEChanged();
+                OnMORE_SC_DATA_ROUTINE_CAREChanging(value);
+                ReportPropertyChanging("MORE_SC_DATA_ROUTINE_CARE");
+                _MORE_SC_DATA_ROUTINE_CARE = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_SC_DATA_ROUTINE_CARE");
+                OnMORE_SC_DATA_ROUTINE_CAREChanged();
             }
         }
-        private global::System.String _MORE_SC_DEVICE;
-        partial void OnMORE_SC_DEVICEChanging(global::System.String value);
-        partial void OnMORE_SC_DEVICEChanged();
+        private global::System.String _MORE_SC_DATA_ROUTINE_CARE;
+        partial void OnMORE_SC_DATA_ROUTINE_CAREChanging(global::System.String value);
+        partial void OnMORE_SC_DATA_ROUTINE_CAREChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -932,120 +980,120 @@ namespace IrbAnalyser.Model
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_CANCER
+        public global::System.String MORE_SIGNOFF_MANAGED_BY
         {
             get
             {
-                return _MORE_CANCER;
+                return _MORE_SIGNOFF_MANAGED_BY;
             }
             set
             {
-                OnMORE_CANCERChanging(value);
-                ReportPropertyChanging("MORE_CANCER");
-                _MORE_CANCER = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_CANCER");
-                OnMORE_CANCERChanged();
+                OnMORE_SIGNOFF_MANAGED_BYChanging(value);
+                ReportPropertyChanging("MORE_SIGNOFF_MANAGED_BY");
+                _MORE_SIGNOFF_MANAGED_BY = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_SIGNOFF_MANAGED_BY");
+                OnMORE_SIGNOFF_MANAGED_BYChanged();
             }
         }
-        private global::System.String _MORE_CANCER;
-        partial void OnMORE_CANCERChanging(global::System.String value);
-        partial void OnMORE_CANCERChanged();
+        private global::System.String _MORE_SIGNOFF_MANAGED_BY;
+        partial void OnMORE_SIGNOFF_MANAGED_BYChanging(global::System.String value);
+        partial void OnMORE_SIGNOFF_MANAGED_BYChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_SC_HUD
+        public global::System.String MORE_SC_EPIDEMEOLOGIC
         {
             get
             {
-                return _MORE_SC_HUD;
+                return _MORE_SC_EPIDEMEOLOGIC;
             }
             set
             {
-                OnMORE_SC_HUDChanging(value);
-                ReportPropertyChanging("MORE_SC_HUD");
-                _MORE_SC_HUD = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_SC_HUD");
-                OnMORE_SC_HUDChanged();
+                OnMORE_SC_EPIDEMEOLOGICChanging(value);
+                ReportPropertyChanging("MORE_SC_EPIDEMEOLOGIC");
+                _MORE_SC_EPIDEMEOLOGIC = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_SC_EPIDEMEOLOGIC");
+                OnMORE_SC_EPIDEMEOLOGICChanged();
             }
         }
-        private global::System.String _MORE_SC_HUD;
-        partial void OnMORE_SC_HUDChanging(global::System.String value);
-        partial void OnMORE_SC_HUDChanged();
+        private global::System.String _MORE_SC_EPIDEMEOLOGIC;
+        partial void OnMORE_SC_EPIDEMEOLOGICChanging(global::System.String value);
+        partial void OnMORE_SC_EPIDEMEOLOGICChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_AT_MTA
+        public global::System.String MORE_AT_CTA
         {
             get
             {
-                return _MORE_AT_MTA;
+                return _MORE_AT_CTA;
             }
             set
             {
-                OnMORE_AT_MTAChanging(value);
-                ReportPropertyChanging("MORE_AT_MTA");
-                _MORE_AT_MTA = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_AT_MTA");
-                OnMORE_AT_MTAChanged();
+                OnMORE_AT_CTAChanging(value);
+                ReportPropertyChanging("MORE_AT_CTA");
+                _MORE_AT_CTA = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_AT_CTA");
+                OnMORE_AT_CTAChanged();
             }
         }
-        private global::System.String _MORE_AT_MTA;
-        partial void OnMORE_AT_MTAChanging(global::System.String value);
-        partial void OnMORE_AT_MTAChanged();
+        private global::System.String _MORE_AT_CTA;
+        partial void OnMORE_AT_CTAChanging(global::System.String value);
+        partial void OnMORE_AT_CTAChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_SC_RETROCHARTREVIEW
+        public global::System.String MORE_SC_OBSERVE_STUDIES
         {
             get
             {
-                return _MORE_SC_RETROCHARTREVIEW;
+                return _MORE_SC_OBSERVE_STUDIES;
             }
             set
             {
-                OnMORE_SC_RETROCHARTREVIEWChanging(value);
-                ReportPropertyChanging("MORE_SC_RETROCHARTREVIEW");
-                _MORE_SC_RETROCHARTREVIEW = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_SC_RETROCHARTREVIEW");
-                OnMORE_SC_RETROCHARTREVIEWChanged();
+                OnMORE_SC_OBSERVE_STUDIESChanging(value);
+                ReportPropertyChanging("MORE_SC_OBSERVE_STUDIES");
+                _MORE_SC_OBSERVE_STUDIES = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_SC_OBSERVE_STUDIES");
+                OnMORE_SC_OBSERVE_STUDIESChanged();
             }
         }
-        private global::System.String _MORE_SC_RETROCHARTREVIEW;
-        partial void OnMORE_SC_RETROCHARTREVIEWChanging(global::System.String value);
-        partial void OnMORE_SC_RETROCHARTREVIEWChanged();
+        private global::System.String _MORE_SC_OBSERVE_STUDIES;
+        partial void OnMORE_SC_OBSERVE_STUDIESChanging(global::System.String value);
+        partial void OnMORE_SC_OBSERVE_STUDIESChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_ANCIL_RADIOLOGY
+        public global::System.String MORE_IRBAGENCY
         {
             get
             {
-                return _MORE_ANCIL_RADIOLOGY;
+                return _MORE_IRBAGENCY;
             }
             set
             {
-                OnMORE_ANCIL_RADIOLOGYChanging(value);
-                ReportPropertyChanging("MORE_ANCIL_RADIOLOGY");
-                _MORE_ANCIL_RADIOLOGY = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_ANCIL_RADIOLOGY");
-                OnMORE_ANCIL_RADIOLOGYChanged();
+                OnMORE_IRBAGENCYChanging(value);
+                ReportPropertyChanging("MORE_IRBAGENCY");
+                _MORE_IRBAGENCY = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_IRBAGENCY");
+                OnMORE_IRBAGENCYChanged();
             }
         }
-        private global::System.String _MORE_ANCIL_RADIOLOGY;
-        partial void OnMORE_ANCIL_RADIOLOGYChanging(global::System.String value);
-        partial void OnMORE_ANCIL_RADIOLOGYChanged();
+        private global::System.String _MORE_IRBAGENCY;
+        partial void OnMORE_IRBAGENCYChanging(global::System.String value);
+        partial void OnMORE_IRBAGENCYChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -1172,24 +1220,24 @@ namespace IrbAnalyser.Model
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String EINSTEIN_MONTE_MRN
+        public global::System.String MORE_ANCIL_OTHER
         {
             get
             {
-                return _EINSTEIN_MONTE_MRN;
+                return _MORE_ANCIL_OTHER;
             }
             set
             {
-                OnEINSTEIN_MONTE_MRNChanging(value);
-                ReportPropertyChanging("EINSTEIN_MONTE_MRN");
-                _EINSTEIN_MONTE_MRN = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("EINSTEIN_MONTE_MRN");
-                OnEINSTEIN_MONTE_MRNChanged();
+                OnMORE_ANCIL_OTHERChanging(value);
+                ReportPropertyChanging("MORE_ANCIL_OTHER");
+                _MORE_ANCIL_OTHER = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_ANCIL_OTHER");
+                OnMORE_ANCIL_OTHERChanged();
             }
         }
-        private global::System.String _EINSTEIN_MONTE_MRN;
-        partial void OnEINSTEIN_MONTE_MRNChanging(global::System.String value);
-        partial void OnEINSTEIN_MONTE_MRNChanged();
+        private global::System.String _MORE_ANCIL_OTHER;
+        partial void OnMORE_ANCIL_OTHERChanging(global::System.String value);
+        partial void OnMORE_ANCIL_OTHERChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -1268,24 +1316,24 @@ namespace IrbAnalyser.Model
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_SC_OBSERVE_STUDIES
+        public global::System.String MORE_SC_OTHER
         {
             get
             {
-                return _MORE_SC_OBSERVE_STUDIES;
+                return _MORE_SC_OTHER;
             }
             set
             {
-                OnMORE_SC_OBSERVE_STUDIESChanging(value);
-                ReportPropertyChanging("MORE_SC_OBSERVE_STUDIES");
-                _MORE_SC_OBSERVE_STUDIES = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_SC_OBSERVE_STUDIES");
-                OnMORE_SC_OBSERVE_STUDIESChanged();
+                OnMORE_SC_OTHERChanging(value);
+                ReportPropertyChanging("MORE_SC_OTHER");
+                _MORE_SC_OTHER = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_SC_OTHER");
+                OnMORE_SC_OTHERChanged();
             }
         }
-        private global::System.String _MORE_SC_OBSERVE_STUDIES;
-        partial void OnMORE_SC_OBSERVE_STUDIESChanging(global::System.String value);
-        partial void OnMORE_SC_OBSERVE_STUDIESChanged();
+        private global::System.String _MORE_SC_OTHER;
+        partial void OnMORE_SC_OTHERChanging(global::System.String value);
+        partial void OnMORE_SC_OTHERChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -1364,30 +1412,6 @@ namespace IrbAnalyser.Model
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_GRANTNUM
-        {
-            get
-            {
-                return _MORE_GRANTNUM;
-            }
-            set
-            {
-                OnMORE_GRANTNUMChanging(value);
-                ReportPropertyChanging("MORE_GRANTNUM");
-                _MORE_GRANTNUM = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_GRANTNUM");
-                OnMORE_GRANTNUMChanged();
-            }
-        }
-        private global::System.String _MORE_GRANTNUM;
-        partial void OnMORE_GRANTNUMChanging(global::System.String value);
-        partial void OnMORE_GRANTNUMChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
         public global::System.String MORE_AGENTS_PURCHASED
         {
             get
@@ -1406,6 +1430,30 @@ namespace IrbAnalyser.Model
         private global::System.String _MORE_AGENTS_PURCHASED;
         partial void OnMORE_AGENTS_PURCHASEDChanging(global::System.String value);
         partial void OnMORE_AGENTS_PURCHASEDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String MORE_SC_TRIALS
+        {
+            get
+            {
+                return _MORE_SC_TRIALS;
+            }
+            set
+            {
+                OnMORE_SC_TRIALSChanging(value);
+                ReportPropertyChanging("MORE_SC_TRIALS");
+                _MORE_SC_TRIALS = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_SC_TRIALS");
+                OnMORE_SC_TRIALSChanged();
+            }
+        }
+        private global::System.String _MORE_SC_TRIALS;
+        partial void OnMORE_SC_TRIALSChanging(global::System.String value);
+        partial void OnMORE_SC_TRIALSChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -1460,24 +1508,24 @@ namespace IrbAnalyser.Model
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_SC_TISSUEBANKING
+        public global::System.String MORE_SC_SURVEY_STUDY
         {
             get
             {
-                return _MORE_SC_TISSUEBANKING;
+                return _MORE_SC_SURVEY_STUDY;
             }
             set
             {
-                OnMORE_SC_TISSUEBANKINGChanging(value);
-                ReportPropertyChanging("MORE_SC_TISSUEBANKING");
-                _MORE_SC_TISSUEBANKING = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_SC_TISSUEBANKING");
-                OnMORE_SC_TISSUEBANKINGChanged();
+                OnMORE_SC_SURVEY_STUDYChanging(value);
+                ReportPropertyChanging("MORE_SC_SURVEY_STUDY");
+                _MORE_SC_SURVEY_STUDY = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_SC_SURVEY_STUDY");
+                OnMORE_SC_SURVEY_STUDYChanged();
             }
         }
-        private global::System.String _MORE_SC_TISSUEBANKING;
-        partial void OnMORE_SC_TISSUEBANKINGChanging(global::System.String value);
-        partial void OnMORE_SC_TISSUEBANKINGChanged();
+        private global::System.String _MORE_SC_SURVEY_STUDY;
+        partial void OnMORE_SC_SURVEY_STUDYChanging(global::System.String value);
+        partial void OnMORE_SC_SURVEY_STUDYChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -1535,24 +1583,24 @@ namespace IrbAnalyser.Model
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_AT_CTA
+        public global::System.String MORE_FINANCE_PAYMENT_TERMS
         {
             get
             {
-                return _MORE_AT_CTA;
+                return _MORE_FINANCE_PAYMENT_TERMS;
             }
             set
             {
-                OnMORE_AT_CTAChanging(value);
-                ReportPropertyChanging("MORE_AT_CTA");
-                _MORE_AT_CTA = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_AT_CTA");
-                OnMORE_AT_CTAChanged();
+                OnMORE_FINANCE_PAYMENT_TERMSChanging(value);
+                ReportPropertyChanging("MORE_FINANCE_PAYMENT_TERMS");
+                _MORE_FINANCE_PAYMENT_TERMS = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_FINANCE_PAYMENT_TERMS");
+                OnMORE_FINANCE_PAYMENT_TERMSChanged();
             }
         }
-        private global::System.String _MORE_AT_CTA;
-        partial void OnMORE_AT_CTAChanging(global::System.String value);
-        partial void OnMORE_AT_CTAChanged();
+        private global::System.String _MORE_FINANCE_PAYMENT_TERMS;
+        partial void OnMORE_FINANCE_PAYMENT_TERMSChanging(global::System.String value);
+        partial void OnMORE_FINANCE_PAYMENT_TERMSChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -1583,48 +1631,96 @@ namespace IrbAnalyser.Model
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_SC_EMERGENCY_USE
+        public global::System.String MORE_SC_DEVICE
         {
             get
             {
-                return _MORE_SC_EMERGENCY_USE;
+                return _MORE_SC_DEVICE;
             }
             set
             {
-                OnMORE_SC_EMERGENCY_USEChanging(value);
-                ReportPropertyChanging("MORE_SC_EMERGENCY_USE");
-                _MORE_SC_EMERGENCY_USE = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_SC_EMERGENCY_USE");
-                OnMORE_SC_EMERGENCY_USEChanged();
+                OnMORE_SC_DEVICEChanging(value);
+                ReportPropertyChanging("MORE_SC_DEVICE");
+                _MORE_SC_DEVICE = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_SC_DEVICE");
+                OnMORE_SC_DEVICEChanged();
             }
         }
-        private global::System.String _MORE_SC_EMERGENCY_USE;
-        partial void OnMORE_SC_EMERGENCY_USEChanging(global::System.String value);
-        partial void OnMORE_SC_EMERGENCY_USEChanged();
+        private global::System.String _MORE_SC_DEVICE;
+        partial void OnMORE_SC_DEVICEChanging(global::System.String value);
+        partial void OnMORE_SC_DEVICEChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_FINANCE_ANALYST_PHONE
+        public global::System.String MORE_SUBJECTS_REIMBURSED
         {
             get
             {
-                return _MORE_FINANCE_ANALYST_PHONE;
+                return _MORE_SUBJECTS_REIMBURSED;
             }
             set
             {
-                OnMORE_FINANCE_ANALYST_PHONEChanging(value);
-                ReportPropertyChanging("MORE_FINANCE_ANALYST_PHONE");
-                _MORE_FINANCE_ANALYST_PHONE = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_FINANCE_ANALYST_PHONE");
-                OnMORE_FINANCE_ANALYST_PHONEChanged();
+                OnMORE_SUBJECTS_REIMBURSEDChanging(value);
+                ReportPropertyChanging("MORE_SUBJECTS_REIMBURSED");
+                _MORE_SUBJECTS_REIMBURSED = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_SUBJECTS_REIMBURSED");
+                OnMORE_SUBJECTS_REIMBURSEDChanged();
             }
         }
-        private global::System.String _MORE_FINANCE_ANALYST_PHONE;
-        partial void OnMORE_FINANCE_ANALYST_PHONEChanging(global::System.String value);
-        partial void OnMORE_FINANCE_ANALYST_PHONEChanged();
+        private global::System.String _MORE_SUBJECTS_REIMBURSED;
+        partial void OnMORE_SUBJECTS_REIMBURSEDChanging(global::System.String value);
+        partial void OnMORE_SUBJECTS_REIMBURSEDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String MORE_SC_AGENT
+        {
+            get
+            {
+                return _MORE_SC_AGENT;
+            }
+            set
+            {
+                OnMORE_SC_AGENTChanging(value);
+                ReportPropertyChanging("MORE_SC_AGENT");
+                _MORE_SC_AGENT = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_SC_AGENT");
+                OnMORE_SC_AGENTChanged();
+            }
+        }
+        private global::System.String _MORE_SC_AGENT;
+        partial void OnMORE_SC_AGENTChanging(global::System.String value);
+        partial void OnMORE_SC_AGENTChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String MORE_ANCIL_CRC
+        {
+            get
+            {
+                return _MORE_ANCIL_CRC;
+            }
+            set
+            {
+                OnMORE_ANCIL_CRCChanging(value);
+                ReportPropertyChanging("MORE_ANCIL_CRC");
+                _MORE_ANCIL_CRC = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_ANCIL_CRC");
+                OnMORE_ANCIL_CRCChanged();
+            }
+        }
+        private global::System.String _MORE_ANCIL_CRC;
+        partial void OnMORE_ANCIL_CRCChanging(global::System.String value);
+        partial void OnMORE_ANCIL_CRCChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -1649,54 +1745,6 @@ namespace IrbAnalyser.Model
         private global::System.String _MORE_SC_ANCILLARY;
         partial void OnMORE_SC_ANCILLARYChanging(global::System.String value);
         partial void OnMORE_SC_ANCILLARYChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String MORE_SPONSOR_EQUIPMENT
-        {
-            get
-            {
-                return _MORE_SPONSOR_EQUIPMENT;
-            }
-            set
-            {
-                OnMORE_SPONSOR_EQUIPMENTChanging(value);
-                ReportPropertyChanging("MORE_SPONSOR_EQUIPMENT");
-                _MORE_SPONSOR_EQUIPMENT = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_SPONSOR_EQUIPMENT");
-                OnMORE_SPONSOR_EQUIPMENTChanged();
-            }
-        }
-        private global::System.String _MORE_SPONSOR_EQUIPMENT;
-        partial void OnMORE_SPONSOR_EQUIPMENTChanging(global::System.String value);
-        partial void OnMORE_SPONSOR_EQUIPMENTChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String MORE_SC_BIOLOGIC
-        {
-            get
-            {
-                return _MORE_SC_BIOLOGIC;
-            }
-            set
-            {
-                OnMORE_SC_BIOLOGICChanging(value);
-                ReportPropertyChanging("MORE_SC_BIOLOGIC");
-                _MORE_SC_BIOLOGIC = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_SC_BIOLOGIC");
-                OnMORE_SC_BIOLOGICChanged();
-            }
-        }
-        private global::System.String _MORE_SC_BIOLOGIC;
-        partial void OnMORE_SC_BIOLOGICChanging(global::System.String value);
-        partial void OnMORE_SC_BIOLOGICChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -1751,48 +1799,48 @@ namespace IrbAnalyser.Model
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_ANCIL_PATHOLOGY
+        public global::System.String MORE_GRANTNUM
         {
             get
             {
-                return _MORE_ANCIL_PATHOLOGY;
+                return _MORE_GRANTNUM;
             }
             set
             {
-                OnMORE_ANCIL_PATHOLOGYChanging(value);
-                ReportPropertyChanging("MORE_ANCIL_PATHOLOGY");
-                _MORE_ANCIL_PATHOLOGY = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_ANCIL_PATHOLOGY");
-                OnMORE_ANCIL_PATHOLOGYChanged();
+                OnMORE_GRANTNUMChanging(value);
+                ReportPropertyChanging("MORE_GRANTNUM");
+                _MORE_GRANTNUM = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_GRANTNUM");
+                OnMORE_GRANTNUMChanged();
             }
         }
-        private global::System.String _MORE_ANCIL_PATHOLOGY;
-        partial void OnMORE_ANCIL_PATHOLOGYChanging(global::System.String value);
-        partial void OnMORE_ANCIL_PATHOLOGYChanged();
+        private global::System.String _MORE_GRANTNUM;
+        partial void OnMORE_GRANTNUMChanging(global::System.String value);
+        partial void OnMORE_GRANTNUMChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_SC_CORR
+        public global::System.String MORE_SC_BLOOD_DRAW
         {
             get
             {
-                return _MORE_SC_CORR;
+                return _MORE_SC_BLOOD_DRAW;
             }
             set
             {
-                OnMORE_SC_CORRChanging(value);
-                ReportPropertyChanging("MORE_SC_CORR");
-                _MORE_SC_CORR = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_SC_CORR");
-                OnMORE_SC_CORRChanged();
+                OnMORE_SC_BLOOD_DRAWChanging(value);
+                ReportPropertyChanging("MORE_SC_BLOOD_DRAW");
+                _MORE_SC_BLOOD_DRAW = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_SC_BLOOD_DRAW");
+                OnMORE_SC_BLOOD_DRAWChanged();
             }
         }
-        private global::System.String _MORE_SC_CORR;
-        partial void OnMORE_SC_CORRChanging(global::System.String value);
-        partial void OnMORE_SC_CORRChanged();
+        private global::System.String _MORE_SC_BLOOD_DRAW;
+        partial void OnMORE_SC_BLOOD_DRAWChanging(global::System.String value);
+        partial void OnMORE_SC_BLOOD_DRAWChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -1919,48 +1967,48 @@ namespace IrbAnalyser.Model
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_SC_AGENT
+        public global::System.String MORE_INFORMEDCONSENT
         {
             get
             {
-                return _MORE_SC_AGENT;
+                return _MORE_INFORMEDCONSENT;
             }
             set
             {
-                OnMORE_SC_AGENTChanging(value);
-                ReportPropertyChanging("MORE_SC_AGENT");
-                _MORE_SC_AGENT = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_SC_AGENT");
-                OnMORE_SC_AGENTChanged();
+                OnMORE_INFORMEDCONSENTChanging(value);
+                ReportPropertyChanging("MORE_INFORMEDCONSENT");
+                _MORE_INFORMEDCONSENT = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_INFORMEDCONSENT");
+                OnMORE_INFORMEDCONSENTChanged();
             }
         }
-        private global::System.String _MORE_SC_AGENT;
-        partial void OnMORE_SC_AGENTChanging(global::System.String value);
-        partial void OnMORE_SC_AGENTChanged();
+        private global::System.String _MORE_INFORMEDCONSENT;
+        partial void OnMORE_INFORMEDCONSENTChanging(global::System.String value);
+        partial void OnMORE_INFORMEDCONSENTChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_AT_MSTRA
+        public global::System.String MORE_PROTLINKED
         {
             get
             {
-                return _MORE_AT_MSTRA;
+                return _MORE_PROTLINKED;
             }
             set
             {
-                OnMORE_AT_MSTRAChanging(value);
-                ReportPropertyChanging("MORE_AT_MSTRA");
-                _MORE_AT_MSTRA = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_AT_MSTRA");
-                OnMORE_AT_MSTRAChanged();
+                OnMORE_PROTLINKEDChanging(value);
+                ReportPropertyChanging("MORE_PROTLINKED");
+                _MORE_PROTLINKED = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_PROTLINKED");
+                OnMORE_PROTLINKEDChanged();
             }
         }
-        private global::System.String _MORE_AT_MSTRA;
-        partial void OnMORE_AT_MSTRAChanging(global::System.String value);
-        partial void OnMORE_AT_MSTRAChanged();
+        private global::System.String _MORE_PROTLINKED;
+        partial void OnMORE_PROTLINKEDChanging(global::System.String value);
+        partial void OnMORE_PROTLINKEDChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -1991,24 +2039,48 @@ namespace IrbAnalyser.Model
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_FINANCIALS
+        public global::System.String MORE_SPONSOR_EQUIPMENT
         {
             get
             {
-                return _MORE_FINANCIALS;
+                return _MORE_SPONSOR_EQUIPMENT;
             }
             set
             {
-                OnMORE_FINANCIALSChanging(value);
-                ReportPropertyChanging("MORE_FINANCIALS");
-                _MORE_FINANCIALS = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_FINANCIALS");
-                OnMORE_FINANCIALSChanged();
+                OnMORE_SPONSOR_EQUIPMENTChanging(value);
+                ReportPropertyChanging("MORE_SPONSOR_EQUIPMENT");
+                _MORE_SPONSOR_EQUIPMENT = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_SPONSOR_EQUIPMENT");
+                OnMORE_SPONSOR_EQUIPMENTChanged();
             }
         }
-        private global::System.String _MORE_FINANCIALS;
-        partial void OnMORE_FINANCIALSChanging(global::System.String value);
-        partial void OnMORE_FINANCIALSChanged();
+        private global::System.String _MORE_SPONSOR_EQUIPMENT;
+        partial void OnMORE_SPONSOR_EQUIPMENTChanging(global::System.String value);
+        partial void OnMORE_SPONSOR_EQUIPMENTChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String MORE_AT_MA
+        {
+            get
+            {
+                return _MORE_AT_MA;
+            }
+            set
+            {
+                OnMORE_AT_MAChanging(value);
+                ReportPropertyChanging("MORE_AT_MA");
+                _MORE_AT_MA = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_AT_MA");
+                OnMORE_AT_MAChanged();
+            }
+        }
+        private global::System.String _MORE_AT_MA;
+        partial void OnMORE_AT_MAChanging(global::System.String value);
+        partial void OnMORE_AT_MAChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -2063,24 +2135,24 @@ namespace IrbAnalyser.Model
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_SC_DATA_ROUTINE_CARE
+        public global::System.String MORE_SC_CORR
         {
             get
             {
-                return _MORE_SC_DATA_ROUTINE_CARE;
+                return _MORE_SC_CORR;
             }
             set
             {
-                OnMORE_SC_DATA_ROUTINE_CAREChanging(value);
-                ReportPropertyChanging("MORE_SC_DATA_ROUTINE_CARE");
-                _MORE_SC_DATA_ROUTINE_CARE = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_SC_DATA_ROUTINE_CARE");
-                OnMORE_SC_DATA_ROUTINE_CAREChanged();
+                OnMORE_SC_CORRChanging(value);
+                ReportPropertyChanging("MORE_SC_CORR");
+                _MORE_SC_CORR = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_SC_CORR");
+                OnMORE_SC_CORRChanged();
             }
         }
-        private global::System.String _MORE_SC_DATA_ROUTINE_CARE;
-        partial void OnMORE_SC_DATA_ROUTINE_CAREChanging(global::System.String value);
-        partial void OnMORE_SC_DATA_ROUTINE_CAREChanged();
+        private global::System.String _MORE_SC_CORR;
+        partial void OnMORE_SC_CORRChanging(global::System.String value);
+        partial void OnMORE_SC_CORRChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -2135,6 +2207,30 @@ namespace IrbAnalyser.Model
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
+        public global::System.String MORE_ANTICIPATED_ENDDT
+        {
+            get
+            {
+                return _MORE_ANTICIPATED_ENDDT;
+            }
+            set
+            {
+                OnMORE_ANTICIPATED_ENDDTChanging(value);
+                ReportPropertyChanging("MORE_ANTICIPATED_ENDDT");
+                _MORE_ANTICIPATED_ENDDT = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_ANTICIPATED_ENDDT");
+                OnMORE_ANTICIPATED_ENDDTChanged();
+            }
+        }
+        private global::System.String _MORE_ANTICIPATED_ENDDT;
+        partial void OnMORE_ANTICIPATED_ENDDTChanging(global::System.String value);
+        partial void OnMORE_ANTICIPATED_ENDDTChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
         public global::System.String MORE_PRIMPURPOSE
         {
             get
@@ -2153,30 +2249,6 @@ namespace IrbAnalyser.Model
         private global::System.String _MORE_PRIMPURPOSE;
         partial void OnMORE_PRIMPURPOSEChanging(global::System.String value);
         partial void OnMORE_PRIMPURPOSEChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String MORE_SECPURPOSE
-        {
-            get
-            {
-                return _MORE_SECPURPOSE;
-            }
-            set
-            {
-                OnMORE_SECPURPOSEChanging(value);
-                ReportPropertyChanging("MORE_SECPURPOSE");
-                _MORE_SECPURPOSE = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_SECPURPOSE");
-                OnMORE_SECPURPOSEChanged();
-            }
-        }
-        private global::System.String _MORE_SECPURPOSE;
-        partial void OnMORE_SECPURPOSEChanging(global::System.String value);
-        partial void OnMORE_SECPURPOSEChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -2207,48 +2279,48 @@ namespace IrbAnalyser.Model
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_ANCIL_OTHER
+        public global::System.String MORE_IRBNUM
         {
             get
             {
-                return _MORE_ANCIL_OTHER;
+                return _MORE_IRBNUM;
             }
             set
             {
-                OnMORE_ANCIL_OTHERChanging(value);
-                ReportPropertyChanging("MORE_ANCIL_OTHER");
-                _MORE_ANCIL_OTHER = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_ANCIL_OTHER");
-                OnMORE_ANCIL_OTHERChanged();
+                OnMORE_IRBNUMChanging(value);
+                ReportPropertyChanging("MORE_IRBNUM");
+                _MORE_IRBNUM = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_IRBNUM");
+                OnMORE_IRBNUMChanged();
             }
         }
-        private global::System.String _MORE_ANCIL_OTHER;
-        partial void OnMORE_ANCIL_OTHERChanging(global::System.String value);
-        partial void OnMORE_ANCIL_OTHERChanged();
+        private global::System.String _MORE_IRBNUM;
+        partial void OnMORE_IRBNUMChanging(global::System.String value);
+        partial void OnMORE_IRBNUMChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_SC_EPIDEMEOLOGIC
+        public global::System.String MORE_SC_EMERGENCY_USE
         {
             get
             {
-                return _MORE_SC_EPIDEMEOLOGIC;
+                return _MORE_SC_EMERGENCY_USE;
             }
             set
             {
-                OnMORE_SC_EPIDEMEOLOGICChanging(value);
-                ReportPropertyChanging("MORE_SC_EPIDEMEOLOGIC");
-                _MORE_SC_EPIDEMEOLOGIC = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_SC_EPIDEMEOLOGIC");
-                OnMORE_SC_EPIDEMEOLOGICChanged();
+                OnMORE_SC_EMERGENCY_USEChanging(value);
+                ReportPropertyChanging("MORE_SC_EMERGENCY_USE");
+                _MORE_SC_EMERGENCY_USE = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_SC_EMERGENCY_USE");
+                OnMORE_SC_EMERGENCY_USEChanged();
             }
         }
-        private global::System.String _MORE_SC_EPIDEMEOLOGIC;
-        partial void OnMORE_SC_EPIDEMEOLOGICChanging(global::System.String value);
-        partial void OnMORE_SC_EPIDEMEOLOGICChanged();
+        private global::System.String _MORE_SC_EMERGENCY_USE;
+        partial void OnMORE_SC_EMERGENCY_USEChanging(global::System.String value);
+        partial void OnMORE_SC_EMERGENCY_USEChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -2279,120 +2351,120 @@ namespace IrbAnalyser.Model
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_NUMPROTSRCVD
+        public global::System.String MORE_FINANCE_ANALYST_NAME
         {
             get
             {
-                return _MORE_NUMPROTSRCVD;
+                return _MORE_FINANCE_ANALYST_NAME;
             }
             set
             {
-                OnMORE_NUMPROTSRCVDChanging(value);
-                ReportPropertyChanging("MORE_NUMPROTSRCVD");
-                _MORE_NUMPROTSRCVD = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_NUMPROTSRCVD");
-                OnMORE_NUMPROTSRCVDChanged();
+                OnMORE_FINANCE_ANALYST_NAMEChanging(value);
+                ReportPropertyChanging("MORE_FINANCE_ANALYST_NAME");
+                _MORE_FINANCE_ANALYST_NAME = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_FINANCE_ANALYST_NAME");
+                OnMORE_FINANCE_ANALYST_NAMEChanged();
             }
         }
-        private global::System.String _MORE_NUMPROTSRCVD;
-        partial void OnMORE_NUMPROTSRCVDChanging(global::System.String value);
-        partial void OnMORE_NUMPROTSRCVDChanged();
+        private global::System.String _MORE_FINANCE_ANALYST_NAME;
+        partial void OnMORE_FINANCE_ANALYST_NAMEChanging(global::System.String value);
+        partial void OnMORE_FINANCE_ANALYST_NAMEChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_PROGCODE
+        public global::System.String MORE_CANCER
         {
             get
             {
-                return _MORE_PROGCODE;
+                return _MORE_CANCER;
             }
             set
             {
-                OnMORE_PROGCODEChanging(value);
-                ReportPropertyChanging("MORE_PROGCODE");
-                _MORE_PROGCODE = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_PROGCODE");
-                OnMORE_PROGCODEChanged();
+                OnMORE_CANCERChanging(value);
+                ReportPropertyChanging("MORE_CANCER");
+                _MORE_CANCER = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_CANCER");
+                OnMORE_CANCERChanged();
             }
         }
-        private global::System.String _MORE_PROGCODE;
-        partial void OnMORE_PROGCODEChanging(global::System.String value);
-        partial void OnMORE_PROGCODEChanged();
+        private global::System.String _MORE_CANCER;
+        partial void OnMORE_CANCERChanging(global::System.String value);
+        partial void OnMORE_CANCERChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_SC_SURVEY_STUDY
+        public global::System.String MORE_SC_QI_PROJECT
         {
             get
             {
-                return _MORE_SC_SURVEY_STUDY;
+                return _MORE_SC_QI_PROJECT;
             }
             set
             {
-                OnMORE_SC_SURVEY_STUDYChanging(value);
-                ReportPropertyChanging("MORE_SC_SURVEY_STUDY");
-                _MORE_SC_SURVEY_STUDY = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_SC_SURVEY_STUDY");
-                OnMORE_SC_SURVEY_STUDYChanged();
+                OnMORE_SC_QI_PROJECTChanging(value);
+                ReportPropertyChanging("MORE_SC_QI_PROJECT");
+                _MORE_SC_QI_PROJECT = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_SC_QI_PROJECT");
+                OnMORE_SC_QI_PROJECTChanged();
             }
         }
-        private global::System.String _MORE_SC_SURVEY_STUDY;
-        partial void OnMORE_SC_SURVEY_STUDYChanging(global::System.String value);
-        partial void OnMORE_SC_SURVEY_STUDYChanged();
+        private global::System.String _MORE_SC_QI_PROJECT;
+        partial void OnMORE_SC_QI_PROJECTChanging(global::System.String value);
+        partial void OnMORE_SC_QI_PROJECTChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_SC_BLOOD_DRAW
+        public global::System.String MORE_SC_BIOLOGIC
         {
             get
             {
-                return _MORE_SC_BLOOD_DRAW;
+                return _MORE_SC_BIOLOGIC;
             }
             set
             {
-                OnMORE_SC_BLOOD_DRAWChanging(value);
-                ReportPropertyChanging("MORE_SC_BLOOD_DRAW");
-                _MORE_SC_BLOOD_DRAW = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_SC_BLOOD_DRAW");
-                OnMORE_SC_BLOOD_DRAWChanged();
+                OnMORE_SC_BIOLOGICChanging(value);
+                ReportPropertyChanging("MORE_SC_BIOLOGIC");
+                _MORE_SC_BIOLOGIC = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_SC_BIOLOGIC");
+                OnMORE_SC_BIOLOGICChanged();
             }
         }
-        private global::System.String _MORE_SC_BLOOD_DRAW;
-        partial void OnMORE_SC_BLOOD_DRAWChanging(global::System.String value);
-        partial void OnMORE_SC_BLOOD_DRAWChanged();
+        private global::System.String _MORE_SC_BIOLOGIC;
+        partial void OnMORE_SC_BIOLOGICChanging(global::System.String value);
+        partial void OnMORE_SC_BIOLOGICChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_SC_INVITRO
+        public global::System.String MORE_SC_HUD
         {
             get
             {
-                return _MORE_SC_INVITRO;
+                return _MORE_SC_HUD;
             }
             set
             {
-                OnMORE_SC_INVITROChanging(value);
-                ReportPropertyChanging("MORE_SC_INVITRO");
-                _MORE_SC_INVITRO = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_SC_INVITRO");
-                OnMORE_SC_INVITROChanged();
+                OnMORE_SC_HUDChanging(value);
+                ReportPropertyChanging("MORE_SC_HUD");
+                _MORE_SC_HUD = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_SC_HUD");
+                OnMORE_SC_HUDChanged();
             }
         }
-        private global::System.String _MORE_SC_INVITRO;
-        partial void OnMORE_SC_INVITROChanging(global::System.String value);
-        partial void OnMORE_SC_INVITROChanged();
+        private global::System.String _MORE_SC_HUD;
+        partial void OnMORE_SC_HUDChanging(global::System.String value);
+        partial void OnMORE_SC_HUDChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -2495,24 +2567,24 @@ namespace IrbAnalyser.Model
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_SUBJECTS_REIMBURSED
+        public global::System.String MORE_ANCIL_RADIOLOGY
         {
             get
             {
-                return _MORE_SUBJECTS_REIMBURSED;
+                return _MORE_ANCIL_RADIOLOGY;
             }
             set
             {
-                OnMORE_SUBJECTS_REIMBURSEDChanging(value);
-                ReportPropertyChanging("MORE_SUBJECTS_REIMBURSED");
-                _MORE_SUBJECTS_REIMBURSED = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_SUBJECTS_REIMBURSED");
-                OnMORE_SUBJECTS_REIMBURSEDChanged();
+                OnMORE_ANCIL_RADIOLOGYChanging(value);
+                ReportPropertyChanging("MORE_ANCIL_RADIOLOGY");
+                _MORE_ANCIL_RADIOLOGY = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_ANCIL_RADIOLOGY");
+                OnMORE_ANCIL_RADIOLOGYChanged();
             }
         }
-        private global::System.String _MORE_SUBJECTS_REIMBURSED;
-        partial void OnMORE_SUBJECTS_REIMBURSEDChanging(global::System.String value);
-        partial void OnMORE_SUBJECTS_REIMBURSEDChanged();
+        private global::System.String _MORE_ANCIL_RADIOLOGY;
+        partial void OnMORE_ANCIL_RADIOLOGYChanging(global::System.String value);
+        partial void OnMORE_ANCIL_RADIOLOGYChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -2543,6 +2615,30 @@ namespace IrbAnalyser.Model
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
+        public global::System.String MORE_EPIC
+        {
+            get
+            {
+                return _MORE_EPIC;
+            }
+            set
+            {
+                OnMORE_EPICChanging(value);
+                ReportPropertyChanging("MORE_EPIC");
+                _MORE_EPIC = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_EPIC");
+                OnMORE_EPICChanged();
+            }
+        }
+        private global::System.String _MORE_EPIC;
+        partial void OnMORE_EPICChanging(global::System.String value);
+        partial void OnMORE_EPICChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
         public Nullable<global::System.Decimal> STUDY_RESEARCH_TYPE_FK
         {
             get
@@ -2567,72 +2663,72 @@ namespace IrbAnalyser.Model
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_IRBNUM
+        public global::System.String MORE_SITENUM
         {
             get
             {
-                return _MORE_IRBNUM;
+                return _MORE_SITENUM;
             }
             set
             {
-                OnMORE_IRBNUMChanging(value);
-                ReportPropertyChanging("MORE_IRBNUM");
-                _MORE_IRBNUM = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_IRBNUM");
-                OnMORE_IRBNUMChanged();
+                OnMORE_SITENUMChanging(value);
+                ReportPropertyChanging("MORE_SITENUM");
+                _MORE_SITENUM = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_SITENUM");
+                OnMORE_SITENUMChanged();
             }
         }
-        private global::System.String _MORE_IRBNUM;
-        partial void OnMORE_IRBNUMChanging(global::System.String value);
-        partial void OnMORE_IRBNUMChanged();
+        private global::System.String _MORE_SITENUM;
+        partial void OnMORE_SITENUMChanging(global::System.String value);
+        partial void OnMORE_SITENUMChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_SC_OTHER
+        public global::System.String MORE_SC_INVITRO
         {
             get
             {
-                return _MORE_SC_OTHER;
+                return _MORE_SC_INVITRO;
             }
             set
             {
-                OnMORE_SC_OTHERChanging(value);
-                ReportPropertyChanging("MORE_SC_OTHER");
-                _MORE_SC_OTHER = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_SC_OTHER");
-                OnMORE_SC_OTHERChanged();
+                OnMORE_SC_INVITROChanging(value);
+                ReportPropertyChanging("MORE_SC_INVITRO");
+                _MORE_SC_INVITRO = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_SC_INVITRO");
+                OnMORE_SC_INVITROChanged();
             }
         }
-        private global::System.String _MORE_SC_OTHER;
-        partial void OnMORE_SC_OTHERChanging(global::System.String value);
-        partial void OnMORE_SC_OTHERChanged();
+        private global::System.String _MORE_SC_INVITRO;
+        partial void OnMORE_SC_INVITROChanging(global::System.String value);
+        partial void OnMORE_SC_INVITROChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_ANALYSIS_WO_CONSENT
+        public global::System.String MORE_ANCIL_PATHOLOGY
         {
             get
             {
-                return _MORE_ANALYSIS_WO_CONSENT;
+                return _MORE_ANCIL_PATHOLOGY;
             }
             set
             {
-                OnMORE_ANALYSIS_WO_CONSENTChanging(value);
-                ReportPropertyChanging("MORE_ANALYSIS_WO_CONSENT");
-                _MORE_ANALYSIS_WO_CONSENT = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_ANALYSIS_WO_CONSENT");
-                OnMORE_ANALYSIS_WO_CONSENTChanged();
+                OnMORE_ANCIL_PATHOLOGYChanging(value);
+                ReportPropertyChanging("MORE_ANCIL_PATHOLOGY");
+                _MORE_ANCIL_PATHOLOGY = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_ANCIL_PATHOLOGY");
+                OnMORE_ANCIL_PATHOLOGYChanged();
             }
         }
-        private global::System.String _MORE_ANALYSIS_WO_CONSENT;
-        partial void OnMORE_ANALYSIS_WO_CONSENTChanging(global::System.String value);
-        partial void OnMORE_ANALYSIS_WO_CONSENTChanged();
+        private global::System.String _MORE_ANCIL_PATHOLOGY;
+        partial void OnMORE_ANCIL_PATHOLOGYChanging(global::System.String value);
+        partial void OnMORE_ANCIL_PATHOLOGYChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -2663,24 +2759,24 @@ namespace IrbAnalyser.Model
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_AT_SA
+        public global::System.String MORE_AT_II
         {
             get
             {
-                return _MORE_AT_SA;
+                return _MORE_AT_II;
             }
             set
             {
-                OnMORE_AT_SAChanging(value);
-                ReportPropertyChanging("MORE_AT_SA");
-                _MORE_AT_SA = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_AT_SA");
-                OnMORE_AT_SAChanged();
+                OnMORE_AT_IIChanging(value);
+                ReportPropertyChanging("MORE_AT_II");
+                _MORE_AT_II = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_AT_II");
+                OnMORE_AT_IIChanged();
             }
         }
-        private global::System.String _MORE_AT_SA;
-        partial void OnMORE_AT_SAChanging(global::System.String value);
-        partial void OnMORE_AT_SAChanged();
+        private global::System.String _MORE_AT_II;
+        partial void OnMORE_AT_IIChanging(global::System.String value);
+        partial void OnMORE_AT_IIChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -2759,24 +2855,24 @@ namespace IrbAnalyser.Model
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_SC_QI_PROJECT
+        public global::System.String MORE_SC_RETROCHARTREVIEW
         {
             get
             {
-                return _MORE_SC_QI_PROJECT;
+                return _MORE_SC_RETROCHARTREVIEW;
             }
             set
             {
-                OnMORE_SC_QI_PROJECTChanging(value);
-                ReportPropertyChanging("MORE_SC_QI_PROJECT");
-                _MORE_SC_QI_PROJECT = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_SC_QI_PROJECT");
-                OnMORE_SC_QI_PROJECTChanged();
+                OnMORE_SC_RETROCHARTREVIEWChanging(value);
+                ReportPropertyChanging("MORE_SC_RETROCHARTREVIEW");
+                _MORE_SC_RETROCHARTREVIEW = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_SC_RETROCHARTREVIEW");
+                OnMORE_SC_RETROCHARTREVIEWChanged();
             }
         }
-        private global::System.String _MORE_SC_QI_PROJECT;
-        partial void OnMORE_SC_QI_PROJECTChanging(global::System.String value);
-        partial void OnMORE_SC_QI_PROJECTChanged();
+        private global::System.String _MORE_SC_RETROCHARTREVIEW;
+        partial void OnMORE_SC_RETROCHARTREVIEWChanging(global::System.String value);
+        partial void OnMORE_SC_RETROCHARTREVIEWChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -2831,72 +2927,72 @@ namespace IrbAnalyser.Model
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_AT_DTA
+        public global::System.String MORE_FINANCE_ANALYST_EMAIL
         {
             get
             {
-                return _MORE_AT_DTA;
+                return _MORE_FINANCE_ANALYST_EMAIL;
             }
             set
             {
-                OnMORE_AT_DTAChanging(value);
-                ReportPropertyChanging("MORE_AT_DTA");
-                _MORE_AT_DTA = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_AT_DTA");
-                OnMORE_AT_DTAChanged();
+                OnMORE_FINANCE_ANALYST_EMAILChanging(value);
+                ReportPropertyChanging("MORE_FINANCE_ANALYST_EMAIL");
+                _MORE_FINANCE_ANALYST_EMAIL = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_FINANCE_ANALYST_EMAIL");
+                OnMORE_FINANCE_ANALYST_EMAILChanged();
             }
         }
-        private global::System.String _MORE_AT_DTA;
-        partial void OnMORE_AT_DTAChanging(global::System.String value);
-        partial void OnMORE_AT_DTAChanged();
+        private global::System.String _MORE_FINANCE_ANALYST_EMAIL;
+        partial void OnMORE_FINANCE_ANALYST_EMAILChanging(global::System.String value);
+        partial void OnMORE_FINANCE_ANALYST_EMAILChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_AT_II
+        public global::System.String MORE_NUMPROTSRCVD
         {
             get
             {
-                return _MORE_AT_II;
+                return _MORE_NUMPROTSRCVD;
             }
             set
             {
-                OnMORE_AT_IIChanging(value);
-                ReportPropertyChanging("MORE_AT_II");
-                _MORE_AT_II = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_AT_II");
-                OnMORE_AT_IIChanged();
+                OnMORE_NUMPROTSRCVDChanging(value);
+                ReportPropertyChanging("MORE_NUMPROTSRCVD");
+                _MORE_NUMPROTSRCVD = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_NUMPROTSRCVD");
+                OnMORE_NUMPROTSRCVDChanged();
             }
         }
-        private global::System.String _MORE_AT_II;
-        partial void OnMORE_AT_IIChanging(global::System.String value);
-        partial void OnMORE_AT_IIChanged();
+        private global::System.String _MORE_NUMPROTSRCVD;
+        partial void OnMORE_NUMPROTSRCVDChanging(global::System.String value);
+        partial void OnMORE_NUMPROTSRCVDChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_PROTLINKED
+        public global::System.String MORE_FINANCE_ANALYST_PHONE
         {
             get
             {
-                return _MORE_PROTLINKED;
+                return _MORE_FINANCE_ANALYST_PHONE;
             }
             set
             {
-                OnMORE_PROTLINKEDChanging(value);
-                ReportPropertyChanging("MORE_PROTLINKED");
-                _MORE_PROTLINKED = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_PROTLINKED");
-                OnMORE_PROTLINKEDChanged();
+                OnMORE_FINANCE_ANALYST_PHONEChanging(value);
+                ReportPropertyChanging("MORE_FINANCE_ANALYST_PHONE");
+                _MORE_FINANCE_ANALYST_PHONE = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_FINANCE_ANALYST_PHONE");
+                OnMORE_FINANCE_ANALYST_PHONEChanged();
             }
         }
-        private global::System.String _MORE_PROTLINKED;
-        partial void OnMORE_PROTLINKEDChanging(global::System.String value);
-        partial void OnMORE_PROTLINKEDChanged();
+        private global::System.String _MORE_FINANCE_ANALYST_PHONE;
+        partial void OnMORE_FINANCE_ANALYST_PHONEChanging(global::System.String value);
+        partial void OnMORE_FINANCE_ANALYST_PHONEChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -2927,24 +3023,24 @@ namespace IrbAnalyser.Model
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_INS_BIOSAFETY
+        public global::System.String MORE_PROGCODE
         {
             get
             {
-                return _MORE_INS_BIOSAFETY;
+                return _MORE_PROGCODE;
             }
             set
             {
-                OnMORE_INS_BIOSAFETYChanging(value);
-                ReportPropertyChanging("MORE_INS_BIOSAFETY");
-                _MORE_INS_BIOSAFETY = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_INS_BIOSAFETY");
-                OnMORE_INS_BIOSAFETYChanged();
+                OnMORE_PROGCODEChanging(value);
+                ReportPropertyChanging("MORE_PROGCODE");
+                _MORE_PROGCODE = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_PROGCODE");
+                OnMORE_PROGCODEChanged();
             }
         }
-        private global::System.String _MORE_INS_BIOSAFETY;
-        partial void OnMORE_INS_BIOSAFETYChanging(global::System.String value);
-        partial void OnMORE_INS_BIOSAFETYChanged();
+        private global::System.String _MORE_PROGCODE;
+        partial void OnMORE_PROGCODEChanging(global::System.String value);
+        partial void OnMORE_PROGCODEChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -2975,24 +3071,24 @@ namespace IrbAnalyser.Model
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_RESPONSIBLE_PARTY
+        public global::System.String MORE_CT_FDA
         {
             get
             {
-                return _MORE_RESPONSIBLE_PARTY;
+                return _MORE_CT_FDA;
             }
             set
             {
-                OnMORE_RESPONSIBLE_PARTYChanging(value);
-                ReportPropertyChanging("MORE_RESPONSIBLE_PARTY");
-                _MORE_RESPONSIBLE_PARTY = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_RESPONSIBLE_PARTY");
-                OnMORE_RESPONSIBLE_PARTYChanged();
+                OnMORE_CT_FDAChanging(value);
+                ReportPropertyChanging("MORE_CT_FDA");
+                _MORE_CT_FDA = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_CT_FDA");
+                OnMORE_CT_FDAChanged();
             }
         }
-        private global::System.String _MORE_RESPONSIBLE_PARTY;
-        partial void OnMORE_RESPONSIBLE_PARTYChanging(global::System.String value);
-        partial void OnMORE_RESPONSIBLE_PARTYChanged();
+        private global::System.String _MORE_CT_FDA;
+        partial void OnMORE_CT_FDAChanging(global::System.String value);
+        partial void OnMORE_CT_FDAChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -3023,48 +3119,48 @@ namespace IrbAnalyser.Model
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_FINANCE_PAYMENT_TERMS
+        public global::System.String EINSTEIN_MONTE_MRN
         {
             get
             {
-                return _MORE_FINANCE_PAYMENT_TERMS;
+                return _EINSTEIN_MONTE_MRN;
             }
             set
             {
-                OnMORE_FINANCE_PAYMENT_TERMSChanging(value);
-                ReportPropertyChanging("MORE_FINANCE_PAYMENT_TERMS");
-                _MORE_FINANCE_PAYMENT_TERMS = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_FINANCE_PAYMENT_TERMS");
-                OnMORE_FINANCE_PAYMENT_TERMSChanged();
+                OnEINSTEIN_MONTE_MRNChanging(value);
+                ReportPropertyChanging("EINSTEIN_MONTE_MRN");
+                _EINSTEIN_MONTE_MRN = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("EINSTEIN_MONTE_MRN");
+                OnEINSTEIN_MONTE_MRNChanged();
             }
         }
-        private global::System.String _MORE_FINANCE_PAYMENT_TERMS;
-        partial void OnMORE_FINANCE_PAYMENT_TERMSChanging(global::System.String value);
-        partial void OnMORE_FINANCE_PAYMENT_TERMSChanged();
+        private global::System.String _EINSTEIN_MONTE_MRN;
+        partial void OnEINSTEIN_MONTE_MRNChanging(global::System.String value);
+        partial void OnEINSTEIN_MONTE_MRNChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_FINANCE_ANALYST_EMAIL
+        public global::System.String MORE_FINANCIALS
         {
             get
             {
-                return _MORE_FINANCE_ANALYST_EMAIL;
+                return _MORE_FINANCIALS;
             }
             set
             {
-                OnMORE_FINANCE_ANALYST_EMAILChanging(value);
-                ReportPropertyChanging("MORE_FINANCE_ANALYST_EMAIL");
-                _MORE_FINANCE_ANALYST_EMAIL = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_FINANCE_ANALYST_EMAIL");
-                OnMORE_FINANCE_ANALYST_EMAILChanged();
+                OnMORE_FINANCIALSChanging(value);
+                ReportPropertyChanging("MORE_FINANCIALS");
+                _MORE_FINANCIALS = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_FINANCIALS");
+                OnMORE_FINANCIALSChanged();
             }
         }
-        private global::System.String _MORE_FINANCE_ANALYST_EMAIL;
-        partial void OnMORE_FINANCE_ANALYST_EMAILChanging(global::System.String value);
-        partial void OnMORE_FINANCE_ANALYST_EMAILChanged();
+        private global::System.String _MORE_FINANCIALS;
+        partial void OnMORE_FINANCIALSChanging(global::System.String value);
+        partial void OnMORE_FINANCIALSChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -3095,24 +3191,24 @@ namespace IrbAnalyser.Model
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_ANCIL_CRC
+        public global::System.String MORE_SPONSOR_ORGANIZATION
         {
             get
             {
-                return _MORE_ANCIL_CRC;
+                return _MORE_SPONSOR_ORGANIZATION;
             }
             set
             {
-                OnMORE_ANCIL_CRCChanging(value);
-                ReportPropertyChanging("MORE_ANCIL_CRC");
-                _MORE_ANCIL_CRC = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_ANCIL_CRC");
-                OnMORE_ANCIL_CRCChanged();
+                OnMORE_SPONSOR_ORGANIZATIONChanging(value);
+                ReportPropertyChanging("MORE_SPONSOR_ORGANIZATION");
+                _MORE_SPONSOR_ORGANIZATION = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_SPONSOR_ORGANIZATION");
+                OnMORE_SPONSOR_ORGANIZATIONChanged();
             }
         }
-        private global::System.String _MORE_ANCIL_CRC;
-        partial void OnMORE_ANCIL_CRCChanging(global::System.String value);
-        partial void OnMORE_ANCIL_CRCChanged();
+        private global::System.String _MORE_SPONSOR_ORGANIZATION;
+        partial void OnMORE_SPONSOR_ORGANIZATIONChanging(global::System.String value);
+        partial void OnMORE_SPONSOR_ORGANIZATIONChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -3143,72 +3239,72 @@ namespace IrbAnalyser.Model
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_AT_MA
+        public global::System.String MORE_AT_DTA
         {
             get
             {
-                return _MORE_AT_MA;
+                return _MORE_AT_DTA;
             }
             set
             {
-                OnMORE_AT_MAChanging(value);
-                ReportPropertyChanging("MORE_AT_MA");
-                _MORE_AT_MA = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_AT_MA");
-                OnMORE_AT_MAChanged();
+                OnMORE_AT_DTAChanging(value);
+                ReportPropertyChanging("MORE_AT_DTA");
+                _MORE_AT_DTA = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_AT_DTA");
+                OnMORE_AT_DTAChanged();
             }
         }
-        private global::System.String _MORE_AT_MA;
-        partial void OnMORE_AT_MAChanging(global::System.String value);
-        partial void OnMORE_AT_MAChanged();
+        private global::System.String _MORE_AT_DTA;
+        partial void OnMORE_AT_DTAChanging(global::System.String value);
+        partial void OnMORE_AT_DTAChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_ANTICIPATED_ENDDT
+        public global::System.String MORE_INS_BIOSAFETY
         {
             get
             {
-                return _MORE_ANTICIPATED_ENDDT;
+                return _MORE_INS_BIOSAFETY;
             }
             set
             {
-                OnMORE_ANTICIPATED_ENDDTChanging(value);
-                ReportPropertyChanging("MORE_ANTICIPATED_ENDDT");
-                _MORE_ANTICIPATED_ENDDT = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_ANTICIPATED_ENDDT");
-                OnMORE_ANTICIPATED_ENDDTChanged();
+                OnMORE_INS_BIOSAFETYChanging(value);
+                ReportPropertyChanging("MORE_INS_BIOSAFETY");
+                _MORE_INS_BIOSAFETY = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_INS_BIOSAFETY");
+                OnMORE_INS_BIOSAFETYChanged();
             }
         }
-        private global::System.String _MORE_ANTICIPATED_ENDDT;
-        partial void OnMORE_ANTICIPATED_ENDDTChanging(global::System.String value);
-        partial void OnMORE_ANTICIPATED_ENDDTChanged();
+        private global::System.String _MORE_INS_BIOSAFETY;
+        partial void OnMORE_INS_BIOSAFETYChanging(global::System.String value);
+        partial void OnMORE_INS_BIOSAFETYChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String MORE_SITENUM
+        public global::System.String MORE_CT_ICMJE
         {
             get
             {
-                return _MORE_SITENUM;
+                return _MORE_CT_ICMJE;
             }
             set
             {
-                OnMORE_SITENUMChanging(value);
-                ReportPropertyChanging("MORE_SITENUM");
-                _MORE_SITENUM = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MORE_SITENUM");
-                OnMORE_SITENUMChanged();
+                OnMORE_CT_ICMJEChanging(value);
+                ReportPropertyChanging("MORE_CT_ICMJE");
+                _MORE_CT_ICMJE = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MORE_CT_ICMJE");
+                OnMORE_CT_ICMJEChanged();
             }
         }
-        private global::System.String _MORE_SITENUM;
-        partial void OnMORE_SITENUMChanging(global::System.String value);
-        partial void OnMORE_SITENUMChanged();
+        private global::System.String _MORE_CT_ICMJE;
+        partial void OnMORE_CT_ICMJEChanging(global::System.String value);
+        partial void OnMORE_CT_ICMJEChanged();
     
         /// <summary>
         /// No Metadata Documentation available.

@@ -577,7 +577,6 @@ namespace IrbAnalyser
                                     & us.USER_NAME.ToLower().Contains(lastnameLonguest.ToLower().Trim())
                                     ))
                                    && us.GRP_SUPUSR_FLAG == 1
-                                   && us.USER_STATUS == "Active"
                                    select us).Any();
 
                 var isactiveuser = (from us in accounts

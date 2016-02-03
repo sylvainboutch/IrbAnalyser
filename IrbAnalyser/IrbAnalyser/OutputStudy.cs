@@ -193,12 +193,16 @@ namespace IrbAnalyser
                 newStudy.Columns.Add("TISSUE_BANKING", typeof(string));
                 newStudy.Columns.Add("TRIALS_Involving_INTERVENTIONS", typeof(string));
 
+                newStudy.Columns.Add("CT_FDA", typeof(string));
+                newStudy.Columns.Add("CT_ICMJE", typeof(string));
+                newStudy.Columns.Add("CT_NIH", typeof(string));
+
                 newStudy.Columns.Add("SpecimenDataAnalysis", typeof(string));
 
 
                 newStudy.Columns.Add("NCT_NUMBER", typeof(string));
                 newStudy.Columns.Add("pk_study", typeof(string));
-                
+
             }
 
             if (updatedStudy.Columns.Count == 0)
@@ -281,6 +285,10 @@ namespace IrbAnalyser
                 updatedStudy.Columns.Add("Survey", typeof(string));
                 updatedStudy.Columns.Add("TISSUE_BANKING", typeof(string));
                 updatedStudy.Columns.Add("TRIALS_Involving_INTERVENTIONS", typeof(string));
+
+                updatedStudy.Columns.Add("CT_FDA", typeof(string));
+                updatedStudy.Columns.Add("CT_ICMJE", typeof(string));
+                updatedStudy.Columns.Add("CT_NIH", typeof(string));
 
                 updatedStudy.Columns.Add("SpecimenDataAnalysis", typeof(string));
 
@@ -407,7 +415,7 @@ namespace IrbAnalyser
 
                     }
 
-                    XmlTools xmltool =  new XmlTools();
+                    XmlTools xmltool = new XmlTools();
                     xmltool.fillDataRow(dr);
 
                     if (!study.Any())
@@ -536,7 +544,7 @@ namespace IrbAnalyser
                                 hasChanged = checkChangeOverwriteFalse("Cancer", dr, stu.MORE_CANCER, hasChanged);
 
                                 hasChanged = checkChangeOverwriteFalse("HasConsentForm", dr, stu.MORE_INFORMEDCONSENT, hasChanged);
-                                
+
                                 hasChanged = checkChangeOverwriteFalse("Agent", dr, stu.MORE_SC_AGENT, hasChanged);
 
                                 hasChanged = checkChangeOverwriteFalse("Biological", dr, stu.MORE_SC_BIOLOGIC, hasChanged);
@@ -566,8 +574,11 @@ namespace IrbAnalyser
                                 hasChanged = checkChangeOverwriteFalse("PIMajorAuthor", dr, stu.STUDY_MAJ_AUTH, hasChanged);
 
                                 hasChanged = checkChangeOverwriteString("RecordCategory", dr, stu.MORE_RECCATG, hasChanged);
-                                
 
+
+                                hasChanged = checkChangeOverwriteFalse("CT_FDA", dr, stu.MORE_CT_FDA, hasChanged);
+                                hasChanged = checkChangeOverwriteFalse("CT_ICMJE", dr, stu.MORE_CT_ICMJE, hasChanged);
+                                hasChanged = checkChangeOverwriteFalse("CT_NIH", dr, stu.MORE_CT_NIH, hasChanged);
 
                                 //hasChanged = checkChangeOverwriteString("IND_NUMBERS", dr, stu.
 
@@ -577,7 +588,7 @@ namespace IrbAnalyser
 
                                 if (!String.IsNullOrWhiteSpace((string)dr["KeyWords"]) && !String.IsNullOrWhiteSpace(stu.STUDY_KEYWRDS))
                                 {
-                                    dr["KeyWords"] = stu.STUDY_KEYWRDS.Contains((string)dr["KeyWords"]) ? "" : "update eres.er_study set study_keywrds = '" + stu.STUDY_KEYWRDS + "' || chr(13) || chr(10) || '" + (string)dr["KeyWords"] + "' || chr(13) || chr(10) where pk_study = " + stu.PK_STUDY;                                    
+                                    dr["KeyWords"] = stu.STUDY_KEYWRDS.Contains((string)dr["KeyWords"]) ? "" : "update eres.er_study set study_keywrds = '" + stu.STUDY_KEYWRDS + "' || chr(13) || chr(10) || '" + (string)dr["KeyWords"] + "' || chr(13) || chr(10) where pk_study = " + stu.PK_STUDY;
                                 }
                                 else if (!String.IsNullOrWhiteSpace((string)dr["KeyWords"]))
                                 {
@@ -791,7 +802,7 @@ namespace IrbAnalyser
         private static bool checkChangeOverwriteNullString(string field, DataRow dr, string dbValue, bool hasChanged)
         {
             //bool hasChanged = false;
-            if (!String.IsNullOrWhiteSpace((string)dr[field]) & 
+            if (!String.IsNullOrWhiteSpace((string)dr[field]) &
                 (String.IsNullOrWhiteSpace(dbValue))
                 )
             {
@@ -910,6 +921,10 @@ namespace IrbAnalyser
             dr["KeyWords"] = (string)row["KeyWords"];
             dr["pk_study"] = (string)row["pk_study"];
             dr["RecordCategory"] = (string)row["RecordCategory"];
+
+            dr["CT_FDA"] = (string)row["CT_FDA"];
+            dr["CT_ICMJE"] = (string)row["CT_ICMJE"];
+            dr["CT_NIH"] = (string)row["CT_NIH"];
 
             //dr["IND_Holder"] = (string)row["IND_Holder"];
             dr["IND_Holder"] = "";
@@ -1146,9 +1161,9 @@ namespace IrbAnalyser
                     (string)dr["SpecimenDataAnalysis"] 
                 };
             }
-            else 
+            else
             {
-                labels = new string[19] { 
+                labels = new string[22] { 
                     "Record Category*",
                     "Study Financials Managed By*",
                     "IRB Agency Name",
@@ -1167,10 +1182,13 @@ namespace IrbAnalyser
                     "&nbsp;&nbsp&nbsp;Survey Study (e.g. questionnaire, etc.)",
                     "&nbsp;&nbsp;&nbsp;Tissue Banking",
                     "&nbsp;&nbsp;&nbsp;Trials Involving Interventions",
+                    "&nbsp;&nbsp;&nbsp;Is this an FDA Clinical Trial?",
+                    "&nbsp;&nbsp;&nbsp;Is this an ICMJE Clinical Trial?",
+                    "&nbsp;&nbsp;&nbsp;Is this an NIH Clinical Trial?",
                     "Will the ONLY research activity be analysis of specimens or data/medical records obtained without consent? (Note: This means there will be NO interventions with human subjects.)"
                 };
 
-                values = new string[19] {   
+                values = new string[22] {   
                     (string)dr["RecordCategory"],
                     (string)dr["FinancialBy"],
                     (string)dr["IRB Agency name"],
@@ -1189,6 +1207,9 @@ namespace IrbAnalyser
                     (string)dr["Survey"],
                     (string)dr["TISSUE_BANKING"],
                     (string)dr["TRIALS_Involving_INTERVENTIONS"],
+                    (string)dr["CT_FDA"],
+                    (string)dr["CT_ICMJE"],
+                    (string)dr["CT_NIH"],
                     (string)dr["SpecimenDataAnalysis"]                
                 };
             }
@@ -1270,12 +1291,12 @@ namespace IrbAnalyser
                 }
 
                 var pis = from pi in OutputTeam.fpTeam.data.AsEnumerable()
-                           where (pi.Field<string>("Role") == IRISMap.RoleMap.RC1 || pi.Field<string>("Role") == IRISMap.RoleMap.RC2)
-                          && pi.Field<string>("StudyId") == studyId
-                          && (
-                          (piemail != "" && (string)pi["PrimaryEMailAddress"] == piemail)
-                            || (((string)pi["FirstName"] + " " + (string)pi["LastName"]).Trim().ToLower().Contains(nameLonguest) && ((string)pi["FirstName"] + " " + (string)pi["LastName"]).Trim().ToLower().Contains(nameSecondLonguest))
-                          )
+                          where (pi.Field<string>("Role") == IRISMap.RoleMap.RC1 || pi.Field<string>("Role") == IRISMap.RoleMap.RC2)
+                         && pi.Field<string>("StudyId") == studyId
+                         && (
+                         (piemail != "" && (string)pi["PrimaryEMailAddress"] == piemail)
+                           || (((string)pi["FirstName"] + " " + (string)pi["LastName"]).Trim().ToLower().Contains(nameLonguest) && ((string)pi["FirstName"] + " " + (string)pi["LastName"]).Trim().ToLower().Contains(nameSecondLonguest))
+                         )
                           select pi;
 
                 if (pis.Count() > 0)

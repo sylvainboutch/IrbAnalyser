@@ -92,7 +92,11 @@ namespace IrbAnalyser
                     data.Columns.Add("RETROSPECTIVE_CHART_REVIEW");
                     data.Columns.Add("Survey");
                     data.Columns.Add("TISSUE_BANKING");
-                    data.Columns.Add("TRIALS_Involving_INTERVENTIONS");  
+                    data.Columns.Add("TRIALS_Involving_INTERVENTIONS");
+
+                    data.Columns.Add("CT_FDA");
+                    data.Columns.Add("CT_ICMJE");
+                    data.Columns.Add("CT_NIH");  
 
                     data.Columns.Add("SpecimenDataAnalysis");
 
