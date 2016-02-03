@@ -173,6 +173,9 @@ namespace IrbAnalyser
                 newStudy.Columns.Add("IRB Study ID", typeof(string));
                 newStudy.Columns.Add("IRB Identifiers", typeof(string));
                 newStudy.Columns.Add("CRO", typeof(string));
+
+                newStudy.Columns.Add("RecordCategory", typeof(string));
+
                 newStudy.Columns.Add("FinancialBy", typeof(string));
                 newStudy.Columns.Add("Cancer", typeof(string));
                 newStudy.Columns.Add("Consent", typeof(string));
@@ -259,6 +262,9 @@ namespace IrbAnalyser
                 updatedStudy.Columns.Add("IRB Study ID", typeof(string));
                 updatedStudy.Columns.Add("IRB Identifiers", typeof(string));
                 updatedStudy.Columns.Add("CRO", typeof(string));
+
+                updatedStudy.Columns.Add("RecordCategory", typeof(string));
+
                 updatedStudy.Columns.Add("FinancialBy", typeof(string));
                 updatedStudy.Columns.Add("Cancer", typeof(string));
                 updatedStudy.Columns.Add("Consent", typeof(string));
@@ -361,6 +367,8 @@ namespace IrbAnalyser
             {
                 string identifiers = Tools.generateStudyIdentifiers((string)dr["StudyId"]);
                 string number = Tools.getOldStudyNumber((string)dr["StudyId"]);
+
+                dr["RecordCategory"] = "Study";
 
                 OutputIRBForm.addIds(number, identifiers);
 
@@ -556,6 +564,9 @@ namespace IrbAnalyser
                                 hasChanged = checkChangeOverwriteFalse("SpecimenDataAnalysis", dr, stu.MORE_ANALYSIS_WO_CONSENT, hasChanged);
 
                                 hasChanged = checkChangeOverwriteFalse("PIMajorAuthor", dr, stu.STUDY_MAJ_AUTH, hasChanged);
+
+                                hasChanged = checkChangeOverwriteString("RecordCategory", dr, stu.MORE_RECCATG, hasChanged);
+                                
 
 
                                 //hasChanged = checkChangeOverwriteString("IND_NUMBERS", dr, stu.
@@ -898,7 +909,7 @@ namespace IrbAnalyser
             dr["NCT_NUMBER"] = (string)row["NCT_NUMBER"];
             dr["KeyWords"] = (string)row["KeyWords"];
             dr["pk_study"] = (string)row["pk_study"];
-
+            dr["RecordCategory"] = (string)row["RecordCategory"];
 
             //dr["IND_Holder"] = (string)row["IND_Holder"];
             dr["IND_Holder"] = "";
@@ -1137,7 +1148,8 @@ namespace IrbAnalyser
             }
             else 
             {
-                labels = new string[18] { 
+                labels = new string[19] { 
+                    "Record Category*",
                     "Study Financials Managed By*",
                     "IRB Agency Name",
                     "IRB No.",
@@ -1158,7 +1170,8 @@ namespace IrbAnalyser
                     "Will the ONLY research activity be analysis of specimens or data/medical records obtained without consent? (Note: This means there will be NO interventions with human subjects.)"
                 };
 
-                values = new string[18] { 
+                values = new string[19] {   
+                    (string)dr["RecordCategory"],
                     (string)dr["FinancialBy"],
                     (string)dr["IRB Agency name"],
                     (string)dr["IRB no"],

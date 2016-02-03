@@ -452,6 +452,7 @@
           <Property Name="STUDY_TYPE_FK" Type="number" Nullable="true" />
           <Property Name="STUDY_PI" Type="varchar2" Nullable="true" MaxLength="61" />
           <Property Name="STUDY_TAREA" Type="varchar2" Nullable="true" MaxLength="4000" />
+          
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'VDA.VDA_V_STUDYSITES' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -741,7 +742,7 @@
           <Property Type="String" Name="MORE_SITENUM" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Type="Decimal" Name="STUDY_TYPE_FK" Precision="38" Scale="0" />
           <Property Type="String" Name="STUDY_PI" MaxLength="61" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="STUDY_TAREA" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STUDY_TAREA" MaxLength="4000" FixedLength="false" Unicode="false" />        
         </EntityType>
         <EntityType Name="VDA_V_STUDYSITES">
           <Key>
@@ -1016,7 +1017,7 @@
                 <ScalarProperty Name="MORE_SITENUM" ColumnName="MORE_SITENUM" />
                 <ScalarProperty Name="STUDY_TYPE_FK" ColumnName="STUDY_TYPE_FK" />
                 <ScalarProperty Name="STUDY_PI" ColumnName="STUDY_PI" />
-                <ScalarProperty Name="STUDY_TAREA" ColumnName="STUDY_TAREA" />
+                <ScalarProperty Name="STUDY_TAREA" ColumnName="STUDY_TAREA" />              
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

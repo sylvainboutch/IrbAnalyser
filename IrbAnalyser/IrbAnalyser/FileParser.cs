@@ -70,6 +70,9 @@ namespace IrbAnalyser
                     data.Columns.Add("ExternalIRBnumber");
                     data.Columns.Add("oldNumber");
                     data.Columns.Add("newNumber");
+
+                    data.Columns.Add("RecordCategory");
+
                     data.Columns.Add("HasConsentForm");
 
                     data.Columns.Add("AgentDevice");

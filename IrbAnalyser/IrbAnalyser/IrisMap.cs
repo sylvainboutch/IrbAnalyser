@@ -141,7 +141,7 @@ namespace IrbAnalyser.IRISMap
                 {"Migrated","IRB Initial Submitted"},
                 {"Migrated with amendment (no MCF)","IRB Initial Submitted"},
                 {"Migration Incomplete","IRB Initial Submitted"},
-                {"Open","Active/Enrolling"},
+                {"Open",""},
                 {"Open (45CFR46.118)",""},
                 {"Open, No Enrollment",""},
                 {"Open/No Active Subjects",""},
