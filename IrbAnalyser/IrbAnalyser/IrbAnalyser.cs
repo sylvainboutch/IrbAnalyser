@@ -185,6 +185,21 @@ namespace IrbAnalyser
             Csv.saveCsv(OutputStatus.updatedStatus, separator, savefilenoext + "_updatedStatus");                
             */
 
+            OutputStatus.newStatus = Tools.removeEmptyColumns(OutputStatus.newStatus);
+            OutputTeam.newTeam = Tools.removeEmptyColumns(OutputTeam.newTeam);
+            OutputSite.newSites = Tools.removeEmptyColumns(OutputSite.newSites);
+            OutputDocs.newDocs = Tools.removeEmptyColumns(OutputDocs.newDocs);
+            OutputStudy.newStudy = Tools.removeEmptyColumns(OutputStudy.newStudy);
+            OutputStatus.updatedStatus = Tools.removeEmptyColumns(OutputStatus.updatedStatus);
+            OutputTeam.updatedTeam = Tools.removeEmptyColumns(OutputTeam.updatedTeam);
+            OutputSite.updatedSites = Tools.removeEmptyColumns(OutputSite.updatedSites);
+            OutputDocs.updatedDocs = Tools.removeEmptyColumns(OutputDocs.updatedDocs);
+            OutputStudy.updatedStudy = Tools.removeEmptyColumns(OutputStudy.updatedStudy);
+            OutputTeam.triggerTeam = Tools.removeEmptyColumns(OutputTeam.triggerTeam);
+
+            // = Tools.removeEmptyColumns();
+
+
             List<ExcelWorksheet> lstxls = new List<ExcelWorksheet>();
 
             lstxls.Add(new ExcelWorksheet("Status", "List of status to add in Velos", OutputStatus.newStatus));

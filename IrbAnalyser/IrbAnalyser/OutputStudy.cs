@@ -569,7 +569,7 @@ namespace IrbAnalyser
 
                                 hasChanged = checkChangeOverwriteFalse("Survey", dr, stu.MORE_SC_SURVEY_STUDY, hasChanged);
 
-                                hasChanged = checkChangeOverwriteFalse("SpecimenDataAnalysis", dr, stu.MORE_ANALYSIS_WO_CONSENT, hasChanged);
+                                hasChanged = checkChangeOverwriteNo("SpecimenDataAnalysis", dr, stu.MORE_ANALYSIS_WO_CONSENT, hasChanged);
 
                                 hasChanged = checkChangeOverwriteFalse("PIMajorAuthor", dr, stu.STUDY_MAJ_AUTH, hasChanged);
 
@@ -580,15 +580,23 @@ namespace IrbAnalyser
                                 hasChanged = checkChangeOverwriteFalse("CT_ICMJE", dr, stu.MORE_CT_ICMJE, hasChanged);
                                 hasChanged = checkChangeOverwriteFalse("CT_NIH", dr, stu.MORE_CT_NIH, hasChanged);
 
-                                //hasChanged = checkChangeOverwriteString("IND_NUMBERS", dr, stu.
+                                hasChanged = checkChangeOverwriteNullString("AgentDevice", dr, stu.STUDY_AGENT_DEVICE, hasChanged);
 
+                                //hasChanged = checkChangeOverwriteString("IND_NUMBERS", dr, stu.
+                                dr["IND_NUMBERS"] = Tools.fixIND((string)dr["IND_NUMBERS"]);
+
+                                dr["NCT_NUMBER"] = Tools.fixNCT((string)dr["NCT_NUMBER"]);
                                 hasChanged = checkChangeOverwriteString("NCT_NUMBER", dr, stu.NCT_NUMBER, hasChanged);
 
                                 //HUMANITARIAN_USE
 
                                 if (!String.IsNullOrWhiteSpace((string)dr["KeyWords"]) && !String.IsNullOrWhiteSpace(stu.STUDY_KEYWRDS))
                                 {
-                                    dr["KeyWords"] = stu.STUDY_KEYWRDS.Contains((string)dr["KeyWords"]) ? "" : "update eres.er_study set study_keywrds = '" + stu.STUDY_KEYWRDS + "' || chr(13) || chr(10) || '" + (string)dr["KeyWords"] + "' || chr(13) || chr(10) where pk_study = " + stu.PK_STUDY;
+                                    string keywords = stu.STUDY_KEYWRDS.Length > 480 ? stu.STUDY_KEYWRDS.Substring(0, 480) : stu.STUDY_KEYWRDS;
+                                    
+                                    dr["KeyWords"] = stu.STUDY_KEYWRDS.Contains((string)dr["KeyWords"]) ? "" : "update eres.er_study set study_keywrds = '" + keywords + "' || chr(13) || chr(10) || '" + (string)dr["KeyWords"] + "' || chr(13) || chr(10) where pk_study = " + stu.PK_STUDY;
+                                    dr["KeyWords"] = ((string)dr["KeyWords"]).Replace("\r\n","' || chr(13) || chr(10) || '");
+                                    dr["KeyWords"] = ((string)dr["KeyWords"]).Replace("\n", "' || chr(13) || chr(10) || '");
                                 }
                                 else if (!String.IsNullOrWhiteSpace((string)dr["KeyWords"]))
                                 {
@@ -618,6 +626,8 @@ namespace IrbAnalyser
                                 else { newsc = ""; }
 
                                 hasChanged = checkChangeOverwriteString("Studytitle", dr, stu.STUDY_TITLE, hasChanged);
+
+                                dr["Studysummary"] = Tools.removeHtml((string)dr["Studysummary"]);
 
                                 hasChanged = checkChangeOverwriteNullString("Studysummary", dr, stu.STUDY_SUMMARY, hasChanged);
 
@@ -791,6 +801,41 @@ namespace IrbAnalyser
 
         }
 
+
+        /// <summary>
+        /// Specific for Yes/No  overwrite null or No only
+        /// </summary>
+        /// <param name="field"></param>
+        /// <param name="dr"></param>
+        /// <param name="dbValue"></param>
+        /// <param name="hasChanged"></param>
+        /// <returns></returns>
+        private static bool checkChangeOverwriteNo(string field, DataRow dr, string dbValue, bool hasChanged)
+        {
+            //bool hasChanged = false;
+            if (String.IsNullOrWhiteSpace(dbValue) && (((string)dr[field]).Trim().ToLower() == "n" || ((string)dr[field]).Trim().ToLower() == "no"))
+            {
+                hasChanged = true;
+                dr[field] = "No";
+            }
+            else if (( dbValue == null || dbValue.ToLower().Trim() == "no") && (((string)dr[field]).Trim().ToLower() == "y" || ((string)dr[field]).Trim().ToLower() == "Yes"))
+            {
+                hasChanged = true;
+                dr[field] = "Yes";
+            }
+            /*else if (dbValue == "Y" && (string)dr[field] == "N")
+            {
+                hasChanged = true;
+                dr[field] = "N";
+            }*/
+            else
+            {
+                dr[field] = "";
+            }
+            return hasChanged;
+
+        }
+
         /// <summary>
         /// Overwrite only if null
         /// </summary>
@@ -930,7 +975,7 @@ namespace IrbAnalyser
             dr["IND_Holder"] = "";
             dr["IND_NUMBERS"] = (string)row["IND_NUMBERS"];
             dr["AgentDevice"] = (string)row["AgentDevice"];
-            dr["Primary funding sponsor"] = (string)row["AgentDevice"];
+            dr["Primary funding sponsor"] = (string)row["Primarysponsorname"];
             dr["FinancialBy"] = (string)row["FinancialBy"];
 
             if (!string.IsNullOrWhiteSpace((string)row["newNumber"]))
@@ -987,7 +1032,7 @@ namespace IrbAnalyser
             }*/
 
             dr["Official title"] = Tools.removeHtml((string)row["StudyTitle"]);
-            dr["Study summary"] = Tools.removeHtml((string)row["Studysummary"]);
+            dr["Study summary"] = ((string)row["Studysummary"]);
 
             if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
             {

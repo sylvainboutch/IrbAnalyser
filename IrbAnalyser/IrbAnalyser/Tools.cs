@@ -43,11 +43,11 @@ namespace IrbAnalyser
             }
 
             var user = (from us in OutputTeam.accounts
-                                where ((!string.IsNullOrWhiteSpace(us.USER_EMAIL) && us.USER_EMAIL.ToLower() == email)
-                                || (us.USER_NAME.ToLower().Contains(firstnameLonguest.ToLower().Trim())
-                                & us.USER_NAME.ToLower().Contains(lastnameLonguest.ToLower().Trim())
-                                ))
-                                select us);
+                        where ((!string.IsNullOrWhiteSpace(us.USER_EMAIL) && us.USER_EMAIL.ToLower() == email)
+                        || (us.USER_NAME.ToLower().Contains(firstnameLonguest.ToLower().Trim())
+                        & us.USER_NAME.ToLower().Contains(lastnameLonguest.ToLower().Trim())
+                        ))
+                        select us);
 
             if (user == null || user.Count() == 0)
             {
@@ -55,7 +55,7 @@ namespace IrbAnalyser
             }
 
             return user.First().USER_NAME;
-            
+
         }
 
         /// <summary>
@@ -566,6 +566,68 @@ namespace IrbAnalyser
         }
 
         /// <summary>
+        /// Fix the format of the NCT number
+        /// </summary>
+        /// <param name="nct"></param>
+        /// <returns></returns>
+        public static string fixNCT(string nct)
+        {
+            if (String.IsNullOrWhiteSpace(nct))
+            {
+                return "";
+            }
+            string nctnumberpart = Regex.Match(nct, @"\d+").Value;
+            int nctnumbercount = nctnumberpart.Length;
+            if (nctnumbercount == 0)
+            {
+                return "";
+            }
+            else if (nctnumbercount < 8)
+            {
+                nctnumberpart = nctnumberpart.PadLeft(8, '0');
+                return "NCT" + nctnumberpart;
+            }
+            else if (nctnumbercount == 8)
+            {
+                return "NCT" + nctnumberpart;
+            }
+            else
+            {
+                return "";
+            }
+        }
+
+        /// <summary>
+        /// Fix the format of the ind number
+        /// </summary>
+        /// <param name="ind"></param>
+        /// <returns></returns>
+        public static string fixIND(string ind)
+        {
+            if (String.IsNullOrWhiteSpace(ind))
+            {
+                return "";
+            }
+            return Regex.Match(ind, @"\d +").Value;
+        }
+
+        /// <summary>
+        /// Remove empty columns from a datatable
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <returns></returns>
+        public static DataTable removeEmptyColumns(DataTable table)
+        {
+            foreach (var column in table.Columns.Cast<DataColumn>().ToArray())
+            {
+                if (table.AsEnumerable().All(dr => dr.IsNull(column) || String.IsNullOrWhiteSpace((string)dr[column.ColumnName])))
+                    table.Columns.Remove(column);
+            }
+
+            return table;
+        }
+
+        /// <summary>
         /// Delete duplicate row based on single column from a data table
         /// </summary>
         /// <param name="Table"></param>
@@ -624,7 +686,7 @@ namespace IrbAnalyser
 
             //Datatable which contains unique records will be return as output.
             return Table;*/
-           
+
             //AsEnumerable().Where(x => (string)x["StudyId"] == studyId && formEvents.Contains((string)x["Event"])).AsEnumerable();
 
             var newTable = Table.Clone();
@@ -635,7 +697,7 @@ namespace IrbAnalyser
                 {
                     exist = exist && (from newrow in newTable.AsEnumerable()
                                       where ((string)newrow[columnName]).Trim().ToLower() == ((string)dr[columnName]).Trim().ToLower()
-                                 select newrow).Any();
+                                      select newrow).Any();
                 }
                 if (!exist)
                 {
