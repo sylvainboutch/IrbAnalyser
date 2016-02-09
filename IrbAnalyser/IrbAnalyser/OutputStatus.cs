@@ -10,6 +10,12 @@ namespace IrbAnalyser
 {
     public static class OutputStatus
     {
+        public static string deletedStatus = "Archived";
+        public static string deletedType = "Pre Activation";
+        public static string deletedPostActivationStatus = "Undefined IRB Event**";
+        public static string deletedPostActivationType = "Study Status";
+        public static string approvedStatus = "IRB Initial Approved";
+        public static string approvedType = "Pre Activation";
         //List of newly created study, with more study detail
         public static DataTable newStatus = new DataTable();
         public static DataTable updatedStatus = new DataTable();
@@ -176,6 +182,8 @@ namespace IrbAnalyser
             {
                 analyseRowEvent(dr);
             }
+
+            analyseDeletedStudies();
         }
 
         /// <summary>
@@ -335,12 +343,12 @@ namespace IrbAnalyser
                         if (status == status1)
                         {
                             IEnumerable<Model.VDA_V_STUDYSTAT> statusesDB1 = from stat in allstatus
-                                              where stat.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (irbstudyId.Trim().ToLower())
-                                              && stat.SSTAT_STUDY_STATUS == status1
-                                              && stat.SSTAT_VALID_FROM.Value.Year == start.Year
-                                              && stat.SSTAT_VALID_FROM.Value.Month == start.Month
-                                              && stat.SSTAT_VALID_FROM.Value.Day == start.Day
-                                            select stat;
+                                                                             where stat.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (irbstudyId.Trim().ToLower())
+                                                                             && stat.SSTAT_STUDY_STATUS == status1
+                                                                             && stat.SSTAT_VALID_FROM.Value.Year == start.Year
+                                                                             && stat.SSTAT_VALID_FROM.Value.Month == start.Month
+                                                                             && stat.SSTAT_VALID_FROM.Value.Day == start.Day
+                                                                             select stat;
                             /*
                             //BRANY look up agency in MSD
                             if (Agency.AgencyVal == Agency.AgencyList.BRANY)
@@ -409,7 +417,7 @@ namespace IrbAnalyser
                                                   && stat.SSTAT_VALID_FROM.Value.Day == end.Day
                                                   select stat;
                                 }
-                                 */ 
+                                 */
 
                                 if (!statusesDB2.Any())
                                 {
@@ -514,20 +522,20 @@ namespace IrbAnalyser
                         }
                         else
                         {
-                            addRowStudy(studyrow, (string)studyrow["Status"], "New study",(string)studyrow["Status"], true, Tools.parseDate(DateTime.Now.ToString()));
+                            addRowStudy(studyrow, (string)studyrow["Status"], "New study", (string)studyrow["Status"], true, Tools.parseDate(DateTime.Now.ToString()));
                         }
 
                     }
 
                     bool dtStatus = !(from st in OutputStatus.newStatus.AsEnumerable()
                                       where st.Field<string>("IRB Study ID").Trim().ToLower() == irbstudyId.Trim().ToLower()
-                                      && st.Field<string>("Study status").Trim().ToLower() == "irb initial approved"
+                                      && st.Field<string>("Study status").Trim().ToLower() == approvedStatus.ToLower()
                                       //&& st.Field<string>("Status Valid From").Trim().ToLower() == Tools.parseDate(((string)studyrow["InitialApprovalDate"])).Trim().ToLower()
                                       select st).Any();
 
                     if (dtStatus && initial != DateTime.MinValue)
                     {
-                        addRowStudy(studyrow, "IRB Initial Approved", "New study", "Pre Activation", true, Tools.parseDate((string)studyrow["InitialApprovalDate"]).Trim().ToLower());
+                        addRowStudy(studyrow, approvedStatus, "New study", approvedType, true, Tools.parseDate((string)studyrow["InitialApprovalDate"]).Trim().ToLower());
                     }
 
                     dtStatus = !(from st in OutputStatus.newStatus.AsEnumerable()
@@ -552,26 +560,26 @@ namespace IrbAnalyser
                 {
 
                     bool isNotStatusDb = !(from stat in allstatus
-                                      where stat.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (irbstudyId.Trim().ToLower())
-                                 && (stat.SSTAT_STUDY_STATUS.Trim().ToLower() == "irb renewal approved**"
-                                 || stat.SSTAT_STUDY_STATUS.Trim().ToLower() == "irb initial approved")
-                                      select stat).Any();
+                                           where stat.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (irbstudyId.Trim().ToLower())
+                                      && (stat.SSTAT_STUDY_STATUS.Trim().ToLower() == "irb renewal approved**"
+                                      || stat.SSTAT_STUDY_STATUS.Trim().ToLower() == approvedStatus.ToLower())
+                                           select stat).Any();
 
                     bool isNotStatusDt = !(from st in OutputStatus.newStatus.AsEnumerable()
                                            where st.Field<string>("IRB Study ID").Trim().ToLower() == irbstudyId.Trim().ToLower()
-                                           && (st.Field<string>("Study status").Trim().ToLower() == "irb initial approved"
+                                           && (st.Field<string>("Study status").Trim().ToLower() == approvedStatus.ToLower()
                                            || st.Field<string>("Study status").Trim().ToLower() == "irb renewal approved**")
                                            select st).Any();
 
                     if (initial != DateTime.MinValue && isNotStatusDt && isNotStatusDb)
                     {
-                        addRowStudy(studyrow, "IRB Initial Approved", "New status", "Pre Activation", true, Tools.parseDate((string)studyrow["InitialApprovalDate"]).Trim().ToLower());
+                        addRowStudy(studyrow, approvedStatus, "New status", approvedType, true, Tools.parseDate((string)studyrow["InitialApprovalDate"]).Trim().ToLower());
                     }
 
                     isNotStatusDb = !(from stat in allstatus
                                       where stat.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (irbstudyId.Trim().ToLower())
                                  && (stat.SSTAT_STUDY_STATUS.Trim().ToLower() == "irb renewal approved**"
-                                 || stat.SSTAT_STUDY_STATUS.Trim().ToLower() == "irb initial approved")
+                                 || stat.SSTAT_STUDY_STATUS.Trim().ToLower() == approvedStatus.ToLower())
                                  && stat.SSTAT_VALID_FROM.Value.Year == renew.Year
                                  && stat.SSTAT_VALID_FROM.Value.Month == renew.Month
                                  && stat.SSTAT_VALID_FROM.Value.Day == renew.Day
@@ -581,7 +589,7 @@ namespace IrbAnalyser
                     isNotStatusDt = !(from st in OutputStatus.newStatus.AsEnumerable()
                                       where st.Field<string>("IRB Study ID").Trim().ToLower() == irbstudyId.Trim().ToLower()
                                       && (st.Field<string>("Study status").Trim().ToLower() == "irb renewal approved**"
-                                      || st.Field<string>("Study status").Trim().ToLower() == "irb initial approved")
+                                      || st.Field<string>("Study status").Trim().ToLower() == approvedStatus.ToLower())
                                       && st.Field<string>("Status Valid From").Trim().ToLower() == ((string)studyrow["MostRecentApprovalDate"]).Trim().ToLower()
                                       select st).Any();
 
@@ -890,6 +898,85 @@ namespace IrbAnalyser
         }
 
 
+
+        private static void analyseDeletedStudies()
+        {
+            IEnumerable<Model.LCL_V_STUDYSUMM_PLUSMORE> dbStudies = new List<Model.LCL_V_STUDYSUMM_PLUSMORE>();
+            if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+            {
+                dbStudies = (from stud in OutputStudy.studys
+                             where
+                             stud.MORE_IRBAGENCY != null &&
+                             stud.MORE_IRBAGENCY == Agency.brany && stud.IRBIDENTIFIERS != null
+                             select stud);
+            }
+            else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
+            {
+                dbStudies = (from stud in OutputStudy.studys
+                             where
+                             stud.MORE_IRBAGENCY != null &&
+                             (
+                             stud.MORE_IRBAGENCY == Agency.iris
+                             //|| stud.MORE_IRBAGENCY == "NCI CIRB"
+                             //|| stud.MORE_IRBAGENCY == "NeuroNext CIRB"
+                             //|| stud.MORE_IRBAGENCY == "StrokeNet CIRB"
+                             )
+                             && stud.IRBIDENTIFIERS != null
+                             select stud);
+            }
+            foreach (Model.LCL_V_STUDYSUMM_PLUSMORE dbStudy in dbStudies)
+            {
+                string studyId = Tools.getStudyIdentifiers(dbStudy.IRBIDENTIFIERS);
+                bool irbStudyDoesntExist = !(from DataRow dr in OutputStudy.fpstudys.data.Rows
+                                             where (string)dr["StudyId"] == studyId
+                                             select dr).Any();
+
+
+
+                if (irbStudyDoesntExist)
+                {
+
+                    bool irbStudyIsntApproved = !(from dbStatus in OutputStatus.allstatus
+                                                  where dbStatus.IRBIDENTIFIERS == dbStudy.IRBIDENTIFIERS
+                                                  && dbStatus.SSTAT_STUDY_STATUS == approvedStatus.ToLower()
+                                                  select dbStatus).Any();
+
+                    DataRow dr = newStatus.NewRow();
+                    if (irbStudyIsntApproved)
+                    {
+                        dr["Study status"] = deletedStatus;
+                        dr["status type"] = deletedType;
+                    }
+                    else
+                    {
+                        dr["Study status"] = deletedPostActivationStatus;
+                        dr["status type"] = deletedPostActivationType;
+                    }
+
+
+
+                    dr["TYPE"] = "Deleted Study in IRB";
+                    dr["Comment"] = "This study has been deleted from the IRB system";
+                    dr["Study_number"] = Tools.getDBStudyNumber(studyId);
+
+                    dr["IRB Study ID"] = studyId;
+                    dr["Organization"] = OutputSite.EMmainsite;
+
+                    dr["Review Type"] = "";
+
+                    dr["Documented by"] = "IRB interface";
+                    dr["Status Valid From"] = Tools.parseDate(DateTime.Now.ToShortDateString());
+
+                    newStatus.Rows.Add(dr);
+                }
+            }
+
+        }
+
+
+        /// <summary>
+        /// Remove duplicates from the newStatus and updatedStatus DT
+        /// </summary>
         static public void removeDuplicateStatus()
         {
             newStatus = Tools.removeDuplicate(newStatus);
@@ -923,7 +1010,7 @@ namespace IrbAnalyser
 
             string currentstat = (from st in OutputStatus.fpstatus.data.AsEnumerable()
                                   where st.Field<string>("StudyId").Trim().ToLower() == studyId.Trim().ToLower()
-                            select st.Field<string>("Status")
+                                  select st.Field<string>("Status")
                             ).LastOrDefault();
             if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
                 return currentstat;

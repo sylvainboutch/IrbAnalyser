@@ -82,9 +82,9 @@ namespace IrbAnalyser
         /// </summary>
         /// <param name="studyId"></param>
         /// <returns></returns>
-        public static string getStudyIdentifiers(string studyId)
+        public static string getStudyIdentifiers(string IrbIdentifier)
         {
-            var strplit = studyId.Split(new string[] { ">" }, StringSplitOptions.None);
+            var strplit = IrbIdentifier.Split(new string[] { ">" }, StringSplitOptions.None);
             return strplit[0];
         }
 

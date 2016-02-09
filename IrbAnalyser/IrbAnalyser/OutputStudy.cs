@@ -370,6 +370,9 @@ namespace IrbAnalyser
                 irbnumber = ((string)dr["IRBNumber"]).Replace("(IBC)", "");
             }
 
+            dr["IRBAgency"] = irbagency;
+            dr["IRBNumber"] = irbnumber;
+
 
             if (shouldStudyBeAdded(irbstudyId))
             {
@@ -507,7 +510,12 @@ namespace IrbAnalyser
                                 }
 
 
-                                if (!string.IsNullOrWhiteSpace(stu.MORE_IRBNUM) && stu.MORE_IRBNUM.ToLower().Trim() != irbnumber.ToLower().Trim())
+
+                                hasChanged = checkChangeOverwriteString("IRBNumber", dr, stu.MORE_IRBNUM, hasChanged);
+
+                                hasChanged = checkChangeOverwriteString("IRBAgency", dr, stu.MORE_IRBAGENCY, hasChanged);
+
+                                /*if (!string.IsNullOrWhiteSpace(stu.MORE_IRBNUM) && stu.MORE_IRBNUM.ToLower().Trim() != irbnumber.ToLower().Trim())
                                 {
                                     hasChanged = true;
                                     dr["IRBNumber"] = irbnumber;
@@ -526,7 +534,7 @@ namespace IrbAnalyser
                                 else
                                 {
                                     dr["IRBAgency"] = "";
-                                }
+                                }*/
 
                                 newpi = getPI((string)dr["StudyId"]);
                                 newrc = getRC((string)dr["StudyId"]);
@@ -898,9 +906,13 @@ namespace IrbAnalyser
             initiate();
             DataRow dr;
             if (newentry)
-            { dr = newStudy.NewRow(); }
+            { 
+                dr = newStudy.NewRow(); 
+            }
             else
-            { dr = updatedStudy.NewRow(); }
+            { 
+                dr = updatedStudy.NewRow(); 
+            }
 
             //make sur no dbnull row is in the datarow
             foreach (DataColumn c in row.Table.Columns)
@@ -1399,6 +1411,7 @@ namespace IrbAnalyser
         /// <returns></returns>
         public static string getRC(string studyId)
         {
+
             if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
             {
                 var value = fpstudys.data.AsEnumerable().Where(x => (string)x["StudyId"] == studyId).FirstOrDefault();
@@ -1407,6 +1420,20 @@ namespace IrbAnalyser
             }
             string retstr = "";
             var study = studys.FirstOrDefault(x => x.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (studyId.Trim().ToLower()));
+
+            if (study == null)
+            {
+                if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+                {
+                    return getRole(studyId, BranyRoleMap.RC);
+                }
+                else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
+                {
+                    string rc1 = getRole(studyId, IRISMap.RoleMap.RC1);
+                    return String.IsNullOrWhiteSpace(rc1) ? getRole(studyId, IRISMap.RoleMap.RC2) : rc1;
+                }
+            }
+
             string rcname = study == null ? "" : study.STUDY_ENTERED_BY;
             string rcemail = String.IsNullOrWhiteSpace(rcname) ? "" : OutputTeam.accounts.FirstOrDefault(x => x.USER_NAME == rcname).USER_EMAIL;
 

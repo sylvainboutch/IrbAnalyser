@@ -897,6 +897,7 @@ namespace IrbAnalyser
 
         public static readonly List<irbpair> forceInclude = new List<irbpair>()
         {
+            new irbpair("einstein", "2012-680"),
             new irbpair("brany", "15-06-249-01"),
             new irbpair("brany", "15-02-444-01"),
             new irbpair("brany", "15-08-201-01"),

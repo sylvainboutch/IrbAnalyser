@@ -403,6 +403,8 @@ namespace IrbAnalyser
 
         public static readonly Dictionary<string, string> sponsorMapBrany = new Dictionary<string, string>()
             {
+                    {"NMTRC","Neuroblastoma and Medulloblastoma Translational Research Consortium (NMTRC)"},
+                    {"FDA","Food and Drug Administration"},
                     {"ACS","American Cancer Society"},
                     {"Actelion","Actelion Pharmaceuticals Switzerland"},
                     {"Advaxis, Inc.","Advaxis"},
