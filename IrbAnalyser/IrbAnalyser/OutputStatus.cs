@@ -16,6 +16,16 @@ namespace IrbAnalyser
         public static string deletedPostActivationType = "Study Status";
         public static string approvedStatus = "IRB Initial Approved";
         public static string approvedType = "Pre Activation";
+        public static string renewalStatus = "IRB Renewal Approved**";
+        public static string renewalType = "Post Activation";
+        public static string preActAmendmentSubmitStatus = "IRB Pre-Activation Amendent Submitted**";
+        public static string preActAmendmentApprovedStatus = "IRB Pre-Activation Amendment Approved**";
+        public static string preActAmendmentSubmitType = "Pre Activation";
+        public static string preActAmendmentApprovedType = "Pre Activation";
+        public static string amendmentSubmitStatus = "IRB Amendment Submitted**";
+        public static string amendmentApprovedStatus = "IRB Amendment Approved**";
+        public static string amendmentSubmitType = "Post Activation";
+        public static string amendmentApprovedType = "Post Activation";
         //List of newly created study, with more study detail
         public static DataTable newStatus = new DataTable();
         public static DataTable updatedStatus = new DataTable();
@@ -221,15 +231,7 @@ namespace IrbAnalyser
                 string status1 = "";
                 if (Agency.AgencyVal == Agency.AgencyList.BRANY) status1 = BranyStatusMap.getStatus((string)statusRow["Status"]);
                 else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN) status1 = IRISMap.StatusMap.getStatus((string)statusRow["Status"]);
-                // todo einstein status map
 
-
-                /*if (string.IsNullOrEmpty(status1))
-                {
-                    addRowStatus(statusRow, "", true);
-                }
-                else
-                {*/
                 if (Tools.getOldStudy(irbstudyId) && !String.IsNullOrEmpty(irbstudyId) && !String.IsNullOrEmpty(sitename) && status1 != "NA" && status1 != "")
                 {
 
@@ -265,7 +267,6 @@ namespace IrbAnalyser
                 {
                     addRowStatus(statusRow, "New study", true);
                 }
-                //}
             }
         }
 
@@ -288,18 +289,20 @@ namespace IrbAnalyser
             if (OutputStudy.shouldStudyBeAdded(irbstudyId))
             {
                 string status = "";
-                string type = "";
+                string stattype = "";
+                //string type = "";
                 string sitename = "";
                 string notes = "";
 
                 if (Agency.AgencyVal == Agency.AgencyList.BRANY)
                 {
                     status = BranyEventsMap.getStatus((string)eventRow["Event"]);
-                    type = BranyEventsMap.getType((string)eventRow["Event"]);
+                    stattype = BranyEventsMap.getType((string)eventRow["Event"]);
+                    //type = BranyEventsMap.getType((string)eventRow["Event"]);
                     if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
                         sitename = OutputSite.EMmainsite;
                     else
-                        sitename = BranySiteMap.getSite(((string)eventRow["Sitename"]).Replace("(IBC)", ""));
+                        sitename = OutputSite.EMmainsite;//BranySiteMap.getSite(((string)eventRow["Sitename"]).Replace("(IBC)", ""));
                     notes = (string)eventRow["Event"];
                     if (BranyEventsMap.teamChangedEvents.Contains((string)eventRow["Event"]))
                     {
@@ -314,19 +317,21 @@ namespace IrbAnalyser
                     else
                         sitename = IRISMap.SiteMap.getSite(((string)eventRow["Sitename"]).Replace("(IBC)", ""));
                     status = IRISMap.EventsMap.getStatus((string)eventRow["Event"]);
-                    type = IRISMap.EventsMap.getType((string)eventRow["Event"]);
+                    stattype = IRISMap.EventsMap.getType((string)eventRow["Event"]);
                     notes = Tools.removeHtml((string)eventRow["Amendment"]);
                 }
 
-                if (string.IsNullOrEmpty(status))
+                /*if (string.IsNullOrEmpty(status))
                 {
                     addRowEvent(eventRow, "", "New status", true, (string)eventRow["EventCreationDate"]);
                 }
-                else
+                else*/
+                if (!string.IsNullOrEmpty(status))
                 {
 
-                    string status1 = "IRB Amendment Submitted**";
-                    string status2 = "IRB Amendment Approved**";
+                    string status1 = amendmentSubmitStatus;
+                    string status2 = amendmentApprovedStatus;
+                    string stattype1 = amendmentApprovedType;
 
                     DateTime start = DateTime.Now;
                     DateTime.TryParse((string)eventRow["EventCreationDate"], out start);
@@ -340,11 +345,18 @@ namespace IrbAnalyser
 
                     if (Tools.getOldStudy((string)eventRow["StudyId"]))
                     {
-                        if (status == status1)
+                        if (status == amendmentSubmitStatus)
                         {
+                            if (!Tools.isStudyApproved(irbstudyId, start))
+                            {
+                                status1 = preActAmendmentSubmitStatus;
+                                status2 = preActAmendmentApprovedStatus;
+                                stattype1 = preActAmendmentApprovedType;
+                            }
+
                             IEnumerable<Model.VDA_V_STUDYSTAT> statusesDB1 = from stat in allstatus
                                                                              where stat.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (irbstudyId.Trim().ToLower())
-                                                                             && stat.SSTAT_STUDY_STATUS == status1
+                                                                             && (stat.SSTAT_STUDY_STATUS == preActAmendmentSubmitStatus || stat.SSTAT_STUDY_STATUS == amendmentSubmitStatus)
                                                                              && stat.SSTAT_VALID_FROM.Value.Year == start.Year
                                                                              && stat.SSTAT_VALID_FROM.Value.Month == start.Month
                                                                              && stat.SSTAT_VALID_FROM.Value.Day == start.Day
@@ -380,14 +392,14 @@ namespace IrbAnalyser
 
                             if (!statusesDB1.Any())
                             {
-                                addRowEvent(eventRow, status1, "New status", true, start.ToString());
+                                addRowEvent(eventRow, status1, stattype1, "New status", true, start.ToString());
                             }
 
                             if (end != DateTime.MinValue)
                             {
                                 IEnumerable<Model.VDA_V_STUDYSTAT> statusesDB2 = from stat in allstatus
                                                                                  where stat.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (irbstudyId.Trim().ToLower())
-                                                                                 && stat.SSTAT_STUDY_STATUS.Trim().ToLower() == status2.Trim().ToLower()
+                                                                                 && (stat.SSTAT_STUDY_STATUS == preActAmendmentApprovedStatus || stat.SSTAT_STUDY_STATUS == amendmentApprovedStatus)
                                                                                  && stat.SSTAT_VALID_FROM.Value.Year == end.Year
                                                                                  && stat.SSTAT_VALID_FROM.Value.Month == end.Month
                                                                                  && stat.SSTAT_VALID_FROM.Value.Day == end.Day
@@ -421,29 +433,31 @@ namespace IrbAnalyser
 
                                 if (!statusesDB2.Any())
                                 {
-                                    addRowEvent(eventRow, "IRB Amendment Approved**", "New status", true, end.ToString());
+                                    addRowEvent(eventRow, status2, stattype1, "New status", true, end.ToString());
                                 }
                             }
                         }
-                        else
+                        /*else
                         {
                             addRowEvent(eventRow, "", "New status", true, (string)eventRow["EventCreationDate"]);
-                        }
+                        }*/
 
                     }
                     else
                     {
                         if (status == status1)
                         {
-                            addRowEvent(eventRow, "IRB Amendment Submitted**", "New study", true, (string)eventRow["EventCreationDate"]);
+
+
+                            addRowEvent(eventRow, amendmentSubmitStatus, amendmentSubmitType, "New study", true, (string)eventRow["EventCreationDate"]);
                             if (end != DateTime.MinValue)
                             {
-                                addRowEvent(eventRow, "IRB Amendment Approved**", "New study", true, end.ToString());
+                                addRowEvent(eventRow, amendmentApprovedStatus, amendmentApprovedType, "New study", true, end.ToString());
                             }
                         }
                         else
                         {
-                            addRowEvent(eventRow, status, "New study", true, (string)eventRow["EventCreationDate"]);
+                            addRowEvent(eventRow, status, stattype1, "New study", true, (string)eventRow["EventCreationDate"]);
                         }
 
                     }
@@ -727,7 +741,7 @@ namespace IrbAnalyser
         /// Add new status from event report
         /// </summary>
         /// <param name="statusRow"></param>
-        private static void addRowEvent(DataRow eventRow, string status, string type, bool newrecord, string date)
+        private static void addRowEvent(DataRow eventRow, string status, string statusType, string type, bool newrecord, string date)
         {
             DataRow dr;
             if (newrecord)
@@ -756,7 +770,7 @@ namespace IrbAnalyser
             }
 
             dr["Study status"] = status;
-            dr["status type"] = "Post Activation";
+            dr["status type"] = statusType;
             dr["Documented by"] = "IRB interface";
             dr["Status Valid From"] = Tools.parseDate(date);
 
@@ -935,39 +949,45 @@ namespace IrbAnalyser
 
                 if (irbStudyDoesntExist)
                 {
-
-                    bool irbStudyIsntApproved = !(from dbStatus in OutputStatus.allstatus
+                    bool velosStudyIsntMarked = !(from dbStatus in OutputStatus.allstatus
                                                   where dbStatus.IRBIDENTIFIERS == dbStudy.IRBIDENTIFIERS
-                                                  && dbStatus.SSTAT_STUDY_STATUS == approvedStatus.ToLower()
+                                                  && (dbStatus.SSTAT_STUDY_STATUS == deletedPostActivationStatus
+                                                  || dbStatus.SSTAT_STUDY_STATUS == deletedStatus)
                                                   select dbStatus).Any();
 
-                    DataRow dr = newStatus.NewRow();
-                    if (irbStudyIsntApproved)
+                    if (velosStudyIsntMarked)
                     {
-                        dr["Study status"] = deletedStatus;
-                        dr["status type"] = deletedType;
+
+                        bool irbStudyApproved = Tools.isStudyApproved(studyId, DateTime.MinValue);
+
+                        DataRow dr = newStatus.NewRow();
+                        if (irbStudyApproved)
+                        {
+                            dr["Study status"] = deletedPostActivationStatus;
+                            dr["status type"] = deletedPostActivationType;
+                        }
+                        else
+                        {
+                            dr["Study status"] = deletedStatus;
+                            dr["status type"] = deletedType;
+                        }
+
+
+
+                        dr["TYPE"] = "Deleted Study in IRB";
+                        dr["Comment"] = "This study has been deleted from the IRB system";
+                        dr["Study_number"] = Tools.getDBStudyNumber(studyId);
+
+                        dr["IRB Study ID"] = studyId;
+                        dr["Organization"] = OutputSite.EMmainsite;
+
+                        dr["Review Type"] = "";
+
+                        dr["Documented by"] = "IRB interface";
+                        dr["Status Valid From"] = Tools.parseDate(DateTime.Now.ToShortDateString());
+
+                        newStatus.Rows.Add(dr);
                     }
-                    else
-                    {
-                        dr["Study status"] = deletedPostActivationStatus;
-                        dr["status type"] = deletedPostActivationType;
-                    }
-
-
-
-                    dr["TYPE"] = "Deleted Study in IRB";
-                    dr["Comment"] = "This study has been deleted from the IRB system";
-                    dr["Study_number"] = Tools.getDBStudyNumber(studyId);
-
-                    dr["IRB Study ID"] = studyId;
-                    dr["Organization"] = OutputSite.EMmainsite;
-
-                    dr["Review Type"] = "";
-
-                    dr["Documented by"] = "IRB interface";
-                    dr["Status Valid From"] = Tools.parseDate(DateTime.Now.ToShortDateString());
-
-                    newStatus.Rows.Add(dr);
                 }
             }
 

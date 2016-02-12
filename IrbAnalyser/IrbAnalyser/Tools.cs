@@ -339,6 +339,51 @@ namespace IrbAnalyser
             return output.Trim();
         }
 
+
+        /// <summary>
+        /// Check in the database if the study exist and in the file to see if a study is approved, it will return true if the study has an approval with the date part greater then the input date date part.
+        /// </summary>
+        /// <param name="studyId"></param>
+        /// <returns></returns>
+        public static bool isStudyApproved(string studyId, DateTime date)//DateTime? date = null)
+        {
+            bool isStudyApprovedVelos = (from stat in OutputStatus.allstatus
+                                         where stat.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (studyId.Trim().ToLower())
+                                         && (stat.SSTAT_STUDY_STATUS == OutputStatus.approvedStatus || stat.SSTAT_STUDY_STATUS == OutputStatus.renewalStatus)
+                                         && (stat.SSTAT_VALID_FROM.HasValue && stat.SSTAT_VALID_FROM.Value.Date >= date.Date)
+                                         select stat).Any();
+
+            if (isStudyApprovedVelos) return true;
+
+            var studyIRBs = (from st in OutputStudy.fpstudys.data.AsEnumerable()
+                                           where st.Field<string>("StudyId").Trim().ToLower() == studyId.Trim().ToLower()
+                                           && (!string.IsNullOrWhiteSpace(st.Field<string>("InitialApprovalDate").Trim().ToLower())
+                                           || !string.IsNullOrWhiteSpace(st.Field<string>("MostRecentApprovalDate").Trim().ToLower())
+                                           )
+                                           select st);
+
+            foreach (var study in studyIRBs)
+            {
+                DateTime approvDate = DateTime.MaxValue;
+                if (!String.IsNullOrWhiteSpace(study.Field<string>("InitialApprovalDate")))
+                {
+                    approvDate = DateTime.ParseExact((study.Field<string>("InitialApprovalDate")).Trim(), new string[] { "s", "u", "yyyy-MM-dd" }, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.AssumeLocal);
+                }
+                if (approvDate == DateTime.MaxValue && !String.IsNullOrWhiteSpace(study.Field<string>("MostRecentApprovalDate")))
+                {
+                    approvDate = DateTime.ParseExact((study.Field<string>("MostRecentApprovalDate")).Trim(), new string[] { "s", "u", "yyyy-MM-dd" }, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.AssumeLocal);
+                }
+                if (approvDate == DateTime.MaxValue || approvDate.Date < date.Date) return false;
+                else return true;
+
+            }
+
+
+
+            return false;
+
+        }
+
         /// <summary>
         /// Check if a study exist in velos for that study id
         /// </summary>
