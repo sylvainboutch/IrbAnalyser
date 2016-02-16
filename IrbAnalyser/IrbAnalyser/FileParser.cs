@@ -107,7 +107,7 @@ namespace IrbAnalyser
                     data.Columns.Add("IND_NUMBERS");
                     data.Columns.Add("pk_study");
                     data.Columns.Add("FinancialBy");
-                    
+                    data.Columns.Add("SignOffBy");
                     
                     initColumnCount = data.Columns.Count;
                     break;

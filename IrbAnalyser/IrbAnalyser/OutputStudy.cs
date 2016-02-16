@@ -203,6 +203,8 @@ namespace IrbAnalyser
                 newStudy.Columns.Add("NCT_NUMBER", typeof(string));
                 newStudy.Columns.Add("pk_study", typeof(string));
 
+                newStudy.Columns.Add("SignOffBy", typeof(string));
+
             }
 
             if (updatedStudy.Columns.Count == 0)
@@ -270,6 +272,8 @@ namespace IrbAnalyser
                 updatedStudy.Columns.Add("RecordCategory", typeof(string));
 
                 updatedStudy.Columns.Add("FinancialBy", typeof(string));
+                
+
                 updatedStudy.Columns.Add("Cancer", typeof(string));
                 updatedStudy.Columns.Add("Consent", typeof(string));
 
@@ -295,6 +299,8 @@ namespace IrbAnalyser
 
                 updatedStudy.Columns.Add("NCT_NUMBER", typeof(string));
                 updatedStudy.Columns.Add("pk_study", typeof(string));
+
+                updatedStudy.Columns.Add("SignOffBy", typeof(string));
             }
         }
 
@@ -447,6 +453,7 @@ namespace IrbAnalyser
                             if (Agency.AgencyVal == Agency.AgencyList.BRANY)
                             {
                                 dr["FinancialBy"] = "BRY";
+                                dr["SignOffBy"] = "BRY";                                
                             }
 
                             dr["oldNumber"] = newNumber;
@@ -989,6 +996,7 @@ namespace IrbAnalyser
             dr["AgentDevice"] = (string)row["AgentDevice"];
             dr["Primary funding sponsor"] = (string)row["Primarysponsorname"];
             dr["FinancialBy"] = (string)row["FinancialBy"];
+            dr["SignOffBy"] = (string)row["SignOffBy"];
 
             if (!string.IsNullOrWhiteSpace((string)row["newNumber"]))
             {
@@ -1220,9 +1228,10 @@ namespace IrbAnalyser
             }
             else
             {
-                labels = new string[22] { 
+                labels = new string[23] { 
                     "Record Category*",
                     "Study Financials Managed By*",
+                    "Agreement/Final Administrative Sign-Off Managed By*",
                     "IRB Agency Name",
                     "IRB No.",
                     "Is this a cancer related study?",
@@ -1245,9 +1254,10 @@ namespace IrbAnalyser
                     "Will the ONLY research activity be analysis of specimens or data/medical records obtained without consent? (Note: This means there will be NO interventions with human subjects.)"
                 };
 
-                values = new string[22] {   
+                values = new string[23] {   
                     (string)dr["RecordCategory"],
                     (string)dr["FinancialBy"],
+                    (string)dr["SignOffBy"],
                     (string)dr["IRB Agency name"],
                     (string)dr["IRB no"],
                     (string)dr["Cancer"],
