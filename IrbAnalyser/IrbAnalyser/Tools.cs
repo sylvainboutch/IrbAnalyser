@@ -100,6 +100,22 @@ namespace IrbAnalyser
             return dateparsed == DateTime.MinValue ? "" : dateparsed.Date.ToString("MM/dd/yyyy");
         }
 
+        /// <summary>
+        /// Parse a date using DateTime.TryParse (no format or local) and the date
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns></returns>
+        public static DateTime parseDateDate(string date)
+        {
+            DateTime dateparsed = DateTime.MinValue;
+            DateTime.TryParse(date, out dateparsed);
+            dateparsed.AddHours(-dateparsed.Hour);
+            dateparsed.AddMinutes(-dateparsed.Minute);
+            dateparsed.AddSeconds(-dateparsed.Second);
+            dateparsed.AddMilliseconds(-dateparsed.Millisecond);
+            return dateparsed;
+        }
+
 
         /// <summary>
         /// If the study contains one of these status then we shouldnt update the IRB

@@ -1800,21 +1800,51 @@ namespace IrbAnalyser
 
             bool ignoreLatestStatus = false;
 
-            if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+            if (Agency.AgencyVal == Agency.AgencyList.BRANY && SpecialStudys.ignoredStatusBRANY.Count > 1)
             {
-                ignoreLatestStatus = (SpecialStudys.ignoredStatusBRANY.Count >= 1 && SpecialStudys.ignoredStatusBRANY.Any(x => Tools.compareStr(x, OutputStatus.getLatestStatusFP((string)dr["StudyId"]))));
+                foreach (var ignoredStatus in SpecialStudys.ignoredStatusBRANY)
+                {
+                    ignoreLatestStatus = (from st in OutputStatus.fpstatus.data.AsEnumerable()
+                                  where st.Field<string>("StudyId").Trim().ToLower() == ((string)dr["StudyId"]).Trim().ToLower()
+                                  && BranyStatusMap.getStatus2(st.Field<string>("Status")).Trim().ToLower() == ignoredStatus.Trim().ToLower()
+                                  select st).Any();
+                    if (ignoreLatestStatus) return false;
+                }
             }
-            else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
+            else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN && SpecialStudys.ignoredStatusIRIS.Count >= 1)
             {
-                ignoreLatestStatus = (SpecialStudys.ignoredStatusIRIS.Count >= 1 && SpecialStudys.ignoredStatusIRIS.Any(x => Tools.compareStr(x, OutputStatus.getLatestStatusFP((string)dr["StudyId"]))));
-            }
-            else
-            {
-                ignoreLatestStatus = (SpecialStudys.ignoredStatus.Count >= 1 && SpecialStudys.ignoredStatus.Any(x => Tools.compareStr(x, OutputStatus.getLatestStatusFP((string)dr["StudyId"]))));
-            }
+                foreach (var ignoredStatus in SpecialStudys.ignoredStatusIRIS)
+                {
+                    ignoreLatestStatus = (from st in OutputStatus.fpstatus.data.AsEnumerable()
+                                          where st.Field<string>("StudyId").Trim().ToLower() == ((string)dr["StudyId"]).Trim().ToLower()
+                                          && IRISMap.StatusMap.getStatus2(st.Field<string>("Status")).Trim().ToLower() == ignoredStatus.Trim().ToLower()
+                                          select st).Any();
+                    if (ignoreLatestStatus) return false;
 
-            if (ignoreLatestStatus)
-                return false;
+                }
+            }
+            else if (SpecialStudys.ignoredStatus.Count >= 1 && Agency.AgencyVal == Agency.AgencyList.BRANY)
+            {
+                foreach (var ignoredStatus in SpecialStudys.ignoredStatus)
+                {
+                    ignoreLatestStatus = (from st in OutputStatus.fpstatus.data.AsEnumerable()
+                                          where st.Field<string>("StudyId").Trim().ToLower() == ((string)dr["StudyId"]).Trim().ToLower()
+                                          && BranyStatusMap.getStatus2(st.Field<string>("Status")).Trim().ToLower() == ignoredStatus.Trim().ToLower()
+                                          select st).Any();
+                    if (ignoreLatestStatus) return false;
+                }
+            }
+            else if (SpecialStudys.ignoredStatus.Count >= 1 && Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
+            {
+                foreach (var ignoredStatus in SpecialStudys.ignoredStatus)
+                {
+                    ignoreLatestStatus = (from st in OutputStatus.fpstatus.data.AsEnumerable()
+                                          where st.Field<string>("StudyId").Trim().ToLower() == ((string)dr["StudyId"]).Trim().ToLower()
+                                          && IRISMap.StatusMap.getStatus2(st.Field<string>("Status")).Trim().ToLower() == ignoredStatus.Trim().ToLower()
+                                          select st).Any();
+                    if (ignoreLatestStatus) return false;
+                }
+            }
 
             if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
             {

@@ -157,24 +157,18 @@ namespace IrbAnalyser.IRISMap
                 {"Suspended","Temporarily Closed to Accrual and Intervention"},
                 {"Terminated by IRB","Complete"},
                 {"Terminated by PI","Complete"},
-                {"Undergoing COI Review",""},
-                /*{"Undergoing Exempt Determination","IRB Initial Submitted"},
+                {"Undergoing COI Review","IRB Initial Submitted"},
+                {"Undergoing Exempt Determination",""},
                 {"Undergoing Expedited Review","IRB Initial Submitted"},
                 {"Undergoing Full Board Review","IRB Initial Submitted"},
                 {"Undergoing Review by IRB Chair","IRB Initial Submitted"},
                 {"Undergoing Review by IRB Chair/Designee","IRB Initial Submitted"},
-                {"Undergoing Review by Legal","IRB Initial Submitted"},*/
-                {"Undergoing Exempt Determination",""},
-                {"Undergoing Expedited Review",""},
-                {"Undergoing Full Board Review",""},
-                {"Undergoing Review by IRB Chair",""},
-                {"Undergoing Review by IRB Chair/Designee",""},
-                {"Undergoing Review by Legal",""},
-                {"Withdrawn by PI","Withdrawn"},        
+                {"Undergoing Review by Legal","IRB Initial Submitted"},
+                {"Withdrawn by PI","Withdrawn"},
                 {"",""}
             };
 
-        public static string getStatus(string key)
+        public static string getStatus2(string key)
         {
             try
             {
@@ -184,6 +178,69 @@ namespace IrbAnalyser.IRISMap
             {
                 NewValueOuput.appendString("New status", key);
                 return key + "  (NEW !!!)";
+            }
+        }
+
+        public static readonly Dictionary<string, bool> multipleMap = new Dictionary<string, bool>()
+            {
+                {"Administrative File",false},
+                {"Approved for Protocol Development",false},
+                {"Approved Pending",false},
+                {"Awaiting CRC Approval",false},
+                {"Awaiting Execution of Contract",false},
+                {"Awaiting PRMC Approval",false},
+                {"Closed by PI prior to approval",false},
+                {"Closed to Enrollment",false},
+                {"COI review. Questions? coi@einstein.yu.edu",false},
+                {"CORRUPTED",false},
+                {"Deferred",false},
+                {"Disapproved",false},
+                {"Draft",false},
+                {"Education Validation Failed",false},
+                {"Emergency Use",false},
+                {"Exempt",false},
+                {"Expired Approval",false},
+                {"Externally Reviewed",false},
+                {"Inactive - Administratively Closed",false},
+                {"Migrated",true},
+                {"Migrated with amendment (no MCF)",true},
+                {"Migration Incomplete",true},
+                {"Open",false},
+                {"Open (45CFR46.118)",false},
+                {"Open, No Enrollment",false},
+                {"Open/No Active Subjects",false},
+                {"Pending",false},
+                {"Pending - Submitted for Initial Review",false},
+                {"Pending Acceptance to Participate",false},
+                {"Preparing for Full Board Review",false},
+                {"QI ONLY",false},
+                {"Recruitment Suspended",false},
+                {"Returned to PI for Pre-Review Stipulations",false},
+                {"Returned to PI for Stipulations",false},
+                {"STUDY CLOSED (Open for Post-Closure Submissions)",false},
+                {"Suspended",false},
+                {"Terminated by IRB",false},
+                {"Terminated by PI",false},
+                {"Undergoing COI Review",false},
+                {"Undergoing Exempt Determination",false},
+                {"Undergoing Expedited Review",false},
+                {"Undergoing Full Board Review",false},
+                {"Undergoing Review by IRB Chair",false},
+                {"Undergoing Review by IRB Chair/Designee",false},
+                {"Undergoing Review by Legal",false},
+                {"Withdrawn by PI",false},
+                {"",false}
+            };
+
+        public static bool getMultiple2(string key)
+        {
+            try
+            {
+                return multipleMap[Tools.cleanMap(key)];
+            }
+            catch (Exception ex)
+            {
+                return false;
             }
         }
 
@@ -211,7 +268,7 @@ namespace IrbAnalyser.IRISMap
                 {"Migrated","Study Status"},
                 {"Migrated with amendment (no MCF)","Study Status"},
                 {"Migration Incomplete","Study Status"},
-                {"Open","Study Status"},
+                {"Open",""},
                 {"Open (45CFR46.118)",""},
                 {"Open, No Enrollment",""},
                 {"Open/No Active Subjects",""},
@@ -227,8 +284,8 @@ namespace IrbAnalyser.IRISMap
                 {"Suspended","Study Status"},
                 {"Terminated by IRB","Study Status"},
                 {"Terminated by PI","Study Status"},
-                {"Undergoing COI Review",""},
-                {"Undergoing Exempt Determination","Pre Activation"},
+                {"Undergoing COI Review","Pre Activation"},
+                {"Undergoing Exempt Determination",""},
                 {"Undergoing Expedited Review","Pre Activation"},
                 {"Undergoing Full Board Review","Pre Activation"},
                 {"Undergoing Review by IRB Chair","Pre Activation"},
@@ -238,7 +295,7 @@ namespace IrbAnalyser.IRISMap
                 {"",""}
             };
 
-        public static string getType(string key)
+        public static string getType2(string key)
         {
             try
             {                

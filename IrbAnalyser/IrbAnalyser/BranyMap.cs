@@ -139,8 +139,8 @@ namespace IrbAnalyser
                 {"Expired",""},
                 {"Not Engaged in Human Sub Rsrch","Archived"},
                 {"Other than Human Subject Rsrch","Archived"},
-                {"Pending Approval","IRB Initial Submitted"},
-                {"Pending Approval IRB only","IRB Initial Submitted"},
+                {"Pending Approval",""},
+                {"Pending Approval IRB only",""},
                 {"Pending Closure",""},
                 {"Pending closure IRB only",""},
                 {"Pending Review","IRB Initial Submitted"},
@@ -165,12 +165,12 @@ namespace IrbAnalyser
                 {"Dropped by Investigator",""},
                 {"Administrative - Translation",""},
                 {"Closed (IBC)",""},
-                {"Pending Approval - IRB only","IRB Initial Submitted"},
+                {"Pending Approval - IRB only",""},
 
 
             };
 
-        public static string getStatus(string key)
+        public static string getStatus2(string key)
         {
             try
             {
@@ -180,6 +180,72 @@ namespace IrbAnalyser
             {
                 NewValueOuput.appendString("New status", key);
                 return key + "  (NEW !!!)";
+            }
+        }
+
+        public static readonly Dictionary<string, bool> statusMultipleBrany = new Dictionary<string, bool>()
+            {
+                {"",false},
+                {"Pending Review - IRB only",false},
+                {"Submission pending - IRB only",false},
+                {"Closed - IRB only",false},
+                {"Closed to enrollment -IRB only",true},
+                {"Approved -IBC Only",false},
+                {"Suspended by entity other than IRB - IRB only",false},
+                {"Approved",false},
+                {"Approved IRB only",false},
+                {"Approved -IRB only",false},
+                {"Closed",false},
+                {"Closed IRB only",false},
+                {"Closed to Enrollment",true},
+                {"Closed to enrollment IRB only",true},
+                {"Deferred",false},
+                {"Deferred IRB only",false},
+                {"Disapproved",false},
+                {"Emergency Use ONLY",false},
+                {"Exempt",false},
+                {"Exempt Closed/Completed",false},
+                {"Expired",false},
+                {"Not Engaged in Human Sub Rsrch",false},
+                {"Other than Human Subject Rsrch",false},
+                {"Pending Approval",false},
+                {"Pending Approval IRB only",false},
+                {"Pending Closure",false},
+                {"Pending closure IRB only",false},
+                {"Pending Review",false},
+                {"Pending Review IRB only",false},
+                {"PENDING VETTING",false},
+                {"Submission pending",false},
+                {"Submission pending IRB only",false},
+                {"Suspended by entity other than IRB",true},
+                {"Suspended by entity other than IRB IRB only",true},
+                {"Suspended by IRB",true},
+                {"Suspended by IRB IRB only",true},
+                {"Terminated by IRB",false},
+                {"Terminated by IRB IRB only",false},
+                {"Transferred to Another Record",false},
+                {"Withdrawn by PI/Institution",false},
+                {"Withdrawn by Sponsor",false},
+                {"Pulled",false},
+                {"Approved (IBC)",false},
+                {"Approved IBC Only",false},
+                {"Pending Review (IBC)",false},
+                {"Closed to Enrollment (IBC)",false},
+                {"Dropped by Investigator",false},
+                {"Administrative - Translation",false},
+                {"Closed (IBC)",false},
+                {"Pending Approval - IRB only",false}
+            };
+
+        public static bool getStatusMultipleBrany2(string key)
+        {
+            try
+            {
+                return statusMultipleBrany[Tools.cleanMap(key)];
+            }
+            catch (Exception ex)
+            {
+                return false;
             }
         }
 
@@ -208,8 +274,8 @@ namespace IrbAnalyser
                 {"Expired",""},
                 {"Not Engaged in Human Sub Rsrch","Study Status"},
                 {"Other than Human Subject Rsrch","Study Status"},
-                {"Pending Approval","Pre Activation"},
-                {"Pending Approval IRB only","Pre Activation"},
+                {"Pending Approval",""},
+                {"Pending Approval IRB only",""},
                 {"Pending Closure",""},
                 {"Pending closure IRB only",""},
                 {"Pending Review","Pre Activation"},
@@ -234,13 +300,13 @@ namespace IrbAnalyser
                 {"Dropped by Investigator",""},
                 {"Administrative - Translation",""},
                 {"Closed (IBC)",""},
-                {"Pending Approval - IRB only","Pre Activation"},
+                {"Pending Approval - IRB only",""},
 
 
 
             };
 
-        public static string getType(string key)
+        public static string getType2(string key)
         {
             try
             {
