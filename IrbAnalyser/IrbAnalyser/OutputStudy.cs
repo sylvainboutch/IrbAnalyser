@@ -272,7 +272,7 @@ namespace IrbAnalyser
                 updatedStudy.Columns.Add("RecordCategory", typeof(string));
 
                 updatedStudy.Columns.Add("FinancialBy", typeof(string));
-                
+
 
                 updatedStudy.Columns.Add("Cancer", typeof(string));
                 updatedStudy.Columns.Add("Consent", typeof(string));
@@ -453,7 +453,7 @@ namespace IrbAnalyser
                             if (Agency.AgencyVal == Agency.AgencyList.BRANY)
                             {
                                 dr["FinancialBy"] = "BRY";
-                                dr["SignOffBy"] = "BRY";                                
+                                dr["SignOffBy"] = "BRY";
                             }
 
                             dr["oldNumber"] = newNumber;
@@ -608,9 +608,9 @@ namespace IrbAnalyser
                                 if (!String.IsNullOrWhiteSpace((string)dr["KeyWords"]) && !String.IsNullOrWhiteSpace(stu.STUDY_KEYWRDS))
                                 {
                                     string keywords = stu.STUDY_KEYWRDS.Length > 480 ? stu.STUDY_KEYWRDS.Substring(0, 480) : stu.STUDY_KEYWRDS;
-                                    
+
                                     dr["KeyWords"] = stu.STUDY_KEYWRDS.Contains((string)dr["KeyWords"]) ? "" : "update eres.er_study set study_keywrds = '" + keywords + "' || chr(13) || chr(10) || '" + (string)dr["KeyWords"] + "' || chr(13) || chr(10) where pk_study = " + stu.PK_STUDY;
-                                    dr["KeyWords"] = ((string)dr["KeyWords"]).Replace("\r\n","' || chr(13) || chr(10) || '");
+                                    dr["KeyWords"] = ((string)dr["KeyWords"]).Replace("\r\n", "' || chr(13) || chr(10) || '");
                                     dr["KeyWords"] = ((string)dr["KeyWords"]).Replace("\n", "' || chr(13) || chr(10) || '");
                                 }
                                 else if (!String.IsNullOrWhiteSpace((string)dr["KeyWords"]))
@@ -833,7 +833,7 @@ namespace IrbAnalyser
                 hasChanged = true;
                 dr[field] = "No";
             }
-            else if (( dbValue == null || dbValue.ToLower().Trim() == "no") && (((string)dr[field]).Trim().ToLower() == "y" || ((string)dr[field]).Trim().ToLower() == "Yes"))
+            else if ((dbValue == null || dbValue.ToLower().Trim() == "no") && (((string)dr[field]).Trim().ToLower() == "y" || ((string)dr[field]).Trim().ToLower() == "Yes"))
             {
                 hasChanged = true;
                 dr[field] = "Yes";
@@ -913,12 +913,12 @@ namespace IrbAnalyser
             initiate();
             DataRow dr;
             if (newentry)
-            { 
-                dr = newStudy.NewRow(); 
+            {
+                dr = newStudy.NewRow();
             }
             else
-            { 
-                dr = updatedStudy.NewRow(); 
+            {
+                dr = updatedStudy.NewRow();
             }
 
             //make sur no dbnull row is in the datarow
@@ -1314,6 +1314,8 @@ namespace IrbAnalyser
 
         }
 
+        private static Dictionary<string, string> piCache;
+
         /// <summary>
         /// Returns the PI for that study
         /// </summary>
@@ -1321,72 +1323,91 @@ namespace IrbAnalyser
         /// <returns></returns>
         public static string getPI(string studyId)
         {
-            if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
+            if (piCache.ContainsKey(studyId))
             {
-                var value = fpstudys.data.AsEnumerable().Where(x => (string)x["StudyId"] == studyId).FirstOrDefault();
-                if (value != null)
-                    return (string)value["PI"];
-            }
-            if (Agency.AgencyVal == Agency.AgencyList.BRANY)
-            {
-                return getRole(studyId, BranyRoleMap.PI);
-            }
-            else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
-            {
-                //string rcemail = OutputTeam.team.FirstOrDefault(x => x.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (studyId.Trim().ToLower()) && x.ROLE == Role).USER_EMAIL;
-                var study = studys.FirstOrDefault(x => x.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (studyId.Trim().ToLower()));
-                string piname = study == null ? "" : study.STUDY_PI;
-                piname = String.IsNullOrWhiteSpace(piname) ? "" : piname;
-                string piemail = piname == "" ? "" : OutputTeam.accounts.FirstOrDefault(x => x.USER_NAME == piname).USER_EMAIL;
-
-
-                piemail = String.IsNullOrWhiteSpace(piemail) ? "" : piemail.ToLower().Trim();
-                piname = String.IsNullOrWhiteSpace(piname) ? "" : piname;
-
-                string[] split = piname.Split(' ');
-                var split2 = from s in split
-                             orderby s.Length descending
-                             select s;
-
-                string nameLonguest = split2.First().Trim().ToLower();
-                string nameSecondLonguest = nameLonguest;
-
-
-                if (split2.Count() > 1)
-                {
-                    nameSecondLonguest = split2.ElementAt(1).Trim().ToLower();
-                }
-
-                var pis = from pi in OutputTeam.fpTeam.data.AsEnumerable()
-                          where (pi.Field<string>("Role") == IRISMap.RoleMap.RC1 || pi.Field<string>("Role") == IRISMap.RoleMap.RC2)
-                         && pi.Field<string>("StudyId") == studyId
-                         && (
-                         (piemail != "" && (string)pi["PrimaryEMailAddress"] == piemail)
-                           || (((string)pi["FirstName"] + " " + (string)pi["LastName"]).Trim().ToLower().Contains(nameLonguest) && ((string)pi["FirstName"] + " " + (string)pi["LastName"]).Trim().ToLower().Contains(nameSecondLonguest))
-                         )
-                          select pi;
-
-                if (pis.Count() > 0)
-                {
-                    return pis.First().Field<string>("FirstName") + " " + pis.First().Field<string>("LastName");
-                }
-                else
-                {
-                    return getRole(studyId, IRISMap.RoleMap.PI);
-                }
-
-                /*if (getRoleNotChange(studyId, IRISMap.RoleMap.PI, piname, piemail))
-                {
-                    return piname;
-                }
-                else
-                {
-                    return getRole(studyId, IRISMap.RoleMap.PI);
-                }*/
+                return piCache[studyId];
             }
             else
             {
-                return getRole(studyId, IRISMap.RoleMap.PI);
+
+                if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
+                {
+                    var value = fpstudys.data.AsEnumerable().Where(x => (string)x["StudyId"] == studyId).FirstOrDefault();
+                    if (value != null)
+                    {
+                        piCache.Add(studyId, (string)value["PI"]);
+                        return (string)value["PI"];
+                    }
+                }
+                if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+                {
+                    string pi = getRole(studyId, BranyRoleMap.PI);
+                    piCache.Add(studyId, pi);
+                    return pi;
+                }
+                else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
+                {
+                    //string rcemail = OutputTeam.team.FirstOrDefault(x => x.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (studyId.Trim().ToLower()) && x.ROLE == Role).USER_EMAIL;
+                    var study = studys.FirstOrDefault(x => x.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (studyId.Trim().ToLower()));
+                    string piname = study == null ? "" : study.STUDY_PI;
+                    piname = String.IsNullOrWhiteSpace(piname) ? "" : piname;
+                    string piemail = piname == "" ? "" : OutputTeam.accounts.FirstOrDefault(x => x.USER_NAME == piname).USER_EMAIL;
+
+
+                    piemail = String.IsNullOrWhiteSpace(piemail) ? "" : piemail.ToLower().Trim();
+                    piname = String.IsNullOrWhiteSpace(piname) ? "" : piname;
+
+                    string[] split = piname.Split(' ');
+                    var split2 = from s in split
+                                 orderby s.Length descending
+                                 select s;
+
+                    string nameLonguest = split2.First().Trim().ToLower();
+                    string nameSecondLonguest = nameLonguest;
+
+
+                    if (split2.Count() > 1)
+                    {
+                        nameSecondLonguest = split2.ElementAt(1).Trim().ToLower();
+                    }
+
+                    var pis = from pi in OutputTeam.fpTeam.data.AsEnumerable()
+                              where (pi.Field<string>("Role") == IRISMap.RoleMap.RC1 || pi.Field<string>("Role") == IRISMap.RoleMap.RC2)
+                             && pi.Field<string>("StudyId") == studyId
+                             && (
+                             (piemail != "" && (string)pi["PrimaryEMailAddress"] == piemail)
+                               || (((string)pi["FirstName"] + " " + (string)pi["LastName"]).Trim().ToLower().Contains(nameLonguest) && ((string)pi["FirstName"] + " " + (string)pi["LastName"]).Trim().ToLower().Contains(nameSecondLonguest))
+                             )
+                              select pi;
+
+                    if (pis.Count() > 0)
+                    {
+                        string pi = pis.First().Field<string>("FirstName") + " " + pis.First().Field<string>("LastName");
+                        piCache.Add(studyId, pi);
+                        return pi; 
+                    }
+                    else
+                    {
+                        string pi = getRole(studyId, IRISMap.RoleMap.PI);
+                        piCache.Add(studyId, pi);
+                        return pi;
+                    }
+
+                    /*if (getRoleNotChange(studyId, IRISMap.RoleMap.PI, piname, piemail))
+                    {
+                        return piname;
+                    }
+                    else
+                    {
+                        return getRole(studyId, IRISMap.RoleMap.PI);
+                    }*/
+                }
+                else
+                {
+                    string pi = getRole(studyId, IRISMap.RoleMap.PI);
+                    piCache.Add(studyId, pi);
+                    return pi;
+                }
             }
         }
 
@@ -1414,6 +1435,8 @@ namespace IrbAnalyser
         }*/
 
 
+        private static Dictionary<string, string> rcCache;
+
         /// <summary>
         /// Returns the RC for that study
         /// </summary>
@@ -1421,130 +1444,148 @@ namespace IrbAnalyser
         /// <returns></returns>
         public static string getRC(string studyId)
         {
-
-            if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
+            if (rcCache.ContainsKey(studyId))
             {
-                var value = fpstudys.data.AsEnumerable().Where(x => (string)x["StudyId"] == studyId).FirstOrDefault();
-                if (value != null)
-                    return (string)value["RC"];
+                return rcCache[studyId];
             }
-            string retstr = "";
-            var study = studys.FirstOrDefault(x => x.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (studyId.Trim().ToLower()));
-
-            if (study == null)
+            else
             {
+                if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
+                {
+                    var value = fpstudys.data.AsEnumerable().Where(x => (string)x["StudyId"] == studyId).FirstOrDefault();
+                    if (value != null)
+                    {
+                        string rc = (string)value["RC"];
+                        rcCache.Add(studyId, rc);
+                        return rc;
+                    }
+                }
+                string retstr = "";
+                var study = studys.FirstOrDefault(x => x.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (studyId.Trim().ToLower()));
+
+                if (study == null)
+                {
+                    if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+                    {
+                        return getRole(studyId, BranyRoleMap.RC);
+                    }
+                    else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
+                    {
+                        string rc1 = getRole(studyId, IRISMap.RoleMap.RC1);
+                        rcCache.Add(studyId, rc1);
+                        rc1 = String.IsNullOrWhiteSpace(rc1) ? getRole(studyId, IRISMap.RoleMap.RC2) : rc1;
+                        return rc1;
+                    }
+                }
+
+                string rcname = study == null ? "" : study.STUDY_ENTERED_BY;
+                string rcemail = String.IsNullOrWhiteSpace(rcname) ? "" : OutputTeam.accounts.FirstOrDefault(x => x.USER_NAME == rcname).USER_EMAIL;
+
+                rcemail = String.IsNullOrWhiteSpace(rcemail) ? "" : rcemail.ToLower().Trim();
+                rcname = String.IsNullOrWhiteSpace(rcname) ? "" : rcname;
+
+                string[] split = rcname.Split(' ');
+                var split2 = from s in split
+                             orderby s.Length descending
+                             select s;
+
+                string nameLonguest = split2.First().Trim().ToLower();
+                string nameSecondLonguest = nameLonguest;
+
+
+                if (split2.Count() > 1)
+                {
+                    nameSecondLonguest = split2.ElementAt(1).Trim().ToLower();
+                }
+
+
                 if (Agency.AgencyVal == Agency.AgencyList.BRANY)
                 {
-                    return getRole(studyId, BranyRoleMap.RC);
+                    /*string test = "";
+                    if (rcname.Contains("Barrera"))
+                    {
+                        test = rcname + " s";
+                    }*/
+
+                    var rcs = from rc in OutputTeam.fpTeam.data.AsEnumerable()
+                              where rc.Field<string>("Role") == BranyRoleMap.RC
+                              && rc.Field<string>("StudyId") == studyId
+                              && (
+                              (rcemail != "" && (string)rc["PrimaryEMailAddress"] == rcemail)
+                                || (((string)rc["FirstName"] + " " + (string)rc["LastName"]).Trim().ToLower().Contains(nameLonguest) && ((string)rc["FirstName"] + " " + (string)rc["LastName"]).Trim().ToLower().Contains(nameSecondLonguest))
+                              )
+                              select rc;
+
+                    if (rcs.Count() > 0)
+                    {
+                        rcCache.Add(studyId, rcname);
+                        return rcname;//test + rcs.First().Field<string>("FirstName") + " " + rcs.First().Field<string>("LastName");
+                    }
+                    else
+                    {
+                        rcname = getRole(studyId, BranyRoleMap.RC);
+                        rcCache.Add(studyId, rcname);
+                        return rcname;
+                    }
+
+                    /*if (getRoleNotChange(studyId, BranyRoleMap.RC, rcname, rcemail))
+                    {
+                        retstr = rcname;
+                    }
+                    else
+                    {
+                        retstr = getRole(studyId, BranyRoleMap.RC);
+                    }*/
                 }
                 else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
                 {
-                    string rc1 = getRole(studyId, IRISMap.RoleMap.RC1);
-                    return String.IsNullOrWhiteSpace(rc1) ? getRole(studyId, IRISMap.RoleMap.RC2) : rc1;
-                }
-            }
 
-            string rcname = study == null ? "" : study.STUDY_ENTERED_BY;
-            string rcemail = String.IsNullOrWhiteSpace(rcname) ? "" : OutputTeam.accounts.FirstOrDefault(x => x.USER_NAME == rcname).USER_EMAIL;
+                    var rcs = from rc in OutputTeam.fpTeam.data.AsEnumerable()
+                              where (rc.Field<string>("Role") == IRISMap.RoleMap.RC1 || rc.Field<string>("Role") == IRISMap.RoleMap.RC2)
+                              && rc.Field<string>("StudyId") == studyId
+                              && (
+                              (rcemail != "" && (string)rc["PrimaryEMailAddress"] == rcemail)
+                                || (((string)rc["FirstName"] + " " + (string)rc["LastName"]).Trim().ToLower().Contains(nameLonguest) && ((string)rc["FirstName"] + " " + (string)rc["LastName"]).Trim().ToLower().Contains(nameSecondLonguest))
+                              )
+                              select rc;
 
-            rcemail = String.IsNullOrWhiteSpace(rcemail) ? "" : rcemail.ToLower().Trim();
-            rcname = String.IsNullOrWhiteSpace(rcname) ? "" : rcname;
+                    if (rcs.Count() > 0 && !String.IsNullOrWhiteSpace(rcname))
+                    {
+                        rcCache.Add(studyId, rcname);
+                        return rcname;//rcs.First().Field<string>("FirstName") + " " + rcs.First().Field<string>("LastName");
+                    }
+                    else
+                    {
+                        string rc1 = getRole(studyId, IRISMap.RoleMap.RC1);
+                        rc1 = String.IsNullOrWhiteSpace(rc1) ? getRole(studyId, IRISMap.RoleMap.RC2) : rc1;
+                        rcCache.Add(studyId, rc1);
+                        return rc1;
+                    }
 
-            string[] split = rcname.Split(' ');
-            var split2 = from s in split
-                         orderby s.Length descending
-                         select s;
+                    //string rcemail = OutputTeam.team.FirstOrDefault(x => x.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (studyId.Trim().ToLower()) && x.ROLE == Role).USER_EMAIL;
 
-            string nameLonguest = split2.First().Trim().ToLower();
-            string nameSecondLonguest = nameLonguest;
-
-
-            if (split2.Count() > 1)
-            {
-                nameSecondLonguest = split2.ElementAt(1).Trim().ToLower();
-            }
-
-
-            if (Agency.AgencyVal == Agency.AgencyList.BRANY)
-            {
-                /*string test = "";
-                if (rcname.Contains("Barrera"))
-                {
-                    test = rcname + " s";
-                }*/
-
-                var rcs = from rc in OutputTeam.fpTeam.data.AsEnumerable()
-                          where rc.Field<string>("Role") == BranyRoleMap.RC
-                          && rc.Field<string>("StudyId") == studyId
-                          && (
-                          (rcemail != "" && (string)rc["PrimaryEMailAddress"] == rcemail)
-                            || (((string)rc["FirstName"] + " " + (string)rc["LastName"]).Trim().ToLower().Contains(nameLonguest) && ((string)rc["FirstName"] + " " + (string)rc["LastName"]).Trim().ToLower().Contains(nameSecondLonguest))
-                          )
-                          select rc;
-
-                if (rcs.Count() > 0)
-                {
-                    return rcname;//test + rcs.First().Field<string>("FirstName") + " " + rcs.First().Field<string>("LastName");
-                }
-                else
-                {
-                    return getRole(studyId, BranyRoleMap.RC);
-                }
-
-                /*if (getRoleNotChange(studyId, BranyRoleMap.RC, rcname, rcemail))
-                {
-                    retstr = rcname;
-                }
-                else
-                {
-                    retstr = getRole(studyId, BranyRoleMap.RC);
-                }*/
-            }
-            else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
-            {
-
-                var rcs = from rc in OutputTeam.fpTeam.data.AsEnumerable()
-                          where (rc.Field<string>("Role") == IRISMap.RoleMap.RC1 || rc.Field<string>("Role") == IRISMap.RoleMap.RC2)
-                          && rc.Field<string>("StudyId") == studyId
-                          && (
-                          (rcemail != "" && (string)rc["PrimaryEMailAddress"] == rcemail)
-                            || (((string)rc["FirstName"] + " " + (string)rc["LastName"]).Trim().ToLower().Contains(nameLonguest) && ((string)rc["FirstName"] + " " + (string)rc["LastName"]).Trim().ToLower().Contains(nameSecondLonguest))
-                          )
-                          select rc;
-
-                if (rcs.Count() > 0 && !String.IsNullOrWhiteSpace(rcname))
-                {
-                    return rcname;//rcs.First().Field<string>("FirstName") + " " + rcs.First().Field<string>("LastName");
-                }
-                else
-                {
-                    string rc1 = getRole(studyId, IRISMap.RoleMap.RC1);
-                    return String.IsNullOrWhiteSpace(rc1) ? getRole(studyId, IRISMap.RoleMap.RC2) : rc1;
-                }
-
-                //string rcemail = OutputTeam.team.FirstOrDefault(x => x.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (studyId.Trim().ToLower()) && x.ROLE == Role).USER_EMAIL;
-
-                /*if (getRoleNotChange(studyId, IRISMap.RoleMap.RC1, rcname, rcemail) || getRoleNotChange(studyId, IRISMap.RoleMap.RC2, rcname, rcemail))
-                {
-                    retstr = rcname;
+                    /*if (getRoleNotChange(studyId, IRISMap.RoleMap.RC1, rcname, rcemail) || getRoleNotChange(studyId, IRISMap.RoleMap.RC2, rcname, rcemail))
+                    {
+                        retstr = rcname;
+                    }
+                    else
+                    {
+                        retstr = getRole(studyId, IRISMap.RoleMap.RC1);
+                        if (String.IsNullOrWhiteSpace(retstr))
+                            retstr = getRole(studyId, IRISMap.RoleMap.RC2);
+                    }*/
                 }
                 else
                 {
                     retstr = getRole(studyId, IRISMap.RoleMap.RC1);
                     if (String.IsNullOrWhiteSpace(retstr))
                         retstr = getRole(studyId, IRISMap.RoleMap.RC2);
-                }*/
-            }
-            else
-            {
-                retstr = getRole(studyId, IRISMap.RoleMap.RC1);
-                if (String.IsNullOrWhiteSpace(retstr))
-                    retstr = getRole(studyId, IRISMap.RoleMap.RC2);
-            }
+                }
 
-            retstr = String.IsNullOrWhiteSpace(retstr) ? getPI(studyId) : retstr;
-
-            return retstr;
+                retstr = String.IsNullOrWhiteSpace(retstr) ? getPI(studyId) : retstr;
+                rcCache.Add(studyId, retstr);
+                return retstr;
+            }
         }
 
 
@@ -1575,30 +1616,6 @@ namespace IrbAnalyser
 
             return retstr;*/
         }
-
-
-        /// <summary>
-        /// Returns the CRO for that study
-        /// </summary>
-        /// <param name="studyId"></param>
-        /// <returns></returns>
-        private static string getCRO(string studyId)
-        {
-            if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
-            {
-                var value = fpstudys.data.AsEnumerable().Where(x => (string)x["StudyId"] == studyId).FirstOrDefault();
-                return (string)value["CRO"];
-            }
-            if (Agency.AgencyVal == Agency.AgencyList.BRANY)
-            {
-                return getRole(studyId, BranyRoleMap.CRO);
-            }
-            else
-            {
-                return "";
-            }
-        }
-
 
         /// <summary>
         /// General function to return a specific role for that study, for brany it will only look at roles where the primary flag is true
@@ -1714,6 +1731,8 @@ namespace IrbAnalyser
         }*/
 
 
+        private static Dictionary<string, bool> shouldBeAddedCache;
+
         /// <summary>
         /// Return true if the study should be analysed / added
         /// </summary>
@@ -1727,24 +1746,34 @@ namespace IrbAnalyser
                 a = a + 1;
             }*/
 
-            if (String.IsNullOrWhiteSpace(studyId) && Agency.AgencySetupVal == Agency.AgencyList.NONE)
+            if (shouldBeAddedCache.ContainsKey(studyId))
             {
-                return true;
-            }
-
-            var study = (from st in fpstudys.data.AsEnumerable()
-                         where studyId.Trim().ToLower() == st.Field<string>("StudyId").Trim().ToLower()
-                         && !st.Field<string>("IRBNumber").Trim().ToLower().Contains("ibc")
-                         select st).FirstOrDefault();
-
-
-            if (study != null && !String.IsNullOrWhiteSpace((string)study["IRBNumber"]))
-            {
-                return shouldStudyBeAdded(study);
+                return shouldBeAddedCache[studyId];
             }
             else
             {
-                return false;
+
+                if (String.IsNullOrWhiteSpace(studyId) && Agency.AgencySetupVal == Agency.AgencyList.NONE)
+                {
+                    shouldBeAddedCache.Add(studyId, true);
+                    return true;
+                }
+
+                var study = (from st in fpstudys.data.AsEnumerable()
+                             where studyId.Trim().ToLower() == st.Field<string>("StudyId").Trim().ToLower()
+                             && !st.Field<string>("IRBNumber").Trim().ToLower().Contains("ibc")
+                             select st).FirstOrDefault();
+
+
+                if (study != null && !String.IsNullOrWhiteSpace((string)study["IRBNumber"]))
+                {
+                    return shouldStudyBeAdded(study);
+                }
+                else
+                {
+                    shouldBeAddedCache.Add(studyId, false);
+                    return false;
+                }
             }
 
         }
@@ -1761,189 +1790,239 @@ namespace IrbAnalyser
                 int a = 1;
                 a = a + 1;
             }*/
-            if (SpecialStudys.forceInclude.Any(x => Tools.compareStr(x.number, (string)dr["IRBNumber"])))
+            if (shouldBeAddedCache.ContainsKey((string)dr["StudyId"]))
             {
-                return true;
-            }
-
-            if (Tools.getOldStudy((string)dr["StudyId"]))
-            {
-                return true;
-            }
-
-
-
-            if (SpecialStudys.checkConsentAgentAndDevice && dr.Table.Columns.Contains("HasConsentForm") && dr.Table.Columns.Contains("PhaseDrugDevice"))
-            {
-                if ((string)dr["HasConsentForm"] == "N" && (string)dr["PhaseDrugDevice"] == "N")
-                {
-                    return false;
-                }
-            }
-
-
-            if (SpecialStudys.checkConsentAgentAndDeviceDate && dr.Table.Columns.Contains("HasConsentForm") && dr.Table.Columns.Contains("PhaseDrugDevice") && dr.Table.Columns.Contains("CreationDate") && Agency.AgencySetupVal == Agency.AgencyList.EINSTEIN)
-            {
-                DateTime dateparsed = DateTime.MinValue;
-                DateTime.TryParse((string)dr["CreationDate"], out dateparsed);
-
-                if ((string)dr["HasConsentForm"] == "N" && (string)dr["PhaseDrugDevice"] == "N" && dateparsed < SpecialStudys.checkConsentAgentAndDeviceDateDate)
-                {
-                    return false;
-                }
-            }
-
-            if (SpecialStudys.ignoredIrbNumbers.Count >= 1 && SpecialStudys.ignoredIrbNumbers.Contains((string)dr["IRBNumber"]))
-            {
-                return false;
-            }
-
-            bool ignoreLatestStatus = false;
-
-            if (Agency.AgencyVal == Agency.AgencyList.BRANY && SpecialStudys.ignoredStatusBRANY.Count > 1)
-            {
-                foreach (var ignoredStatus in SpecialStudys.ignoredStatusBRANY)
-                {
-                    ignoreLatestStatus = (from st in OutputStatus.fpstatus.data.AsEnumerable()
-                                  where st.Field<string>("StudyId").Trim().ToLower() == ((string)dr["StudyId"]).Trim().ToLower()
-                                  && BranyStatusMap.getStatus2(st.Field<string>("Status")).Trim().ToLower() == ignoredStatus.Trim().ToLower()
-                                  select st).Any();
-                    if (ignoreLatestStatus) return false;
-                }
-            }
-            else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN && SpecialStudys.ignoredStatusIRIS.Count >= 1)
-            {
-                foreach (var ignoredStatus in SpecialStudys.ignoredStatusIRIS)
-                {
-                    ignoreLatestStatus = (from st in OutputStatus.fpstatus.data.AsEnumerable()
-                                          where st.Field<string>("StudyId").Trim().ToLower() == ((string)dr["StudyId"]).Trim().ToLower()
-                                          && IRISMap.StatusMap.getStatus2(st.Field<string>("Status")).Trim().ToLower() == ignoredStatus.Trim().ToLower()
-                                          select st).Any();
-                    if (ignoreLatestStatus) return false;
-
-                }
-            }
-            else if (SpecialStudys.ignoredStatus.Count >= 1 && Agency.AgencyVal == Agency.AgencyList.BRANY)
-            {
-                foreach (var ignoredStatus in SpecialStudys.ignoredStatus)
-                {
-                    ignoreLatestStatus = (from st in OutputStatus.fpstatus.data.AsEnumerable()
-                                          where st.Field<string>("StudyId").Trim().ToLower() == ((string)dr["StudyId"]).Trim().ToLower()
-                                          && BranyStatusMap.getStatus2(st.Field<string>("Status")).Trim().ToLower() == ignoredStatus.Trim().ToLower()
-                                          select st).Any();
-                    if (ignoreLatestStatus) return false;
-                }
-            }
-            else if (SpecialStudys.ignoredStatus.Count >= 1 && Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
-            {
-                foreach (var ignoredStatus in SpecialStudys.ignoredStatus)
-                {
-                    ignoreLatestStatus = (from st in OutputStatus.fpstatus.data.AsEnumerable()
-                                          where st.Field<string>("StudyId").Trim().ToLower() == ((string)dr["StudyId"]).Trim().ToLower()
-                                          && IRISMap.StatusMap.getStatus2(st.Field<string>("Status")).Trim().ToLower() == ignoredStatus.Trim().ToLower()
-                                          select st).Any();
-                    if (ignoreLatestStatus) return false;
-                }
-            }
-
-            if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
-            {
-                if (SpecialStudys.studyToInclude.Count >= 1 && SpecialStudys.studyToInclude.Any(x => Tools.compareStr(x.number, (string)dr["IRBNumber"])))
-                {
-                    return true;
-                }
-                else if (SpecialStudys.studyToInclude.Count >= 1)
-                {
-                    return false;
-                }
-                else return true;
-            }
-
-            if (!((string)dr["ExternalIRB"]).Trim().ToLower().Contains("brany") && !((string)dr["StudyId"]).Trim().ToLower().Contains("corrupted"))
-            {
-
-                if (SpecialStudys.ignoredStudys.Any(x => x.IRB == Agency.agencyStrLwr && Tools.compareStr(x.number, (string)dr["IRBNumber"])))
-                {
-                    return false;
-                }
-
-
-
-                if (SpecialStudys.studyToInclude.Count >= 1 && SpecialStudys.studyToInclude.Any(x => x.IRB == Agency.agencyStrLwr && Tools.compareStr(x.number, (string)dr["IRBNumber"])))
-                {
-                    return true;
-                }
-                else if (SpecialStudys.studyToInclude.Count >= 1)
-                {
-                    return false;
-                }
-
-                if (Agency.AgencyVal == Agency.AgencyList.BRANY)
-                {
-                    if (closedStatusInVelos.Contains(OutputStatus.getLatestStatus((string)dr["StudyId"])))
-                    {
-                        return false;
-                    }
-
-                    var irbno = ((string)dr["IRBNumber"]).Split('-');
-                    if (irbno.Count() >= 2 && irbno[1] == "06") { return true; }
-
-
-                    if (SpecialStudys.cancerTerms.Count >= 1)
-                    {
-                        foreach (var str in SpecialStudys.cancerTerms)
-                        {
-                            if (((string)dr["StudyTitle"]).ToLower().Contains(str) ||
-                                ((string)dr["PrimarySponsorName"]).ToLower().Contains(str) ||
-                                ((string)dr["StudySummary"]).ToLower().Contains(str))
-                            {
-                                return true;
-                            }
-                            /*cancerfilter = ((string)dr["StudyTitle"]).ToLower().Contains(str) || cancerfilter;
-                            cancerfilter = ((string)dr["PrimarySponsorName"]).ToLower().Contains(str) || cancerfilter;*/
-                        }
-                        return false;
-                    }
-                    else
-                    {
-                        //cancerfilter = true;
-                        return true;
-                    }
-                }
-                else
-                {
-                    if (((string)dr["Division"]).ToLower().Contains("oncol") ||
-                        ((string)dr["Department"]).ToLower().Contains("oncol") ||
-                        ((string)dr["Cancer"]).ToLower().Contains("yes"))
-                    {
-                        return true;
-                    }
-                    if (SpecialStudys.cancerTerms.Count >= 1)
-                    {
-                        foreach (var str in SpecialStudys.cancerTerms)
-                        {
-                            if (((string)dr["StudyTitle"]).ToLower().Contains(str) || ((string)dr["PrimarySponsorName"]).ToLower().Contains(str))
-                            {
-                                return true;
-                            }
-                            /*cancerfilter = ((string)dr["StudyTitle"]).ToLower().Contains(str) || cancerfilter;
-                            cancerfilter = ((string)dr["PrimarySponsorName"]).ToLower().Contains(str) || cancerfilter;*/
-                        }
-                        return false;
-                    }
-                    else
-                    {
-                        //cancerfilter = true;
-                        return true;
-                    }
-
-                }
-
-
+                return shouldBeAddedCache[(string)dr["StudyId"]];
             }
             else
             {
-                return false;
+                if (SpecialStudys.forceInclude.Any(x => Tools.compareStr(x.number, (string)dr["IRBNumber"])))
+                {
+                    shouldBeAddedCache.Add((string)dr["StudyId"], true);
+                    return true;
+                }
+
+                if (Tools.getOldStudy((string)dr["StudyId"]))
+                {
+                    shouldBeAddedCache.Add((string)dr["StudyId"], true);
+                    return true;
+                }
+
+
+
+                if (SpecialStudys.checkConsentAgentAndDevice && dr.Table.Columns.Contains("HasConsentForm") && dr.Table.Columns.Contains("PhaseDrugDevice"))
+                {
+                    if ((string)dr["HasConsentForm"] == "N" && (string)dr["PhaseDrugDevice"] == "N")
+                    {
+                        shouldBeAddedCache.Add((string)dr["StudyId"], false);
+                        return false;
+                    }
+                }
+
+
+                if (SpecialStudys.checkConsentAgentAndDeviceDate && dr.Table.Columns.Contains("HasConsentForm") && dr.Table.Columns.Contains("PhaseDrugDevice") && dr.Table.Columns.Contains("CreationDate") && Agency.AgencySetupVal == Agency.AgencyList.EINSTEIN)
+                {
+                    DateTime dateparsed = DateTime.MinValue;
+                    DateTime.TryParse((string)dr["CreationDate"], out dateparsed);
+
+                    if ((string)dr["HasConsentForm"] == "N" && (string)dr["PhaseDrugDevice"] == "N" && dateparsed < SpecialStudys.checkConsentAgentAndDeviceDateDate)
+                    {
+                        shouldBeAddedCache.Add((string)dr["StudyId"], false);
+                        return false;
+                    }
+                }
+
+                if (SpecialStudys.ignoredIrbNumbers.Count >= 1 && SpecialStudys.ignoredIrbNumbers.Contains((string)dr["IRBNumber"]))
+                {
+                    shouldBeAddedCache.Add((string)dr["StudyId"], false);
+                    return false;
+                }
+
+                bool ignoreLatestStatus = false;
+
+                if (Agency.AgencyVal == Agency.AgencyList.BRANY && SpecialStudys.ignoredStatusBRANY.Count > 1)
+                {
+                    foreach (var ignoredStatus in SpecialStudys.ignoredStatusBRANY)
+                    {
+                        ignoreLatestStatus = (from st in OutputStatus.fpstatus.data.AsEnumerable()
+                                              where st.Field<string>("StudyId").Trim().ToLower() == ((string)dr["StudyId"]).Trim().ToLower()
+                                              && BranyStatusMap.getStatus2(st.Field<string>("Status")).Trim().ToLower() == ignoredStatus.Trim().ToLower()
+                                              select st).Any();
+                        if (ignoreLatestStatus)
+                        {
+                            shouldBeAddedCache.Add((string)dr["StudyId"], false);
+                            return false;
+                        }
+                    }
+                }
+                else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN && SpecialStudys.ignoredStatusIRIS.Count >= 1)
+                {
+                    foreach (var ignoredStatus in SpecialStudys.ignoredStatusIRIS)
+                    {
+                        ignoreLatestStatus = (from st in OutputStatus.fpstatus.data.AsEnumerable()
+                                              where st.Field<string>("StudyId").Trim().ToLower() == ((string)dr["StudyId"]).Trim().ToLower()
+                                              && IRISMap.StatusMap.getStatus2(st.Field<string>("Status")).Trim().ToLower() == ignoredStatus.Trim().ToLower()
+                                              select st).Any();
+                        if (ignoreLatestStatus)
+                        {
+                            shouldBeAddedCache.Add((string)dr["StudyId"], false);
+                            return false;
+                        }
+
+                    }
+                }
+                else if (SpecialStudys.ignoredStatus.Count >= 1 && Agency.AgencyVal == Agency.AgencyList.BRANY)
+                {
+                    foreach (var ignoredStatus in SpecialStudys.ignoredStatus)
+                    {
+                        ignoreLatestStatus = (from st in OutputStatus.fpstatus.data.AsEnumerable()
+                                              where st.Field<string>("StudyId").Trim().ToLower() == ((string)dr["StudyId"]).Trim().ToLower()
+                                              && BranyStatusMap.getStatus2(st.Field<string>("Status")).Trim().ToLower() == ignoredStatus.Trim().ToLower()
+                                              select st).Any();
+                        if (ignoreLatestStatus)
+                        {
+                            shouldBeAddedCache.Add((string)dr["StudyId"], false);
+                            return false;
+                        }
+                    }
+                }
+                else if (SpecialStudys.ignoredStatus.Count >= 1 && Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
+                {
+                    foreach (var ignoredStatus in SpecialStudys.ignoredStatus)
+                    {
+                        ignoreLatestStatus = (from st in OutputStatus.fpstatus.data.AsEnumerable()
+                                              where st.Field<string>("StudyId").Trim().ToLower() == ((string)dr["StudyId"]).Trim().ToLower()
+                                              && IRISMap.StatusMap.getStatus2(st.Field<string>("Status")).Trim().ToLower() == ignoredStatus.Trim().ToLower()
+                                              select st).Any();
+                        if (ignoreLatestStatus)
+                        {
+                            shouldBeAddedCache.Add((string)dr["StudyId"], false);
+                            return false;
+                        }
+                    }
+                }
+
+                if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
+                {
+                    if (SpecialStudys.studyToInclude.Count >= 1 && SpecialStudys.studyToInclude.Any(x => Tools.compareStr(x.number, (string)dr["IRBNumber"])))
+                    {
+                        shouldBeAddedCache.Add((string)dr["StudyId"], true);
+                        return true;
+                    }
+                    else if (SpecialStudys.studyToInclude.Count >= 1)
+                    {
+                        shouldBeAddedCache.Add((string)dr["StudyId"], false);
+                        return false;
+                    }
+                    else
+                    {
+                        shouldBeAddedCache.Add((string)dr["StudyId"], true);
+                        return true;
+                    }
+                }
+
+                if (!((string)dr["ExternalIRB"]).Trim().ToLower().Contains("brany") && !((string)dr["StudyId"]).Trim().ToLower().Contains("corrupted"))
+                {
+
+                    if (SpecialStudys.ignoredStudys.Any(x => x.IRB == Agency.agencyStrLwr && Tools.compareStr(x.number, (string)dr["IRBNumber"])))
+                    {
+                        shouldBeAddedCache.Add((string)dr["StudyId"], false);
+                        return false;
+                    }
+
+
+
+                    if (SpecialStudys.studyToInclude.Count >= 1 && SpecialStudys.studyToInclude.Any(x => x.IRB == Agency.agencyStrLwr && Tools.compareStr(x.number, (string)dr["IRBNumber"])))
+                    {
+                        shouldBeAddedCache.Add((string)dr["StudyId"], true);
+                        return true;
+                    }
+                    else if (SpecialStudys.studyToInclude.Count >= 1)
+                    {
+                        shouldBeAddedCache.Add((string)dr["StudyId"], false);
+                        return false;
+                    }
+
+                    if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+                    {
+                        if (closedStatusInVelos.Contains(OutputStatus.getLatestStatus((string)dr["StudyId"])))
+                        {
+                            shouldBeAddedCache.Add((string)dr["StudyId"], false);
+                            return false;
+                        }
+
+                        var irbno = ((string)dr["IRBNumber"]).Split('-');
+                        if (irbno.Count() >= 2 && irbno[1] == "06")
+                        {
+                            shouldBeAddedCache.Add((string)dr["StudyId"], true);
+                            return true;
+                        }
+
+
+                        if (SpecialStudys.cancerTerms.Count >= 1)
+                        {
+                            foreach (var str in SpecialStudys.cancerTerms)
+                            {
+                                if (((string)dr["StudyTitle"]).ToLower().Contains(str) ||
+                                    ((string)dr["PrimarySponsorName"]).ToLower().Contains(str) ||
+                                    ((string)dr["StudySummary"]).ToLower().Contains(str))
+                                {
+                                    shouldBeAddedCache.Add((string)dr["StudyId"], true);
+                                    return true;
+                                }
+                                /*cancerfilter = ((string)dr["StudyTitle"]).ToLower().Contains(str) || cancerfilter;
+                                cancerfilter = ((string)dr["PrimarySponsorName"]).ToLower().Contains(str) || cancerfilter;*/
+                            }
+                            shouldBeAddedCache.Add((string)dr["StudyId"], false);
+                            return false;
+                        }
+                        else
+                        {
+                            //cancerfilter = true;
+                            shouldBeAddedCache.Add((string)dr["StudyId"], true);
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        if (((string)dr["Division"]).ToLower().Contains("oncol") ||
+                            ((string)dr["Department"]).ToLower().Contains("oncol") ||
+                            ((string)dr["Cancer"]).ToLower().Contains("yes"))
+                        {
+                            shouldBeAddedCache.Add((string)dr["StudyId"], true);
+                            return true;
+                        }
+                        if (SpecialStudys.cancerTerms.Count >= 1)
+                        {
+                            foreach (var str in SpecialStudys.cancerTerms)
+                            {
+                                if (((string)dr["StudyTitle"]).ToLower().Contains(str) || ((string)dr["PrimarySponsorName"]).ToLower().Contains(str))
+                                {
+                                    shouldBeAddedCache.Add((string)dr["StudyId"], true);
+                                    return true;
+                                }
+                                /*cancerfilter = ((string)dr["StudyTitle"]).ToLower().Contains(str) || cancerfilter;
+                                cancerfilter = ((string)dr["PrimarySponsorName"]).ToLower().Contains(str) || cancerfilter;*/
+                            }
+                            shouldBeAddedCache.Add((string)dr["StudyId"], false);
+                            return false;
+                        }
+                        else
+                        {
+                            shouldBeAddedCache.Add((string)dr["StudyId"], true);
+                            //cancerfilter = true;
+                            return true;
+                        }
+
+                    }
+
+
+                }
+                else
+                {
+                    shouldBeAddedCache.Add((string)dr["StudyId"], false);
+                    return false;
+                }
             }
 
         }
@@ -1988,6 +2067,26 @@ namespace IrbAnalyser
             }
 
             return false;
+        }
+
+        public static void reset()
+        {
+            if (shouldBeAddedCache == null)
+            {
+                shouldBeAddedCache = new Dictionary<string, bool>();
+            }
+            shouldBeAddedCache.Clear();
+            if (rcCache == null)
+            {
+                rcCache = new Dictionary<string, string>();
+            }
+            rcCache.Clear();
+            if (piCache == null)
+            {
+                piCache = new Dictionary<string, string>();
+            }
+            piCache.Clear();
+            fpstudys.reset();
         }
 
     }

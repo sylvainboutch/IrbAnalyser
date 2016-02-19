@@ -89,6 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BRANY_APITest.cs" />
+    <Compile Include="OutputStatusTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="XmlToolsTest.cs" />
   </ItemGroup>

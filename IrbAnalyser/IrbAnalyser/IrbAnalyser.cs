@@ -51,10 +51,7 @@ namespace IrbAnalyser
             Agency.AgencyVal = agency;
             Agency.AgencySetupVal = agency;
 
-            OutputStudy.fpstudys.reset();
-            OutputTeam.fpTeam.reset();
-            OutputStatus.fpevent.reset();
-            OutputStatus.fpstatus.reset();
+            Tools.reset();
 
             filecount = filecount + 1;
             createDir(zipDir);
@@ -299,12 +296,9 @@ namespace IrbAnalyser
                     zipfile = ofdStudy.FileName;
                 }
 
-                OutputStudy.fpstudys.reset();
-                OutputTeam.fpTeam.reset();
-                OutputStatus.fpevent.reset();
-                OutputStatus.fpstatus.reset();
+                Tools.reset();
 
-                DbCompare dbc = new DbCompare();
+                //DbCompare dbc = new DbCompare();
 
                 btnSave.Enabled = false;
                 btnAnalyse.Enabled = false;
@@ -448,19 +442,13 @@ namespace IrbAnalyser
 
             runScript();
 
-            OutputStudy.fpstudys.reset();
-            OutputTeam.fpTeam.reset();
-            OutputStatus.fpevent.reset();
-            OutputStatus.fpstatus.reset();
+            Tools.reset();
 
             //DbCompare dbc = new DbCompare();
 
             Analyse(zipLoc, Agency.AgencyList.EINSTEIN);
 
-            OutputStudy.fpstudys.reset();
-            OutputTeam.fpTeam.reset();
-            OutputStatus.fpevent.reset();
-            OutputStatus.fpstatus.reset();
+            Tools.reset();
 
             //dbc = new DbCompare();
 

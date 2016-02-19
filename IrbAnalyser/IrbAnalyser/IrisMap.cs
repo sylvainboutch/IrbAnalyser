@@ -317,7 +317,7 @@ namespace IrbAnalyser.IRISMap
     {
         public static readonly Dictionary<string, string> eventsMap = new Dictionary<string, string>()
             {
-                {"Amendment","IRB Amendment Submitted**"}
+                {"Amendment",OutputStatus.amendmentSubmitStatus}
             };
 
         public static string getStatus(string key)
@@ -335,7 +335,7 @@ namespace IrbAnalyser.IRISMap
 
         public static readonly Dictionary<string, string> eventsTypeMap = new Dictionary<string, string>()
             {
-                {"Amendment","Post Activation"}
+                {"Amendment",OutputStatus.amendmentSubmitType}
             };
 
         public static string getType(string key)

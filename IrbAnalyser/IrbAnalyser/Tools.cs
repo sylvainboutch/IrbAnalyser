@@ -208,6 +208,8 @@ namespace IrbAnalyser
             return retour;
         }
 
+        private static Dictionary<string, string> studyNumberCache;
+
         /// <summary>
         /// Gets the study number for that study, looks for the study in the database, in previously added new study.
         /// If no study is found, creates the study number.
@@ -218,34 +220,44 @@ namespace IrbAnalyser
         /// <returns></returns>
         public static string getOldStudyNumber(string IRBstudyId)
         {
-            var stud = (from st in OutputStudy.fpstudys.data.AsEnumerable()
-                        where st.Field<string>("StudyId").Trim().ToLower() == IRBstudyId.Trim().ToLower()
-                        select st).ToArray();
-
-            string accronym = stud.Count() > 0 ? stud[0].Field<string>("StudyAcronym") : "";
-
-            string IRBnumber = "";
-            if (!string.IsNullOrWhiteSpace((stud[0].Field<string>("ExternalIRB"))))
+            if (studyNumberCache.ContainsKey(IRBstudyId))
             {
-                IRBnumber = stud[0].Field<string>("ExternalIRBnumber");
+                return studyNumberCache[IRBstudyId];
             }
             else
             {
-                IRBnumber = (stud[0].Field<string>("IRBNumber")).Replace("(IBC)", "");
-            }
+                var stud = (from st in OutputStudy.fpstudys.data.AsEnumerable()
+                            where st.Field<string>("StudyId").Trim().ToLower() == IRBstudyId.Trim().ToLower()
+                            select st).ToArray();
+
+                string accronym = stud.Count() > 0 ? stud[0].Field<string>("StudyAcronym") : "";
+
+                string IRBnumber = "";
+                if (!string.IsNullOrWhiteSpace((stud[0].Field<string>("ExternalIRB"))))
+                {
+                    IRBnumber = stud[0].Field<string>("ExternalIRBnumber");
+                }
+                else
+                {
+                    IRBnumber = (stud[0].Field<string>("IRBNumber")).Replace("(IBC)", "");
+                }
 
 
-            string title = stud.Count() > 0 ? stud[0].Field<string>("StudyTitle") : "";
-            string sponsorId = stud.Count() > 0 ? stud[0].Field<string>("PrimarySponsorStudyId") : "";
+                string title = stud.Count() > 0 ? stud[0].Field<string>("StudyTitle") : "";
+                string sponsorId = stud.Count() > 0 ? stud[0].Field<string>("PrimarySponsorStudyId") : "";
 
-            string oldNumber = getDBStudyNumber(IRBstudyId);
-            if (!string.IsNullOrWhiteSpace(oldNumber))
-            {
-                return oldNumber;
-            }
-            else
-            {
-                return getNewStudyNumber(IRBstudyId, IRBnumber, accronym, title, sponsorId);
+                string oldNumber = getDBStudyNumber(IRBstudyId);
+                if (!string.IsNullOrWhiteSpace(oldNumber))
+                {
+                    studyNumberCache.Add(IRBstudyId, oldNumber);
+                    return oldNumber;
+                }
+                else
+                {
+                    oldNumber = getNewStudyNumber(IRBstudyId, IRBnumber, accronym, title, sponsorId);
+                    studyNumberCache.Add(IRBstudyId, oldNumber);
+                    return oldNumber;
+                }
             }
         }
 
@@ -356,49 +368,65 @@ namespace IrbAnalyser
         }
 
 
+        private static Dictionary<string, bool> isApprovedCache;
+
         /// <summary>
         /// Check in the database if the study exist and in the file to see if a study is approved, it will return true if the study has an approval with the date part greater then the input date date part.
         /// </summary>
         /// <param name="studyId"></param>
         /// <returns></returns>
-        public static bool isStudyApproved(string studyId, DateTime date)//DateTime? date = null)
+        public static bool isStudyApproved(string studyId, DateTime date)
         {
-            bool isStudyApprovedVelos = (from stat in OutputStatus.allstatus
-                                         where stat.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (studyId.Trim().ToLower())
-                                         && (stat.SSTAT_STUDY_STATUS == OutputStatus.approvedStatus || stat.SSTAT_STUDY_STATUS == OutputStatus.renewalStatus)
-                                         && (stat.SSTAT_VALID_FROM.HasValue && stat.SSTAT_VALID_FROM.Value.Date >= date.Date)
-                                         select stat).Any();
-
-            if (isStudyApprovedVelos) return true;
-
-            var studyIRBs = (from st in OutputStudy.fpstudys.data.AsEnumerable()
-                                           where st.Field<string>("StudyId").Trim().ToLower() == studyId.Trim().ToLower()
-                                           && (!string.IsNullOrWhiteSpace(st.Field<string>("InitialApprovalDate").Trim().ToLower())
-                                           || !string.IsNullOrWhiteSpace(st.Field<string>("MostRecentApprovalDate").Trim().ToLower())
-                                           )
-                                           select st);
-
-            foreach (var study in studyIRBs)
+            if (isApprovedCache.ContainsKey(studyId))
+                return isApprovedCache[studyId];
+            else
             {
-                DateTime approvDate = DateTime.MaxValue;
-                if (!String.IsNullOrWhiteSpace(study.Field<string>("InitialApprovalDate")))
-                {
-                    approvDate = DateTime.ParseExact((study.Field<string>("InitialApprovalDate")).Trim(), new string[] { "s", "u", "yyyy-MM-dd" }, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.AssumeLocal);
-                }
-                if (approvDate == DateTime.MaxValue && !String.IsNullOrWhiteSpace(study.Field<string>("MostRecentApprovalDate")))
-                {
-                    approvDate = DateTime.ParseExact((study.Field<string>("MostRecentApprovalDate")).Trim(), new string[] { "s", "u", "yyyy-MM-dd" }, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.AssumeLocal);
-                }
-                if (approvDate == DateTime.MaxValue || approvDate.Date < date.Date) return false;
-                else return true;
 
+                bool isStudyApprovedVelos = (from stat in OutputStatus.allstatus
+                                             where stat.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (studyId.Trim().ToLower())
+                                             && (stat.SSTAT_STUDY_STATUS == OutputStatus.approvedStatus || stat.SSTAT_STUDY_STATUS == OutputStatus.renewalStatus)
+                                             && (stat.SSTAT_VALID_FROM.HasValue && stat.SSTAT_VALID_FROM.Value.Date <= date.Date)
+                                             select stat).Any();
+
+                if (isStudyApprovedVelos)
+                {
+
+                    isApprovedCache.Add(studyId, true);
+                    return true;
+                }
+
+                var studyIRBs = (from st in OutputStudy.fpstudys.data.AsEnumerable()
+                                 where st.Field<string>("StudyId").Trim().ToLower() == studyId.Trim().ToLower()
+                                 && (!string.IsNullOrWhiteSpace(st.Field<string>("InitialApprovalDate").Trim().ToLower())
+                                 || !string.IsNullOrWhiteSpace(st.Field<string>("MostRecentApprovalDate").Trim().ToLower())
+                                 )
+                                 select st);
+
+                bool isApprovedBool = false;
+                foreach (var study in studyIRBs)
+                {
+                    DateTime approvDate = DateTime.MaxValue;
+                    if (!String.IsNullOrWhiteSpace(study.Field<string>("InitialApprovalDate")))
+                    {
+                        approvDate = DateTime.ParseExact((study.Field<string>("InitialApprovalDate")).Trim(), new string[] { "s", "u", "yyyy-MM-dd" }, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.AssumeLocal);
+                    }
+                    if (approvDate == DateTime.MaxValue && !String.IsNullOrWhiteSpace(study.Field<string>("MostRecentApprovalDate")))
+                    {
+                        approvDate = DateTime.ParseExact((study.Field<string>("MostRecentApprovalDate")).Trim(), new string[] { "s", "u", "yyyy-MM-dd" }, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.AssumeLocal);
+                    }
+                    if (approvDate == DateTime.MaxValue || approvDate.Date > date.Date && !isApprovedBool) isApprovedBool = false;
+                    else if (approvDate != DateTime.MaxValue || approvDate.Date <= date.Date) isApprovedBool = true;
+
+                }
+
+                isApprovedCache.Add(studyId, isApprovedBool);
+                return isApprovedBool;
             }
-
-
-
-            return false;
-
         }
+
+
+
+        private static Dictionary<string, bool> oldStudyCache;
 
         /// <summary>
         /// Check if a study exist in velos for that study id
@@ -407,7 +435,16 @@ namespace IrbAnalyser
         /// <returns></returns>
         public static bool getOldStudy(string IRBstudyId)
         {
-            return OutputStudy.studys.Any(x => x.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (IRBstudyId.Trim().ToLower()));
+            if (oldStudyCache.ContainsKey(IRBstudyId))
+            {
+                return oldStudyCache[IRBstudyId];
+            }
+            else
+            {
+                bool oldStudy = OutputStudy.studys.Any(x => x.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (IRBstudyId.Trim().ToLower()));
+                oldStudyCache.Add(IRBstudyId, oldStudy);
+                return oldStudy;
+            }
             /*bool ret; 
             if (Agency.AgencyVal == Agency.AgencyList.BRANY)
             {
@@ -859,6 +896,32 @@ namespace IrbAnalyser
                     return hashCode;
                 }
             }
+        }
+
+        /// <summary>
+        /// Clears cache
+        /// </summary>
+        public static void reset()
+        {
+            if (isApprovedCache == null)
+            {
+                isApprovedCache = new Dictionary<string, bool>();
+            }
+            if (oldStudyCache == null)
+            {
+                oldStudyCache = new Dictionary<string, bool>();
+            }
+            if (studyNumberCache == null)
+            {
+                studyNumberCache = new Dictionary<string, string>();
+            }
+            isApprovedCache.Clear();
+            oldStudyCache.Clear();
+            studyNumberCache.Clear();
+            OutputStudy.reset();
+            OutputTeam.fpTeam.reset();
+            OutputStatus.fpevent.reset();
+            OutputStatus.fpstatus.reset();
         }
 
     }
