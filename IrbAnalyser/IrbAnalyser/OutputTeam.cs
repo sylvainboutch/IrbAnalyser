@@ -566,8 +566,8 @@ namespace IrbAnalyser
                 }
                 else if (currentuser != null && !string.IsNullOrWhiteSpace(email))
                 {
-                    userRow["PrimaryEMailAddress"] = currentuser.USER_EMAIL.Trim().ToLower();
-                    email = currentuser.USER_EMAIL.Trim().ToLower();
+                    userRow["PrimaryEMailAddress"] = currentuser.USER_EMAIL == null ? "" : currentuser.USER_EMAIL.Trim().ToLower();
+                    email = currentuser.USER_EMAIL == null ? "" : currentuser.USER_EMAIL.Trim().ToLower();
                 }
 
                 var issuperuser = (from us in accounts

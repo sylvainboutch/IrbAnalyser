@@ -242,21 +242,21 @@ namespace IrbAnalyser
 
                 if (status != "" && status != "NA" && !String.IsNullOrEmpty(irbstudyId))
                 {
-                    /*
-                    if (irbstudyId == "42f28a55-7f67-4eb3-b2f3-597e1ebc750c")
+                    
+                    /*if (irbstudyId == "5532")
                     {
-                        Agency.AgencyVal = Agency.AgencyList.BRANY;
+                        Agency.AgencyVal = Agency.AgencyList.EINSTEIN;
                     }*/
 
 
                     bool isOtherStatusInDT = (from st in OutputStatus.newStatus.AsEnumerable()
-                                         where st.Field<string>("IRB Study ID").Trim().ToLower() == ((string)statusRow["StudyId"]).Trim().ToLower()
+                                              where st.Field<string>("IRB Study ID").Trim().ToLower() == irbstudyId.Trim().ToLower()
                                          && st.Field<string>("Study status").Trim().ToLower() == status.Trim().ToLower()
-                                         && st.Field<string>("Status Valid From").Trim().ToLower() != startstring.Trim().ToLower()
+                                         //&& st.Field<string>("Status Valid From").Trim().ToLower() != startstring.Trim().ToLower()
                                          select st).Any();
 
                     var statuses = from stat in allstatus
-                                   where stat.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == ((string)statusRow["StudyId"]).Trim().ToLower()
+                                   where stat.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == irbstudyId.Trim().ToLower()
                                    && stat.SSTAT_STUDY_STATUS != null
                                    && stat.SSTAT_VALID_FROM != null
                                    select stat;
@@ -264,9 +264,9 @@ namespace IrbAnalyser
 
                     bool isOtherStatusInDB = (from stat in statuses
                                          where stat.SSTAT_STUDY_STATUS.Trim().ToLower() == status.Trim().ToLower()
-                                         && stat.SSTAT_VALID_FROM.Value.Year != start.Year
-                                         && stat.SSTAT_VALID_FROM.Value.Month != start.Month
-                                         && stat.SSTAT_VALID_FROM.Value.Day != start.Day
+                                         //&& stat.SSTAT_VALID_FROM.Value.Year != start.Year
+                                         //&& stat.SSTAT_VALID_FROM.Value.Month != start.Month
+                                         //&& stat.SSTAT_VALID_FROM.Value.Day != start.Day
                                          select stat).Any();
 
                     bool isStatusInDB = (from stat in statuses
@@ -285,7 +285,7 @@ namespace IrbAnalyser
                                     select st).Any();
 
 
-                    if (!allowMultiple && (isOtherStatusInDB || isStatusInDT) && !isStatusInDB && !isStatusInDT)
+                    if (!allowMultiple && (isOtherStatusInDB || isOtherStatusInDT) && !isStatusInDB && !isStatusInDT)
                     {
                         status = undefinedStatus;
                         type = undefinedType;
@@ -309,7 +309,7 @@ namespace IrbAnalyser
 
 
 
-                    if (!isStatusInDB && !isStatusInDT && !statuses.Any())
+                    if (!isStatusInDB && !isStatusInDT && statuses.Any())
                     {
                         addRowStatus(irbstudyId, status, type, (string)statusRow["Status"], sitename, startstring, "New Status");
                     }

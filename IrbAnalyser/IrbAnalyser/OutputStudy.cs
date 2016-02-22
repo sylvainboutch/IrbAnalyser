@@ -1339,24 +1339,20 @@ namespace IrbAnalyser
                         return (string)value["PI"];
                     }
                 }
-                if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+
+
+
+                var study = studys.FirstOrDefault(x => x.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (studyId.Trim().ToLower()));
+                string piname = study == null ? "" : study.STUDY_PI;
+                piname = String.IsNullOrWhiteSpace(piname) ? "" : piname;
+                string piemail = piname == "" ? "" : OutputTeam.accounts.FirstOrDefault(x => x.USER_NAME == piname).USER_EMAIL;
+
+
+                piemail = String.IsNullOrWhiteSpace(piemail) ? "" : piemail.ToLower().Trim();
+                piname = String.IsNullOrWhiteSpace(piname) ? "" : piname;
+
+                if (piname != "")
                 {
-                    string pi = getRole(studyId, BranyRoleMap.PI);
-                    piCache.Add(studyId, pi);
-                    return pi;
-                }
-                else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
-                {
-                    //string rcemail = OutputTeam.team.FirstOrDefault(x => x.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (studyId.Trim().ToLower()) && x.ROLE == Role).USER_EMAIL;
-                    var study = studys.FirstOrDefault(x => x.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (studyId.Trim().ToLower()));
-                    string piname = study == null ? "" : study.STUDY_PI;
-                    piname = String.IsNullOrWhiteSpace(piname) ? "" : piname;
-                    string piemail = piname == "" ? "" : OutputTeam.accounts.FirstOrDefault(x => x.USER_NAME == piname).USER_EMAIL;
-
-
-                    piemail = String.IsNullOrWhiteSpace(piemail) ? "" : piemail.ToLower().Trim();
-                    piname = String.IsNullOrWhiteSpace(piname) ? "" : piname;
-
                     string[] split = piname.Split(' ');
                     var split2 = from s in split
                                  orderby s.Length descending
@@ -1365,11 +1361,11 @@ namespace IrbAnalyser
                     string nameLonguest = split2.First().Trim().ToLower();
                     string nameSecondLonguest = nameLonguest;
 
-
                     if (split2.Count() > 1)
                     {
                         nameSecondLonguest = split2.ElementAt(1).Trim().ToLower();
                     }
+
 
                     var pis = from pi in OutputTeam.fpTeam.data.AsEnumerable()
                               where (pi.Field<string>("Role") == IRISMap.RoleMap.RC1 || pi.Field<string>("Role") == IRISMap.RoleMap.RC2)
@@ -1382,16 +1378,26 @@ namespace IrbAnalyser
 
                     if (pis.Count() > 0)
                     {
-                        string pi = pis.First().Field<string>("FirstName") + " " + pis.First().Field<string>("LastName");
-                        piCache.Add(studyId, pi);
-                        return pi; 
-                    }
-                    else
-                    {
-                        string pi = getRole(studyId, IRISMap.RoleMap.PI);
+                        string pi = piname;//pis.First().Field<string>("FirstName") + " " + pis.First().Field<string>("LastName");
                         piCache.Add(studyId, pi);
                         return pi;
                     }
+
+                }
+
+                if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+                {
+                    string pi = getRole(studyId, BranyRoleMap.PI);
+                    piCache.Add(studyId, pi);
+                    return pi;
+                }
+                else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
+                {
+
+
+                    string pi = getRole(studyId, IRISMap.RoleMap.PI);
+                    piCache.Add(studyId, pi);
+                    return pi;
 
                     /*if (getRoleNotChange(studyId, IRISMap.RoleMap.PI, piname, piemail))
                     {
@@ -1444,6 +1450,12 @@ namespace IrbAnalyser
         /// <returns></returns>
         public static string getRC(string studyId)
         {
+            /*if (studyId == "5400b6d2-d6e0-4f34-8c8c-58c5c9a4aa0d")
+            {
+                Agency.AgencyVal = Agency.AgencyList.BRANY;
+            }*/
+
+
             if (rcCache.ContainsKey(studyId))
             {
                 return rcCache[studyId];
@@ -1467,13 +1479,18 @@ namespace IrbAnalyser
                 {
                     if (Agency.AgencyVal == Agency.AgencyList.BRANY)
                     {
-                        return getRole(studyId, BranyRoleMap.RC);
+                        string rc1 = getRole(studyId, BranyRoleMap.RC);
+                        rc1 = String.IsNullOrWhiteSpace(rc1) ? getRole(studyId, BranyRoleMap.PI) : rc1;
+                        rcCache.Add(studyId, rc1);
+                        return rc1;
                     }
                     else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
                     {
                         string rc1 = getRole(studyId, IRISMap.RoleMap.RC1);
-                        rcCache.Add(studyId, rc1);
+
                         rc1 = String.IsNullOrWhiteSpace(rc1) ? getRole(studyId, IRISMap.RoleMap.RC2) : rc1;
+                        rc1 = String.IsNullOrWhiteSpace(rc1) ? getRole(studyId, IRISMap.RoleMap.PI) : rc1;
+                        rcCache.Add(studyId, rc1);
                         return rc1;
                     }
                 }
@@ -1501,10 +1518,9 @@ namespace IrbAnalyser
 
                 if (Agency.AgencyVal == Agency.AgencyList.BRANY)
                 {
-                    /*string test = "";
-                    if (rcname.Contains("Barrera"))
+                    /*if (rcname.Contains("Mesias"))
                     {
-                        test = rcname + " s";
+                        Agency.AgencyVal = Agency.AgencyList.BRANY;
                     }*/
 
                     var rcs = from rc in OutputTeam.fpTeam.data.AsEnumerable()
@@ -1524,6 +1540,7 @@ namespace IrbAnalyser
                     else
                     {
                         rcname = getRole(studyId, BranyRoleMap.RC);
+                        rcname = String.IsNullOrWhiteSpace(rcname) ? getRole(studyId, BranyRoleMap.PI) : rcname;
                         rcCache.Add(studyId, rcname);
                         return rcname;
                     }
@@ -1539,6 +1556,11 @@ namespace IrbAnalyser
                 }
                 else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
                 {
+                    /*if (rcname.Contains("Mesias"))
+                    {
+                        Agency.AgencyVal = Agency.AgencyList.EINSTEIN;
+                    }*/
+
 
                     var rcs = from rc in OutputTeam.fpTeam.data.AsEnumerable()
                               where (rc.Field<string>("Role") == IRISMap.RoleMap.RC1 || rc.Field<string>("Role") == IRISMap.RoleMap.RC2)
@@ -1558,6 +1580,7 @@ namespace IrbAnalyser
                     {
                         string rc1 = getRole(studyId, IRISMap.RoleMap.RC1);
                         rc1 = String.IsNullOrWhiteSpace(rc1) ? getRole(studyId, IRISMap.RoleMap.RC2) : rc1;
+                        rc1 = String.IsNullOrWhiteSpace(rc1) ? getRole(studyId, IRISMap.RoleMap.PI) : rc1;
                         rcCache.Add(studyId, rc1);
                         return rc1;
                     }
@@ -1578,11 +1601,12 @@ namespace IrbAnalyser
                 else
                 {
                     retstr = getRole(studyId, IRISMap.RoleMap.RC1);
-                    if (String.IsNullOrWhiteSpace(retstr))
-                        retstr = getRole(studyId, IRISMap.RoleMap.RC2);
+                    retstr = String.IsNullOrWhiteSpace(retstr) ? getRole(studyId, IRISMap.RoleMap.RC2) : retstr;
+                    retstr = String.IsNullOrWhiteSpace(retstr) ? getRole(studyId, IRISMap.RoleMap.PI) : retstr;
                 }
 
                 retstr = String.IsNullOrWhiteSpace(retstr) ? getPI(studyId) : retstr;
+
                 rcCache.Add(studyId, retstr);
                 return retstr;
             }
