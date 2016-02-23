@@ -72,12 +72,15 @@ namespace IrbAnalyser
             {
                 OutputStudy.analyse(dir);
 
-                OutputTeam.analyse(dir + "Team.txt");
+                
 
                 OutputStatus.analyse(dir);
 
                 OutputStatus.removeDuplicateStatus();
                 OutputIRBForm.finalizeEventIrbForm();
+
+                OutputTeam.analyse(dir + "Team.txt");
+
                 OutputTeam.removeDuplicateNewMembers();
                 OutputTeam.removeDuplicateDeletedUser();
             }
@@ -85,12 +88,14 @@ namespace IrbAnalyser
             {
                 OutputStudy.analyse(dir);
 
-                OutputTeam.analyse(dir + "Team.txt");
 
                 OutputStatus.analyse(dir);
 
                 OutputStatus.removeDuplicateStatus();
                 OutputIRBForm.finalizeEventIrbForm();
+
+                OutputTeam.analyse(dir + "Team.txt");
+
                 OutputTeam.removeDuplicateNewMembers();
                 OutputTeam.removeDuplicateDeletedUser();
             }
