@@ -242,7 +242,7 @@ namespace IrbAnalyser
 
                 if (status != "" && status != "NA" && !String.IsNullOrEmpty(irbstudyId))
                 {
-                    
+
                     /*if (irbstudyId == "5532")
                     {
                         Agency.AgencyVal = Agency.AgencyList.EINSTEIN;
@@ -252,8 +252,8 @@ namespace IrbAnalyser
                     bool isOtherStatusInDT = (from st in OutputStatus.newStatus.AsEnumerable()
                                               where st.Field<string>("IRB Study ID").Trim().ToLower() == irbstudyId.Trim().ToLower()
                                          && st.Field<string>("Study status").Trim().ToLower() == status.Trim().ToLower()
-                                         //&& st.Field<string>("Status Valid From").Trim().ToLower() != startstring.Trim().ToLower()
-                                         select st).Any();
+                                              //&& st.Field<string>("Status Valid From").Trim().ToLower() != startstring.Trim().ToLower()
+                                              select st).Any();
 
                     var statuses = from stat in allstatus
                                    where stat.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == irbstudyId.Trim().ToLower()
@@ -263,26 +263,26 @@ namespace IrbAnalyser
 
 
                     bool isOtherStatusInDB = (from stat in statuses
-                                         where stat.SSTAT_STUDY_STATUS.Trim().ToLower() == status.Trim().ToLower()
-                                         //&& stat.SSTAT_VALID_FROM.Value.Year != start.Year
-                                         //&& stat.SSTAT_VALID_FROM.Value.Month != start.Month
-                                         //&& stat.SSTAT_VALID_FROM.Value.Day != start.Day
-                                         select stat).Any();
+                                              where stat.SSTAT_STUDY_STATUS.Trim().ToLower() == status.Trim().ToLower()
+                                              //&& stat.SSTAT_VALID_FROM.Value.Year != start.Year
+                                              //&& stat.SSTAT_VALID_FROM.Value.Month != start.Month
+                                              //&& stat.SSTAT_VALID_FROM.Value.Day != start.Day
+                                              select stat).Any();
 
                     bool isStatusInDB = (from stat in statuses
-                                     where stat.SSTAT_STUDY_STATUS.Trim().ToLower() == status.Trim().ToLower()
-                                     && stat.SSTAT_VALID_FROM.Value.Year == start.Year
-                                     && stat.SSTAT_VALID_FROM.Value.Month == start.Month
-                                     && stat.SSTAT_VALID_FROM.Value.Day == start.Day
-                                     && stat.SSTAT_NOTES.Trim().ToLower().Contains(((string)statusRow["Status"]).Trim().ToLower())
-                                     select stat).Any();
+                                         where stat.SSTAT_STUDY_STATUS.Trim().ToLower() == status.Trim().ToLower()
+                                         && stat.SSTAT_VALID_FROM.Value.Year == start.Year
+                                         && stat.SSTAT_VALID_FROM.Value.Month == start.Month
+                                         && stat.SSTAT_VALID_FROM.Value.Day == start.Day
+                                         && stat.SSTAT_NOTES.Trim().ToLower().Contains(((string)statusRow["Status"]).Trim().ToLower())
+                                         select stat).Any();
 
                     bool isStatusInDT = (from st in OutputStatus.newStatus.AsEnumerable()
-                                    where st.Field<string>("IRB Study ID").Trim().ToLower() == irbstudyId.Trim().ToLower()
-                                    && st.Field<string>("Study status").Trim().ToLower() == status.Trim().ToLower()
-                                    && st.Field<string>("Status Valid From").Trim().ToLower() == startstring.Trim().ToLower()
-                                    && st.Field<string>("Comment").Trim().ToLower() == ((string)statusRow["Status"]).Trim().ToLower()
-                                    select st).Any();
+                                         where st.Field<string>("IRB Study ID").Trim().ToLower() == irbstudyId.Trim().ToLower()
+                                         && st.Field<string>("Study status").Trim().ToLower() == status.Trim().ToLower()
+                                         && st.Field<string>("Status Valid From").Trim().ToLower() == startstring.Trim().ToLower()
+                                         && st.Field<string>("Comment").Trim().ToLower() == ((string)statusRow["Status"]).Trim().ToLower()
+                                         select st).Any();
 
 
                     if (!allowMultiple && (isOtherStatusInDB || isOtherStatusInDT) && !isStatusInDB && !isStatusInDT)
@@ -291,25 +291,70 @@ namespace IrbAnalyser
                         type = undefinedType;
 
                         isStatusInDB = (from stat in statuses
-                                             where stat.SSTAT_STUDY_STATUS.Trim().ToLower() == status.Trim().ToLower()
-                                             && stat.SSTAT_VALID_FROM.Value.Year == start.Year
-                                             && stat.SSTAT_VALID_FROM.Value.Month == start.Month
-                                             && stat.SSTAT_VALID_FROM.Value.Day == start.Day
-                                             && stat.SSTAT_NOTES.Trim().ToLower().Contains(((string)statusRow["Status"]).Trim().ToLower())
-                                             select stat).Any();
+                                        where stat.SSTAT_STUDY_STATUS.Trim().ToLower() == status.Trim().ToLower()
+                                        && stat.SSTAT_VALID_FROM.Value.Year == start.Year
+                                        && stat.SSTAT_VALID_FROM.Value.Month == start.Month
+                                        && stat.SSTAT_VALID_FROM.Value.Day == start.Day
+                                        && stat.SSTAT_NOTES.Trim().ToLower().Contains(((string)statusRow["Status"]).Trim().ToLower())
+                                        select stat).Any();
 
-                        isStatusInDT = (from st in OutputStatus.newStatus.AsEnumerable()
-                                             where st.Field<string>("IRB Study ID").Trim().ToLower() == irbstudyId.Trim().ToLower()
-                                             && st.Field<string>("Study status").Trim().ToLower() == status.Trim().ToLower()
-                                             && st.Field<string>("Status Valid From").Trim().ToLower() == startstring.Trim().ToLower()
-                                             && st.Field<string>("Comment").Trim().ToLower() == ((string)statusRow["Status"]).Trim().ToLower()
-                                             select st).Any();
+
+
+                        var undefinedDT = (from st in OutputStatus.newStatus.AsEnumerable()
+                                           where st.Field<string>("IRB Study ID").Trim().ToLower() == irbstudyId.Trim().ToLower()
+                                           && st.Field<string>("Study status").Trim().ToLower() == status.Trim().ToLower()
+                                           && st.Field<string>("Status Valid From").Trim().ToLower() == startstring.Trim().ToLower()
+                                           select st);
+
+
+
+                        var isUndefinedDT = undefinedDT.Any();
+
+                        if (!isUndefinedDT)
+                        {
+                            undefinedDT = (from st in OutputStatus.updatedStatus.AsEnumerable()
+                                           where st.Field<string>("IRB Study ID").Trim().ToLower() == irbstudyId.Trim().ToLower()
+                                           && st.Field<string>("Study status").Trim().ToLower() == status.Trim().ToLower()
+                                           && st.Field<string>("Status Valid From").Trim().ToLower() == startstring.Trim().ToLower()
+                                           select st);
+
+                            isUndefinedDT = undefinedDT.Any();
+                        }
+
+                        isStatusInDT = (from st in undefinedDT
+                                        where st.Field<string>("Comment").Trim().ToLower().Contains(((string)statusRow["Status"]).Trim().ToLower())
+                                        select st).Any();
+
+                        var undefinedDB = (from stat in statuses
+                                              where stat.SSTAT_STUDY_STATUS.Trim().ToLower() == status.Trim().ToLower()
+                                              && stat.SSTAT_VALID_FROM.Value.Year == start.Year
+                                              && stat.SSTAT_VALID_FROM.Value.Month == start.Month
+                                              && stat.SSTAT_VALID_FROM.Value.Day == start.Day
+                                              select stat);
+
+                        bool isUndefinedDB = undefinedDB.Any();
+
+                        if (isUndefinedDT && !isStatusInDT && !isStatusInDB)
+                        {
+                            DataRow undefinedDR = undefinedDT.First();
+                            undefinedDR["Comment"] = undefinedDR["Comment"] + " ; " + (string)statusRow["Status"];
+                        }
+                        else if (isUndefinedDB && !isStatusInDB && !isStatusInDT && !isUndefinedDT)
+                        {
+                            string comments = undefinedDB.First().SSTAT_NOTES + " ; " + (string)statusRow["Status"];
+                            addRowStatus(irbstudyId, status, type, comments, sitename, startstring, "Modified Undefined IRB Event", true, (int)undefinedDB.First().PK_STUDYSTAT);
+                        }
+                        else if (!isStatusInDB && !isStatusInDT && statuses.Any() && !isUndefinedDB && !isUndefinedDT)
+                        {
+                            addRowStatus(irbstudyId, status, type, (string)statusRow["Status"], sitename, startstring, "New Status");
+                        }
+                        else if (!isStatusInDB && !isStatusInDT && !statuses.Any() && !isUndefinedDB && !isUndefinedDT)
+                        {
+                            addRowStatus(irbstudyId, status, type, (string)statusRow["Status"], sitename, startstring, "New Study");
+                        }
+
                     }
-
-
-
-
-                    if (!isStatusInDB && !isStatusInDT && statuses.Any())
+                    else if (!isStatusInDB && !isStatusInDT && statuses.Any())
                     {
                         addRowStatus(irbstudyId, status, type, (string)statusRow["Status"], sitename, startstring, "New Status");
                     }
@@ -416,12 +461,12 @@ namespace IrbAnalyser
                             if (end != DateTime.MinValue)
                             {
                                 bool isStatusesDB2 = (from stat in allstatus
-                                                                                 where stat.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (irbstudyId.Trim().ToLower())
-                                                                                 && (stat.SSTAT_STUDY_STATUS == preActAmendmentApprovedStatus || stat.SSTAT_STUDY_STATUS == amendmentApprovedStatus)
-                                                                                 && stat.SSTAT_VALID_FROM.Value.Year == end.Year
-                                                                                 && stat.SSTAT_VALID_FROM.Value.Month == end.Month
-                                                                                 && stat.SSTAT_VALID_FROM.Value.Day == end.Day
-                                                                                 select stat).Any() ;
+                                                      where stat.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (irbstudyId.Trim().ToLower())
+                                                      && (stat.SSTAT_STUDY_STATUS == preActAmendmentApprovedStatus || stat.SSTAT_STUDY_STATUS == amendmentApprovedStatus)
+                                                      && stat.SSTAT_VALID_FROM.Value.Year == end.Year
+                                                      && stat.SSTAT_VALID_FROM.Value.Month == end.Month
+                                                      && stat.SSTAT_VALID_FROM.Value.Day == end.Day
+                                                      select stat).Any();
 
 
                                 if (!isStatusesDB2)
@@ -681,7 +726,7 @@ namespace IrbAnalyser
         /// Add new status from status report
         /// </summary>
         /// <param name="statusRow"></param>
-        private static void addRowStatus(string studyId, string status, string statustype, string statusnote, string statussite, string statusDate, string type)
+        private static void addRowStatus(string studyId, string status, string statustype, string statusnote, string statussite, string statusDate, string type, bool isupdate = false, int pk_studystat = 0)
         {
             if (string.IsNullOrEmpty(status))
             {
@@ -699,8 +744,27 @@ namespace IrbAnalyser
             else
             {
 
+                if (pk_studystat != 0 && isupdate && !updatedStatus.Columns.Contains("pk_studystat"))
+                {
+                    updatedStatus.Columns.Add("pk_studystat");
+                }
+
                 DataRow dr;
-                dr = newStatus.NewRow();
+                if (isupdate)
+                {
+                    dr = updatedStatus.NewRow();
+                }
+                else
+                {
+                    dr = newStatus.NewRow();
+                }
+
+
+
+                if (pk_studystat != 0 && isupdate)
+                {
+                    dr["pk_studystat"] = pk_studystat;
+                }
 
                 dr["TYPE"] = type;
 
@@ -724,7 +788,14 @@ namespace IrbAnalyser
                                   && st.Field<string>("Comment").Trim().ToLower() == ((string)dr["Comment"]).Trim().ToLower()
                                   select st).Any();
 
-                if (dtStatus) newStatus.Rows.Add(dr);
+                if (isupdate && dtStatus)
+                {
+                    updatedStatus.Rows.Add(dr);
+                }
+                else if (dtStatus)
+                {
+                    newStatus.Rows.Add(dr);
+                }
             }
         }
 
@@ -1022,7 +1093,7 @@ namespace IrbAnalyser
         /// <returns></returns>
         private static string[] getStatus(DataRow dr)
         {
-            string[] statuspair = new string[2]{undefinedStatus,undefinedType};
+            string[] statuspair = new string[2] { undefinedStatus, undefinedType };
             bool allowMultiple = false;
             string status = undefinedStatus;
             string type = undefinedType;
@@ -1047,10 +1118,10 @@ namespace IrbAnalyser
                 start = start == DateTime.MinValue ? DateTime.Now : start;
 
                 bool isStatusInDT = (from st in OutputStatus.newStatus.AsEnumerable()
-                                where st.Field<string>("IRB Study ID").Trim().ToLower() == ((string)dr["StudyId"]).Trim().ToLower()
-                                && st.Field<string>("Study status").Trim().ToLower() == status.Trim().ToLower()
-                                && st.Field<string>("Status Valid From").Trim().ToLower() != Tools.parseDate((string)dr["ValidOn"]).Trim().ToLower()
-                                select st).Any();
+                                     where st.Field<string>("IRB Study ID").Trim().ToLower() == ((string)dr["StudyId"]).Trim().ToLower()
+                                     && st.Field<string>("Study status").Trim().ToLower() == status.Trim().ToLower()
+                                     && st.Field<string>("Status Valid From").Trim().ToLower() != Tools.parseDate((string)dr["ValidOn"]).Trim().ToLower()
+                                     select st).Any();
 
                 var statuses = from stat in allstatus
                                where stat.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == ((string)dr["StudyId"]).Trim().ToLower()
@@ -1060,18 +1131,18 @@ namespace IrbAnalyser
                                select stat;
 
                 bool isStatusInDB = (from stat in statuses
-                                where stat.SSTAT_STUDY_STATUS.Trim().ToLower() == status.Trim().ToLower()
-                                && stat.SSTAT_VALID_FROM.Value.Year != start.Year
-                                && stat.SSTAT_VALID_FROM.Value.Month != start.Month
-                                && stat.SSTAT_VALID_FROM.Value.Day != start.Day
-                                select stat).Any();
+                                     where stat.SSTAT_STUDY_STATUS.Trim().ToLower() == status.Trim().ToLower()
+                                     && stat.SSTAT_VALID_FROM.Value.Year != start.Year
+                                     && stat.SSTAT_VALID_FROM.Value.Month != start.Month
+                                     && stat.SSTAT_VALID_FROM.Value.Day != start.Day
+                                     select stat).Any();
 
-               /* bool isSmallerStatusInFP = (from st in fpstatus.data.AsEnumerable()
-                                          where ((string)dr["StudyId"]).Trim().ToLower() == st.Field<string>("StudyId").Trim().ToLower()
-                                          && ((string)dr["Status"]).Trim().ToLower() == st.Field<string>("Status").Trim().ToLower()
-                                         && !st.Field<string>("IRBNumber").Trim().ToLower().Contains("ibc")
-                                         && Tools.parseDateDate(st.Field<string>("ValidOn")) < Tools.parseDateDate((string)dr["ValidOn"])
-                                          select st).Any();*/
+                /* bool isSmallerStatusInFP = (from st in fpstatus.data.AsEnumerable()
+                                           where ((string)dr["StudyId"]).Trim().ToLower() == st.Field<string>("StudyId").Trim().ToLower()
+                                           && ((string)dr["Status"]).Trim().ToLower() == st.Field<string>("Status").Trim().ToLower()
+                                          && !st.Field<string>("IRBNumber").Trim().ToLower().Contains("ibc")
+                                          && Tools.parseDateDate(st.Field<string>("ValidOn")) < Tools.parseDateDate((string)dr["ValidOn"])
+                                           select st).Any();*/
 
                 if (isStatusInDB || isStatusInDT) //&& !isSmallerStatusInFP)
                 {

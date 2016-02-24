@@ -74,6 +74,7 @@
     <Reference Include="System">
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core">
       <Private>True</Private>
     </Reference>
@@ -123,6 +124,7 @@
     <Compile Include="Csv.cs" />
     <Compile Include="CsvReader.cs" />
     <Compile Include="DbCompare.cs" />
+    <Compile Include="DoUpdates.cs" />
     <Compile Include="ExcelUtility.cs" />
     <Compile Include="FileParser.cs" />
     <Compile Include="IrbAnalyser.cs">
