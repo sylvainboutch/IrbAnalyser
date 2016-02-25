@@ -155,9 +155,7 @@ namespace IrbAnalyser
 
         private void saveFiles(string savefilenoext)
         {
-            btnSave.Enabled = false;
-            btnAnalyse.Enabled = false;
-            btnAll.Enabled = false;
+            enableBtns(false, false);
             txtOutput.Text = "SAVING FILES !";
 
             ExcelUtility exc = new ExcelUtility();
@@ -256,9 +254,7 @@ namespace IrbAnalyser
             txtOutput.Text = "Analysis complete.\r\nPlease open the excel file and create/modify studies in Velos accordingly.";
             //btnclicked = true;
 
-            btnSave.Enabled = true;
-            btnAnalyse.Enabled = true;
-            btnAll.Enabled = true;
+            enableBtns(true, true);
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -305,9 +301,7 @@ namespace IrbAnalyser
 
                 //DbCompare dbc = new DbCompare();
 
-                btnSave.Enabled = false;
-                btnAnalyse.Enabled = false;
-                btnAll.Enabled = false;
+                enableBtns(false, false);
                 txtOutput.Text = "ANALYSING !";
 
                 Analyse(zipfile, agency);
@@ -316,9 +310,7 @@ namespace IrbAnalyser
 
                 txtOutput.Text = "Analysis complete.\r\nPlease choose a new file / options to add a new analysis or click Save.";
                 //btnclicked = true;
-                btnAnalyse.Enabled = true;
-                btnSave.Enabled = true;
-                btnAll.Enabled = true;
+                enableBtns(true, true);
             /*}
             catch (Exception ex)
             {
@@ -420,9 +412,7 @@ namespace IrbAnalyser
 
         private void doAll()
         {
-            btnSave.Enabled = false;
-            btnAnalyse.Enabled = false;
-            btnAll.Enabled = false;
+            enableBtns(false, false);
             txtOutput.Text = "ANALYSING EINSTEIN !";
 
 
@@ -475,16 +465,44 @@ namespace IrbAnalyser
             txtOutput.Text = "ALL DONE !";
 
             //btnclicked = true;
-            btnAnalyse.Enabled = true;
-            btnSave.Enabled = true;
-            btnAll.Enabled = true;
+            enableBtns(true, true);
 
 
+        }
+
+        private void enableBtns(bool enable = true, bool enableUpdate = false)
+        {
+            btnAnalyse.Enabled = enable;
+            btnSave.Enabled = enable;
+            btnAll.Enabled = enable;
+            btnUpdate.Enabled = enable;
+            btnSave.Enabled = enableUpdate;
         }
 
         private void btnAll_Click(object sender, EventArgs e)
         {
             doAll();
+        }
+
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+            enableBtns(false, false);
+            txtOutput.Text = "Performing updates";
+            if (OutputStatus.updatedStatus.Rows.Count == 0 && OutputStudy.updatedStudy.Rows.Count == 0)
+            {
+                DialogResult dr = ofdStudy.ShowDialog();
+                string filename = dr == DialogResult.OK ? ofdStudy.FileName : "";
+                if (filename != "")
+                {
+                    OutputStatus.initiate();
+                    OutputStudy.initiate();
+                    DoUpdates.loadExcel(filename, OutputStatus.updatedStatus, "Status");
+                    DoUpdates.loadExcel(filename, OutputStudy.updatedStudy, "Studies");
+                }
+            }
+            txtOutput.Text = "Done updating";
+            DoUpdates.complete();
+            enableBtns(true, true);
         }
 
     }

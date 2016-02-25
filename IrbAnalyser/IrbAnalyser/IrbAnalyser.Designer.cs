@@ -43,6 +43,7 @@
             this.cboGenerate = new System.Windows.Forms.CheckBox();
             this.btnAnalyse = new System.Windows.Forms.Button();
             this.btnAll = new System.Windows.Forms.Button();
+            this.btnUpdate = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txtOutput
@@ -55,7 +56,7 @@
             this.txtOutput.Name = "txtOutput";
             this.txtOutput.ReadOnly = true;
             this.txtOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtOutput.Size = new System.Drawing.Size(419, 248);
+            this.txtOutput.Size = new System.Drawing.Size(419, 209);
             this.txtOutput.TabIndex = 0;
             // 
             // btnSave
@@ -148,11 +149,23 @@
             this.btnAll.UseVisualStyleBackColor = true;
             this.btnAll.Click += new System.EventHandler(this.btnAll_Click);
             // 
+            // btnUpdate
+            // 
+            this.btnUpdate.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.btnUpdate.Location = new System.Drawing.Point(0, 401);
+            this.btnUpdate.Name = "btnUpdate";
+            this.btnUpdate.Size = new System.Drawing.Size(419, 23);
+            this.btnUpdate.TabIndex = 17;
+            this.btnUpdate.Text = "Perform DB Updates";
+            this.btnUpdate.UseVisualStyleBackColor = true;
+            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
+            // 
             // IrbAnalyser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(419, 493);
+            this.Controls.Add(this.btnUpdate);
             this.Controls.Add(this.btnAll);
             this.Controls.Add(this.btnAnalyse);
             this.Controls.Add(this.cboGenerate);
@@ -188,6 +201,7 @@
         private System.Windows.Forms.TextBox txtStudy;
         private System.Windows.Forms.Button btnAnalyse;
         private System.Windows.Forms.Button btnAll;
+        private System.Windows.Forms.Button btnUpdate;
     }
 }
 

@@ -114,7 +114,7 @@ namespace IrbAnalyser
         /// <summary>
         /// Add the columns to the datatable
         /// </summary>
-        private static void initiate()
+        public static void initiate()
         {
             if (newStudy.Columns.Count == 0)
             {
@@ -301,6 +301,8 @@ namespace IrbAnalyser
                 updatedStudy.Columns.Add("pk_study", typeof(string));
 
                 updatedStudy.Columns.Add("SignOffBy", typeof(string));
+                updatedStudy.Columns.Add("PhaseDrugDevice", typeof(string));
+                 
             }
         }
 
@@ -325,6 +327,8 @@ namespace IrbAnalyser
         /// <param name="dr"></param>
         private static void analyseRow(DataRow dr)
         {
+            dr["Studytitle"] = Tools.removeHtml((string)dr["Studytitle"]);
+            dr["Studysummary"] = Tools.removeHtml((string)dr["Studysummary"]);
 
             string irbstudyId = (string)dr["StudyId"];
 
@@ -608,15 +612,15 @@ namespace IrbAnalyser
                                 if (!String.IsNullOrWhiteSpace((string)dr["KeyWords"]) && !String.IsNullOrWhiteSpace(stu.STUDY_KEYWRDS))
                                 {
                                     string keywords = stu.STUDY_KEYWRDS.Length > 480 ? stu.STUDY_KEYWRDS.Substring(0, 480) : stu.STUDY_KEYWRDS;
-
-                                    dr["KeyWords"] = stu.STUDY_KEYWRDS.Contains((string)dr["KeyWords"]) ? "" : "update eres.er_study set study_keywrds = '" + keywords + "' || chr(13) || chr(10) || '" + (string)dr["KeyWords"] + "' || chr(13) || chr(10) where pk_study = " + stu.PK_STUDY;
-                                    dr["KeyWords"] = ((string)dr["KeyWords"]).Replace("\r\n", "' || chr(13) || chr(10) || '");
-                                    dr["KeyWords"] = ((string)dr["KeyWords"]).Replace("\n", "' || chr(13) || chr(10) || '");
+                                    dr["KeyWords"] = stu.STUDY_KEYWRDS.Contains((string)dr["KeyWords"]) ? "" : keywords + " " + dr["KeyWords"];
+                                    //dr["KeyWords"] = stu.STUDY_KEYWRDS.Contains((string)dr["KeyWords"]) ? "" : "update eres.er_study set study_keywrds = '" + keywords + "' || chr(13) || chr(10) || '" + (string)dr["KeyWords"] + "' || chr(13) || chr(10) where pk_study = " + stu.PK_STUDY;
+                                    //dr["KeyWords"] = ((string)dr["KeyWords"]).Replace("\r\n", "' || chr(13) || chr(10) || '");
+                                    //dr["KeyWords"] = ((string)dr["KeyWords"]).Replace("\n", "' || chr(13) || chr(10) || '");
                                 }
-                                else if (!String.IsNullOrWhiteSpace((string)dr["KeyWords"]))
+                                /*else if (!String.IsNullOrWhiteSpace((string)dr["KeyWords"]))
                                 {
-                                    dr["KeyWords"] = "update eres.er_study set study_keywrds = '" + (string)dr["KeyWords"] + "' || chr(13) || chr(10) where pk_study = " + stu.PK_STUDY;
-                                }
+                                    //dr["KeyWords"] = "update eres.er_study set study_keywrds = '" + (string)dr["KeyWords"] + "' || chr(13) || chr(10) where pk_study = " + stu.PK_STUDY;
+                                }*/
 
                                 dr["pk_study"] = stu.PK_STUDY;
 
@@ -640,9 +644,11 @@ namespace IrbAnalyser
                                 }
                                 else { newsc = ""; }
 
+                                
+
                                 hasChanged = checkChangeOverwriteString("Studytitle", dr, stu.STUDY_TITLE, hasChanged);
 
-                                dr["Studysummary"] = Tools.removeHtml((string)dr["Studysummary"]);
+                                
 
                                 hasChanged = checkChangeOverwriteNullString("Studysummary", dr, stu.STUDY_SUMMARY, hasChanged);
 

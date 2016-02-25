@@ -138,7 +138,7 @@ namespace IrbAnalyser
         /// <summary>
         /// Add the columns to the datatable
         /// </summary>
-        private static void initiate()
+        public static void initiate()
         {
             if (newStatus.Columns.Count == 0)
             {
@@ -174,6 +174,7 @@ namespace IrbAnalyser
                 updatedStatus.Columns.Add("Status Valid Until", typeof(string));
                 updatedStatus.Columns.Add("Outcome", typeof(string));
                 updatedStatus.Columns.Add("Review Type", typeof(string));
+                updatedStatus.Columns.Add("pk_studystat", typeof(string));
             }
         }
 

@@ -84,16 +84,16 @@ namespace IrbAnalyser
                 excelSheet.Name = worksheetName;
 
 
-                excelSheet.Cells[1, 1] = ReporType;
-                excelSheet.Cells[1, 2] = "Date : " + DateTime.Now.ToShortDateString();
+                //excelSheet.Cells[1, 1] = ReporType;
+                //excelSheet.Cells[1, 2] = "Date : " + DateTime.Now.ToShortDateString();
 
                 // loop through each row and add values to our sheet
-                int rowcount = 2;
+                int rowcount = 1;
 
                 //Add the column header
                 for (int i = 1; i <= dataTable.Columns.Count; i++)
                 {
-                    excelSheet.Cells[2, i] = dataTable.Columns[i - 1].ColumnName;
+                    excelSheet.Cells[1, i] = dataTable.Columns[i - 1].ColumnName;
                     excelSheet.Cells.Font.Color = System.Drawing.Color.Black;
                 }
 
@@ -106,11 +106,11 @@ namespace IrbAnalyser
                         excelSheet.Cells[rowcount, i] = datarow[i - 1].ToString();
 
                         //for alternate rows
-                        if (rowcount > 3)
+                        if (rowcount > 1)
                         {
                             if (i == dataTable.Columns.Count)
                             {
-                                if (rowcount % 2 == 0)
+                                if (rowcount % 2 != 0)
                                 {
                                     excelCellrange = excelSheet.Range[excelSheet.Cells[rowcount, 1], excelSheet.Cells[rowcount, dataTable.Columns.Count]];
                                     FormattingExcelCells(excelCellrange, "#CCCCFF", System.Drawing.Color.Black, false);
@@ -135,7 +135,7 @@ namespace IrbAnalyser
                     border.Weight = 2d;
 
 
-                    excelCellrange = excelSheet.Range[excelSheet.Cells[1, 1], excelSheet.Cells[2, dataTable.Columns.Count]];
+                    excelCellrange = excelSheet.Range[excelSheet.Cells[1, 1], excelSheet.Cells[1, dataTable.Columns.Count]];
                     FormattingExcelCells(excelCellrange, "#000099", System.Drawing.Color.White, true);
                 }
 
@@ -201,16 +201,16 @@ namespace IrbAnalyser
                         excelSheet.Name = worksheet.worksheetName;
 
 
-                        excelSheet.Cells[1, 1] = worksheet.reporType;
-                        excelSheet.Cells[1, 2] = "Date : " + DateTime.Now.ToShortDateString();
+                        //excelSheet.Cells[1, 1] = worksheet.reporType;
+                        //excelSheet.Cells[1, 2] = "Date : " + DateTime.Now.ToShortDateString();
 
                         // loop through each row and add values to our sheet
-                        int rowcount = 2;
+                        int rowcount = 1;
 
                         //Add the column header
                         for (int i = 1; i <= worksheet.dataTable.Columns.Count; i++)
                         {
-                            excelSheet.Cells[2, i] = worksheet.dataTable.Columns[i - 1].ColumnName;
+                            excelSheet.Cells[1, i] = worksheet.dataTable.Columns[i - 1].ColumnName;
                             excelSheet.Cells.Font.Color = System.Drawing.Color.Black;
                         }
 
@@ -223,11 +223,11 @@ namespace IrbAnalyser
                                 excelSheet.Cells[rowcount, i] = datarow[i - 1].ToString();
 
                                 //for alternate rows
-                                if (rowcount > 3)
+                                if (rowcount > 1)
                                 {
                                     if (i == worksheet.dataTable.Columns.Count)
                                     {
-                                        if (rowcount % 2 == 0)
+                                        if (rowcount % 2 != 0)
                                         {
                                             excelCellrange = excelSheet.Range[excelSheet.Cells[rowcount, 1], excelSheet.Cells[rowcount, worksheet.dataTable.Columns.Count]];
                                             FormattingExcelCells(excelCellrange, "#CCCCFF", System.Drawing.Color.Black, false);
@@ -248,7 +248,7 @@ namespace IrbAnalyser
                             border.Weight = 2d;
 
 
-                            excelCellrange = excelSheet.Range[excelSheet.Cells[1, 1], excelSheet.Cells[2, worksheet.dataTable.Columns.Count]];
+                            excelCellrange = excelSheet.Range[excelSheet.Cells[1, 1], excelSheet.Cells[1, worksheet.dataTable.Columns.Count]];
                             FormattingExcelCells(excelCellrange, "#000099", System.Drawing.Color.White, true);
                         }
                     }
