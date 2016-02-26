@@ -423,10 +423,18 @@ namespace IrbAnalyser
                         }
                     }
                 }
-                else if (!(doNotAdd && (type == "New study" || type == "New non system user")))
+                else if (type == "New non system user")
+                {
+                    dr["Group"] = "";
+                    dr["TimeZone"] = "";
+                    dr["User Name"] = "";
+                    records.Rows.Add(dr);
+                }
+                else if (!(doNotAdd && (type == "New study")))
                 {
                     records.Rows.Add(dr);
                 }
+
             }
             //}
         }
@@ -545,6 +553,8 @@ namespace IrbAnalyser
                 {
                     firstnameLonguest = firstnameLonguest.Length > part.Length ? firstnameLonguest : part;
                 }
+
+                userRow["UserName"] = (string)userRow["FirstName"] + " " + (string)userRow["LastName"];
 
                 split = ((string)userRow["LastName"]).Split(' ');
                 split = split.Count() == 1 ? ((string)userRow["LastName"]).Split('-') : split;

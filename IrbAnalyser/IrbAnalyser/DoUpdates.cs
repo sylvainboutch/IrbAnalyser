@@ -140,13 +140,13 @@ namespace IrbAnalyser
                 Dictionary<string, string> values = new Dictionary<string, string>();
                 string updateStr = updateStudyStart;
 
-                if (dr["Official title"] != DBNull.Value && !String.IsNullOrWhiteSpace((string)dr["Official title"]))
+                if (OutputStudy.updatedStudy.Columns.Contains("Official title") && dr["Official title"] != DBNull.Value && !String.IsNullOrWhiteSpace((string)dr["Official title"]))
                 {
                     isUpdated = true;
                     values.Add("title", (string)dr["Official title"]);
                     updateStr += updateStudyTitle + " :title ";
                 }
-                if (dr["Study Summary"] != DBNull.Value && !String.IsNullOrWhiteSpace((string)dr["Study Summary"]))
+                if (OutputStudy.updatedStudy.Columns.Contains("Study Summary") && dr["Study Summary"] != DBNull.Value && !String.IsNullOrWhiteSpace((string)dr["Study Summary"]))
                 {
                     if (isUpdated) updateStr += ", ";
                     isUpdated = true;
@@ -154,7 +154,7 @@ namespace IrbAnalyser
                     updateStr += updateStudySummary + " :summary ";
                 }
 
-                if (dr["KeyWords"] != DBNull.Value && !String.IsNullOrWhiteSpace((string)dr["KeyWords"]))
+                if (OutputStudy.updatedStudy.Columns.Contains("KeyWords") && dr["KeyWords"] != DBNull.Value && !String.IsNullOrWhiteSpace((string)dr["KeyWords"]))
                 {
                     if (isUpdated) updateStr += ", ";
                     isUpdated = true;
@@ -162,7 +162,7 @@ namespace IrbAnalyser
                     updateStr += updateStudyKeywords + " :keywords ";
                 }
 
-                if (dr["Sponsor Protocol ID"] != DBNull.Value && !String.IsNullOrWhiteSpace((string)dr["Sponsor Protocol ID"]))
+                if (OutputStudy.updatedStudy.Columns.Contains("Sponsor Protocol ID") && dr["Sponsor Protocol ID"] != DBNull.Value && !String.IsNullOrWhiteSpace((string)dr["Sponsor Protocol ID"]))
                 {
                     if (isUpdated) updateStr += ", ";
                     isUpdated = true;
@@ -170,7 +170,7 @@ namespace IrbAnalyser
                     updateStr += updateStudySponsorId + " :sponsorid ";
                 }
 
-                if (dr["NCT_NUMBER"] != DBNull.Value && !String.IsNullOrWhiteSpace((string)dr["NCT_NUMBER"]))
+                if (OutputStudy.updatedStudy.Columns.Contains("NCT_NUMBER") && dr["NCT_NUMBER"] != DBNull.Value && !String.IsNullOrWhiteSpace((string)dr["NCT_NUMBER"]))
                 {
                     if (isUpdated) updateStr += ", ";
                     isUpdated = true;
@@ -184,7 +184,7 @@ namespace IrbAnalyser
 
                 foreach (KeyValuePair<string, int> keypair in msdDict)
                 {
-                    if (dr[keypair.Key] != DBNull.Value && !String.IsNullOrWhiteSpace((string)dr[keypair.Key]))
+                    if (OutputStudy.updatedStudy.Columns.Contains(keypair.Key) && dr[keypair.Key] != DBNull.Value && !String.IsNullOrWhiteSpace((string)dr[keypair.Key]))
                     {
                         values.Clear();
                         values.Add("value", (string)dr[keypair.Key]);
@@ -201,6 +201,19 @@ namespace IrbAnalyser
 
         #endregion
 
+        #region CurrentStatus
+
+        private static string setCurrentString = @"DECLARE counter INTEGER; output VARCHAR2(1000); BEGIN counter := 0; for stat IN (select setNotCurrent, setCurrent, pk_study from VDA.LCL_V_SETCURRENTSTATUS) LOOP counter := counter + 1; update ERES.ER_STUDYSTAT set CURRENT_STAT = 0, LAST_MODIFIED_BY = (select PK_USER from eres.er_user where USR_FIRSTNAME = 'IRB' AND USR_LASTNAME = 'Interface'), LAST_MODIFIED_DATE = CURRENT_DATE where PK_STUDYSTAT = stat.setNotCurrent;    update ERES.ER_STUDYSTAT set CURRENT_STAT = 1, LAST_MODIFIED_BY = (select PK_USER from eres.er_user where USR_FIRSTNAME = 'IRB' AND USR_LASTNAME = 'Interface'), LAST_MODIFIED_DATE = CURRENT_DATE where PK_STUDYSTAT = stat.setCurrent; END LOOP; END;";
+        private static string setDraft = @"update eres.er_studystat set STUDYSTAT_DATE = '01-SEP-00',  LAST_MODIFIED_BY = (select PK_USER from eres.er_user where USR_FIRSTNAME = 'IRB' AND USR_LASTNAME = 'Interface'), LAST_MODIFIED_DATE = CURRENT_DATE where pk_studystat in (select st1.pk_studystat from eres.er_studystat st1 left join eres.er_study su on su.PK_STUDY = st1.fk_study left join eres.er_codelst cd1 on cd1.PK_CODELST = st1.FK_CODELST_STUDYSTAT where st1.FK_CODELST_STUDYSTAT = 4836 and st1.studystat_note is null and STUDYSTAT_DATE != '01-SEP-00' and su.creator = 135 or su.creator = (select PK_USER from eres.er_user where USR_FIRSTNAME = 'IRB' AND USR_LASTNAME = 'Interface'))";
+
+        private static void fixStatuses()
+        {
+            executeSQL(setCurrentString);
+            executeSQL(setDraft);
+        }
+
+        #endregion
+
         /// <summary>
         /// Do it all!
         /// </summary>
@@ -208,6 +221,7 @@ namespace IrbAnalyser
         {
             populateStatusUpdate();
             executeAll();
+            fixStatuses();
         }
 
         /// <summary>

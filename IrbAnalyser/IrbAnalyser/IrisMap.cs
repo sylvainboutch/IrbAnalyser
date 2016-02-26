@@ -119,6 +119,7 @@ namespace IrbAnalyser.IRISMap
     {
         public static readonly Dictionary<string, string> statusMap = new Dictionary<string, string>()
             {
+                {"Undergoing Administrative Review",""},
                 {"Administrative File",""},
                 {"Approved for Protocol Development",""},
                 {"Approved Pending","IRB Initial Submitted"},
@@ -183,6 +184,7 @@ namespace IrbAnalyser.IRISMap
 
         public static readonly Dictionary<string, bool> multipleMap = new Dictionary<string, bool>()
             {
+                {"Undergoing Administrative Review",false},
                 {"Administrative File",false},
                 {"Approved for Protocol Development",false},
                 {"Approved Pending",false},
@@ -246,6 +248,7 @@ namespace IrbAnalyser.IRISMap
 
         public static readonly Dictionary<string, string> typeMap = new Dictionary<string, string>()
             {
+                {"Undergoing Administrative Review",""},
                 {"Administrative File",""},
                 {"Approved for Protocol Development",""},
                 {"Approved Pending","Pre Activation"},
@@ -404,7 +407,7 @@ namespace IrbAnalyser.IRISMap
             {"Neuroscience, Dominick P. Purpura Department of","Neuroscience"},
             {"Nuclear Medicine","N/A"},
             {"Nursing","N/A"},
-            {"Obstetrics & Gynecology and Women's Health","Obstetrics & Gynecology and Women's Health"},
+            {"Obstetrics & Gynecology and Women's Health","Obstetrics & Gynecology and Women`s Health"},
             {"Office of Clinical Trials","N/A"},
             {"Oncology","Oncology (Medical/Hematologic)"},
             {"Ophthalmology and Visual Sciences","Ophthalmology and Visual Sciences"},

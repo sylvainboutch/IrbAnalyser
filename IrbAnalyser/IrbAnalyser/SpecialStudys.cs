@@ -918,7 +918,8 @@ namespace IrbAnalyser
             new irbpair("einstein", "2015-5878"),
             new irbpair("brany", "14-02-109-01"),
             new irbpair("einstein", "11-04-147"),
-            new irbpair("einstein", "10-03-055")
+            new irbpair("einstein", "10-03-055"),
+            new irbpair("einstein", "2015-5866")
             
             
 
