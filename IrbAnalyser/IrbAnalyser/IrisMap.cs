@@ -92,6 +92,7 @@ namespace IrbAnalyser.IRISMap
                 {"Study Author","No privilege"},
                 {"UNKNOWN ROLE - Migrated KP 1","No privilege"},
                 {"UNKNOWN ROLE - Migrated KP 2","No privilege"},
+                {"Other/Not Listed (explain)","No privilege"},
                 {"","No privilege"}
 
             };

@@ -356,13 +356,6 @@ namespace IrbAnalyser
                 //dr["Group"] = group;
                 dr["Organization"] = site;
 
-                if (type == "New non system user")
-                {
-                    dr["TimeZone"] = "GMT-5";
-                    dr["Group"] = "NO_PRIVILEGE";
-                    dr["Login"] = ((string)row["PrimaryEMailAddress"]).Split('@')[0];
-                }
-
                 if (fpTeam.initColumnCount < row.Table.Columns.Count)
                 {
                     for (int i = fpTeam.initColumnCount; i < row.Table.Columns.Count; i++)
@@ -525,6 +518,10 @@ namespace IrbAnalyser
         /// <param name="dr"></param>
         private static void analyseRow(DataRow userRow)
         {
+            if ((string)userRow["LastName"] == "Shum")
+            {
+                Agency.AgencyVal = Agency.AgencyList.EINSTEIN;
+            }
 
             string irbstudyId = userRow["StudyId"].ToString();
 
@@ -539,10 +536,7 @@ namespace IrbAnalyser
 
             if (OutputStudy.shouldStudyBeAdded(irbstudyId))
             {
-                /*if ((string)userRow["LastName"] == "Anampa Mesias")
-                {
-                    userRow["Role"] = "wtf";
-                }*/
+
 
                 string email = ((string)userRow["PrimaryEMailAddress"]).ToLower().Trim();
 
@@ -591,49 +585,17 @@ namespace IrbAnalyser
                     currentuser = ((from us in nonull
                                     where us.USER_USRNAME != null & us.USER_USRNAME.ToLower() == login
                                     select us).FirstOrDefault());
-                    if (currentuser != null)
+                   /* if (currentuser != null)
                     {
                         userRow["PrimaryEMailAddress"] = currentuser.USER_EMAIL.Trim().ToLower();
                         email = currentuser.USER_EMAIL.Trim().ToLower();
-                    }
+                    }*/
                 }
-                else if (currentuser != null && !string.IsNullOrWhiteSpace(email))
+               /* else if (currentuser != null && !string.IsNullOrWhiteSpace(email))
                 {
                     userRow["PrimaryEMailAddress"] = currentuser.USER_EMAIL == null ? "" : currentuser.USER_EMAIL.Trim().ToLower();
                     email = currentuser.USER_EMAIL == null ? "" : currentuser.USER_EMAIL.Trim().ToLower();
-                }
-
-                var issuperuser = (from us in accounts
-                                   where
-                                   ((!string.IsNullOrWhiteSpace(us.USER_EMAIL) && us.USER_EMAIL.ToLower() == email)
-                                    || (us.USER_NAME.ToLower().Contains(firstnameLonguest.ToLower().Trim())
-                                    & us.USER_NAME.ToLower().Contains(lastnameLonguest.ToLower().Trim())
-                                    ))
-                                   && us.GRP_SUPUSR_FLAG == 1
-                                   select us).Any();
-
-                var isactiveuser = (from us in accounts
-                                    where ((!string.IsNullOrWhiteSpace(us.USER_EMAIL) && us.USER_EMAIL.ToLower() == email)
-                                    || (us.USER_NAME.ToLower().Contains(firstnameLonguest.ToLower().Trim())
-                                    & us.USER_NAME.ToLower().Contains(lastnameLonguest.ToLower().Trim())
-                                    ))
-                                    && us.USER_STATUS == "Active"
-                                    select us).Any();
-
-                var isdeleted = (from us in accounts
-                                 where ((!string.IsNullOrWhiteSpace(us.USER_EMAIL) && us.USER_EMAIL.ToLower() == email)
-                                    || (us.USER_NAME.ToLower().Contains(firstnameLonguest.ToLower().Trim())
-                                    & us.USER_NAME.ToLower().Contains(lastnameLonguest.ToLower().Trim())
-                                    ))
-                                 select us).All(x => x.USER_HIDDEN == 1);
-
-                var istrained = (from us in accounts
-                                 where ((!string.IsNullOrWhiteSpace(us.USER_EMAIL) && us.USER_EMAIL.ToLower() == email)
-                                    || (us.USER_NAME.ToLower().Contains(firstnameLonguest.ToLower().Trim())
-                                    & us.USER_NAME.ToLower().Contains(lastnameLonguest.ToLower().Trim())
-                                    ))
-                                 && !(us.USER_JOBTYPE == null || us.USER_JOBTYPE == "Untrained")
-                                 select us).Any();
+                }*/
 
                 //For testing only   Michler is a deleted user
                 /*if (currentuser.USER_NAME.Contains("Michler"))
@@ -647,6 +609,42 @@ namespace IrbAnalyser
 
                 if (currentuser != null)
                 {
+
+                    userRow["PrimaryEMailAddress"] = currentuser.USER_EMAIL == null ? ((string)userRow["PrimaryEMailAddress"]).ToLower().Trim() : currentuser.USER_EMAIL.Trim().ToLower();
+                    email = (string)userRow["PrimaryEMailAddress"];
+
+                    var issuperuser = (from us in accounts
+                                       where
+                                       ((!string.IsNullOrWhiteSpace(us.USER_EMAIL) && us.USER_EMAIL.ToLower() == email)
+                                        || (us.USER_NAME.ToLower().Contains(firstnameLonguest.ToLower().Trim())
+                                        & us.USER_NAME.ToLower().Contains(lastnameLonguest.ToLower().Trim())
+                                        ))
+                                       && us.GRP_SUPUSR_FLAG == 1
+                                       select us).Any();
+
+                    var isactiveuser = (from us in accounts
+                                        where ((!string.IsNullOrWhiteSpace(us.USER_EMAIL) && us.USER_EMAIL.ToLower() == email)
+                                        || (us.USER_NAME.ToLower().Contains(firstnameLonguest.ToLower().Trim())
+                                        & us.USER_NAME.ToLower().Contains(lastnameLonguest.ToLower().Trim())
+                                        ))
+                                        && us.USER_STATUS == "Active"
+                                        select us).Any();
+
+                    var isdeleted = (from us in accounts
+                                     where ((!string.IsNullOrWhiteSpace(us.USER_EMAIL) && us.USER_EMAIL.ToLower() == email)
+                                        || (us.USER_NAME.ToLower().Contains(firstnameLonguest.ToLower().Trim())
+                                        & us.USER_NAME.ToLower().Contains(lastnameLonguest.ToLower().Trim())
+                                        ))
+                                     select us).All(x => x.USER_HIDDEN == 1);
+
+                    var istrained = (from us in accounts
+                                     where ((!string.IsNullOrWhiteSpace(us.USER_EMAIL) && us.USER_EMAIL.ToLower() == email)
+                                        || (us.USER_NAME.ToLower().Contains(firstnameLonguest.ToLower().Trim())
+                                        & us.USER_NAME.ToLower().Contains(lastnameLonguest.ToLower().Trim())
+                                        ))
+                                     && !(us.USER_JOBTYPE == null || us.USER_JOBTYPE == "Untrained")
+                                     select us).Any();
+
                     if (currentusers.Count() > 1)
                     {
                         var activeuser = (from us in currentusers
@@ -666,8 +664,8 @@ namespace IrbAnalyser
                             //using (Model.VelosDb db = new Model.VelosDb())
                             //{
 
-                            if (!String.IsNullOrEmpty(email))
-                            {
+                            //if (!String.IsNullOrEmpty(email))
+                            //{
                                 var user = from us in team
                                            where us.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (irbstudyId.Trim().ToLower())
                                           && ((!string.IsNullOrWhiteSpace(us.USER_EMAIL) && us.USER_EMAIL.ToLower() == email)
@@ -746,7 +744,7 @@ namespace IrbAnalyser
                                             addRow(userRow, "Modified member", updatedTeam);
                                         }
                                     }
-                                }
+                                //}
                             }
                             //}
                         }

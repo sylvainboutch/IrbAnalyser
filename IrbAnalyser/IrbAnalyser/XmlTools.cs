@@ -24,6 +24,25 @@ namespace IrbAnalyser
             "Full Board Reconsideration"
         };
 
+        private string[] allEvents = new string[] {  
+            "New Application for IRB Review",
+            "Amendment",
+            "Administrative Review",
+            "Administrative - Translation",
+            "1572 Modification",
+            "Personnel Change",
+            "xForm Request Form Only",
+            "Advertisements",
+            "Full Board Reconsideration",
+            "Additional PI",
+            "Expedited Initial Review"
+        };
+
+        //private static string subFormGUID = "FDC97614-AFF2-4FCA-9FDE-ABD5326389EF"; //01-Modification/Request for IRB Review
+        //private static string appFormGUID = "50B8B1EE-CA04-495B-9742-B98197A1EBF9"; //Research Application
+
+
+
         private Tuple<string, string> xmlQuestion = Tuple.Create("XFPQ", "QuestionVIG");
         private Tuple<string, string> xmlAnswer = Tuple.Create("XFIR", "Response");
         private string xmlAnswerNumber = "RepeatingGroupInstance";
@@ -72,6 +91,7 @@ namespace IrbAnalyser
             {
                 dt.Columns.Add(tu.Item2);
             }
+
 
             /*
             dt.Columns.Add("FormName");
@@ -330,27 +350,27 @@ namespace IrbAnalyser
             string vigName = "0A22BA93-DCDD-4E24-BC8C-2E15DEF7DB8A";
             string vigRole = "433DA8A3-5F34-4B32-AFC9-A26E07F605AA";
             string vigEmail = "4982BAF6-25C0-4F36-8303-0EF23CC40B83";
-            string[] submission = new string[] { submissionFormEvent };
-            personnal = getValuePersonnelDataTable(studyId, vigName, vigEmail, vigRole, personnal, submission);
+            //string[] submission = new string[] { submissionFormEvent };
+            personnal = getValuePersonnelDataTable(studyId, vigName, vigEmail, vigRole, personnal, allEvents);
 
             //Regulatory Personnel Information
             vigName = "63ACBAE3-A690-4B7B-9E0B-E41EDE217F15";
             vigRole = "";
             vigEmail = "A8F10A12-F2AF-466F-B937-281C75FB36DB";
 
-            personnal = getValuePersonnelDataTable(studyId, vigName, vigEmail, vigRole, personnal, submission);
+            personnal = getValuePersonnelDataTable(studyId, vigName, vigEmail, vigRole, personnal, allEvents);
 
             //Add key personnel
             vigName = "56918BF3-7EB6-4DD2-BE5C-C5A8AADEE86D";
-            vigRole = "FCD3E85F-4EED-4D6A-925B-12EC7423EA33";
-            vigEmail = "8FC0DA63-E6BC-4D44-8AF9-4850E48EBE5E";
+            vigEmail = "FCD3E85F-4EED-4D6A-925B-12EC7423EA33";
+            vigRole = "8FC0DA63-E6BC-4D44-8AF9-4850E48EBE5E";
 
-            personnal = getValuePersonnelDataTable(studyId, vigName, vigEmail, vigRole, personnal, submission);
+            personnal = getValuePersonnelDataTable(studyId, vigName, vigEmail, vigRole, personnal, allEvents);
 
             //remove KP
             vigName = "173251E9-E0C7-4C3A-93AD-8EAC85E54083";
 
-            personnal = removePersonnel(studyId, vigName, personnal, submission);
+            personnal = removePersonnel(studyId, vigName, personnal, allEvents);
 
             return personnal;
         }
@@ -393,14 +413,24 @@ namespace IrbAnalyser
                         {
                             name = p.Attribute(xmlAnswer.Item2).Value;
 
-                            var rows = (from DataRow dr in personnal.Rows
+                            /*var rows = (from DataRow dr in personnal.Rows
                                         where ((string)dr["name"]).Trim().ToLower() == name.ToLower().Trim()
                                         select dr);
 
                             foreach (var row in rows)
                             {
-                                personnal.Rows.Remove(row);
+                                //personnal.Rows.Remove(row);
+                                row.Delete();
+                            }*/
+
+                            foreach (var row in personnal.Select())
+                            {
+                                if (((string)row["name"]).Trim().ToLower() == name.ToLower().Trim())
+                                {
+                                    row.Delete();
+                                }
                             }
+
                         }
                     }
                 }
@@ -492,6 +522,7 @@ namespace IrbAnalyser
                                         where q.Attribute(xmlAnswerNumber).Value.Equals(id)
                                         select q.Attribute(xmlAnswer.Item2).Value).FirstOrDefault();
                             }
+
                             DataRow nr = personnal.NewRow();
                             nr["Name"] = String.IsNullOrEmpty(name) ? "" : name;
                             nr["Email"] = String.IsNullOrEmpty(email) ? "" : email;

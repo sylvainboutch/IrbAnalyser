@@ -21,7 +21,8 @@ namespace IrbAnalyser
                 { "Montefiore (Weiler Division)", OutputSite.EMmainsite },
                 { "Montefiore (Moses Division)", OutputSite.EMmainsite },
                 { "Montefiore (Children's Hosp)", OutputSite.EMmainsite },
-                { "Montefiore (Einstein Liver Center)", OutputSite.EMmainsite }
+                { "Montefiore (Einstein Liver Center)", OutputSite.EMmainsite },
+                { "Einstein Montefiore (non-treating site)", OutputSite.EMmainsite }
             };
 
         public static string getSite(string key)
@@ -74,6 +75,8 @@ namespace IrbAnalyser
                 { "Sponsor", "NA" },
                 { "Consultant", "NA" },
                 {"",""},
+                {"Sub-Investigator","Sub-Investigator-No Access"},
+                {"Other/Not Listed (explain)","No privilege"},
                 { CRO, "NA" }
             };
 
@@ -88,6 +91,8 @@ namespace IrbAnalyser
                 { "Co-Investigator", "No privilege" },
                 { "Sponsor", "No privilege" },
                 { "Consultant", "No privilege" },
+                {"Sub-Investigator","Sub-Investigator-No Access"},
+                {"Other/Not Listed (explain)","No privilege"},
                 {"",""},
                 { CRO, "NA" }
             };
