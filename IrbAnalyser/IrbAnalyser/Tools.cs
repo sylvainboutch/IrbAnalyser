@@ -123,7 +123,7 @@ namespace IrbAnalyser
         public static string[] nochangingstatus = new String[]{
             //"IRB Initial Approved"
             //"Blabla"
-            //"Active/Enrolling"
+            //"Active/Enrolling",
             "IRB Initial Approved"
         };
 

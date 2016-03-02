@@ -303,7 +303,7 @@ namespace IrbAnalyser
                     case "Combination Product":
                         //dr["Agent"] = "Y";
                         //dr["Device"] = "Y";
-                        dr["AgentDevice"] = "Please Specify";
+                        dr["AgentDevice"] = "YES: (PLEASE SPECIFY)";
                         break;
                     case "Data Collection during routine clinical care":
                         dr["Data_Collection"] = "Y";
@@ -317,7 +317,7 @@ namespace IrbAnalyser
                     case "Combination Product (Drug/Device, Drug/Biologic, Device/Biologic, Drug/Device/Biologic, co-packaged test articles, 2 products separately packaged but labeled for use together)":
                         //dr["Agent"] = "Y";
                         //dr["Device"] = "Y";
-                        dr["AgentDevice"] = "Please Specify";
+                        dr["AgentDevice"] = "YES: (PLEASE SPECIFY)";
                         break;
                 }
                 dr["Studysamplesize"] = getValue((string)dr["StudyId"], "B1259520-1DCD-41FE-A62B-0C2516D3C4F1");
