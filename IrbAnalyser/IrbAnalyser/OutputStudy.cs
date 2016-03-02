@@ -209,9 +209,6 @@ namespace IrbAnalyser
         /// <param name="dr"></param>
         private static void analyseRow(DataRow dr)
         {
-            dr["Studytitle"] = Tools.removeHtml((string)dr["Studytitle"]);
-            dr["Studysummary"] = Tools.removeHtml((string)dr["Studysummary"]);
-
             string irbstudyId = (string)dr["StudyId"];
 
             if (!String.IsNullOrEmpty((string)dr["IRBAgency"]))
@@ -268,6 +265,9 @@ namespace IrbAnalyser
             //empty study ID shouldnt happen but could indicate an empty line in the file.
             if (shouldStudyBeAdded(irbstudyId) && !String.IsNullOrEmpty(irbstudyId) && !((string)dr["StudyId"]).ToLower().Contains("corrupted") && !((string)dr["ExternalIRB"]).ToLower().Contains("brany"))
             {
+                dr["Studytitle"] = Tools.removeHtml((string)dr["Studytitle"]);
+                dr["Studysummary"] = Tools.removeHtml((string)dr["Studysummary"]);
+
                 string identifiers = Tools.generateStudyIdentifiers((string)dr["StudyId"]);
                 string number = Tools.getOldStudyNumber((string)dr["StudyId"]);
 
@@ -298,7 +298,8 @@ namespace IrbAnalyser
                 }
 
                 dr["RecordCategory"] = "Study";
-
+                dr["Regulatory_coordinator"] = getRC((string)dr["StudyId"]);
+                dr["Principal Investigator"] = getPI((string)dr["StudyId"]);
 
                 OutputIRBForm.addIds(number, identifiers);
 
@@ -372,29 +373,23 @@ namespace IrbAnalyser
                         OutputDocs.analyseRow(dr, false);
 
                         bool hasChanged = false;
-                        string newpi = "";
-                        string newrc = "";
-                        string newsc = "";
-                        string newcro = "";
 
                         foreach (var stu in study)
                         {
                             RCSCPI rcscpi = new RCSCPI();
                             rcscpi = SpecialStudys.getRCSCPI((string)dr["StudyId"]);
-                            newrc = getRC((string)dr["StudyId"]);
-                            newpi = getPI((string)dr["StudyId"]);
 
-                            if (stu.STUDY_PI != newpi && !String.IsNullOrEmpty(newpi) && newpi != rcscpi.PI)
+                            if (stu.STUDY_PI != dr["Principal Investigator"] & !String.IsNullOrEmpty((string)dr["Principal Investigator"]) && dr["Principal Investigator"] != rcscpi.PI)
                             {
                                 hasChanged = true;
                             }
-                            else { newpi = ""; }
+                            else { dr[""] = "Principal Investigator"; }
 
-                            if (stu.STUDY_ENTERED_BY != newrc && !String.IsNullOrEmpty(newrc) && newrc != rcscpi.RC)
+                            if (stu.STUDY_ENTERED_BY != dr["Regulatory_coordinator"] && !String.IsNullOrEmpty((string)dr["Regulatory_coordinator"]) && dr["Regulatory_coordinator"] != rcscpi.RC)
                             {
                                 hasChanged = true;
                             }
-                            else { newrc = ""; }
+                            else { dr["Regulatory_coordinator"] = ""; }
 
                             //dr["IND_NUMBERS"] = Tools.fixIND((string)dr["IND_NUMBERS"]);
                             //hasChanged = checkChangeOverwriteNullString("IND_NUMBERS",dr,stu.
@@ -483,7 +478,7 @@ namespace IrbAnalyser
 
 
 
-                            //hasChanged = checkChangeOverwriteString("IND_NUMBERS", dr, stu.
+        
 
 
 
@@ -631,7 +626,7 @@ namespace IrbAnalyser
 
                         if (hasChanged)
                         {
-                            addRowStudy(dr, false, newpi, newrc, newsc, newcro);
+                            addRowStudy(dr, false);
                         }
                     }
                 }
@@ -856,7 +851,7 @@ namespace IrbAnalyser
         /// </summary>
         /// <param name="irbNumber"></param>
         /// <param name="studyNumber"></param>
-        private static void addRowStudy(DataRow row, bool newentry, string newpi = null, string newrc = null, string newsc = null, string newcro = null)
+        private static void addRowStudy(DataRow row, bool newentry)
         {
             initiate();
             DataRow dr;
@@ -874,6 +869,10 @@ namespace IrbAnalyser
             {
                 row[c.ColumnName] = String.IsNullOrWhiteSpace((string)row[c.ColumnName]) ? "" : row[c.ColumnName];
             }
+
+
+            dr["Principal Investigator"] = (string)row["Principal Investigator"];
+            dr["Regulatory_coordinator"] = (string)row["Regulatory_coordinator"];
 
             dr["IRB Agency name"] = (string)row["IRBAgency"];
             dr["IRB no"] = (string)row["IRBNUMBER"];
@@ -943,37 +942,8 @@ namespace IrbAnalyser
                 }
             }
 
-            //TODO should be done in the analyse section, why should this be here ?
-            if (newpi == null)
-            {
-                dr["Principal Investigator"] = getPI((string)row["StudyId"]);
-            }
-            else
-            {
-                dr["Principal Investigator"] = newpi;
-            }
-
-            if (newrc == null)
-            {
-                dr["Regulatory_coordinator"] = getRC((string)row["StudyId"]);
-            }
-            else
-            {
-                dr["Regulatory_coordinator"] = newrc;
-            }
-
-            if (newsc == null)
-            {
-                dr["Study_coordinator"] = getSC((string)row["StudyId"]);
-            }
-            else
-            {
-                dr["Study_coordinator"] = newsc;
-            }
-
-            //TODO should be done in the analyse section, why should this be here ?
-            dr["Official title"] = Tools.removeHtml((string)row["StudyTitle"]);
-            dr["Study summary"] = ((string)row["Studysummary"]);
+            dr["Official title"] = (string)row["StudyTitle"];
+            dr["Study summary"] = (string)row["Studysummary"];
 
             if (fpstudys.initColumnCount < fpstudys.data.Columns.Count)
             {

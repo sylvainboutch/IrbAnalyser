@@ -71,6 +71,9 @@ namespace IrbAnalyser
                     data.Columns.Add("oldNumber");
                     data.Columns.Add("newNumber");
 
+                    data.Columns.Add("Regulatory_coordinator");
+                    data.Columns.Add("Principal Investigator");
+
                     data.Columns.Add("RecordCategory");
 
                     data.Columns.Add("HasConsentForm");
