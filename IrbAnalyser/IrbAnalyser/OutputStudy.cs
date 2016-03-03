@@ -132,6 +132,7 @@ namespace IrbAnalyser
                 newStudy.Columns.Add("NCT_NUMBER", typeof(string));
                 newStudy.Columns.Add("pk_study", typeof(string));
                 newStudy.Columns.Add("SignOffBy", typeof(string));
+                newStudy.Columns.Add("PhaseDrugDevice", typeof(string));
             }
 
             if (updatedStudy.Columns.Count == 0)
@@ -261,6 +262,15 @@ namespace IrbAnalyser
             dr["IRBAgency"] = irbagency;
             dr["IRBNumber"] = irbnumber;
 
+            string newNumber = Tools.getOldStudyNumber((string)dr["StudyId"]);
+
+            if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+            {
+                OutputTeam.addRowXForm(irbstudyId, newNumber, irbnumber);
+                XmlTools xmltool = new XmlTools();
+                xmltool.fillDataRow(dr);
+            }
+
             //external IRB only available in IRIS, we ignore studies with external IRB = BRANY since we have them in the BRANY file. Corrupted studies are in IRIS and shouldnt be pull in, they are a result of their data migration.
             //empty study ID shouldnt happen but could indicate an empty line in the file.
             if (shouldStudyBeAdded(irbstudyId) && !String.IsNullOrEmpty(irbstudyId) && !((string)dr["StudyId"]).ToLower().Contains("corrupted") && !((string)dr["ExternalIRB"]).ToLower().Contains("brany"))
@@ -269,7 +279,7 @@ namespace IrbAnalyser
                 dr["Studysummary"] = Tools.removeHtml((string)dr["Studysummary"]);
 
                 string identifiers = Tools.generateStudyIdentifiers((string)dr["StudyId"]);
-                string number = Tools.getOldStudyNumber((string)dr["StudyId"]);
+                string number = newNumber; // Tools.getOldStudyNumber((string)dr["StudyId"]);
 
                 //Do all the mapping
                 string sponsor = "";
@@ -328,13 +338,6 @@ namespace IrbAnalyser
                             where st.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (irbstudyId.Trim().ToLower())
                             select st;
 
-                if (Agency.AgencyVal == Agency.AgencyList.BRANY)
-                {
-                    OutputTeam.addRowXForm(irbstudyId, number, irbnumber);
-                    XmlTools xmltool = new XmlTools();
-                    xmltool.fillDataRow(dr);
-                }
-
                 if (!study.Any())
                 {
                     bool dtStudy = (from st in OutputStudy.newStudy.AsEnumerable()
@@ -346,8 +349,6 @@ namespace IrbAnalyser
                     if (!dtStudy)
                     {
                         OutputStatus.analyseRowStudy(dr, true);
-
-                        string newNumber = Tools.getOldStudyNumber((string)dr["StudyId"]);
 
                         if (!dr.Table.Columns.Contains("oldNumber"))
                         {
@@ -415,7 +416,7 @@ namespace IrbAnalyser
                             //dr["IND_NUMBERS"] = Tools.fixIND((string)dr["IND_NUMBERS"]);
                             //hasChanged = checkChangeOverwriteNullString("IND_NUMBERS",dr,stu.
 
-                            string newNumber = Tools.getNewStudyNumber((string)dr["StudyId"], irbnumber, (string)dr["StudyAcronym"], (string)dr["StudyTitle"], (string)dr["PrimarySponsorStudyId"]);
+                            newNumber = Tools.getNewStudyNumber((string)dr["StudyId"], irbnumber, (string)dr["StudyAcronym"], (string)dr["StudyTitle"], (string)dr["PrimarySponsorStudyId"]);
                             string oldNumber = Tools.getDBStudyNumber((string)dr["StudyId"]);
 
                             if (!dr.Table.Columns.Contains("oldNumber"))
@@ -464,15 +465,15 @@ namespace IrbAnalyser
 
                             if (Agency.AgencyVal == Agency.AgencyList.BRANY)
                             {
-                                hasChanged = checkChangeOverwriteString("PrimarySponsorName", dr, stu.STUDY_SPONSOR, hasChanged);
+                                hasChanged = checkChangeOverwriteString("PrimarySponsorName", dr, stu.SPONSOR_DD, hasChanged);
                                 hasChanged = checkChangeOverwriteString("PrimarySponsorStudyId", dr, stu.STUDY_SPONSORID, hasChanged);
-                                hasChanged = checkChangeOverwriteString("PrimarySponsorContact", dr, stu.SPONSOR_DD, hasChanged); 
+                                hasChanged = checkChangeOverwriteString("PrimarySponsorContact", dr, stu.SPONSOR_CONTACT, hasChanged); 
                             }
                             else
                             {
-                                hasChanged = checkChangeOverwriteNullString("PrimarySponsorName", dr, stu.STUDY_SPONSOR, hasChanged);
+                                hasChanged = checkChangeOverwriteNullString("PrimarySponsorName", dr, stu.SPONSOR_DD, hasChanged);
                                 hasChanged = checkChangeOverwriteNullString("PrimarySponsorStudyId", dr, stu.STUDY_SPONSORID, hasChanged);
-                                hasChanged = checkChangeOverwriteString("PrimarySponsorContact", dr, stu.SPONSOR_DD, hasChanged); 
+                                hasChanged = checkChangeOverwriteNullString("PrimarySponsorContact", dr, stu.SPONSOR_CONTACT, hasChanged); 
                             }
 
                             hasChanged = checkChangeOverwriteNullString("PrimarySponsorOther", dr, stu.STUDY_INFO, hasChanged);
@@ -702,9 +703,7 @@ namespace IrbAnalyser
         private static bool checkChangeOverwriteNullString(string field, DataRow dr, string dbValue, bool hasChanged)
         {
             //bool hasChanged = false;
-            if (!String.IsNullOrWhiteSpace((string)dr[field]) &
-                (String.IsNullOrWhiteSpace(dbValue))
-                )
+            if (!String.IsNullOrWhiteSpace((string)dr[field]) & (String.IsNullOrWhiteSpace(dbValue)))
             {
                 hasChanged = true;
             }
@@ -756,11 +755,15 @@ namespace IrbAnalyser
         private static bool checkChangeOverwriteString(string field, DataRow dr, string dbValue, bool hasChanged)
         {
             //bool hasChanged = false;
-            if (!String.IsNullOrWhiteSpace((string)dr[field]) &
-                (String.IsNullOrWhiteSpace(dbValue)
-                || (!Tools.compareStr(dbValue, (string)dr[field]))
-                )
-                )
+            if (!String.IsNullOrWhiteSpace((string)dr[field]) & (String.IsNullOrWhiteSpace(dbValue)))
+            {
+                hasChanged = true;
+            }
+            else if (!String.IsNullOrWhiteSpace((string)dr[field]) 
+                && !Tools.compareStr((string)dr[field],"na")
+                && !Tools.compareStr((string)dr[field], "n/a")
+                && !Tools.compareStr((string)dr[field], "please specify") 
+                && (String.IsNullOrWhiteSpace(dbValue) || (!Tools.compareStr(dbValue, (string)dr[field]))))
             {
                 hasChanged = true;
             }
@@ -796,10 +799,7 @@ namespace IrbAnalyser
                 row[c.ColumnName] = String.IsNullOrWhiteSpace((string)row[c.ColumnName]) ? "" : row[c.ColumnName];
             }
 
-            if (dr.Table.Columns.Contains("PhaseDrugDevice"))
-            {
-                dr["PhaseDrugDevice"] = "";
-            }
+            dr["PhaseDrugDevice"] = "";
 
             dr["Principal Investigator"] = (string)row["Principal Investigator"];
             dr["Regulatory_coordinator"] = (string)row["Regulatory_coordinator"];

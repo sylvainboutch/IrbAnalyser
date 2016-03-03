@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using System.Data.Common;
 using System.Data.EntityClient;
 using System.Data.EntityModel;
-using Oracle.DataAccess.Client;
+//using Oracle.DataAccess.Client;
 using System.Data.Objects;
 using System.IO;
 

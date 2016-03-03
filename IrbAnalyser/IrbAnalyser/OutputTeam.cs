@@ -78,7 +78,7 @@ namespace IrbAnalyser
                         query = (from st in db.VDA_V_STUDYTEAM_MEMBERS
                                  where st.IRBIDENTIFIERS != null
                                      //&& st.MORE_IRBAGENCY != null
-                                 && st.USER_EMAIL != null
+                                 //&& st.USER_EMAIL != null
                                  select st);
 
                         /*if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
@@ -518,10 +518,10 @@ namespace IrbAnalyser
         /// <param name="dr"></param>
         private static void analyseRow(DataRow userRow)
         {
-            if ((string)userRow["LastName"] == "Shum")
+            /*if ((string)userRow["FirstName"] == "Xiaoxue")
             {
                 Agency.AgencyVal = Agency.AgencyList.EINSTEIN;
-            }
+            }*/
 
             string irbstudyId = userRow["StudyId"].ToString();
 
@@ -672,6 +672,7 @@ namespace IrbAnalyser
                                     || (us.USER_NAME.ToLower().Contains(firstnameLonguest.ToLower().Trim())
                                     & us.USER_NAME.ToLower().Contains(lastnameLonguest.ToLower().Trim())
                                     ))
+
                                            select us;
                                 if (!user.Any() && !isdeleted)
                                 {

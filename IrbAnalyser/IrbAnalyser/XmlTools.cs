@@ -528,6 +528,11 @@ namespace IrbAnalyser
                             nr["Email"] = String.IsNullOrEmpty(email) ? "" : email;
                             nr["Role"] = String.IsNullOrEmpty(role) ? "" : role;
 
+                            /*if (name.Contains("Xiaoxue"))
+                            {
+                                Agency.AgencyVal = Agency.AgencyList.BRANY;
+                            }*/
+
                             personnal.Rows.Add(nr);
 
                         }

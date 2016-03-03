@@ -185,6 +185,18 @@ namespace IrbAnalyser
                     updateStr += updateStudyNCT + " :nctno ";
                 }
 
+                if (OutputStudy.updatedStudy.Columns.Contains("phase") && dr["phase"] != DBNull.Value && !String.IsNullOrWhiteSpace((string)dr["phase"]))
+                {
+                    if (isUpdated) updateStr += ", ";
+                    isUpdated = true;
+                    values.Add(new Tuple<string, string, OracleDbType>("phase", (string)dr["Phase"], OracleDbType.Varchar2));
+                    //values.Add("nctno", (string)dr["NCT_NUMBER"]);
+                    updateStr += updateStudyPhase1 + " :phase " + closePart;
+                }
+
+                
+                
+
                 updateStr += ", " + lastModifiedBy + ", " + lastModifiedOn + " " + updateStudyEnd + (string)dr["pk_study"] + "";
 
                 if (isUpdated) executeSQL(updateStr, values);
@@ -264,7 +276,7 @@ namespace IrbAnalyser
                     {
                         //command.Parameters.Add(keypair.Key, keypair.Value);
                         //command.Parameters.Add(new OracleParameter(keypair.Key, keypair.Value));
-                        OracleParameter param = new OracleParameter(value.Item1, value.Item3);
+                        OracleParameter param = new OracleParameter(value.Item1, value.Item3, ParameterDirection.InputOutput);
                         param.Value = value.Item2;
                         command.Parameters.Add(param);
                     }
