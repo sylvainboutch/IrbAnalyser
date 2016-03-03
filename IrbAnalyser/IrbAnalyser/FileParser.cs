@@ -56,6 +56,8 @@ namespace IrbAnalyser
                     data.Columns.Add("Multicenter");
                     data.Columns.Add("Phase");
                     data.Columns.Add("PrimarySponsorName");
+                    data.Columns.Add("PrimarySponsorOther");
+                    data.Columns.Add("PrimarySponsorContact");
                     data.Columns.Add("PrimarySponsorContactFirstName");
                     data.Columns.Add("PrimarySponsorContactLastName");
                     data.Columns.Add("PrimarySponsorContactEmail");

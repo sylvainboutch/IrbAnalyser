@@ -137,20 +137,24 @@ namespace IrbAnalyser
             foreach (DataRow dr in OutputStudy.updatedStudy.Rows)
             {
                 bool isUpdated = false;
-                Dictionary<string, string> values = new Dictionary<string, string>();
+                List<Tuple<string,string,OracleDbType>> values = new List<Tuple<string,string,OracleDbType>>();
+                //Dictionary<string, string[]> values = new Dictionary<string, string[]>();
                 string updateStr = updateStudyStart;
 
                 if (OutputStudy.updatedStudy.Columns.Contains("Official title") && dr["Official title"] != DBNull.Value && !String.IsNullOrWhiteSpace((string)dr["Official title"]))
                 {
+                    
                     isUpdated = true;
-                    values.Add("title", (string)dr["Official title"]);
+                    values.Add(new Tuple<string, string, OracleDbType>("title", (string)dr["Official title"], OracleDbType.Varchar2));
+                    //values.Add("title", (string)dr["Official title"], OracleDbType.Varchar2);
                     updateStr += updateStudyTitle + " :title ";
                 }
                 if (OutputStudy.updatedStudy.Columns.Contains("Study Summary") && dr["Study Summary"] != DBNull.Value && !String.IsNullOrWhiteSpace((string)dr["Study Summary"]))
                 {
                     if (isUpdated) updateStr += ", ";
                     isUpdated = true;
-                    values.Add("summary", (string)dr["Study Summary"]);
+                    values.Add(new Tuple<string, string, OracleDbType>("summary", (string)dr["Study Summary"], OracleDbType.Clob));
+                    //values.Add("summary", (string)dr["Study Summary"]);
                     updateStr += updateStudySummary + " :summary ";
                 }
 
@@ -158,7 +162,8 @@ namespace IrbAnalyser
                 {
                     if (isUpdated) updateStr += ", ";
                     isUpdated = true;
-                    values.Add("keywords", (string)dr["KeyWords"]);
+                    values.Add(new Tuple<string, string, OracleDbType>("keywords", (string)dr["KeyWords"], OracleDbType.Varchar2));
+                    //values.Add("keywords", (string)dr["KeyWords"]);
                     updateStr += updateStudyKeywords + " :keywords ";
                 }
 
@@ -166,7 +171,8 @@ namespace IrbAnalyser
                 {
                     if (isUpdated) updateStr += ", ";
                     isUpdated = true;
-                    values.Add("sponsorid", (string)dr["Sponsor Protocol ID"]);
+                    values.Add(new Tuple<string, string, OracleDbType>("sponsorid", (string)dr["Sponsor Protocol ID"], OracleDbType.Varchar2));
+                    //values.Add("sponsorid", (string)dr["Sponsor Protocol ID"]);
                     updateStr += updateStudySponsorId + " :sponsorid ";
                 }
 
@@ -174,7 +180,8 @@ namespace IrbAnalyser
                 {
                     if (isUpdated) updateStr += ", ";
                     isUpdated = true;
-                    values.Add("nctno", (string)dr["NCT_NUMBER"]);
+                    values.Add(new Tuple<string, string, OracleDbType>("nctno", (string)dr["NCT_NUMBER"], OracleDbType.Varchar2));
+                    //values.Add("nctno", (string)dr["NCT_NUMBER"]);
                     updateStr += updateStudyNCT + " :nctno ";
                 }
 
@@ -187,9 +194,9 @@ namespace IrbAnalyser
                     if (OutputStudy.updatedStudy.Columns.Contains(keypair.Key) && dr[keypair.Key] != DBNull.Value && !String.IsNullOrWhiteSpace((string)dr[keypair.Key]))
                     {
                         values.Clear();
-                        values.Add("value", (string)dr[keypair.Key]);
-                        values.Add("pkstudy", (string)dr["pk_study"]);
-                        values.Add("fkcodelst", keypair.Value.ToString());
+                        values.Add(new Tuple<string, string, OracleDbType>("value", (string)dr[keypair.Key], OracleDbType.Varchar2));
+                        values.Add(new Tuple<string, string, OracleDbType>("pkstudy", (string)dr["pk_study"], OracleDbType.Decimal));
+                        values.Add(new Tuple<string, string, OracleDbType>("fkcodelst", keypair.Value.ToString(), OracleDbType.Decimal));
                         executeSQL(updateMSD, values);
                     }
                 }
@@ -242,7 +249,7 @@ namespace IrbAnalyser
         /// Execute a simple non-query SQL command
         /// </summary>
         /// <param name="sqlQuery"></param>
-        private static void executeSQL(string sqlQuery, Dictionary<string, string> values = null)
+        private static void executeSQL(string sqlQuery, List<Tuple<string, string, OracleDbType>> values = null)//Dictionary<string, string> values = null)
         {
             //string constr = "User Id=SBOUCHAR;Password=createticket;Data Source=192.168.199.50:1521/velosprd";
 
@@ -252,10 +259,14 @@ namespace IrbAnalyser
                 OracleCommand command = new OracleCommand(sqlQuery, connection);
                 if (values != null && values.Count() > 0)
                 {
-                    foreach (KeyValuePair<string, string> keypair in values)
+                    //foreach (KeyValuePair<string, string> keypair in values)
+                    foreach(Tuple<string, string, OracleDbType> value in values)
                     {
                         //command.Parameters.Add(keypair.Key, keypair.Value);
-                        command.Parameters.Add(new OracleParameter(keypair.Key, keypair.Value));
+                        //command.Parameters.Add(new OracleParameter(keypair.Key, keypair.Value));
+                        OracleParameter param = new OracleParameter(value.Item1, value.Item3);
+                        param.Value = value.Item2;
+                        command.Parameters.Add(param);
                     }
                 }
 

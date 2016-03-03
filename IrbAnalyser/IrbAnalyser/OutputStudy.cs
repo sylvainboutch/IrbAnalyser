@@ -272,34 +272,55 @@ namespace IrbAnalyser
                 string number = Tools.getOldStudyNumber((string)dr["StudyId"]);
 
                 //Do all the mapping
+                string sponsor = "";
                 if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
                 {
                     dr["Department"] = String.IsNullOrEmpty((string)dr["Department"]) ? "Please specify" : (string)dr["Department"];
-                    dr["Division/Therapeutic area"] = String.IsNullOrEmpty((string)dr["Division"]) ? "N/A" : (string)dr["Division"];
+                    dr["Division"] = String.IsNullOrEmpty((string)dr["Division"]) ? "N/A" : (string)dr["Division"];
                     dr["Phase"] = String.IsNullOrEmpty((string)dr["Phase"]) ? "Please Specify" : (string)dr["Phase"];
+                    sponsor = (string)dr["Primarysponsorname"];
                 }
                 else if (Agency.AgencyVal == Agency.AgencyList.BRANY)
                 {
                     dr["Department"] = String.IsNullOrEmpty((string)dr["Department"]) ? "Please specify" : (string)dr["Department"];
-                    dr["Division/Therapeutic area"] = String.IsNullOrEmpty((string)dr["Division"]) ? "N/A" : (string)dr["Division"];
+                    dr["Division"] = String.IsNullOrEmpty((string)dr["Division"]) ? "N/A" : (string)dr["Division"];
                     dr["Phase"] = String.IsNullOrEmpty((string)dr["Phase"]) ? "Please Specify" : (string)dr["Phase"];
+                    sponsor = BranySponsorMap.getSponsor((string)dr["Primarysponsorname"]);
                 }
                 else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
                 {
                     dr["Department"] = String.IsNullOrWhiteSpace((string)dr["Department"]) ? "Please specify" : IRISMap.Department.getDepartment((string)dr["Department"]);
-                    dr["Division/Therapeutic area"] = String.IsNullOrWhiteSpace((string)dr["Department"]) ? "N/A" : IRISMap.Department.getDivision((string)dr["Department"]);
+                    dr["Division"] = String.IsNullOrWhiteSpace((string)dr["Department"]) ? "N/A" : IRISMap.Department.getDivision((string)dr["Department"]);
                     dr["Phase"] = String.IsNullOrWhiteSpace((string)dr["Phase"]) ? "Please Specify" : IRISMap.Phase.getPhase((string)dr["Phase"]);
+                    sponsor = BranySponsorMap.getSponsor((string)dr["Primarysponsorname"]);
                 }
                 else
                 {
                     dr["Department"] = "Please specify";
-                    dr["Division/Therapeutic area"] = "N/A";
+                    dr["Division"] = "N/A";
                     dr["Phase"] = "Please Specify";
+                    sponsor = (string)dr["Primarysponsorname"];
                 }
 
                 dr["RecordCategory"] = "Study";
                 dr["Regulatory_coordinator"] = getRC((string)dr["StudyId"]);
                 dr["Principal Investigator"] = getPI((string)dr["StudyId"]);
+
+                
+
+                if (String.IsNullOrWhiteSpace(sponsor) && !string.IsNullOrWhiteSpace((string)dr["Primarysponsorname"]))
+                {
+                    dr["PrimarySponsorOther"] = "Per IRB System: " + (string)dr["Primarysponsorname"];
+                    dr["Primarysponsorname"] = "";
+                }
+                else if (!String.IsNullOrWhiteSpace(sponsor))
+                {
+                    dr["Primarysponsorname"] = sponsor;
+                }
+
+
+                dr["PrimarySponsorContact"] = (string)dr["PrimarySponsorContactFirstName"] + " " + (string)dr["PrimarySponsorContactLastName"];
+
 
                 OutputIRBForm.addIds(number, identifiers);
 
@@ -379,13 +400,13 @@ namespace IrbAnalyser
                             RCSCPI rcscpi = new RCSCPI();
                             rcscpi = SpecialStudys.getRCSCPI((string)dr["StudyId"]);
 
-                            if (stu.STUDY_PI != dr["Principal Investigator"] & !String.IsNullOrEmpty((string)dr["Principal Investigator"]) && dr["Principal Investigator"] != rcscpi.PI)
+                            if (stu.STUDY_PI != (string)dr["Principal Investigator"] & !String.IsNullOrEmpty((string)dr["Principal Investigator"]) && (string)dr["Principal Investigator"] != rcscpi.PI)
                             {
                                 hasChanged = true;
                             }
-                            else { dr[""] = "Principal Investigator"; }
+                            else { dr["Principal Investigator"] = ""; }
 
-                            if (stu.STUDY_ENTERED_BY != dr["Regulatory_coordinator"] && !String.IsNullOrEmpty((string)dr["Regulatory_coordinator"]) && dr["Regulatory_coordinator"] != rcscpi.RC)
+                            if (stu.STUDY_ENTERED_BY != (string)dr["Regulatory_coordinator"] && !String.IsNullOrEmpty((string)dr["Regulatory_coordinator"]) && (string)dr["Regulatory_coordinator"] != rcscpi.RC)
                             {
                                 hasChanged = true;
                             }
@@ -426,12 +447,43 @@ namespace IrbAnalyser
                             hasChanged = checkChangeOverwriteNullString("AgentDevice", dr, stu.STUDY_AGENT_DEVICE, hasChanged);
 
                             hasChanged = checkChangeOverwriteNullString("Department", dr, stu.STUDY_DIVISION, hasChanged);
-                            hasChanged = checkChangeOverwriteNullString("Division/Therapeutic area", dr, stu.STUDY_TAREA, hasChanged);
+                            hasChanged = checkChangeOverwriteNullString("Division", dr, stu.STUDY_TAREA, hasChanged);
 
-                            hasChanged = checkChangeOverwriteNullInt("Entire study sample size", dr, stu.STUDY_NATSAMPSIZE, hasChanged);
+                            hasChanged = checkChangeOverwriteNullInt("Studysamplesize", dr, stu.STUDY_NATSAMPSIZE, hasChanged);
 
                             hasChanged = checkChangeOverwriteString("Phase", dr, stu.STUDY_PHASE, hasChanged);
 
+                            if (Tools.compareStr(dr["Multicenter"].ToString(), "true") || Tools.compareStr(dr["Multicenter"].ToString(), "yes") || Tools.compareStr(dr["Multicenter"].ToString(), "y") || ((string)dr["Multicenter"]).ToLower().Contains("multi"))
+                                dr["Multicenter"] = "Multi Center Study";
+                            else if (Tools.compareStr(dr["Multicenter"].ToString(), "false") || Tools.compareStr(dr["Multicenter"].ToString(), "no") || Tools.compareStr(dr["Multicenter"].ToString(), "n") || ((string)dr["Multicenter"]).ToLower().Contains("single"))
+                                dr["Multicenter"] = "Single Center Study";
+                            else
+                                dr["Multicenter"] = "";
+
+                            hasChanged = checkChangeOverwriteString("Multicenter", dr, stu.STUDY_SCOPE, hasChanged);
+
+                            if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+                            {
+                                hasChanged = checkChangeOverwriteString("PrimarySponsorName", dr, stu.STUDY_SPONSOR, hasChanged);
+                                hasChanged = checkChangeOverwriteString("PrimarySponsorStudyId", dr, stu.STUDY_SPONSORID, hasChanged);
+                                hasChanged = checkChangeOverwriteString("PrimarySponsorContact", dr, stu.SPONSOR_DD, hasChanged); 
+                            }
+                            else
+                            {
+                                hasChanged = checkChangeOverwriteNullString("PrimarySponsorName", dr, stu.STUDY_SPONSOR, hasChanged);
+                                hasChanged = checkChangeOverwriteNullString("PrimarySponsorStudyId", dr, stu.STUDY_SPONSORID, hasChanged);
+                                hasChanged = checkChangeOverwriteString("PrimarySponsorContact", dr, stu.SPONSOR_DD, hasChanged); 
+                            }
+
+                            hasChanged = checkChangeOverwriteNullString("PrimarySponsorOther", dr, stu.STUDY_INFO, hasChanged);
+
+                            if (!String.IsNullOrWhiteSpace((string)dr["KeyWords"]) && !String.IsNullOrWhiteSpace(stu.STUDY_KEYWRDS))
+                            {
+                                string keywords = stu.STUDY_KEYWRDS.Length > 480 ? stu.STUDY_KEYWRDS.Substring(0, 480) : stu.STUDY_KEYWRDS;
+                                dr["KeyWords"] = stu.STUDY_KEYWRDS.Contains((string)dr["KeyWords"]) ? "" : keywords + " " + dr["KeyWords"];
+                            }
+
+                            hasChanged = checkChangeOverwriteNullString("KeyWords", dr, stu.STUDY_KEYWRDS, hasChanged);
 
                             dr["pk_study"] = stu.PK_STUDY;
 
@@ -476,143 +528,7 @@ namespace IrbAnalyser
                             hasChanged = checkChangeOverwriteString("IRBAgency", dr, stu.MORE_IRBAGENCY, hasChanged);
                             //***********************************************************************************************
 
-
-
-        
-
-
-
-
-
-                            //HUMANITARIAN_USE
-
-                            if (!String.IsNullOrWhiteSpace((string)dr["KeyWords"]) && !String.IsNullOrWhiteSpace(stu.STUDY_KEYWRDS))
-                            {
-                                string keywords = stu.STUDY_KEYWRDS.Length > 480 ? stu.STUDY_KEYWRDS.Substring(0, 480) : stu.STUDY_KEYWRDS;
-                                dr["KeyWords"] = stu.STUDY_KEYWRDS.Contains((string)dr["KeyWords"]) ? "" : keywords + " " + dr["KeyWords"];
-                                //dr["KeyWords"] = stu.STUDY_KEYWRDS.Contains((string)dr["KeyWords"]) ? "" : "update eres.er_study set study_keywrds = '" + keywords + "' || chr(13) || chr(10) || '" + (string)dr["KeyWords"] + "' || chr(13) || chr(10) where pk_study = " + stu.PK_STUDY;
-                                //dr["KeyWords"] = ((string)dr["KeyWords"]).Replace("\r\n", "' || chr(13) || chr(10) || '");
-                                //dr["KeyWords"] = ((string)dr["KeyWords"]).Replace("\n", "' || chr(13) || chr(10) || '");
-                            }
-                            /*else if (!String.IsNullOrWhiteSpace((string)dr["KeyWords"]))
-                            {
-                                //dr["KeyWords"] = "update eres.er_study set study_keywrds = '" + (string)dr["KeyWords"] + "' || chr(13) || chr(10) where pk_study = " + stu.PK_STUDY;
-                            }*/
-
-
-
-
-
-
-
-
-
-
-                            hasChanged = checkChangeOverwriteString("PrimarySponsorStudyId", dr, stu.STUDY_SPONSORID, hasChanged);
-
-                            /*if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
-                            {
-                                string newdep = string.IsNullOrWhiteSpace((string)dr["Department"]) ? "" : IRISMap.Department.getDepartment((string)dr["Department"]);
-                                hasChanged = checkChangeOverwriteNullString("Department", dr, newdep, hasChanged);
-                                string newDiv = string.IsNullOrWhiteSpace((string)dr["Department"]) ? "" : IRISMap.Department.getDivision((string)dr["Department"]);
-                                hasChanged = checkChangeOverwriteNullString("Department", dr, newDiv, hasChanged);
-                            }*/
-
-                            /*if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
-                            {
-                                string newdep = string.IsNullOrWhiteSpace((string)dr["Department"]) ? "" : IRISMap.Department.getDepartment((string)dr["Department"]);
-                                if (Tools.compareStr(newdep, stu.STUDY_DIVISION) && !string.IsNullOrWhiteSpace((string)dr["Department"]))
-                                {
-                                    dr["Department"] = "";
-
-                                }
-                                else if (!string.IsNullOrWhiteSpace((string)dr["Department"]))
-                                {
-                                    hasChanged = true;
-                                    newdep = null;
-                                }
-
-                                string newDiv = string.IsNullOrWhiteSpace((string)dr["Department"]) ? "" : IRISMap.Department.getDivision((string)dr["Department"]);
-                                if (Tools.compareStr(newDiv, stu.STUDY_TAREA) && !string.IsNullOrWhiteSpace((string)dr["Department"]) && newdep != null)
-                                {
-                                    dr["Department"] = "";
-                                }
-                                else if (!string.IsNullOrWhiteSpace((string)dr["Department"]))
-                                {
-                                    hasChanged = true;
-                                }
-                            }*/
-
-
-                            /*int samplesize = 0;
-                            Int32.TryParse((string)dr["Studysamplesize"], out samplesize);
-
-                            if (stu.STUDY_NATSAMPSIZE == samplesize)
-                            {
-                                dr["Studysamplesize"] = "";
-                            }
-                            else if (samplesize != 0)
-                            {
-                                hasChanged = true;
-                            }*/
-
-                            bool cmp = (stu.STUDY_SCOPE == "Multi Center Study" && dr["Multicenter"].ToString().ToLower() == "yes") ||
-                                (stu.STUDY_SCOPE == "Single Center Study" && dr["Multicenter"].ToString().ToLower() == "no") ||
-                                (stu.STUDY_SCOPE == null && dr["Multicenter"].ToString().ToLower() == "");
-
-                            if (cmp)
-                            {
-                                dr["Multicenter"] = "";
-                            }
-                            else if (dr["Multicenter"].ToString() != "")
-                            {
-                                hasChanged = true;
-                            }
-
-
-
-                            string newSponsor = "";
-                            if (Agency.AgencyVal == Agency.AgencyList.BRANY || Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
-                            {
-                                newSponsor = BranySponsorMap.getSponsor((string)dr["Primarysponsorname"]);
-                            }
-
-                            if (Tools.compareStr(stu.SPONSOR_DD, newSponsor) && !String.IsNullOrWhiteSpace(newSponsor))
-                            {
-                                dr["Primarysponsorname"] = "";
-                            }
-                            else if (!String.IsNullOrWhiteSpace(newSponsor))
-                            {
-                                hasChanged = true;
-                            }
-                            else if (String.IsNullOrWhiteSpace(newSponsor) && !String.IsNullOrWhiteSpace((string)dr["Primarysponsorname"]))
-                            {
-                                string otherSponsor = "Per IRB System: " + (string)dr["Primarysponsorname"];
-                                if (Tools.compareStr(stu.STUDY_INFO, otherSponsor) && !String.IsNullOrWhiteSpace(otherSponsor))
-                                {
-                                    dr["Primarysponsorname"] = "";
-                                }
-                                else if (!String.IsNullOrWhiteSpace(otherSponsor))
-                                {
-                                    hasChanged = true;
-                                }
-
-                            }
-
-
-                            string[] strs = {dr["Primarysponsorcontactfirstname"].ToString(),
-                                dr["Primarysponsorcontactlastname"].ToString()};
-
-                            if (Tools.containStr(stu.SPONSOR_CONTACT, strs) && !String.IsNullOrWhiteSpace((string)dr["Primarysponsorcontactfirstname"]) && !String.IsNullOrWhiteSpace((string)dr["Primarysponsorcontactlastname"]))
-                            {
-                                dr["Primarysponsorcontactfirstname"] = "";
-                                dr["Primarysponsorcontactlastname"] = "";
-                            }
-                            else if (!String.IsNullOrWhiteSpace((string)dr["Primarysponsorcontactfirstname"]) && !String.IsNullOrWhiteSpace((string)dr["Primarysponsorcontactlastname"]))
-                            {
-                                hasChanged = true;
-                            }
-
+                            //EMPTY additionnal columns
                             for (int i = fpstudys.initColumnCount - 1; i < fpstudys.data.Columns.Count - 1; i++)
                             {
                                 dr[i] = "";
@@ -624,6 +540,7 @@ namespace IrbAnalyser
 
                         }
 
+                        //Add row if hasChanged
                         if (hasChanged)
                         {
                             addRowStudy(dr, false);
@@ -740,12 +657,16 @@ namespace IrbAnalyser
         private static bool checkChangeOverwriteAllYesNo(string field, DataRow dr, string dbValue, bool hasChanged)
         {
             //bool hasChanged = false;
-            if (String.IsNullOrWhiteSpace(dbValue) && (((string)dr[field]).Trim().ToLower() == "n" || ((string)dr[field]).Trim().ToLower() == "no"))
+            if (String.IsNullOrWhiteSpace((string)dr[field]))
+            {
+                return hasChanged;
+            }
+            else if (String.IsNullOrWhiteSpace(dbValue) && (((string)dr[field]).Trim().ToLower() == "n" || ((string)dr[field]).Trim().ToLower() == "no"))
             {
                 hasChanged = true;
                 dr[field] = "No";
             }
-            else if ((dbValue == null || dbValue.ToLower().Trim() == "no") && (((string)dr[field]).Trim().ToLower() == "y" || ((string)dr[field]).Trim().ToLower() == "yes"))
+            else if (String.IsNullOrWhiteSpace(dbValue) && (((string)dr[field]).Trim().ToLower() == "y" || ((string)dr[field]).Trim().ToLower() == "yes"))
             {
                 hasChanged = true;
                 dr[field] = "Yes";
@@ -754,6 +675,11 @@ namespace IrbAnalyser
             {
                 hasChanged = true;
                 dr[field] = "No";
+            }
+            else if (dbValue.ToLower().Trim() == "no" && (((string)dr[field]).Trim().ToLower() == "y" || ((string)dr[field]).Trim().ToLower() == "yes"))
+            {
+                hasChanged = true;
+                dr[field] = "Yes";
             }
             else
             {
@@ -864,12 +790,16 @@ namespace IrbAnalyser
                 dr = updatedStudy.NewRow();
             }
 
-            //make sur no dbnull row is in the datarow
+            //make sure no dbnull row is in the datarow
             foreach (DataColumn c in row.Table.Columns)
             {
                 row[c.ColumnName] = String.IsNullOrWhiteSpace((string)row[c.ColumnName]) ? "" : row[c.ColumnName];
             }
 
+            if (dr.Table.Columns.Contains("PhaseDrugDevice"))
+            {
+                dr["PhaseDrugDevice"] = "";
+            }
 
             dr["Principal Investigator"] = (string)row["Principal Investigator"];
             dr["Regulatory_coordinator"] = (string)row["Regulatory_coordinator"];
@@ -882,7 +812,7 @@ namespace IrbAnalyser
                 dr["Cancer"] = (string)row["MSDCANCER_RELATED_STUDY"];
             }
 
-            dr["Entire study sample size"] = (string)row["Entire study sample size"];
+            dr["Entire study sample size"] = (string)row["Studysamplesize"];
 
             dr["Phase"] = (string)row["Phase"];
 
@@ -892,7 +822,15 @@ namespace IrbAnalyser
             dr["IRB Identifiers"] = Tools.generateStudyIdentifiers((string)row["StudyId"]);
 
             dr["Department"] = (string)row["Department"];
-            dr["Division/Therapeutic area"] = (string)row["Division/Therapeutic area"];
+            dr["Division/Therapeutic area"] = (string)row["Division"];
+
+            dr["Study scope"] = row["Multicenter"];
+
+            dr["Sponsor information other"] = row["PrimarySponsorOther"];
+            dr["Primary funding sponsor"] = row["PrimarySponsorName"];
+            dr["Sponsor contact"] = row["PrimarySponsorContact"];
+            dr["Sponsor Protocol ID"] = row["PrimarySponsorStudyId"];
+            
 
             dr["Consent"] = (string)row["HasConsentForm"];
             dr["Cancer"] = (string)row["Cancer"];
@@ -926,8 +864,6 @@ namespace IrbAnalyser
             dr["FinancialBy"] = (string)row["FinancialBy"];
             dr["SignOffBy"] = (string)row["SignOffBy"];
 
-
-            //TODO should be done in the analyse section, why should this be here ?
             if (!string.IsNullOrWhiteSpace((string)row["newNumber"]))
             {
                 dr["Study_number"] = row["oldNumber"];
@@ -955,71 +891,41 @@ namespace IrbAnalyser
                 }
             }
 
+            addMSD(dr, newentry);
 
-            //TODO CHECK FROM HERE
-            if (Tools.compareStr(row["Multicenter"].ToString(), "true") || Tools.compareStr(row["Multicenter"].ToString(), "yes") || Tools.compareStr(row["Multicenter"].ToString(), "y") || ((string)row["Multicenter"]).ToLower().Contains("multi"))
-                dr["Study scope"] = "Multi Center Study";
-            else if (Tools.compareStr(row["Multicenter"].ToString(), "false") || Tools.compareStr(row["Multicenter"].ToString(), "no") || Tools.compareStr(row["Multicenter"].ToString(), "n") || ((string)row["Multicenter"]).ToLower().Contains("single"))
-                dr["Study scope"] = "Single Center Study";
+
+            OutputIRBForm.addIds((string)dr["Study_number"], (string)dr["IRB Identifiers"]);
+
+            if (fpstudys.initColumnCount < row.Table.Columns.Count)
+            {
+                for (int i = fpstudys.initColumnCount; i < row.Table.Columns.Count; i++)
+                {
+                    if (!dr.Table.Columns.Contains(row.Table.Columns[i].ColumnName))
+                    {
+                        dr.Table.Columns.Add(row.Table.Columns[i].ColumnName);
+                    }
+                    dr[row.Table.Columns[i].ColumnName] = row[i];
+                }
+            }
+
+
+            if (newentry)
+            { newStudy.Rows.Add(dr); }
             else
-                dr["Study scope"] = "";
+            { updatedStudy.Rows.Add(dr); }
 
-            //dr["Primary funding sponsor, if other :"] = row["Primarysponsorname"].ToString();
+        }
 
-            if ((Agency.AgencyVal == Agency.AgencyList.BRANY && Agency.AgencySetupVal == Agency.AgencyList.BRANY) || (Agency.AgencyVal == Agency.AgencyList.EINSTEIN && Agency.AgencySetupVal == Agency.AgencyList.EINSTEIN))
-            {
-                string sponsor = BranySponsorMap.getSponsor((string)row["Primarysponsorname"]);
-                if (String.IsNullOrWhiteSpace(sponsor) && !string.IsNullOrWhiteSpace((string)row["Primarysponsorname"]))
-                {
-                    dr["Sponsor information other"] = "Per IRB System: " + (string)row["Primarysponsorname"];
-                    dr["Primary funding sponsor"] = "";
-                }
-                else if (!String.IsNullOrWhiteSpace(sponsor))
-                {
-                    dr["Primary funding sponsor"] = sponsor;
-                    dr["Sponsor information other"] = "";
-                }
-                else
-                {
-                    dr["Primary funding sponsor"] = "";
-                    dr["Sponsor information other"] = "";
-                }
 
-            }
-            else if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
-            {
-                dr["Primary funding sponsor"] = (string)row["Primarysponsorname"];
-                dr["Sponsor information other"] = "";
-            }
-            else if (!String.IsNullOrWhiteSpace((string)row["Primarysponsorname"]))
-            {
-                dr["Sponsor information other"] = "Per IRB System: " + (string)row["Primarysponsorname"];
-                dr["Primary funding sponsor"] = "";
-            }
-            else
-            {
-                dr["Primary funding sponsor"] = "";
-                dr["Sponsor information other"] = "";
-            }
-
-            dr["Sponsor contact"] = row["PrimarySponsorContactFirstName"].ToString() + " " + row["PrimarySponsorContactLastName"].ToString();
-            dr["Sponsor Protocol ID"] = row["PrimarySponsorStudyId"].ToString();
-
+        private static void addMSD(DataRow dr, bool newentry)
+        {
             string[] labels = new string[] { };
             string[] values = new string[] { };
-
-            //make sure no dbnull row is in the datarow
-            /*foreach (DataColumn c in dr.Table.Columns)
-            {
-                dr[c.ColumnName] = DBNull.Value.Equals(dr[c.ColumnName]) || dr[c.ColumnName] == null || String.IsNullOrWhiteSpace((string)dr[c.ColumnName]) ? "" : dr[c.ColumnName];
-            }*/
-
 
             if (Agency.AgencySetupVal == Agency.AgencyList.NONE)
             {
                 labels = new string[20] { 
                     "Study Financials Managed By**", 
-                    //"CRO, if any*", 
                     "IRB agency name", 
                     "IRB No.", 
                     "Is this a cancer related study ?", 
@@ -1127,31 +1033,9 @@ namespace IrbAnalyser
             {
                 if (!string.IsNullOrWhiteSpace(values[i]))
                 {
-                    OutputMSD.addRow(labels[i], values[i], (string)row["StudyId"], (string)dr["IRB no"], (string)row["StudyAcronym"], newentry);
+                    OutputMSD.addRow(labels[i], values[i], (string)dr["IRB Study ID"], newentry);
                 }
             }
-
-
-            OutputIRBForm.addIds((string)dr["Study_number"], (string)dr["IRB Identifiers"]);
-
-            if (fpstudys.initColumnCount < row.Table.Columns.Count)
-            {
-                for (int i = fpstudys.initColumnCount; i < row.Table.Columns.Count; i++)
-                {
-                    if (!dr.Table.Columns.Contains(row.Table.Columns[i].ColumnName))
-                    {
-                        dr.Table.Columns.Add(row.Table.Columns[i].ColumnName);
-                    }
-                    dr[row.Table.Columns[i].ColumnName] = row[i];
-                }
-            }
-
-
-            if (newentry)
-            { newStudy.Rows.Add(dr); }
-            else
-            { updatedStudy.Rows.Add(dr); }
-
         }
 
         private static Dictionary<string, string> piCache;

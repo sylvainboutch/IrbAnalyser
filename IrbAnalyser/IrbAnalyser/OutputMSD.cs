@@ -28,7 +28,7 @@ namespace IrbAnalyser
             }
         }
 
-        public static void addRow(string label, string value, string studyid, string IRBno, string accronym, bool newrecord)
+        public static void addRow(string label, string value, string studyid, bool newrecord)
         {
             initiate();
             DataRow dr;
