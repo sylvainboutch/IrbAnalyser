@@ -431,7 +431,8 @@ namespace IrbAnalyser.IRISMap
             {"Systems & Computational Biology","Systems & Computational Biology"},
             {"Urology","Urology"},
             {"Plastic & Reconstructive Surgery","Surgery"},
-            {"Stern College","N/A"}, 
+            {"Stern College","N/A"},
+            {"Oncology (Medical/Hematologic)","Oncology (Medical/Hematologic)"}
         };
 
         public static string getDepartment(string key)
@@ -519,7 +520,8 @@ namespace IrbAnalyser.IRISMap
             {"Systems & Computational Biology","N/A"},
             {"Urology","N/A"},
             {"Plastic & Reconstructive Surgery","Plastic and Reconstructive Surgery"},
-            {"Stern College","N/A"},          
+            {"Stern College","N/A"}, 
+            {"Oncology (Medical/Hematologic)","Medical and Hematologic Oncology"}
         };
 
         public static string getDivision(string key)

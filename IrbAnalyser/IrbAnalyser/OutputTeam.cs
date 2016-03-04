@@ -77,7 +77,7 @@ namespace IrbAnalyser
 
                         query = (from st in db.VDA_V_STUDYTEAM_MEMBERS
                                  where st.IRBIDENTIFIERS != null
-                                     //&& st.MORE_IRBAGENCY != null
+                                 //&& st.MORE_IRBAGENCY != null
                                  //&& st.USER_EMAIL != null
                                  select st);
 
@@ -585,17 +585,17 @@ namespace IrbAnalyser
                     currentuser = ((from us in nonull
                                     where us.USER_USRNAME != null & us.USER_USRNAME.ToLower() == login
                                     select us).FirstOrDefault());
-                   /* if (currentuser != null)
-                    {
-                        userRow["PrimaryEMailAddress"] = currentuser.USER_EMAIL.Trim().ToLower();
-                        email = currentuser.USER_EMAIL.Trim().ToLower();
-                    }*/
+                    /* if (currentuser != null)
+                     {
+                         userRow["PrimaryEMailAddress"] = currentuser.USER_EMAIL.Trim().ToLower();
+                         email = currentuser.USER_EMAIL.Trim().ToLower();
+                     }*/
                 }
-               /* else if (currentuser != null && !string.IsNullOrWhiteSpace(email))
-                {
-                    userRow["PrimaryEMailAddress"] = currentuser.USER_EMAIL == null ? "" : currentuser.USER_EMAIL.Trim().ToLower();
-                    email = currentuser.USER_EMAIL == null ? "" : currentuser.USER_EMAIL.Trim().ToLower();
-                }*/
+                /* else if (currentuser != null && !string.IsNullOrWhiteSpace(email))
+                 {
+                     userRow["PrimaryEMailAddress"] = currentuser.USER_EMAIL == null ? "" : currentuser.USER_EMAIL.Trim().ToLower();
+                     email = currentuser.USER_EMAIL == null ? "" : currentuser.USER_EMAIL.Trim().ToLower();
+                 }*/
 
                 //For testing only   Michler is a deleted user
                 /*if (currentuser.USER_NAME.Contains("Michler"))
@@ -666,85 +666,85 @@ namespace IrbAnalyser
 
                             //if (!String.IsNullOrEmpty(email))
                             //{
-                                var user = from us in team
-                                           where us.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (irbstudyId.Trim().ToLower())
-                                          && ((!string.IsNullOrWhiteSpace(us.USER_EMAIL) && us.USER_EMAIL.ToLower() == email)
-                                    || (us.USER_NAME.ToLower().Contains(firstnameLonguest.ToLower().Trim())
-                                    & us.USER_NAME.ToLower().Contains(lastnameLonguest.ToLower().Trim())
-                                    ))
+                            var user = from us in team
+                                       where us.IRBIDENTIFIERS.Trim().ToLower().Split('>')[0] == (irbstudyId.Trim().ToLower())
+                                      && ((!string.IsNullOrWhiteSpace(us.USER_EMAIL) && us.USER_EMAIL.ToLower() == email)
+                                || (us.USER_NAME.ToLower().Contains(firstnameLonguest.ToLower().Trim())
+                                & us.USER_NAME.ToLower().Contains(lastnameLonguest.ToLower().Trim())
+                                ))
 
-                                           select us;
-                                if (!user.Any() && !isdeleted)
+                                       select us;
+                            if (!user.Any() && !isdeleted)
+                            {
+                                addRow(userRow, "New member", newTeam);
+                                /*if (!isactiveuser)
                                 {
-                                    addRow(userRow, "New member", newTeam);
-                                    /*if (!isactiveuser)
-                                    {
-                                        addRow(userRow, "Inactive User added to study team", triggerTeam);
-                                    }
-                                    //else if (currentuser.USER_DEFAULTGRP != enabledGroup && currentuser.USER_EMAIL == email && isactiveuser && !issuperuser)
-                                    else if (!istrained)
-                                    {
-                                        addRow(userRow, "User needs training", triggerTeam);
-                                    }*/
+                                    addRow(userRow, "Inactive User added to study team", triggerTeam);
                                 }
-                                else if (isdeleted)
+                                //else if (currentuser.USER_DEFAULTGRP != enabledGroup && currentuser.USER_EMAIL == email && isactiveuser && !issuperuser)
+                                else if (!istrained)
                                 {
-                                    addRow(userRow, "Deleted user added to a study", addedDeletedUser);
+                                    addRow(userRow, "User needs training", triggerTeam);
+                                }*/
+                            }
+                            else if (isdeleted)
+                            {
+                                addRow(userRow, "Deleted user added to a study", addedDeletedUser);
+                            }
+                            else
+                            {
+                                var changed = false;
+
+                                bool primary = Tools.compareStr(userRow["Primary"], "true");
+
+                                //Out of specs
+                                /*if (user.First().USER_NAME != (string)userRow["FirstName"] + " " + (string)userRow["LastName"])
+                                {
+                                    changed = true;
+                                }*/
+
+                                string newRole = "";
+                                if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+                                {
+                                    newRole = BranyRoleMap.getRole((string)userRow["Role"], primary);
+                                }
+                                else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
+                                {
+                                    newRole = IRISMap.RoleMap.getRole((string)userRow["Role"], primary);
                                 }
                                 else
                                 {
-                                    var changed = false;
+                                    newRole = OutputTeam.defaultDisabledRole;
+                                }
 
-                                    bool primary = Tools.compareStr(userRow["Primary"], "true");
+                                //For debugging only
+                                /*if (String.IsNullOrWhiteSpace(newRole))
+                                {
+                                    int bla = 1;
+                                    bla = bla + 1;
+                                }*/
 
-                                    //Out of specs
-                                    /*if (user.First().USER_NAME != (string)userRow["FirstName"] + " " + (string)userRow["LastName"])
+                                if (newRole != user.First().ROLE)
+                                {
+                                    if (newRole == PI && user.First().ROLE != RC)
                                     {
                                         changed = true;
-                                    }*/
-
-                                    string newRole = "";
-                                    if (Agency.AgencyVal == Agency.AgencyList.BRANY)
-                                    {
-                                        newRole = BranyRoleMap.getRole((string)userRow["Role"], primary);
                                     }
-                                    else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
+                                    else if (newRole == RC && user.First().ROLE == defaultDisabledRole)
                                     {
-                                        newRole = IRISMap.RoleMap.getRole((string)userRow["Role"], primary);
+                                        changed = true;
                                     }
-                                    else
+                                    else if (newRole == RC && user.First().ROLE == SC)
                                     {
-                                        newRole = OutputTeam.defaultDisabledRole;
+                                        changed = true;
+                                        userRow["Role"] = RSC;
                                     }
 
-                                    //For debugging only
-                                    /*if (String.IsNullOrWhiteSpace(newRole))
+                                    if (changed)
                                     {
-                                        int bla = 1;
-                                        bla = bla + 1;
-                                    }*/
-
-                                    if (newRole != user.First().ROLE)
-                                    {
-                                        if (newRole == PI && user.First().ROLE != RC)
-                                        {
-                                            changed = true;
-                                        }
-                                        else if (newRole == RC && user.First().ROLE == defaultDisabledRole)
-                                        {
-                                            changed = true;
-                                        }
-                                        else if (newRole == RC && user.First().ROLE == SC)
-                                        {
-                                            changed = true;
-                                            userRow["Role"] = RSC;
-                                        }
-
-                                        if (changed)
-                                        {
-                                            addRow(userRow, "Modified member", updatedTeam);
-                                        }
+                                        addRow(userRow, "Modified member", updatedTeam);
                                     }
+                                }
                                 //}
                             }
                             //}
@@ -786,94 +786,110 @@ namespace IrbAnalyser
         /// <param name="studys"></param>
         private static void analyseDelete()
         {
-            foreach (var user in team)
+            foreach (var member in team)
             {
-                var studyId = Tools.getStudyIdentifiers(user.IRBIDENTIFIERS);
+
+                //var us = from
+
+                var studyId = Tools.getStudyIdentifiers(member.IRBIDENTIFIERS);
                 //if (OutputStudy.shouldStudyBeAdded(studyId))
                 //{
                 if (OutputStudy.isStudyInDataSource(studyId))
                 {
+                    bool shoulBeAdded = (from us in accounts
+                                         where us.USER_STATUS == "Active"
+                                         && us.USER_TYPE == "System User"
+                                         && us.USER_NAME == member.USER_NAME
+                                         && us.USER_EMAIL == member.USER_EMAIL
+                                         select us).Any() && member.STUDYTEAM_STATUS == "Active";
 
-                    string rcname = user == null ? "" : user.USER_NAME;
-                    string rcemail = user == null ? "" : user.USER_EMAIL;
-
-                    rcemail = String.IsNullOrWhiteSpace(rcemail) ? "" : rcemail.ToLower().Trim();
-                    rcname = String.IsNullOrWhiteSpace(rcname) ? "" : rcname;
-
-                    string[] split = rcname.Split(' ');
-                    var split2 = from s in split
-                                 orderby s.Length descending
-                                 select s;
-
-                    string nameLonguest = split2.First().Trim().ToLower();
-                    string nameSecondLonguest = nameLonguest;
-
-
-                    if (split2.Count() > 1)
+                    if (shoulBeAdded)
                     {
-                        nameSecondLonguest = split2.ElementAt(1).Trim().ToLower();
-                    }
+
+                        string rcname = member == null ? "" : member.USER_NAME;
+                        string rcemail = member == null ? "" : member.USER_EMAIL;
+
+                        rcemail = String.IsNullOrWhiteSpace(rcemail) ? "" : rcemail.ToLower().Trim();
+                        rcname = String.IsNullOrWhiteSpace(rcname) ? "" : rcname;
+
+                        string[] split = rcname.Split(' ');
+                        var split2 = from s in split
+                                     orderby s.Length descending
+                                     select s;
+
+                        string nameLonguest = split2.First().Trim().ToLower();
+                        string nameSecondLonguest = nameLonguest;
 
 
-                    /*var userAccount = (from account in accounts
-                                       where (!string.IsNullOrWhiteSpace(account.USER_EMAIL) && account.USER_EMAIL.Trim().ToLower() == user.USER_EMAIL.Trim().ToLower())
-                                       & account.USER_NAME.Trim().ToLower() == user.USER_NAME.Trim().ToLower()
-                                       select account).First();*/
-
-
-
-                    //if (userAccount.USER_TYPE != "Non-System User")
-                    //{
-                    //var agency = user.MORE_IRBAGENCY;
-
-
-                    var countEmail = (from DataRow dr in fpTeam.data.Rows
-                                      where (string)dr["StudyId"] == studyId
-                                      && ((!string.IsNullOrWhiteSpace(user.USER_EMAIL) && ((string)dr["PrimaryEMailAddress"]).ToLower().Trim() == user.USER_EMAIL.ToLower().Trim())
-                                      || (((string)dr["FirstName"] + (string)dr["LastName"]).ToLower().Trim().Contains(nameLonguest) && (((string)dr["FirstName"] + (string)dr["LastName"]).ToLower().Trim().Contains(nameSecondLonguest)) && !String.IsNullOrEmpty(nameLonguest)))
-                                      select dr).Count();
-
-                    var countStudy = (from DataRow dr in OutputStudy.fpstudys.data.Rows
-                                      where (string)dr["StudyId"] == studyId
-                                      select dr).Count();
-
-                    if (countEmail == 0 && countStudy != 0 && user.ROLE != null && !listRC.Contains(user.ROLE.Trim().ToLower(), StringComparer.OrdinalIgnoreCase))
-                    {
-                        //addRowVelosUser(user, "Non-RC Absent from the data source", updatedTeam);
-                        addRowVelosUser(user, "Non-RC Absent from the data source", triggerTeam);
-                    }
-                    else if (user.ROLE != null && listRC.Contains(user.ROLE.Trim().ToLower(), StringComparer.OrdinalIgnoreCase) && countEmail == 0 && countStudy != 0)
-                    {
-                        var delete1 = (from DataRow dr in newTeam.AsEnumerable()
-                                       where (string)dr["Study_number"] == user.STUDY_NUMBER
-                                       && (string)dr["Role"] == RC
-                                       select dr).Any();
-
-                        var delete2 = (from us in team
-                                       where us.IRBIDENTIFIERS.Trim().ToLower() == studyId
-                                       && listRC.Contains(user.ROLE.Trim().ToLower(), StringComparer.OrdinalIgnoreCase)
-                                       //&& us.ROLE == RC
-                                       select us).Count() > 1;
-
-                        var delete3 = (from DataRow dr in updatedTeam.AsEnumerable()
-                                       where (string)dr["Study_number"] == user.STUDY_NUMBER
-                                       && (string)dr["Role"] == RC
-                                       //&& (string)dr["TYPE"] == "Modified member"
-                                       select dr).Any();
-
-
-                        if (delete1 || delete2 || delete3)
+                        if (split2.Count() > 1)
                         {
-                            //addRowVelosUser(user, "Deleted member", updatedTeam);
-                            addRowVelosUser(user, "RC Absent from the data source", triggerTeam);
+                            nameSecondLonguest = split2.ElementAt(1).Trim().ToLower();
                         }
-                        else
+
+
+                        /*var userAccount = (from account in accounts
+                                           where (!string.IsNullOrWhiteSpace(account.USER_EMAIL) && account.USER_EMAIL.Trim().ToLower() == user.USER_EMAIL.Trim().ToLower())
+                                           & account.USER_NAME.Trim().ToLower() == user.USER_NAME.Trim().ToLower()
+                                           select account).First();*/
+
+
+
+                        //if (userAccount.USER_TYPE != "Non-System User")
+                        //{
+                        //var agency = user.MORE_IRBAGENCY;
+
+
+                        var countEmail = (from DataRow dr in fpTeam.data.Rows
+                                          where (string)dr["StudyId"] == studyId
+                                          && ((!string.IsNullOrWhiteSpace(member.USER_EMAIL) && ((string)dr["PrimaryEMailAddress"]).ToLower().Trim() == member.USER_EMAIL.ToLower().Trim())
+                                          || (((string)dr["FirstName"] + (string)dr["LastName"]).ToLower().Trim().Contains(nameLonguest) && (((string)dr["FirstName"] + (string)dr["LastName"]).ToLower().Trim().Contains(nameSecondLonguest)) && !String.IsNullOrEmpty(nameLonguest)))
+                                          select dr).Count();
+
+                        var countStudy = (from DataRow dr in OutputStudy.fpstudys.data.Rows
+                                          where (string)dr["StudyId"] == studyId
+                                          select dr).Count();
+
+                        if (countEmail == 0 && countStudy != 0 && member.ROLE != null && !listRC.Contains(member.ROLE.Trim().ToLower(), StringComparer.OrdinalIgnoreCase))
                         {
-                            addRowVelosUser(user, "RC Absent from the data source - No replacement", triggerTeam);
+                            //addRowVelosUser(user, "Non-RC Absent from the data source", updatedTeam);
+                            addRowVelosUser(member, "Non-RC Absent from the data source", triggerTeam);
                         }
+                        else if (member.ROLE != null && listRC.Contains(member.ROLE.Trim().ToLower(), StringComparer.OrdinalIgnoreCase) && countEmail == 0 && countStudy != 0)
+                        {
+                            var delete1 = (from DataRow dr in newTeam.AsEnumerable()
+                                           where (string)dr["Study_number"] == member.STUDY_NUMBER
+                                           && (string)dr["Role"] == RC
+                                           select dr).Any();
+
+                            var delete2 = (from us in team
+                                           where us.IRBIDENTIFIERS.Trim().ToLower() == studyId
+                                           && listRC.Contains(member.ROLE.Trim().ToLower(), StringComparer.OrdinalIgnoreCase)
+                                           //&& us.ROLE == RC
+                                           select us).Count() > 1;
+
+                            var delete3 = (from DataRow dr in updatedTeam.AsEnumerable()
+                                           where (string)dr["Study_number"] == member.STUDY_NUMBER
+                                           && (string)dr["Role"] == RC
+                                           //&& (string)dr["TYPE"] == "Modified member"
+                                           select dr).Any();
+
+                            var RCname = OutputStudy.getRC(studyId);
+                            var isRC = RCname.ToLower().Trim().Contains(nameLonguest) && RCname.ToLower().Trim().Contains(nameSecondLonguest);
+
+
+                            if (delete1 || delete2 || delete3 || !isRC)
+                            {
+                                //addRowVelosUser(user, "Deleted member", updatedTeam);
+                                addRowVelosUser(member, "RC Absent from the data source", triggerTeam);
+                            }
+                            else
+                            {
+                                addRowVelosUser(member, "RC Absent from the data source - No replacement", triggerTeam);
+                            }
+                        }
+                        //}
+                        //}
                     }
-                    //}
-                    //}
                 }
             }
         }

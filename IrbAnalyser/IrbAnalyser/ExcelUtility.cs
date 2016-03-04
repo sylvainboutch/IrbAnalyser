@@ -159,9 +159,9 @@ namespace IrbAnalyser
             //}
             //finally
             //{
-                excelSheet = null;
-                excelCellrange = null;
-                excelworkBook = null;
+             //   excelSheet = null;
+             //   excelCellrange = null;
+             //   excelworkBook = null;
             //}
 
         }

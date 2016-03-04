@@ -296,6 +296,8 @@ namespace IrbAnalyser
                     dr["Division"] = String.IsNullOrEmpty((string)dr["Division"]) ? "N/A" : (string)dr["Division"];
                     dr["Phase"] = String.IsNullOrEmpty((string)dr["Phase"]) ? "Please Specify" : (string)dr["Phase"];
                     sponsor = BranySponsorMap.getSponsor((string)dr["Primarysponsorname"]);
+                    dr["FinancialBy"] = "BRY";
+                    dr["SignOffBy"] = "BRY";
                 }
                 else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
                 {
@@ -316,8 +318,24 @@ namespace IrbAnalyser
                 dr["Regulatory_coordinator"] = getRC((string)dr["StudyId"]);
                 dr["Principal Investigator"] = getPI((string)dr["StudyId"]);
 
-                
 
+                //Sample size in the IRB is the total study sample size, bring in only for single center study
+                if (Tools.compareStr(dr["Multicenter"].ToString(), "true") || Tools.compareStr(dr["Multicenter"].ToString(), "yes") || Tools.compareStr(dr["Multicenter"].ToString(), "y") || ((string)dr["Multicenter"]).ToLower().Contains("multi"))
+                {
+                    dr["Multicenter"] = "Multi Center Study";
+                    dr["Studysamplesize"] = "";
+                }
+                else if (Tools.compareStr(dr["Multicenter"].ToString(), "false") || Tools.compareStr(dr["Multicenter"].ToString(), "no") || Tools.compareStr(dr["Multicenter"].ToString(), "n") || ((string)dr["Multicenter"]).ToLower().Contains("single"))
+                {
+                    dr["Multicenter"] = "Single Center Study";
+                }
+                else
+                {
+                    dr["Multicenter"] = "";
+                    dr["Studysamplesize"] = "";
+                }
+
+                dr["Cancer"] = isStudyCancer(dr) ? "Y" : "";
                 if (String.IsNullOrWhiteSpace(sponsor) && !string.IsNullOrWhiteSpace((string)dr["Primarysponsorname"]))
                 {
                     dr["PrimarySponsorOther"] = "Per IRB System: " + (string)dr["Primarysponsorname"];
@@ -331,6 +349,7 @@ namespace IrbAnalyser
 
                 dr["PrimarySponsorContact"] = (string)dr["PrimarySponsorContactFirstName"] + " " + (string)dr["PrimarySponsorContactLastName"];
 
+                dr["Cancer"] = isStudyCancer(dr) ? "Y" : "";
 
                 OutputIRBForm.addIds(number, identifiers);
 
@@ -454,13 +473,6 @@ namespace IrbAnalyser
 
                             hasChanged = checkChangeOverwriteString("Phase", dr, stu.STUDY_PHASE, hasChanged);
 
-                            if (Tools.compareStr(dr["Multicenter"].ToString(), "true") || Tools.compareStr(dr["Multicenter"].ToString(), "yes") || Tools.compareStr(dr["Multicenter"].ToString(), "y") || ((string)dr["Multicenter"]).ToLower().Contains("multi"))
-                                dr["Multicenter"] = "Multi Center Study";
-                            else if (Tools.compareStr(dr["Multicenter"].ToString(), "false") || Tools.compareStr(dr["Multicenter"].ToString(), "no") || Tools.compareStr(dr["Multicenter"].ToString(), "n") || ((string)dr["Multicenter"]).ToLower().Contains("single"))
-                                dr["Multicenter"] = "Single Center Study";
-                            else
-                                dr["Multicenter"] = "";
-
                             hasChanged = checkChangeOverwriteString("Multicenter", dr, stu.STUDY_SCOPE, hasChanged);
 
                             if (Agency.AgencyVal == Agency.AgencyList.BRANY)
@@ -492,17 +504,13 @@ namespace IrbAnalyser
                             //***********************************************************************************************
                             hasChanged = checkChangeOverwriteNullString("RecordCategory", dr, stu.MORE_RECCATG, hasChanged);
 
-                            if (Agency.AgencyVal == Agency.AgencyList.BRANY)
-                            {
-                                dr["FinancialBy"] = "BRY";
-                                dr["SignOffBy"] = "BRY";
-                            }
+
 
                             hasChanged = checkChangeOverwriteNullString("FinancialBy", dr, stu.MORE_MANAGEDBY, hasChanged);
                             hasChanged = checkChangeOverwriteNullString("SignOffBy", dr, stu.MORE_SIGNOFF_MANAGED_BY, hasChanged);
                             hasChanged = checkChangeOverwriteAllYN("HasConsentForm", dr, stu.MORE_INFORMEDCONSENT, hasChanged);
 
-                            dr["Cancer"] = isStudyCancer(dr) ? "Y" : "";
+                            
 
                             hasChanged = checkChangeOverwriteFalse("Cancer", dr, stu.MORE_CANCER, hasChanged);
 
@@ -782,6 +790,11 @@ namespace IrbAnalyser
         /// <param name="studyNumber"></param>
         private static void addRowStudy(DataRow row, bool newentry)
         {
+            /*if ((string)row["StudyId"] == "3419")
+            {
+                Agency.AgencyVal = Agency.AgencyList.EINSTEIN;
+            }*/
+
             initiate();
             DataRow dr;
             if (newentry)
@@ -881,7 +894,7 @@ namespace IrbAnalyser
             dr["Official title"] = (string)row["StudyTitle"];
             dr["Study summary"] = (string)row["Studysummary"];
 
-            if (fpstudys.initColumnCount < fpstudys.data.Columns.Count)
+            /*if (fpstudys.initColumnCount < fpstudys.data.Columns.Count)
             {
                 for (int i = fpstudys.initColumnCount; i <= fpstudys.data.Columns.Count; i++)
                 {
@@ -889,7 +902,7 @@ namespace IrbAnalyser
                     if (!dr.Table.Columns.Contains(colname)) dr.Table.Columns.Add(colname);
                     dr[colname] = row[colname];
                 }
-            }
+            }*/
 
             addMSD(dr, newentry);
 
