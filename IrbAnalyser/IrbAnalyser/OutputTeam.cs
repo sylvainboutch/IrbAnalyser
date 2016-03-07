@@ -14,6 +14,7 @@ namespace IrbAnalyser
     /// </summary>
     class OutputTeam
     {
+        public static bool doStat = true;
         //Hols the velos role name
         public static string PI = "PI-View Access";
         public static string SubIno = "Sub-Investigator-No Access";
@@ -60,6 +61,9 @@ namespace IrbAnalyser
         public static DataTable newNonSystemUser = new DataTable();
         //List of new member to create in Velos
         public static DataTable addedDeletedUser = new DataTable();
+
+        //List of new member to create in Velos
+        public static DataTable statUser = new DataTable();
 
         //Holds the team information from Velos DB
         private static IEnumerable<Model.VDA_V_STUDYTEAM_MEMBERS> _team;
@@ -267,6 +271,50 @@ namespace IrbAnalyser
 
             }
 
+        }
+
+
+        private static void addStatUser(string name, string email, string nameVelos, string emailVelos, string role, string rolesource, string mappedBy, string source = "")
+        {
+            if (!statUser.Columns.Contains("Name"))
+            {
+                statUser.Columns.Add("Name");
+                statUser.Columns.Add("Email");
+                statUser.Columns.Add("nameVelos");
+                statUser.Columns.Add("emailVelos");
+                statUser.Columns.Add("Role");
+                statUser.Columns.Add("RoleSource");
+                statUser.Columns.Add("Source");
+                statUser.Columns.Add("mappedBy");
+            }
+
+            if (name.Contains("Victor"))
+            {
+                Agency.AgencyVal = Agency.AgencyList.BRANY;
+            }
+
+            source = String.IsNullOrWhiteSpace(source) ? Agency.agencyStrLwr : source;
+
+            if (!statUser.AsEnumerable().Any(x => (string)x["Name"] == name && (string)x["Email"] == email && (string)x["Source"] == source && (string)x["mappedBy"] == mappedBy))
+            {
+                DataRow dr = statUser.NewRow();
+                dr["Name"] = name;
+                dr["Email"] = email;
+                dr["nameVelos"] = nameVelos;
+                dr["emailVelos"] = emailVelos;
+                dr["Role"] = role;
+                dr["RoleSource"] = rolesource;
+                dr["Source"] = source;
+                dr["mappedBy"] = mappedBy;
+                statUser.Rows.Add(dr);
+            }
+            else
+            {
+                //DataRow dr = statUser.Select("Name="+name+" and Email="+email+" and Source="+source+" and mappedBy="+mappedBy).FirstOrDefault();
+                DataRow dr = statUser.AsEnumerable().FirstOrDefault(x => (string)x["Name"] == name && (string)x["Email"] == email && (string)x["Source"] == source && (string)x["mappedBy"] == mappedBy);
+                dr["Role"] = (string)dr["Role"] == defaultDisabledRole ? role : (string)dr["Role"];
+                dr["RoleSource"] = (string)dr["Role"] == defaultDisabledRole ? rolesource : (string)dr["RoleSource"];
+            }
         }
 
         /// <summary>
@@ -504,6 +552,9 @@ namespace IrbAnalyser
         {
             initiate();
 
+            fpTeam.data.DefaultView.Sort = "StudyId desc, FirstName desc, LastName desc, Source desc";
+            fpTeam.data = fpTeam.data.DefaultView.ToTable();
+
             foreach (DataRow user in fpTeam.data.Rows)
             {
                 analyseRow(user);
@@ -549,7 +600,7 @@ namespace IrbAnalyser
                 }
 
                 userRow["UserName"] = (string)userRow["FirstName"] + " " + (string)userRow["LastName"];
-
+                string username = (string)userRow["UserName"];
                 split = ((string)userRow["LastName"]).Split(' ');
                 split = split.Count() == 1 ? ((string)userRow["LastName"]).Split('-') : split;
                 string lastnameLonguest = split[0];
@@ -607,11 +658,49 @@ namespace IrbAnalyser
 
                 wtf = "2";*/
 
+                if (doStat)
+                {
+                    bool primaryTemp = Tools.compareStr(userRow["Primary"], "true");
+                    string roleTemp = "";
+                    if (Agency.AgencyVal == Agency.AgencyList.BRANY)
+                    {
+                        roleTemp = BranyRoleMap.getRole((string)userRow["Role"], primaryTemp);
+                    }
+                    else if (Agency.AgencyVal == Agency.AgencyList.EINSTEIN)
+                    {
+                        roleTemp = IRISMap.RoleMap.getRole((string)userRow["Role"], primaryTemp);
+                    }
+                    else
+                    {
+                        roleTemp = OutputTeam.defaultDisabledRole;
+                    }
+                    if (currentuser != null)
+                    {
+                        if (currentuser.USER_EMAIL != null && currentuser.USER_EMAIL.Trim().ToLower() == ((string)userRow["PrimaryEMailAddress"]).Trim().ToLower())
+                        {
+                            addStatUser((string)userRow["UserName"], (string)userRow["PrimaryEMailAddress"], currentuser.USER_NAME, currentuser.USER_EMAIL, roleTemp, (string)userRow["Role"], "Email", (string)userRow["Source"]);
+                        }
+                        else if (currentuser.USER_NAME != null && currentuser.USER_NAME.Trim().ToLower() == ((string)userRow["UserName"]).Trim().ToLower())
+                        {
+                            addStatUser((string)userRow["UserName"], (string)userRow["PrimaryEMailAddress"], currentuser.USER_NAME, currentuser.USER_EMAIL, roleTemp, (string)userRow["Role"], "Full name", (string)userRow["Source"]);
+                        }
+                        else if (currentuser.USER_NAME != null && currentuser.USER_NAME.ToLower().Contains((firstnameLonguest).ToLower().Trim()) & currentuser.USER_NAME.ToLower().Contains((lastnameLonguest).ToLower().Trim()))
+                        {
+                            addStatUser((string)userRow["UserName"], (string)userRow["PrimaryEMailAddress"], currentuser.USER_NAME, currentuser.USER_EMAIL, roleTemp, (string)userRow["Role"], "Partial name", (string)userRow["Source"]);
+                        }
+                    }
+                    else
+                    {
+                        addStatUser((string)userRow["UserName"], (string)userRow["PrimaryEMailAddress"], "", "", roleTemp, (string)userRow["Role"], "No match", (string)userRow["Source"]);
+                    }
+                }
+
                 if (currentuser != null)
                 {
 
-                    userRow["PrimaryEMailAddress"] = currentuser.USER_EMAIL == null ? ((string)userRow["PrimaryEMailAddress"]).ToLower().Trim() : currentuser.USER_EMAIL.Trim().ToLower();
-                    email = (string)userRow["PrimaryEMailAddress"];
+                    //userRow["PrimaryEMailAddress"] = currentuser.USER_EMAIL == null ? ((string)userRow["PrimaryEMailAddress"]).ToLower().Trim() : currentuser.USER_EMAIL.Trim().ToLower();
+                    //email = (string)userRow["PrimaryEMailAddress"];
+                    email = currentuser.USER_EMAIL == null ? ((string)userRow["PrimaryEMailAddress"]).ToLower().Trim() : currentuser.USER_EMAIL.Trim().ToLower();
 
                     var issuperuser = (from us in accounts
                                        where
@@ -650,11 +739,13 @@ namespace IrbAnalyser
                         var activeuser = (from us in currentusers
                                           where us.USER_STATUS == "Active"
                                           select us).FirstOrDefault();
-                        userRow["UserName"] = activeuser == null ? currentuser.USER_NAME : activeuser.USER_NAME;
+                        username = activeuser == null ? currentuser.USER_NAME : activeuser.USER_NAME;
+                        //userRow["UserName"] = activeuser == null ? currentuser.USER_NAME : activeuser.USER_NAME;
                     }
                     else
                     {
-                        userRow["UserName"] = currentuser.USER_NAME;
+                        username = currentuser.USER_NAME;
+                        //userRow["UserName"] = currentuser.USER_NAME;
                     }
 
                     if (!issuperuser)// && currentuser.USER_DEFAULTGRP == enabledGroup && isactiveuser)
@@ -676,6 +767,8 @@ namespace IrbAnalyser
                                        select us;
                             if (!user.Any() && !isdeleted)
                             {
+                                userRow["UserName"] = username;
+                                userRow["PrimaryEMailAddress"] = email;
                                 addRow(userRow, "New member", newTeam);
                                 /*if (!isactiveuser)
                                 {
@@ -689,6 +782,8 @@ namespace IrbAnalyser
                             }
                             else if (isdeleted)
                             {
+                                userRow["UserName"] = username;
+                                userRow["PrimaryEMailAddress"] = email;
                                 addRow(userRow, "Deleted user added to a study", addedDeletedUser);
                             }
                             else
@@ -742,6 +837,8 @@ namespace IrbAnalyser
 
                                     if (changed)
                                     {
+                                        userRow["UserName"] = username;
+                                        userRow["PrimaryEMailAddress"] = email;
                                         addRow(userRow, "Modified member", updatedTeam);
                                     }
                                 }
@@ -753,10 +850,14 @@ namespace IrbAnalyser
                         {
                             if (isdeleted)
                             {
+                                userRow["UserName"] = username;
+                                userRow["PrimaryEMailAddress"] = email;
                                 addRow(userRow, "Deleted/Hidden user added to a study", addedDeletedUser);
                             }
                             else
                             {
+                                userRow["UserName"] = username;
+                                userRow["PrimaryEMailAddress"] = email;
                                 addRow(userRow, "New study", newTeam);
                                 /*if (!isactiveuser)
                                 {
@@ -772,6 +873,8 @@ namespace IrbAnalyser
                 }
                 else// if (!Tools.getOldStudy((string)userRow["StudyId"]))
                 {
+                    userRow["UserName"] = username;
+                    userRow["PrimaryEMailAddress"] = email;
                     //addRow(userRow, "User needs access", triggerTeam);
                     addRow(userRow, "New user / non system", newTeam);
                     addRow(userRow, "New non system user", newNonSystemUser);
@@ -1009,24 +1112,28 @@ namespace IrbAnalyser
 
                 newTeam.Rows.Add(dr);*/
 
-                DataRow dr = fpTeam.data.NewRow();
-
-                foreach (DataColumn dc in fpTeam.data.Columns)
+                if (!fpTeam.data.AsEnumerable().Any(x => (string)x["studyId"] == studyId && ((string)x["FirstName"]).Trim().ToLower() == namesplit[0].Trim().ToLower() && ((string)x["LastName"]).Trim().ToLower() == lastname.Trim().ToLower()))
                 {
-                    dr[dc.ColumnName] = "";
+                    DataRow dr = fpTeam.data.NewRow();
+
+                    foreach (DataColumn dc in fpTeam.data.Columns)
+                    {
+                        dr[dc.ColumnName] = "";
+                    }
+
+                    dr["StudyId"] = studyId;
+                    dr["IRBNumber"] = irbNumber;
+                    dr["IRBAgency"] = "brany";
+                    dr["SiteName"] = OutputSite.EMmainsite; ;
+                    dr["PrimaryEMailAddress"] = (string)person["Email"];
+                    dr["FirstName"] = namesplit[0].Trim();
+                    dr["LastName"] = lastname;
+                    dr["Role"] = (string)person["Role"];
+                    dr["Source"] = person["Source"];
+                    //dr[""] = "";
+
+                    fpTeam.data.Rows.Add(dr);
                 }
-
-                dr["StudyId"] = studyId;
-                dr["IRBNumber"] = irbNumber;
-                dr["IRBAgency"] = "brany";
-                dr["SiteName"] = OutputSite.EMmainsite; ;
-                dr["PrimaryEMailAddress"] = (string)person["Email"];
-                dr["FirstName"] = namesplit[0].Trim();
-                dr["LastName"] = lastname;
-                dr["Role"] = (string)person["Role"];
-                //dr[""] = "";
-
-                fpTeam.data.Rows.Add(dr);
             }
 
         }
@@ -1034,18 +1141,18 @@ namespace IrbAnalyser
         public static string migrationRoleMap(string role)
         {
             role = role.Trim();
-            if (role == "STU RES") return "No Privilege";
+            if (role == "STU RES") return OutputTeam.defaultDisabledRole;
             if (role == "CO-PI") return "Limited Investigator";
             if (role == "SUB-PI") return "Limited Investigator";
-            if (role == "NP") return "No Privilege";
+            if (role == "NP") return OutputTeam.defaultDisabledRole;
             if (role == "NURSE") return "Nurse";
             if (role == "Research Assistant") return "Study Assistant";
-            if (role == "ResAsso") return "No Privilege";
-            if (role == "Collabo") return "No Privilege";
-            if (role == "BIOSTAT") return "No Privilege";
+            if (role == "ResAsso") return OutputTeam.defaultDisabledRole;
+            if (role == "Collabo") return OutputTeam.defaultDisabledRole;
+            if (role == "BIOSTAT") return OutputTeam.defaultDisabledRole;
             if (role == "MD") return "Limited Investigator";
-            if (role == "ADMIN") return "No Privilege";
-            if (role == "PA") return "No Privilege";
+            if (role == "ADMIN") return OutputTeam.defaultDisabledRole;
+            if (role == "PA") return OutputTeam.defaultDisabledRole;
             else return role;
         }
 

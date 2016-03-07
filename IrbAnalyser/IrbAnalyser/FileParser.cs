@@ -141,6 +141,7 @@ namespace IrbAnalyser
                     data.Columns.Add("LastName");
                     data.Columns.Add("Role");
                     data.Columns.Add("UserName");
+                    data.Columns.Add("Source");
                     initColumnCount = data.Columns.Count;
                     break;
                 case type.Event:

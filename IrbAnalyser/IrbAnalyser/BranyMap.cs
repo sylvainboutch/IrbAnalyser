@@ -65,18 +65,18 @@ namespace IrbAnalyser
 
         public static readonly Dictionary<string, string> roleMapBrany = new Dictionary<string, string>()
             {
-                { RC, "No privilege" },
-                { PI, "No privilege" },
-                { "Faculty Advisor", "No privilege" },
-                { "Research Assistant", "No privilege" },
+                { RC, OutputTeam.defaultDisabledRole },
+                { PI, OutputTeam.defaultDisabledRole },
+                { "Faculty Advisor", OutputTeam.defaultDisabledRole },
+                { "Research Assistant", OutputTeam.defaultDisabledRole },
                 { "Auditor", "NA" },
-                { "CC Recipient", "No privilege" },
-                { "Co-Investigator", "No privilege" },
+                { "CC Recipient", OutputTeam.defaultDisabledRole },
+                { "Co-Investigator", OutputTeam.defaultDisabledRole },
                 { "Sponsor", "NA" },
                 { "Consultant", "NA" },
                 {"",""},
                 {"Sub-Investigator","Sub-Investigator-No Access"},
-                {"Other/Not Listed (explain)","No privilege"},
+                {"Other/Not Listed (explain)",OutputTeam.defaultDisabledRole},
                 { CRO, "NA" }
             };
 
@@ -84,15 +84,15 @@ namespace IrbAnalyser
             {
                 { PI, OutputTeam.PI },
                 { RC, OutputTeam.RC },
-                { "Faculty Advisor", "No privilege" },
-                { "Research Assistant", "No privilege" },
-                { "Auditor", "No privilege" },
-                { "CC Recipient", "No privilege" },
-                { "Co-Investigator", "No privilege" },
-                { "Sponsor", "No privilege" },
-                { "Consultant", "No privilege" },
+                { "Faculty Advisor", OutputTeam.defaultDisabledRole },
+                { "Research Assistant", OutputTeam.defaultDisabledRole },
+                { "Auditor", OutputTeam.defaultDisabledRole },
+                { "CC Recipient", OutputTeam.defaultDisabledRole },
+                { "Co-Investigator", OutputTeam.defaultDisabledRole },
+                { "Sponsor", OutputTeam.defaultDisabledRole },
+                { "Consultant", OutputTeam.defaultDisabledRole },
                 {"Sub-Investigator","Sub-Investigator-No Access"},
-                {"Other/Not Listed (explain)","No privilege"},
+                {"Other/Not Listed (explain)",OutputTeam.defaultDisabledRole},
                 {"",""},
                 { CRO, "NA" }
             };

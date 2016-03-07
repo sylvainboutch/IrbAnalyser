@@ -465,6 +465,10 @@ namespace IrbAnalyser
             {
                 personnal.Columns.Add("Role");
             }
+            if (!personnal.Columns.Contains("Source"))
+            {
+                personnal.Columns.Add("Source");
+            }
 
             string name = "";
             string email = "";
@@ -527,7 +531,7 @@ namespace IrbAnalyser
                             nr["Name"] = String.IsNullOrEmpty(name) ? "" : name;
                             nr["Email"] = String.IsNullOrEmpty(email) ? "" : email;
                             nr["Role"] = String.IsNullOrEmpty(role) ? "" : role;
-
+                            nr["Source"] = "BRANY X-Form";
                             /*if (name.Contains("Xiaoxue"))
                             {
                                 Agency.AgencyVal = Agency.AgencyList.BRANY;

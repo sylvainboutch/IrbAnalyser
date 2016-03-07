@@ -230,6 +230,13 @@ namespace IrbAnalyser
             lstxls.Add(new ExcelWorksheet("Team", "List of non system user to add in Velos", OutputTeam.newNonSystemUser));
             exc.WriteDataTableToExcel(savefilenoext + "_newNonSystem.xlsx", lstxls);
             */
+            if (OutputTeam.doStat)
+            {
+                lstxls = new List<ExcelWorksheet>();
+
+                lstxls.Add(new ExcelWorksheet("Team", "Stats on team", OutputTeam.statUser));
+                exc.WriteDataTableToExcel(savefilenoext + "_teamStats.xlsx", lstxls);
+            }
 
             if (cboGenerate.Checked && cboGenerate.Visible)
             {
