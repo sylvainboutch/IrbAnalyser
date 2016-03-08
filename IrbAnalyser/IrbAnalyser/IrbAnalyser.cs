@@ -505,6 +505,9 @@ namespace IrbAnalyser
                     OutputStudy.initiate();
                     DoUpdates.loadExcel(filename, OutputStatus.updatedStatus, "Status");
                     DoUpdates.loadExcel(filename, OutputStudy.updatedStudy, "Studies");
+                    OutputTeam.initiate();
+                    filename = filename.Split('_')[0] + "_triggers.xlsx";
+                    DoUpdates.loadExcel(filename, OutputTeam.triggerTeam, "Team");
                 }
             }
             txtOutput.Text = "Done updating";

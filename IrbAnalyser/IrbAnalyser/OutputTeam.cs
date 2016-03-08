@@ -14,7 +14,7 @@ namespace IrbAnalyser
     /// </summary>
     class OutputTeam
     {
-        public static bool doStat = true;
+        public static bool doStat = false;
         //Hols the velos role name
         public static string PI = "PI-View Access";
         public static string SubIno = "Sub-Investigator-No Access";
@@ -173,7 +173,7 @@ namespace IrbAnalyser
         /// <summary>
         /// Intiate the datatable
         /// </summary>
-        private static void initiate()
+        public static void initiate()
         {
             if (newTeam.Columns.Count == 0)
             {
@@ -190,6 +190,9 @@ namespace IrbAnalyser
                 //newTeam.Columns.Add("Group", typeof(string));
                 newTeam.Columns.Add("Organization", typeof(string));
                 newTeam.Columns.Add("Primary", typeof(string));
+                newTeam.Columns.Add("PK_STUDY", typeof(string));
+                newTeam.Columns.Add("PK_USER", typeof(string));
+                newTeam.Columns.Add("PK_STUDYTEAM", typeof(string));
             }
             if (updatedTeam.Columns.Count == 0)
             {
@@ -206,6 +209,9 @@ namespace IrbAnalyser
                 //updatedTeam.Columns.Add("Group", typeof(string));
                 updatedTeam.Columns.Add("Organization", typeof(string));
                 updatedTeam.Columns.Add("Primary", typeof(string));
+                updatedTeam.Columns.Add("PK_STUDY", typeof(string));
+                updatedTeam.Columns.Add("PK_USER", typeof(string));
+                updatedTeam.Columns.Add("PK_STUDYTEAM", typeof(string));
             }
             if (triggerTeam.Columns.Count == 0)
             {
@@ -225,6 +231,12 @@ namespace IrbAnalyser
                 triggerTeam.Columns.Add("RC", typeof(string));
                 triggerTeam.Columns.Add("Source", typeof(string));
                 triggerTeam.Columns.Add("Date", typeof(string));
+                triggerTeam.Columns.Add("PK_STUDY", typeof(string));
+                triggerTeam.Columns.Add("PK_USER", typeof(string));
+                triggerTeam.Columns.Add("PK_STUDYTEAM", typeof(string));
+                triggerTeam.Columns.Add("Created By", typeof(string));
+                triggerTeam.Columns.Add("Created On", typeof(string));
+
             }
             if (newNonSystemUser.Columns.Count == 0)
             {
@@ -246,6 +258,9 @@ namespace IrbAnalyser
                 newNonSystemUser.Columns.Add("TimeZone", typeof(string));
                 newNonSystemUser.Columns.Add("Group", typeof(string));
                 newNonSystemUser.Columns.Add("Login", typeof(string));
+                newNonSystemUser.Columns.Add("PK_STUDY", typeof(string));
+                newNonSystemUser.Columns.Add("PK_USER", typeof(string));
+                newNonSystemUser.Columns.Add("PK_STUDYTEAM", typeof(string));
 
             }
             if (addedDeletedUser.Columns.Count == 0)
@@ -268,6 +283,9 @@ namespace IrbAnalyser
                 addedDeletedUser.Columns.Add("TimeZone", typeof(string));
                 addedDeletedUser.Columns.Add("Group", typeof(string));
                 addedDeletedUser.Columns.Add("Login", typeof(string));
+                addedDeletedUser.Columns.Add("PK_STUDY", typeof(string));
+                addedDeletedUser.Columns.Add("PK_USER", typeof(string));
+                addedDeletedUser.Columns.Add("PK_STUDYTEAM", typeof(string));
 
             }
 
@@ -403,6 +421,9 @@ namespace IrbAnalyser
                 dr["Role"] = role;
                 //dr["Group"] = group;
                 dr["Organization"] = site;
+                dr["PK_STUDY"] = row["PK_STUDY"];
+                dr["PK_USER"] = row["PK_USER"];
+                dr["PK_STUDYTEAM"] = row["PK_STUDYTEAM"];
 
                 if (fpTeam.initColumnCount < row.Table.Columns.Count)
                 {
@@ -488,23 +509,6 @@ namespace IrbAnalyser
         {
             initiate();
 
-            if (!records.Columns.Contains("Created By"))
-            {
-                records.Columns.Add("Created By");
-            }
-
-            if (!records.Columns.Contains("Created On"))
-            {
-                records.Columns.Add("Created On");
-            }
-
-            if (!records.Columns.Contains("PK_STUDY"))
-            {
-                records.Columns.Add("PK_STUDY");
-            }
-
-
-
             DataRow dr;
 
             dr = records.NewRow();
@@ -539,6 +543,7 @@ namespace IrbAnalyser
             dr["Created By"] = row.CREATOR;
             dr["Created On"] = row.CREATED_ON;
             dr["PK_STUDY"] = row.FK_STUDY;
+            dr["PK_STUDYTEAM"] = row.PK_STUDYTEAM;
 
             records.Rows.Add(dr);
 
@@ -697,7 +702,7 @@ namespace IrbAnalyser
 
                 if (currentuser != null)
                 {
-
+                    
                     //userRow["PrimaryEMailAddress"] = currentuser.USER_EMAIL == null ? ((string)userRow["PrimaryEMailAddress"]).ToLower().Trim() : currentuser.USER_EMAIL.Trim().ToLower();
                     //email = (string)userRow["PrimaryEMailAddress"];
                     email = currentuser.USER_EMAIL == null ? ((string)userRow["PrimaryEMailAddress"]).ToLower().Trim() : currentuser.USER_EMAIL.Trim().ToLower();
@@ -748,6 +753,8 @@ namespace IrbAnalyser
                         //userRow["UserName"] = currentuser.USER_NAME;
                     }
 
+                    userRow["PK_USER"] = currentuser.PK_USER;
+
                     if (!issuperuser)// && currentuser.USER_DEFAULTGRP == enabledGroup && isactiveuser)
                     {
                         if (Tools.getOldStudy((string)userRow["StudyId"]))
@@ -789,7 +796,8 @@ namespace IrbAnalyser
                             else
                             {
                                 var changed = false;
-
+                                userRow["PK_STUDYTEAM"] = user.First().PK_STUDYTEAM;
+                                userRow["PK_STUDY"] = user.First().FK_STUDY;
                                 bool primary = Tools.compareStr(userRow["Primary"], "true");
 
                                 //Out of specs
