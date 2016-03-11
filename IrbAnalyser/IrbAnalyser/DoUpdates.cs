@@ -124,7 +124,7 @@ namespace IrbAnalyser
             {"RecordCategory",12067},
             {"FinancialBy",12069},
             {"SignOffBy",24837},
-            {"HasConsentForm",24242},
+            {"Consent",24242},
             {"Cancer",12065},
             {"Agent",12036},
 
@@ -195,6 +195,21 @@ namespace IrbAnalyser
                     values.Add(new Tuple<string, object, OracleDbType>("summary", (string)dr["Study Summary"], OracleDbType.Clob));
                     //values.Add("summary", (string)dr["Study Summary"]);
                     updateStr += updateStudySummary + " :summary ";
+                }
+
+                if (OutputStudy.updatedStudy.Columns.Contains("Department") && dr["Department"] != DBNull.Value && !String.IsNullOrWhiteSpace((string)dr["Department"]))
+                {
+                    if (isUpdated) updateStr += ", ";
+                    isUpdated = true;
+                    values.Add(new Tuple<string, object, OracleDbType>("department", (string)dr["Department"], OracleDbType.Varchar2));
+                    updateStr += updateStudyTarea1 + " :department " + closePart;
+                }
+                if (OutputStudy.updatedStudy.Columns.Contains("Division/Therapeutic area") && dr["Division/Therapeutic area"] != DBNull.Value && !String.IsNullOrWhiteSpace((string)dr["Division/Therapeutic area"]))
+                {
+                    if (isUpdated) updateStr += ", ";
+                    isUpdated = true;
+                    values.Add(new Tuple<string, object, OracleDbType>("division", (string)dr["Division/Therapeutic area"], OracleDbType.Varchar2));
+                    updateStr += updateStudyDivision1 + " :division " + closePart;
                 }
 
                 if (OutputStudy.updatedStudy.Columns.Contains("KeyWords") && dr["KeyWords"] != DBNull.Value && !String.IsNullOrWhiteSpace((string)dr["KeyWords"]))
@@ -394,12 +409,12 @@ namespace IrbAnalyser
         /// </summary>
         private static void executeAll()
         {
-            /*foreach (var x in statusUpdates.Values)
+            foreach (var x in statusUpdates.Values)
             {
                 executeSQL(x);
             }
 
-            updateStudys();*/
+            updateStudys();
 
             populateMissingUsers();
         }
@@ -488,8 +503,10 @@ namespace IrbAnalyser
                     DataRow drnew = table.NewRow();
                     foreach (DataColumn column in dt.Columns)
                     {
-
-                        drnew[column.ColumnName] = dr[column.ColumnName];
+                        if (table.Columns.Contains(column.ColumnName))
+                        {
+                            drnew[column.ColumnName] = dr[column.ColumnName];
+                        }
                     }
                     table.Rows.Add(drnew);
                 }

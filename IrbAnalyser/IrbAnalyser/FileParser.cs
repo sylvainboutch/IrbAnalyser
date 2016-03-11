@@ -113,6 +113,8 @@ namespace IrbAnalyser
                     data.Columns.Add("pk_study");
                     data.Columns.Add("FinancialBy");
                     data.Columns.Add("SignOffBy");
+
+                    data.Columns.Add("PhaseDrugDevice");
                     
                     initColumnCount = data.Columns.Count;
                     break;

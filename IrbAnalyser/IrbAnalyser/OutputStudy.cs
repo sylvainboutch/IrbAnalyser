@@ -264,6 +264,12 @@ namespace IrbAnalyser
 
             string newNumber = Tools.getOldStudyNumber((string)dr["StudyId"]);
 
+           //FOR DEBUGGING ONLY
+           /* if (newNumber == "16065801-NamedPatientProtocol")
+            {
+                Agency.AgencyVal = Agency.AgencyList.BRANY;
+            }*/
+
             if (Agency.AgencyVal == Agency.AgencyList.BRANY)
             {
                 OutputTeam.addRowXForm(irbstudyId, newNumber, irbnumber);
@@ -711,7 +717,7 @@ namespace IrbAnalyser
         private static bool checkChangeOverwriteNullString(string field, DataRow dr, string dbValue, bool hasChanged)
         {
             //bool hasChanged = false;
-            if (!String.IsNullOrWhiteSpace((string)dr[field]) & (String.IsNullOrWhiteSpace(dbValue)))
+            if (!String.IsNullOrWhiteSpace((string)dr[field]) && (String.IsNullOrWhiteSpace(dbValue)))
             {
                 hasChanged = true;
             }

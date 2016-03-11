@@ -14,7 +14,7 @@ namespace IrbAnalyser
     /// </summary>
     class OutputTeam
     {
-        public static bool doStat = false;
+        public static bool doStat = true;
         //Hols the velos role name
         public static string PI = "PI-View Access";
         public static string SubIno = "Sub-Investigator-No Access";
@@ -306,10 +306,11 @@ namespace IrbAnalyser
                 statUser.Columns.Add("mappedBy");
             }
 
-            if (name.Contains("Victor"))
+            //FOR DEBUGGING
+            /*if (name.Contains("Victor"))
             {
                 Agency.AgencyVal = Agency.AgencyList.BRANY;
-            }
+            }*/
 
             source = String.IsNullOrWhiteSpace(source) ? Agency.agencyStrLwr : source;
 
